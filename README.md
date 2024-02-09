@@ -1,6 +1,6 @@
 # Merge Ruby Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
+[![Gem Version](https://img.shields.io/badge/logo-ruby-red?logo=ruby)](https://pypi.python.org/pypi/MergePythonClient)
 
 
 The Merge Ruby library provides access to the Merge API from Ruby.
@@ -165,6 +165,10 @@ merge.ticketing.tickets.create(
   },
 )
 ```
+
+## Beta status
+
+This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning the package version to a specific version in your package.json file. This way, you can install the same version each time without breaking changes unless you are intentionally looking for the latest version.
 
 
 ## Contributing
