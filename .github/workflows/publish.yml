@@ -16,7 +16,7 @@ jobs:
               
           - name: Build and Push Gem
             env:
-              GEM_HOST_API_KEY: ${{ secrets.RUBY_GEMS_API_KEY }}
+              GEM_HOST_API_KEY: ${{ secrets.RUBYGEM_API_KEY }}
             run: |
               gem build merge_ruby_client.gemspec
 
