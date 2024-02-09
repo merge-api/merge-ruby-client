@@ -1,6 +1,6 @@
 # Merge Ruby Library
 
-[![Gem Version](https://img.shields.io/badge/logo-ruby-red?logo=ruby)](https://pypi.python.org/pypi/MergePythonClient)
+[![Gem Version](https://img.shields.io/badge/merge_ruby_client-v0.0.1-red?logo=ruby)](https://pypi.python.org/pypi/MergePythonClient)
 
 
 The Merge Ruby library provides access to the Merge API from Ruby.
