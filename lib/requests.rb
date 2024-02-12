@@ -23,7 +23,7 @@ module Merge
       @headers = {
         "X-Fern-Language": "Ruby",
         "X-Fern-SDK-Name": "Merge",
-        "X-Fern-SDK-Version": "0.0.1",
+        "X-Fern-SDK-Version": "0.0.66",
         "Authorization": "Bearer #{api_key}"
       }
       @headers["X-Account-Token"] = account_token unless account_token.nil?
@@ -53,7 +53,7 @@ module Merge
       @headers = {
         "X-Fern-Language": "Ruby",
         "X-Fern-SDK-Name": "Merge",
-        "X-Fern-SDK-Version": "0.0.1",
+        "X-Fern-SDK-Version": "0.0.66",
         "Authorization": "Bearer #{api_key}"
       }
       @headers["X-Account-Token"] = account_token unless account_token.nil?
