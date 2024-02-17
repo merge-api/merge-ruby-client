@@ -55,7 +55,7 @@ merge.hris. // APIs specific to the HRIS Category
 
 ## Usage
 
-Below are code snippets of how you can use the Node SDK.
+Below are code snippets of how you can use the Ruby SDK.
 
 ### Create Link Token
 
