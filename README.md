@@ -42,15 +42,14 @@ This SDK contains the ATS, HRIS, CRM, Ticketing, Accounting, and File Storage ca
 Each category is namespaced:
 
 ```ruby
-
 merge = Merge::Client.new(
   api_key: 'YOUR_API_KEY',
   account_token: 'YOUR_ACCOUNT_TOKEN'
 )
 
-merge.ats. // APIs specific to the ATS Category
+merge.ats. # APIs specific to the ATS Category
 
-merge.hris. // APIs specific to the HRIS Category
+merge.hris. # APIs specific to the HRIS Category
 ```
 
 ## Usage
