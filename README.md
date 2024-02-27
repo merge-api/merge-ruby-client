@@ -48,9 +48,9 @@ merge = Merge::Client.new(
   account_token: 'YOUR_ACCOUNT_TOKEN'
 )
 
-merge.ats. // APIs specific to the ATS Category
+merge.ats. # APIs specific to the ATS Category
 
-merge.hris. // APIs specific to the HRIS Category
+merge.hris. # APIs specific to the HRIS Category
 ```
 
 ## Usage
