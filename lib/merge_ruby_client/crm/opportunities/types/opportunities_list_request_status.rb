@@ -3,8 +3,11 @@
 module Merge
   module Crm
     class Opportunities
-      # @type [OPPORTUNITIES_LIST_REQUEST_STATUS]
-      OPPORTUNITIES_LIST_REQUEST_STATUS = { lost: "LOST", open: "OPEN", won: "WON" }.freeze
+      class OpportunitiesListRequestStatus
+        LOST = "LOST"
+        OPEN = "OPEN"
+        WON = "WON"
+      end
     end
   end
 end

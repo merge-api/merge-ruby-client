@@ -2,7 +2,11 @@
 
 module Merge
   module Hris
-    # @type [ACCOUNT_TYPE_ENUM]
-    ACCOUNT_TYPE_ENUM = { savings: "SAVINGS", checking: "CHECKING" }.freeze
+    # - `SAVINGS` - SAVINGS
+    #  - `CHECKING` - CHECKING
+    class AccountTypeEnum
+      SAVINGS = "SAVINGS"
+      CHECKING = "CHECKING"
+    end
   end
 end

@@ -2,12 +2,15 @@
 
 module Merge
   module Hris
-    # @type [FLSA_STATUS_ENUM]
-    FLSA_STATUS_ENUM = {
-      exempt: "EXEMPT",
-      salaried_nonexempt: "SALARIED_NONEXEMPT",
-      nonexempt: "NONEXEMPT",
-      owner: "OWNER"
-    }.freeze
+    # - `EXEMPT` - EXEMPT
+    #  - `SALARIED_NONEXEMPT` - SALARIED_NONEXEMPT
+    #  - `NONEXEMPT` - NONEXEMPT
+    #  - `OWNER` - OWNER
+    class FlsaStatusEnum
+      EXEMPT = "EXEMPT"
+      SALARIED_NONEXEMPT = "SALARIED_NONEXEMPT"
+      NONEXEMPT = "NONEXEMPT"
+      OWNER = "OWNER"
+    end
   end
 end

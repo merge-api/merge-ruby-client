@@ -2,7 +2,13 @@
 
 module Merge
   module Ats
-    # @type [REQUEST_FORMAT_ENUM]
-    REQUEST_FORMAT_ENUM = { json: "JSON", xml: "XML", multipart: "MULTIPART" }.freeze
+    # - `JSON` - JSON
+    #  - `XML` - XML
+    #  - `MULTIPART` - MULTIPART
+    class RequestFormatEnum
+      JSON = "JSON"
+      XML = "XML"
+      MULTIPART = "MULTIPART"
+    end
   end
 end

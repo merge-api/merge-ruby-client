@@ -14,12 +14,12 @@ require "async"
 module Merge
   module Accounting
     class ExpensesClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Accounting::ExpensesClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Accounting::ExpensesClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -29,20 +29,30 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [EXPENSES_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Accounting::Expenses::ExpensesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedExpenseList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedExpenseList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, transaction_date_after: nil, transaction_date_before: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/expenses") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -63,34 +73,42 @@ module Merge
             "transaction_date_after": transaction_date_after,
             "transaction_date_before": transaction_date_before
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses"
         end
-        Accounting::PaginatedExpenseList.from_json(json_object: response.body)
+        Merge::Accounting::PaginatedExpenseList.from_json(json_object: response.body)
       end
 
       # Creates an `Expense` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Accounting::ExpenseRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Accounting::ExpenseRequest, as a Hash
       #   * :transaction_date (DateTime)
       #   * :account (Hash)
       #   * :contact (Hash)
       #   * :total_amount (Float)
       #   * :sub_total (Float)
       #   * :total_tax_amount (Float)
-      #   * :currency (CURRENCY_ENUM)
+      #   * :currency (Merge::Accounting::CurrencyEnum)
       #   * :exchange_rate (String)
       #   * :company (Hash)
       #   * :memo (String)
-      #   * :lines (Array<Accounting::ExpenseLineRequest>)
-      #   * :tracking_categories (Array<Accounting::ExpenseRequestTrackingCategoriesItem>)
+      #   * :lines (Array<Merge::Accounting::ExpenseLineRequest>)
+      #   * :tracking_categories (Array<Merge::Accounting::ExpenseRequestTrackingCategoriesItem>)
       #   * :accounting_period (Hash)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Accounting::ExpenseResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ExpenseResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/accounting/v1/expenses") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -101,19 +119,29 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses"
         end
-        Accounting::ExpenseResponse.from_json(json_object: response.body)
+        Merge::Accounting::ExpenseResponse.from_json(json_object: response.body)
       end
 
       # Returns an `Expense` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [EXPENSES_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::Expense]
+      # @param expand [Merge::Accounting::Expenses::ExpensesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::Expense]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/expenses/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -123,32 +151,41 @@ module Merge
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses/#{id}"
         end
-        Accounting::Expense.from_json(json_object: response.body)
+        Merge::Accounting::Expense.from_json(json_object: response.body)
       end
 
       # Returns metadata for `Expense` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Accounting::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/expenses/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses/meta/post"
         end
-        Accounting::MetaResponse.from_json(json_object: response.body)
+        Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncExpensesClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Accounting::AsyncExpensesClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Accounting::AsyncExpensesClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -158,21 +195,31 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [EXPENSES_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Accounting::Expenses::ExpensesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedExpenseList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedExpenseList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, transaction_date_after: nil, transaction_date_before: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/expenses") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -193,8 +240,9 @@ module Merge
               "transaction_date_after": transaction_date_after,
               "transaction_date_before": transaction_date_before
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses"
           end
-          Accounting::PaginatedExpenseList.from_json(json_object: response.body)
+          Merge::Accounting::PaginatedExpenseList.from_json(json_object: response.body)
         end
       end
 
@@ -202,27 +250,34 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Accounting::ExpenseRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Accounting::ExpenseRequest, as a Hash
       #   * :transaction_date (DateTime)
       #   * :account (Hash)
       #   * :contact (Hash)
       #   * :total_amount (Float)
       #   * :sub_total (Float)
       #   * :total_tax_amount (Float)
-      #   * :currency (CURRENCY_ENUM)
+      #   * :currency (Merge::Accounting::CurrencyEnum)
       #   * :exchange_rate (String)
       #   * :company (Hash)
       #   * :memo (String)
-      #   * :lines (Array<Accounting::ExpenseLineRequest>)
-      #   * :tracking_categories (Array<Accounting::ExpenseRequestTrackingCategoriesItem>)
+      #   * :lines (Array<Merge::Accounting::ExpenseLineRequest>)
+      #   * :tracking_categories (Array<Merge::Accounting::ExpenseRequestTrackingCategoriesItem>)
       #   * :accounting_period (Hash)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Accounting::ExpenseResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ExpenseResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/accounting/v1/expenses") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -233,21 +288,31 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses"
           end
-          Accounting::ExpenseResponse.from_json(json_object: response.body)
+          Merge::Accounting::ExpenseResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns an `Expense` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [EXPENSES_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::Expense]
+      # @param expand [Merge::Accounting::Expenses::ExpensesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::Expense]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/expenses/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -257,24 +322,33 @@ module Merge
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses/#{id}"
           end
-          Accounting::Expense.from_json(json_object: response.body)
+          Merge::Accounting::Expense.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `Expense` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Accounting::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/expenses/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/expenses/meta/post"
           end
-          Accounting::MetaResponse.from_json(json_object: response.body)
+          Merge::Accounting::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

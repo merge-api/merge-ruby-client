@@ -2,13 +2,17 @@
 
 module Merge
   module Hris
-    # @type [GENDER_ENUM]
-    GENDER_ENUM = {
-      male: "MALE",
-      female: "FEMALE",
-      non_binary: "NON-BINARY",
-      other: "OTHER",
-      prefer_not_to_disclose: "PREFER_NOT_TO_DISCLOSE"
-    }.freeze
+    # - `MALE` - MALE
+    #  - `FEMALE` - FEMALE
+    #  - `NON-BINARY` - NON-BINARY
+    #  - `OTHER` - OTHER
+    #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+    class GenderEnum
+      MALE = "MALE"
+      FEMALE = "FEMALE"
+      NON_BINARY = "NON-BINARY"
+      OTHER = "OTHER"
+      PREFER_NOT_TO_DISCLOSE = "PREFER_NOT_TO_DISCLOSE"
+    end
   end
 end

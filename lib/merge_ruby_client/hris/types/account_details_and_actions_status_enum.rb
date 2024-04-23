@@ -2,11 +2,13 @@
 
 module Merge
   module Hris
-    # @type [ACCOUNT_DETAILS_AND_ACTIONS_STATUS_ENUM]
-    ACCOUNT_DETAILS_AND_ACTIONS_STATUS_ENUM = {
-      complete: "COMPLETE",
-      incomplete: "INCOMPLETE",
-      relink_needed: "RELINK_NEEDED"
-    }.freeze
+    # - `COMPLETE` - COMPLETE
+    #  - `INCOMPLETE` - INCOMPLETE
+    #  - `RELINK_NEEDED` - RELINK_NEEDED
+    class AccountDetailsAndActionsStatusEnum
+      COMPLETE = "COMPLETE"
+      INCOMPLETE = "INCOMPLETE"
+      RELINK_NEEDED = "RELINK_NEEDED"
+    end
   end
 end

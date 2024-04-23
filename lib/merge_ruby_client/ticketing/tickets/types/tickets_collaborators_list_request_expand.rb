@@ -3,8 +3,11 @@
 module Merge
   module Ticketing
     class Tickets
-      # @type [TICKETS_COLLABORATORS_LIST_REQUEST_EXPAND]
-      TICKETS_COLLABORATORS_LIST_REQUEST_EXPAND = { roles: "roles", teams: "teams", teams_roles: "teams,roles" }.freeze
+      class TicketsCollaboratorsListRequestExpand
+        ROLES = "roles"
+        TEAMS = "teams"
+        TEAMS_ROLES = "teams,roles"
+      end
     end
   end
 end

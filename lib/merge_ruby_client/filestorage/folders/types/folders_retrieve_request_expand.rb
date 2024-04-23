@@ -3,16 +3,15 @@
 module Merge
   module Filestorage
     class Folders
-      # @type [FOLDERS_RETRIEVE_REQUEST_EXPAND]
-      FOLDERS_RETRIEVE_REQUEST_EXPAND = {
-        drive: "drive",
-        parent_folder: "parent_folder",
-        parent_folder_drive: "parent_folder,drive",
-        permissions: "permissions",
-        permissions_drive: "permissions,drive",
-        permissions_parent_folder: "permissions,parent_folder",
-        permissions_parent_folder_drive: "permissions,parent_folder,drive"
-      }.freeze
+      class FoldersRetrieveRequestExpand
+        DRIVE = "drive"
+        PARENT_FOLDER = "parent_folder"
+        PARENT_FOLDER_DRIVE = "parent_folder,drive"
+        PERMISSIONS = "permissions"
+        PERMISSIONS_DRIVE = "permissions,drive"
+        PERMISSIONS_PARENT_FOLDER = "permissions,parent_folder"
+        PERMISSIONS_PARENT_FOLDER_DRIVE = "permissions,parent_folder,drive"
+      end
     end
   end
 end

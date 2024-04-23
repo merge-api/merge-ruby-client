@@ -3,16 +3,15 @@
 module Merge
   module Crm
     class Leads
-      # @type [LEADS_LIST_REQUEST_EXPAND]
-      LEADS_LIST_REQUEST_EXPAND = {
-        converted_account: "converted_account",
-        converted_contact: "converted_contact",
-        converted_contact_converted_account: "converted_contact,converted_account",
-        owner: "owner",
-        owner_converted_account: "owner,converted_account",
-        owner_converted_contact: "owner,converted_contact",
-        owner_converted_contact_converted_account: "owner,converted_contact,converted_account"
-      }.freeze
+      class LeadsListRequestExpand
+        CONVERTED_ACCOUNT = "converted_account"
+        CONVERTED_CONTACT = "converted_contact"
+        CONVERTED_CONTACT_CONVERTED_ACCOUNT = "converted_contact,converted_account"
+        OWNER = "owner"
+        OWNER_CONVERTED_ACCOUNT = "owner,converted_account"
+        OWNER_CONVERTED_CONTACT = "owner,converted_contact"
+        OWNER_CONVERTED_CONTACT_CONVERTED_ACCOUNT = "owner,converted_contact,converted_account"
+      end
     end
   end
 end

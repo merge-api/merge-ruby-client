@@ -3,72 +3,71 @@
 module Merge
   module Accounting
     class PurchaseOrders
-      # @type [PURCHASE_ORDERS_RETRIEVE_REQUEST_EXPAND]
-      PURCHASE_ORDERS_RETRIEVE_REQUEST_EXPAND = {
-        accounting_period: "accounting_period",
-        company: "company",
-        company_accounting_period: "company,accounting_period",
-        delivery_address: "delivery_address",
-        delivery_address_accounting_period: "delivery_address,accounting_period",
-        delivery_address_company: "delivery_address,company",
-        delivery_address_company_accounting_period: "delivery_address,company,accounting_period",
-        delivery_address_vendor: "delivery_address,vendor",
-        delivery_address_vendor_accounting_period: "delivery_address,vendor,accounting_period",
-        delivery_address_vendor_company: "delivery_address,vendor,company",
-        delivery_address_vendor_company_accounting_period: "delivery_address,vendor,company,accounting_period",
-        line_items: "line_items",
-        line_items_accounting_period: "line_items,accounting_period",
-        line_items_company: "line_items,company",
-        line_items_company_accounting_period: "line_items,company,accounting_period",
-        line_items_delivery_address: "line_items,delivery_address",
-        line_items_delivery_address_accounting_period: "line_items,delivery_address,accounting_period",
-        line_items_delivery_address_company: "line_items,delivery_address,company",
-        line_items_delivery_address_company_accounting_period: "line_items,delivery_address,company,accounting_period",
-        line_items_delivery_address_vendor: "line_items,delivery_address,vendor",
-        line_items_delivery_address_vendor_accounting_period: "line_items,delivery_address,vendor,accounting_period",
-        line_items_delivery_address_vendor_company: "line_items,delivery_address,vendor,company",
-        line_items_delivery_address_vendor_company_accounting_period: "line_items,delivery_address,vendor,company,accounting_period",
-        line_items_tracking_categories: "line_items,tracking_categories",
-        line_items_tracking_categories_accounting_period: "line_items,tracking_categories,accounting_period",
-        line_items_tracking_categories_company: "line_items,tracking_categories,company",
-        line_items_tracking_categories_company_accounting_period: "line_items,tracking_categories,company,accounting_period",
-        line_items_tracking_categories_delivery_address: "line_items,tracking_categories,delivery_address",
-        line_items_tracking_categories_delivery_address_accounting_period: "line_items,tracking_categories,delivery_address,accounting_period",
-        line_items_tracking_categories_delivery_address_company: "line_items,tracking_categories,delivery_address,company",
-        line_items_tracking_categories_delivery_address_company_accounting_period: "line_items,tracking_categories,delivery_address,company,accounting_period",
-        line_items_tracking_categories_delivery_address_vendor: "line_items,tracking_categories,delivery_address,vendor",
-        line_items_tracking_categories_delivery_address_vendor_accounting_period: "line_items,tracking_categories,delivery_address,vendor,accounting_period",
-        line_items_tracking_categories_delivery_address_vendor_company: "line_items,tracking_categories,delivery_address,vendor,company",
-        line_items_tracking_categories_delivery_address_vendor_company_accounting_period: "line_items,tracking_categories,delivery_address,vendor,company,accounting_period",
-        line_items_tracking_categories_vendor: "line_items,tracking_categories,vendor",
-        line_items_tracking_categories_vendor_accounting_period: "line_items,tracking_categories,vendor,accounting_period",
-        line_items_tracking_categories_vendor_company: "line_items,tracking_categories,vendor,company",
-        line_items_tracking_categories_vendor_company_accounting_period: "line_items,tracking_categories,vendor,company,accounting_period",
-        line_items_vendor: "line_items,vendor",
-        line_items_vendor_accounting_period: "line_items,vendor,accounting_period",
-        line_items_vendor_company: "line_items,vendor,company",
-        line_items_vendor_company_accounting_period: "line_items,vendor,company,accounting_period",
-        tracking_categories: "tracking_categories",
-        tracking_categories_accounting_period: "tracking_categories,accounting_period",
-        tracking_categories_company: "tracking_categories,company",
-        tracking_categories_company_accounting_period: "tracking_categories,company,accounting_period",
-        tracking_categories_delivery_address: "tracking_categories,delivery_address",
-        tracking_categories_delivery_address_accounting_period: "tracking_categories,delivery_address,accounting_period",
-        tracking_categories_delivery_address_company: "tracking_categories,delivery_address,company",
-        tracking_categories_delivery_address_company_accounting_period: "tracking_categories,delivery_address,company,accounting_period",
-        tracking_categories_delivery_address_vendor: "tracking_categories,delivery_address,vendor",
-        tracking_categories_delivery_address_vendor_accounting_period: "tracking_categories,delivery_address,vendor,accounting_period",
-        tracking_categories_delivery_address_vendor_company: "tracking_categories,delivery_address,vendor,company",
-        tracking_categories_delivery_address_vendor_company_accounting_period: "tracking_categories,delivery_address,vendor,company,accounting_period",
-        tracking_categories_vendor: "tracking_categories,vendor",
-        tracking_categories_vendor_accounting_period: "tracking_categories,vendor,accounting_period",
-        tracking_categories_vendor_company: "tracking_categories,vendor,company",
-        tracking_categories_vendor_company_accounting_period: "tracking_categories,vendor,company,accounting_period",
-        vendor: "vendor",
-        vendor_accounting_period: "vendor,accounting_period",
-        vendor_company: "vendor,company",
-        vendor_company_accounting_period: "vendor,company,accounting_period"
-      }.freeze
+      class PurchaseOrdersRetrieveRequestExpand
+        ACCOUNTING_PERIOD = "accounting_period"
+        COMPANY = "company"
+        COMPANY_ACCOUNTING_PERIOD = "company,accounting_period"
+        DELIVERY_ADDRESS = "delivery_address"
+        DELIVERY_ADDRESS_ACCOUNTING_PERIOD = "delivery_address,accounting_period"
+        DELIVERY_ADDRESS_COMPANY = "delivery_address,company"
+        DELIVERY_ADDRESS_COMPANY_ACCOUNTING_PERIOD = "delivery_address,company,accounting_period"
+        DELIVERY_ADDRESS_VENDOR = "delivery_address,vendor"
+        DELIVERY_ADDRESS_VENDOR_ACCOUNTING_PERIOD = "delivery_address,vendor,accounting_period"
+        DELIVERY_ADDRESS_VENDOR_COMPANY = "delivery_address,vendor,company"
+        DELIVERY_ADDRESS_VENDOR_COMPANY_ACCOUNTING_PERIOD = "delivery_address,vendor,company,accounting_period"
+        LINE_ITEMS = "line_items"
+        LINE_ITEMS_ACCOUNTING_PERIOD = "line_items,accounting_period"
+        LINE_ITEMS_COMPANY = "line_items,company"
+        LINE_ITEMS_COMPANY_ACCOUNTING_PERIOD = "line_items,company,accounting_period"
+        LINE_ITEMS_DELIVERY_ADDRESS = "line_items,delivery_address"
+        LINE_ITEMS_DELIVERY_ADDRESS_ACCOUNTING_PERIOD = "line_items,delivery_address,accounting_period"
+        LINE_ITEMS_DELIVERY_ADDRESS_COMPANY = "line_items,delivery_address,company"
+        LINE_ITEMS_DELIVERY_ADDRESS_COMPANY_ACCOUNTING_PERIOD = "line_items,delivery_address,company,accounting_period"
+        LINE_ITEMS_DELIVERY_ADDRESS_VENDOR = "line_items,delivery_address,vendor"
+        LINE_ITEMS_DELIVERY_ADDRESS_VENDOR_ACCOUNTING_PERIOD = "line_items,delivery_address,vendor,accounting_period"
+        LINE_ITEMS_DELIVERY_ADDRESS_VENDOR_COMPANY = "line_items,delivery_address,vendor,company"
+        LINE_ITEMS_DELIVERY_ADDRESS_VENDOR_COMPANY_ACCOUNTING_PERIOD = "line_items,delivery_address,vendor,company,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES = "line_items,tracking_categories"
+        LINE_ITEMS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "line_items,tracking_categories,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_COMPANY = "line_items,tracking_categories,company"
+        LINE_ITEMS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "line_items,tracking_categories,company,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS = "line_items,tracking_categories,delivery_address"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_ACCOUNTING_PERIOD = "line_items,tracking_categories,delivery_address,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_COMPANY = "line_items,tracking_categories,delivery_address,company"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_COMPANY_ACCOUNTING_PERIOD = "line_items,tracking_categories,delivery_address,company,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR = "line_items,tracking_categories,delivery_address,vendor"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR_ACCOUNTING_PERIOD = "line_items,tracking_categories,delivery_address,vendor,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR_COMPANY = "line_items,tracking_categories,delivery_address,vendor,company"
+        LINE_ITEMS_TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR_COMPANY_ACCOUNTING_PERIOD = "line_items,tracking_categories,delivery_address,vendor,company,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_VENDOR = "line_items,tracking_categories,vendor"
+        LINE_ITEMS_TRACKING_CATEGORIES_VENDOR_ACCOUNTING_PERIOD = "line_items,tracking_categories,vendor,accounting_period"
+        LINE_ITEMS_TRACKING_CATEGORIES_VENDOR_COMPANY = "line_items,tracking_categories,vendor,company"
+        LINE_ITEMS_TRACKING_CATEGORIES_VENDOR_COMPANY_ACCOUNTING_PERIOD = "line_items,tracking_categories,vendor,company,accounting_period"
+        LINE_ITEMS_VENDOR = "line_items,vendor"
+        LINE_ITEMS_VENDOR_ACCOUNTING_PERIOD = "line_items,vendor,accounting_period"
+        LINE_ITEMS_VENDOR_COMPANY = "line_items,vendor,company"
+        LINE_ITEMS_VENDOR_COMPANY_ACCOUNTING_PERIOD = "line_items,vendor,company,accounting_period"
+        TRACKING_CATEGORIES = "tracking_categories"
+        TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "tracking_categories,accounting_period"
+        TRACKING_CATEGORIES_COMPANY = "tracking_categories,company"
+        TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,company,accounting_period"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS = "tracking_categories,delivery_address"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_ACCOUNTING_PERIOD = "tracking_categories,delivery_address,accounting_period"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_COMPANY = "tracking_categories,delivery_address,company"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,delivery_address,company,accounting_period"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR = "tracking_categories,delivery_address,vendor"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR_ACCOUNTING_PERIOD = "tracking_categories,delivery_address,vendor,accounting_period"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR_COMPANY = "tracking_categories,delivery_address,vendor,company"
+        TRACKING_CATEGORIES_DELIVERY_ADDRESS_VENDOR_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,delivery_address,vendor,company,accounting_period"
+        TRACKING_CATEGORIES_VENDOR = "tracking_categories,vendor"
+        TRACKING_CATEGORIES_VENDOR_ACCOUNTING_PERIOD = "tracking_categories,vendor,accounting_period"
+        TRACKING_CATEGORIES_VENDOR_COMPANY = "tracking_categories,vendor,company"
+        TRACKING_CATEGORIES_VENDOR_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,vendor,company,accounting_period"
+        VENDOR = "vendor"
+        VENDOR_ACCOUNTING_PERIOD = "vendor,accounting_period"
+        VENDOR_COMPANY = "vendor,company"
+        VENDOR_COMPANY_ACCOUNTING_PERIOD = "vendor,company,accounting_period"
+      end
     end
   end
 end

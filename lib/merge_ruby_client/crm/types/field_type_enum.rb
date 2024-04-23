@@ -2,14 +2,19 @@
 
 module Merge
   module Crm
-    # @type [FIELD_TYPE_ENUM]
-    FIELD_TYPE_ENUM = {
-      string: "string",
-      number: "number",
-      date: "date",
-      datetime: "datetime",
-      bool: "bool",
-      list: "list"
-    }.freeze
+    # - `string` - string
+    #  - `number` - number
+    #  - `date` - date
+    #  - `datetime` - datetime
+    #  - `bool` - bool
+    #  - `list` - list
+    class FieldTypeEnum
+      STRING = "string"
+      NUMBER = "number"
+      DATE = "date"
+      DATETIME = "datetime"
+      BOOL = "bool"
+      LIST = "list"
+    end
   end
 end

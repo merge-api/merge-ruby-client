@@ -9,12 +9,12 @@ require "async"
 module Merge
   module Crm
     class AssociationsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Crm::AssociationsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Crm::AssociationsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -26,18 +26,28 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Crm::PaginatedAssociationList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedAssociationList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.custom_object_classes_custom_objects_associations_list(custom_object_class_id: "custom_object_class_id", object_id: "object_id")
       def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id:,
                                                                  association_type_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id}/associations") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -56,11 +66,13 @@ module Merge
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id}/associations"
         end
-        Crm::PaginatedAssociationList.from_json(json_object: response.body)
+        Merge::Crm::PaginatedAssociationList.from_json(json_object: response.body)
       end
 
-      # Creates an Association between `source_object_id` and `target_object_id` of type `association_type_id`.
+      # Creates an Association between `source_object_id` and `target_object_id` of type
+      #  `association_type_id`.
       #
       # @param association_type_id [String]
       # @param source_class_id [String]
@@ -69,11 +81,24 @@ module Merge
       # @param target_object_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param request_options [RequestOptions]
-      # @return [Crm::Association]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::Association]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.custom_object_classes_custom_objects_associations_update(
+      #    association_type_id: "association_type_id",
+      #    source_class_id: "source_class_id",
+      #    source_object_id: "source_object_id",
+      #    target_class_id: "target_class_id",
+      #    target_object_id: "target_object_id"
+      #  )
       def custom_object_classes_custom_objects_associations_update(association_type_id:, source_class_id:,
                                                                    source_object_id:, target_class_id:, target_object_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.put("/api/crm/v1/custom-object-classes/#{association_type_id}/custom-objects/#{source_class_id}/associations/#{source_object_id}/#{target_class_id}/#{target_object_id}") do |req|
+        response = @request_client.conn.put do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -83,18 +108,19 @@ module Merge
             "is_debug_mode": is_debug_mode,
             "run_async": run_async
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{association_type_id}/custom-objects/#{source_class_id}/associations/#{source_object_id}/#{target_class_id}/#{target_object_id}"
         end
-        Crm::Association.from_json(json_object: response.body)
+        Merge::Crm::Association.from_json(json_object: response.body)
       end
     end
 
     class AsyncAssociationsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Crm::AsyncAssociationsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Crm::AsyncAssociationsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -106,19 +132,29 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Crm::PaginatedAssociationList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedAssociationList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.custom_object_classes_custom_objects_associations_list(custom_object_class_id: "custom_object_class_id", object_id: "object_id")
       def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id:,
                                                                  association_type_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id}/associations") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -137,12 +173,14 @@ module Merge
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id}/associations"
           end
-          Crm::PaginatedAssociationList.from_json(json_object: response.body)
+          Merge::Crm::PaginatedAssociationList.from_json(json_object: response.body)
         end
       end
 
-      # Creates an Association between `source_object_id` and `target_object_id` of type `association_type_id`.
+      # Creates an Association between `source_object_id` and `target_object_id` of type
+      #  `association_type_id`.
       #
       # @param association_type_id [String]
       # @param source_class_id [String]
@@ -151,12 +189,25 @@ module Merge
       # @param target_object_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param request_options [RequestOptions]
-      # @return [Crm::Association]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::Association]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.custom_object_classes_custom_objects_associations_update(
+      #    association_type_id: "association_type_id",
+      #    source_class_id: "source_class_id",
+      #    source_object_id: "source_object_id",
+      #    target_class_id: "target_class_id",
+      #    target_object_id: "target_object_id"
+      #  )
       def custom_object_classes_custom_objects_associations_update(association_type_id:, source_class_id:,
                                                                    source_object_id:, target_class_id:, target_object_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.put("/api/crm/v1/custom-object-classes/#{association_type_id}/custom-objects/#{source_class_id}/associations/#{source_object_id}/#{target_class_id}/#{target_object_id}") do |req|
+          response = @request_client.conn.put do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -166,8 +217,9 @@ module Merge
               "is_debug_mode": is_debug_mode,
               "run_async": run_async
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{association_type_id}/custom-objects/#{source_class_id}/associations/#{source_object_id}/#{target_class_id}/#{target_object_id}"
           end
-          Crm::Association.from_json(json_object: response.body)
+          Merge::Crm::Association.from_json(json_object: response.body)
         end
       end
     end

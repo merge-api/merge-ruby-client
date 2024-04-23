@@ -14,12 +14,12 @@ require "async"
 module Merge
   module Ats
     class ApplicationsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Ats::ApplicationsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Ats::ApplicationsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -31,21 +31,31 @@ module Merge
       # @param credited_to_id [String] If provided, will only return applications credited to this user.
       # @param current_stage_id [String] If provided, will only return applications at this interview stage.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [APPLICATIONS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ats::Applications::ApplicationsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param job_id [String] If provided, will only return applications for this job.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param reject_reason_id [String] If provided, will only return applications with this reject reason.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param source [String] If provided, will only return applications with this source.
-      # @param request_options [RequestOptions]
-      # @return [Ats::PaginatedApplicationList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::PaginatedApplicationList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.list
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
                cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/applications") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -69,31 +79,40 @@ module Merge
             "remote_id": remote_id,
             "source": source
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications"
         end
-        Ats::PaginatedApplicationList.from_json(json_object: response.body)
+        Merge::Ats::PaginatedApplicationList.from_json(json_object: response.body)
       end
 
       # Creates an `Application` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ats::ApplicationRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ats::ApplicationRequest, as a Hash
       #   * :candidate (Hash)
       #   * :job (Hash)
       #   * :applied_at (DateTime)
       #   * :rejected_at (DateTime)
+      #   * :offers (Array<Merge::Ats::ApplicationRequestOffersItem>)
       #   * :source (String)
       #   * :credited_to (Hash)
       #   * :current_stage (Hash)
       #   * :reject_reason (Hash)
       #   * :remote_template_id (String)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
       # @param remote_user_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ats::ApplicationResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ApplicationResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.create(model: {  }, remote_user_id: "remote_user_id")
       def create(model:, remote_user_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/ats/v1/applications") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -108,19 +127,29 @@ module Merge
             model: model,
             remote_user_id: remote_user_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications"
         end
-        Ats::ApplicationResponse.from_json(json_object: response.body)
+        Merge::Ats::ApplicationResponse.from_json(json_object: response.body)
       end
 
       # Returns an `Application` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [APPLICATIONS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Ats::Application]
+      # @param expand [Merge::Ats::Applications::ApplicationsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::Application]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/applications/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -130,8 +159,9 @@ module Merge
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/#{id}"
         end
-        Ats::Application.from_json(json_object: response.body)
+        Merge::Ats::Application.from_json(json_object: response.body)
       end
 
       # Updates the `current_stage` field of an `Application` object
@@ -141,11 +171,18 @@ module Merge
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param job_interview_stage [String] The interview stage to move the application to.
       # @param remote_user_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ats::ApplicationResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ApplicationResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.change_stage_create(id: "id")
       def change_stage_create(id:, is_debug_mode: nil, run_async: nil, job_interview_stage: nil, remote_user_id: nil,
                               request_options: nil)
-        response = @request_client.conn.post("/api/ats/v1/applications/#{id}/change-stage") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -160,17 +197,25 @@ module Merge
             job_interview_stage: job_interview_stage,
             remote_user_id: remote_user_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/#{id}/change-stage"
         end
-        Ats::ApplicationResponse.from_json(json_object: response.body)
+        Merge::Ats::ApplicationResponse.from_json(json_object: response.body)
       end
 
       # Returns metadata for `Application` POSTs.
       #
       # @param application_remote_template_id [String] The template ID associated with the nested application in the request.
-      # @param request_options [RequestOptions]
-      # @return [Ats::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.meta_post_retrieve
       def meta_post_retrieve(application_remote_template_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/applications/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -179,18 +224,19 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "application_remote_template_id": application_remote_template_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/meta/post"
         end
-        Ats::MetaResponse.from_json(json_object: response.body)
+        Merge::Ats::MetaResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncApplicationsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Ats::AsyncApplicationsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Ats::AsyncApplicationsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -202,22 +248,32 @@ module Merge
       # @param credited_to_id [String] If provided, will only return applications credited to this user.
       # @param current_stage_id [String] If provided, will only return applications at this interview stage.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [APPLICATIONS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ats::Applications::ApplicationsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param job_id [String] If provided, will only return applications for this job.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param reject_reason_id [String] If provided, will only return applications with this reject reason.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param source [String] If provided, will only return applications with this source.
-      # @param request_options [RequestOptions]
-      # @return [Ats::PaginatedApplicationList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::PaginatedApplicationList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.list
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
                cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/applications") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -241,8 +297,9 @@ module Merge
               "remote_id": remote_id,
               "source": source
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications"
           end
-          Ats::PaginatedApplicationList.from_json(json_object: response.body)
+          Merge::Ats::PaginatedApplicationList.from_json(json_object: response.body)
         end
       end
 
@@ -250,24 +307,32 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ats::ApplicationRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ats::ApplicationRequest, as a Hash
       #   * :candidate (Hash)
       #   * :job (Hash)
       #   * :applied_at (DateTime)
       #   * :rejected_at (DateTime)
+      #   * :offers (Array<Merge::Ats::ApplicationRequestOffersItem>)
       #   * :source (String)
       #   * :credited_to (Hash)
       #   * :current_stage (Hash)
       #   * :reject_reason (Hash)
       #   * :remote_template_id (String)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
       # @param remote_user_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ats::ApplicationResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ApplicationResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.create(model: {  }, remote_user_id: "remote_user_id")
       def create(model:, remote_user_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/ats/v1/applications") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -282,21 +347,31 @@ module Merge
               model: model,
               remote_user_id: remote_user_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications"
           end
-          Ats::ApplicationResponse.from_json(json_object: response.body)
+          Merge::Ats::ApplicationResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns an `Application` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [APPLICATIONS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Ats::Application]
+      # @param expand [Merge::Ats::Applications::ApplicationsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::Application]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/applications/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -306,8 +381,9 @@ module Merge
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/#{id}"
           end
-          Ats::Application.from_json(json_object: response.body)
+          Merge::Ats::Application.from_json(json_object: response.body)
         end
       end
 
@@ -318,12 +394,19 @@ module Merge
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param job_interview_stage [String] The interview stage to move the application to.
       # @param remote_user_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ats::ApplicationResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ApplicationResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.change_stage_create(id: "id")
       def change_stage_create(id:, is_debug_mode: nil, run_async: nil, job_interview_stage: nil, remote_user_id: nil,
                               request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/ats/v1/applications/#{id}/change-stage") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -338,19 +421,27 @@ module Merge
               job_interview_stage: job_interview_stage,
               remote_user_id: remote_user_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/#{id}/change-stage"
           end
-          Ats::ApplicationResponse.from_json(json_object: response.body)
+          Merge::Ats::ApplicationResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `Application` POSTs.
       #
       # @param application_remote_template_id [String] The template ID associated with the nested application in the request.
-      # @param request_options [RequestOptions]
-      # @return [Ats::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.meta_post_retrieve
       def meta_post_retrieve(application_remote_template_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/applications/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -359,8 +450,9 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "application_remote_template_id": application_remote_template_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/meta/post"
           end
-          Ats::MetaResponse.from_json(json_object: response.body)
+          Merge::Ats::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

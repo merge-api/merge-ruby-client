@@ -2,7 +2,13 @@
 
 module Merge
   module Crm
-    # @type [REASON_ENUM]
-    REASON_ENUM = { general_customer_request: "GENERAL_CUSTOMER_REQUEST", gdpr: "GDPR", other: "OTHER" }.freeze
+    # - `GENERAL_CUSTOMER_REQUEST` - GENERAL_CUSTOMER_REQUEST
+    #  - `GDPR` - GDPR
+    #  - `OTHER` - OTHER
+    class ReasonEnum
+      GENERAL_CUSTOMER_REQUEST = "GENERAL_CUSTOMER_REQUEST"
+      GDPR = "GDPR"
+      OTHER = "OTHER"
+    end
   end
 end

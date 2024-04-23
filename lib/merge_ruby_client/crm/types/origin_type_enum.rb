@@ -2,11 +2,13 @@
 
 module Merge
   module Crm
-    # @type [ORIGIN_TYPE_ENUM]
-    ORIGIN_TYPE_ENUM = {
-      custom_object: "CUSTOM_OBJECT",
-      common_model: "COMMON_MODEL",
-      remote_only_model: "REMOTE_ONLY_MODEL"
-    }.freeze
+    # - `CUSTOM_OBJECT` - CUSTOM_OBJECT
+    #  - `COMMON_MODEL` - COMMON_MODEL
+    #  - `REMOTE_ONLY_MODEL` - REMOTE_ONLY_MODEL
+    class OriginTypeEnum
+      CUSTOM_OBJECT = "CUSTOM_OBJECT"
+      COMMON_MODEL = "COMMON_MODEL"
+      REMOTE_ONLY_MODEL = "REMOTE_ONLY_MODEL"
+    end
   end
 end

@@ -3,8 +3,11 @@
 module Merge
   module Crm
     class Contacts
-      # @type [CONTACTS_RETRIEVE_REQUEST_EXPAND]
-      CONTACTS_RETRIEVE_REQUEST_EXPAND = { account: "account", account_owner: "account,owner", owner: "owner" }.freeze
+      class ContactsRetrieveRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_OWNER = "account,owner"
+        OWNER = "owner"
+      end
     end
   end
 end

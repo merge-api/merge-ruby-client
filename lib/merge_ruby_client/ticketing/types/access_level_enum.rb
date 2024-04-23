@@ -2,7 +2,13 @@
 
 module Merge
   module Ticketing
-    # @type [ACCESS_LEVEL_ENUM]
-    ACCESS_LEVEL_ENUM = { private: "PRIVATE", company: "COMPANY", public: "PUBLIC" }.freeze
+    # - `PRIVATE` - PRIVATE
+    #  - `COMPANY` - COMPANY
+    #  - `PUBLIC` - PUBLIC
+    class AccessLevelEnum
+      PRIVATE = "PRIVATE"
+      COMPANY = "COMPANY"
+      PUBLIC = "PUBLIC"
+    end
   end
 end

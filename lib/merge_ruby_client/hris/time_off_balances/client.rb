@@ -10,12 +10,12 @@ require "async"
 module Merge
   module Hris
     class TimeOffBalancesClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Hris::TimeOffBalancesClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Hris::TimeOffBalancesClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -25,27 +25,40 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param employee_id [String] If provided, will only return time off balances for this employee.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param policy_type [TIME_OFF_BALANCES_LIST_REQUEST_POLICY_TYPE] If provided, will only return TimeOffBalance with this policy type. Options: ('VACATION', 'SICK', 'PERSONAL', 'JURY_DUTY', 'VOLUNTEER', 'BEREAVEMENT')
-      #   - `VACATION` - VACATION
-      #   - `SICK` - SICK
-      #   - `PERSONAL` - PERSONAL
-      #   - `JURY_DUTY` - JURY_DUTY
-      #   - `VOLUNTEER` - VOLUNTEER
-      #   - `BEREAVEMENT` - BEREAVEMENT
+      # @param policy_type [Merge::Hris::TimeOffBalances::TimeOffBalancesListRequestPolicyType] If provided, will only return TimeOffBalance with this policy type. Options:
+      #  ('VACATION', 'SICK', 'PERSONAL', 'JURY_DUTY', 'VOLUNTEER', 'BEREAVEMENT')
+      #  - `VACATION` - VACATION
+      #  - `SICK` - SICK
+      #  - `PERSONAL` - PERSONAL
+      #  - `JURY_DUTY` - JURY_DUTY
+      #  - `VOLUNTEER` - VOLUNTEER
+      #  - `BEREAVEMENT` - BEREAVEMENT
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedTimeOffBalanceList]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedTimeOffBalanceList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, policy_type: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/time-off-balances") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -67,22 +80,34 @@ module Merge
             "remote_id": remote_id,
             "show_enum_origins": show_enum_origins
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/time-off-balances"
         end
-        Hris::PaginatedTimeOffBalanceList.from_json(json_object: response.body)
+        Merge::Hris::PaginatedTimeOffBalanceList.from_json(json_object: response.body)
       end
 
       # Returns a `TimeOffBalance` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Hris::TimeOffBalance]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::TimeOffBalance]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
                    request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/time-off-balances/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -94,18 +119,19 @@ module Merge
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/time-off-balances/#{id}"
         end
-        Hris::TimeOffBalance.from_json(json_object: response.body)
+        Merge::Hris::TimeOffBalance.from_json(json_object: response.body)
       end
     end
 
     class AsyncTimeOffBalancesClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Hris::AsyncTimeOffBalancesClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Hris::AsyncTimeOffBalancesClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -115,28 +141,41 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param employee_id [String] If provided, will only return time off balances for this employee.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param policy_type [TIME_OFF_BALANCES_LIST_REQUEST_POLICY_TYPE] If provided, will only return TimeOffBalance with this policy type. Options: ('VACATION', 'SICK', 'PERSONAL', 'JURY_DUTY', 'VOLUNTEER', 'BEREAVEMENT')
-      #   - `VACATION` - VACATION
-      #   - `SICK` - SICK
-      #   - `PERSONAL` - PERSONAL
-      #   - `JURY_DUTY` - JURY_DUTY
-      #   - `VOLUNTEER` - VOLUNTEER
-      #   - `BEREAVEMENT` - BEREAVEMENT
+      # @param policy_type [Merge::Hris::TimeOffBalances::TimeOffBalancesListRequestPolicyType] If provided, will only return TimeOffBalance with this policy type. Options:
+      #  ('VACATION', 'SICK', 'PERSONAL', 'JURY_DUTY', 'VOLUNTEER', 'BEREAVEMENT')
+      #  - `VACATION` - VACATION
+      #  - `SICK` - SICK
+      #  - `PERSONAL` - PERSONAL
+      #  - `JURY_DUTY` - JURY_DUTY
+      #  - `VOLUNTEER` - VOLUNTEER
+      #  - `BEREAVEMENT` - BEREAVEMENT
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedTimeOffBalanceList]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedTimeOffBalanceList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, policy_type: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/time-off-balances") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -158,24 +197,36 @@ module Merge
               "remote_id": remote_id,
               "show_enum_origins": show_enum_origins
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/time-off-balances"
           end
-          Hris::PaginatedTimeOffBalanceList.from_json(json_object: response.body)
+          Merge::Hris::PaginatedTimeOffBalanceList.from_json(json_object: response.body)
         end
       end
 
       # Returns a `TimeOffBalance` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Hris::TimeOffBalance]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::TimeOffBalance]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
                    request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/time-off-balances/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -187,8 +238,9 @@ module Merge
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/time-off-balances/#{id}"
           end
-          Hris::TimeOffBalance.from_json(json_object: response.body)
+          Merge::Hris::TimeOffBalance.from_json(json_object: response.body)
         end
       end
     end

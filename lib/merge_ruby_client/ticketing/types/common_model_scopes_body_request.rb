@@ -1,54 +1,66 @@
 # frozen_string_literal: true
 
 require_relative "enabled_actions_enum"
+require "ostruct"
 require "json"
 
 module Merge
   module Ticketing
     class CommonModelScopesBodyRequest
-      attr_reader :model_id, :enabled_actions, :disabled_fields, :additional_properties
+      # @return [String]
+      attr_reader :model_id
+      # @return [Array<Merge::Ticketing::EnabledActionsEnum>]
+      attr_reader :enabled_actions
+      # @return [Array<String>]
+      attr_reader :disabled_fields
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param model_id [String]
-      # @param enabled_actions [Array<Ticketing::ENABLED_ACTIONS_ENUM>]
+      # @param enabled_actions [Array<Merge::Ticketing::EnabledActionsEnum>]
       # @param disabled_fields [Array<String>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Ticketing::CommonModelScopesBodyRequest]
+      # @return [Merge::Ticketing::CommonModelScopesBodyRequest]
       def initialize(model_id:, enabled_actions:, disabled_fields:, additional_properties: nil)
-        # @type [String]
         @model_id = model_id
-        # @type [Array<Ticketing::ENABLED_ACTIONS_ENUM>]
         @enabled_actions = enabled_actions
-        # @type [Array<String>]
         @disabled_fields = disabled_fields
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
         @additional_properties = additional_properties
+        @_field_set = { "model_id": model_id, "enabled_actions": enabled_actions, "disabled_fields": disabled_fields }
       end
 
       # Deserialize a JSON object to an instance of CommonModelScopesBodyRequest
       #
-      # @param json_object [JSON]
-      # @return [Ticketing::CommonModelScopesBodyRequest]
+      # @param json_object [String]
+      # @return [Merge::Ticketing::CommonModelScopesBodyRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        parsed_json = JSON.parse(json_object)
-        model_id = struct.model_id
-        enabled_actions = parsed_json["enabled_actions"]&.map do |v|
-          v = v.to_json
-          Ticketing::ENABLED_ACTIONS_ENUM.key(v) || v
-        end
-        disabled_fields = struct.disabled_fields
-        new(model_id: model_id, enabled_actions: enabled_actions, disabled_fields: disabled_fields,
-            additional_properties: struct)
+        model_id = struct["model_id"]
+        enabled_actions = struct["enabled_actions"]
+        disabled_fields = struct["disabled_fields"]
+        new(
+          model_id: model_id,
+          enabled_actions: enabled_actions,
+          disabled_fields: disabled_fields,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of CommonModelScopesBodyRequest to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "model_id": @model_id, "enabled_actions": @enabled_actions, "disabled_fields": @disabled_fields }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]

@@ -3,40 +3,71 @@
 module Merge
   module Ats
     class Applications
-      # @type [APPLICATIONS_RETRIEVE_REQUEST_EXPAND]
-      APPLICATIONS_RETRIEVE_REQUEST_EXPAND = {
-        candidate: "candidate",
-        candidate_credited_to: "candidate,credited_to",
-        candidate_credited_to_current_stage: "candidate,credited_to,current_stage",
-        candidate_credited_to_current_stage_reject_reason: "candidate,credited_to,current_stage,reject_reason",
-        candidate_credited_to_reject_reason: "candidate,credited_to,reject_reason",
-        candidate_current_stage: "candidate,current_stage",
-        candidate_current_stage_reject_reason: "candidate,current_stage,reject_reason",
-        candidate_job: "candidate,job",
-        candidate_job_credited_to: "candidate,job,credited_to",
-        candidate_job_credited_to_current_stage: "candidate,job,credited_to,current_stage",
-        candidate_job_credited_to_current_stage_reject_reason: "candidate,job,credited_to,current_stage,reject_reason",
-        candidate_job_credited_to_reject_reason: "candidate,job,credited_to,reject_reason",
-        candidate_job_current_stage: "candidate,job,current_stage",
-        candidate_job_current_stage_reject_reason: "candidate,job,current_stage,reject_reason",
-        candidate_job_reject_reason: "candidate,job,reject_reason",
-        candidate_reject_reason: "candidate,reject_reason",
-        credited_to: "credited_to",
-        credited_to_current_stage: "credited_to,current_stage",
-        credited_to_current_stage_reject_reason: "credited_to,current_stage,reject_reason",
-        credited_to_reject_reason: "credited_to,reject_reason",
-        current_stage: "current_stage",
-        current_stage_reject_reason: "current_stage,reject_reason",
-        job: "job",
-        job_credited_to: "job,credited_to",
-        job_credited_to_current_stage: "job,credited_to,current_stage",
-        job_credited_to_current_stage_reject_reason: "job,credited_to,current_stage,reject_reason",
-        job_credited_to_reject_reason: "job,credited_to,reject_reason",
-        job_current_stage: "job,current_stage",
-        job_current_stage_reject_reason: "job,current_stage,reject_reason",
-        job_reject_reason: "job,reject_reason",
-        reject_reason: "reject_reason"
-      }.freeze
+      class ApplicationsRetrieveRequestExpand
+        CANDIDATE = "candidate"
+        CANDIDATE_CREDITED_TO = "candidate,credited_to"
+        CANDIDATE_CREDITED_TO_CURRENT_STAGE = "candidate,credited_to,current_stage"
+        CANDIDATE_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "candidate,credited_to,current_stage,reject_reason"
+        CANDIDATE_CREDITED_TO_REJECT_REASON = "candidate,credited_to,reject_reason"
+        CANDIDATE_CURRENT_STAGE = "candidate,current_stage"
+        CANDIDATE_CURRENT_STAGE_REJECT_REASON = "candidate,current_stage,reject_reason"
+        CANDIDATE_JOB = "candidate,job"
+        CANDIDATE_JOB_CREDITED_TO = "candidate,job,credited_to"
+        CANDIDATE_JOB_CREDITED_TO_CURRENT_STAGE = "candidate,job,credited_to,current_stage"
+        CANDIDATE_JOB_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "candidate,job,credited_to,current_stage,reject_reason"
+        CANDIDATE_JOB_CREDITED_TO_REJECT_REASON = "candidate,job,credited_to,reject_reason"
+        CANDIDATE_JOB_CURRENT_STAGE = "candidate,job,current_stage"
+        CANDIDATE_JOB_CURRENT_STAGE_REJECT_REASON = "candidate,job,current_stage,reject_reason"
+        CANDIDATE_JOB_REJECT_REASON = "candidate,job,reject_reason"
+        CANDIDATE_REJECT_REASON = "candidate,reject_reason"
+        CREDITED_TO = "credited_to"
+        CREDITED_TO_CURRENT_STAGE = "credited_to,current_stage"
+        CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "credited_to,current_stage,reject_reason"
+        CREDITED_TO_REJECT_REASON = "credited_to,reject_reason"
+        CURRENT_STAGE = "current_stage"
+        CURRENT_STAGE_REJECT_REASON = "current_stage,reject_reason"
+        JOB = "job"
+        JOB_CREDITED_TO = "job,credited_to"
+        JOB_CREDITED_TO_CURRENT_STAGE = "job,credited_to,current_stage"
+        JOB_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "job,credited_to,current_stage,reject_reason"
+        JOB_CREDITED_TO_REJECT_REASON = "job,credited_to,reject_reason"
+        JOB_CURRENT_STAGE = "job,current_stage"
+        JOB_CURRENT_STAGE_REJECT_REASON = "job,current_stage,reject_reason"
+        JOB_REJECT_REASON = "job,reject_reason"
+        OFFERS = "offers"
+        OFFERS_CANDIDATE = "offers,candidate"
+        OFFERS_CANDIDATE_CREDITED_TO = "offers,candidate,credited_to"
+        OFFERS_CANDIDATE_CREDITED_TO_CURRENT_STAGE = "offers,candidate,credited_to,current_stage"
+        OFFERS_CANDIDATE_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "offers,candidate,credited_to,current_stage,reject_reason"
+        OFFERS_CANDIDATE_CREDITED_TO_REJECT_REASON = "offers,candidate,credited_to,reject_reason"
+        OFFERS_CANDIDATE_CURRENT_STAGE = "offers,candidate,current_stage"
+        OFFERS_CANDIDATE_CURRENT_STAGE_REJECT_REASON = "offers,candidate,current_stage,reject_reason"
+        OFFERS_CANDIDATE_JOB = "offers,candidate,job"
+        OFFERS_CANDIDATE_JOB_CREDITED_TO = "offers,candidate,job,credited_to"
+        OFFERS_CANDIDATE_JOB_CREDITED_TO_CURRENT_STAGE = "offers,candidate,job,credited_to,current_stage"
+        OFFERS_CANDIDATE_JOB_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "offers,candidate,job,credited_to,current_stage,reject_reason"
+        OFFERS_CANDIDATE_JOB_CREDITED_TO_REJECT_REASON = "offers,candidate,job,credited_to,reject_reason"
+        OFFERS_CANDIDATE_JOB_CURRENT_STAGE = "offers,candidate,job,current_stage"
+        OFFERS_CANDIDATE_JOB_CURRENT_STAGE_REJECT_REASON = "offers,candidate,job,current_stage,reject_reason"
+        OFFERS_CANDIDATE_JOB_REJECT_REASON = "offers,candidate,job,reject_reason"
+        OFFERS_CANDIDATE_REJECT_REASON = "offers,candidate,reject_reason"
+        OFFERS_CREDITED_TO = "offers,credited_to"
+        OFFERS_CREDITED_TO_CURRENT_STAGE = "offers,credited_to,current_stage"
+        OFFERS_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "offers,credited_to,current_stage,reject_reason"
+        OFFERS_CREDITED_TO_REJECT_REASON = "offers,credited_to,reject_reason"
+        OFFERS_CURRENT_STAGE = "offers,current_stage"
+        OFFERS_CURRENT_STAGE_REJECT_REASON = "offers,current_stage,reject_reason"
+        OFFERS_JOB = "offers,job"
+        OFFERS_JOB_CREDITED_TO = "offers,job,credited_to"
+        OFFERS_JOB_CREDITED_TO_CURRENT_STAGE = "offers,job,credited_to,current_stage"
+        OFFERS_JOB_CREDITED_TO_CURRENT_STAGE_REJECT_REASON = "offers,job,credited_to,current_stage,reject_reason"
+        OFFERS_JOB_CREDITED_TO_REJECT_REASON = "offers,job,credited_to,reject_reason"
+        OFFERS_JOB_CURRENT_STAGE = "offers,job,current_stage"
+        OFFERS_JOB_CURRENT_STAGE_REJECT_REASON = "offers,job,current_stage,reject_reason"
+        OFFERS_JOB_REJECT_REASON = "offers,job,reject_reason"
+        OFFERS_REJECT_REASON = "offers,reject_reason"
+        REJECT_REASON = "reject_reason"
+      end
     end
   end
 end

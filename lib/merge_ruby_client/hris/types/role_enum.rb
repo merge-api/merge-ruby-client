@@ -2,14 +2,19 @@
 
 module Merge
   module Hris
-    # @type [ROLE_ENUM]
-    ROLE_ENUM = {
-      admin: "ADMIN",
-      developer: "DEVELOPER",
-      member: "MEMBER",
-      api: "API",
-      system: "SYSTEM",
-      merge_team: "MERGE_TEAM"
-    }.freeze
+    # - `ADMIN` - ADMIN
+    #  - `DEVELOPER` - DEVELOPER
+    #  - `MEMBER` - MEMBER
+    #  - `API` - API
+    #  - `SYSTEM` - SYSTEM
+    #  - `MERGE_TEAM` - MERGE_TEAM
+    class RoleEnum
+      ADMIN = "ADMIN"
+      DEVELOPER = "DEVELOPER"
+      MEMBER = "MEMBER"
+      API = "API"
+      SYSTEM = "SYSTEM"
+      MERGE_TEAM = "MERGE_TEAM"
+    end
   end
 end

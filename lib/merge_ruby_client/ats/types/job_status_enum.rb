@@ -2,13 +2,17 @@
 
 module Merge
   module Ats
-    # @type [JOB_STATUS_ENUM]
-    JOB_STATUS_ENUM = {
-      open: "OPEN",
-      closed: "CLOSED",
-      draft: "DRAFT",
-      archived: "ARCHIVED",
-      pending: "PENDING"
-    }.freeze
+    # - `OPEN` - OPEN
+    #  - `CLOSED` - CLOSED
+    #  - `DRAFT` - DRAFT
+    #  - `ARCHIVED` - ARCHIVED
+    #  - `PENDING` - PENDING
+    class JobStatusEnum
+      OPEN = "OPEN"
+      CLOSED = "CLOSED"
+      DRAFT = "DRAFT"
+      ARCHIVED = "ARCHIVED"
+      PENDING = "PENDING"
+    end
   end
 end

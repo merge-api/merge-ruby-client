@@ -3,13 +3,12 @@
 module Merge
   module Ticketing
     class Tickets
-      # @type [TICKETS_LIST_REQUEST_STATUS]
-      TICKETS_LIST_REQUEST_STATUS = {
-        closed: "CLOSED",
-        in_progress: "IN_PROGRESS",
-        on_hold: "ON_HOLD",
-        open: "OPEN"
-      }.freeze
+      class TicketsListRequestStatus
+        CLOSED = "CLOSED"
+        IN_PROGRESS = "IN_PROGRESS"
+        ON_HOLD = "ON_HOLD"
+        OPEN = "OPEN"
+      end
     end
   end
 end

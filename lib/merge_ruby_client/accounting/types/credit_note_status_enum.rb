@@ -2,7 +2,13 @@
 
 module Merge
   module Accounting
-    # @type [CREDIT_NOTE_STATUS_ENUM]
-    CREDIT_NOTE_STATUS_ENUM = { submitted: "SUBMITTED", authorized: "AUTHORIZED", paid: "PAID" }.freeze
+    # - `SUBMITTED` - SUBMITTED
+    #  - `AUTHORIZED` - AUTHORIZED
+    #  - `PAID` - PAID
+    class CreditNoteStatusEnum
+      SUBMITTED = "SUBMITTED"
+      AUTHORIZED = "AUTHORIZED"
+      PAID = "PAID"
+    end
   end
 end

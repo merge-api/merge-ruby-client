@@ -2,257 +2,505 @@
 
 module Merge
   module Hris
-    # @type [COUNTRY_ENUM]
-    COUNTRY_ENUM = {
-      af: "AF",
-      ax: "AX",
-      al: "AL",
-      dz: "DZ",
-      as: "AS",
-      ad: "AD",
-      ao: "AO",
-      ai: "AI",
-      aq: "AQ",
-      ag: "AG",
-      ar: "AR",
-      am: "AM",
-      aw: "AW",
-      au: "AU",
-      at: "AT",
-      az: "AZ",
-      bs: "BS",
-      bh: "BH",
-      bd: "BD",
-      bb: "BB",
-      by: "BY",
-      be: "BE",
-      bz: "BZ",
-      bj: "BJ",
-      bm: "BM",
-      bt: "BT",
-      bo: "BO",
-      bq: "BQ",
-      ba: "BA",
-      bw: "BW",
-      bv: "BV",
-      br: "BR",
-      io: "IO",
-      bn: "BN",
-      bg: "BG",
-      bf: "BF",
-      bi: "BI",
-      cv: "CV",
-      kh: "KH",
-      cm: "CM",
-      ca: "CA",
-      ky: "KY",
-      cf: "CF",
-      td: "TD",
-      cl: "CL",
-      cn: "CN",
-      cx: "CX",
-      cc: "CC",
-      co: "CO",
-      km: "KM",
-      cg: "CG",
-      cd: "CD",
-      ck: "CK",
-      cr: "CR",
-      ci: "CI",
-      hr: "HR",
-      cu: "CU",
-      cw: "CW",
-      cy: "CY",
-      cz: "CZ",
-      dk: "DK",
-      dj: "DJ",
-      dm: "DM",
-      do_: "DO",
-      ec: "EC",
-      eg: "EG",
-      sv: "SV",
-      gq: "GQ",
-      er: "ER",
-      ee: "EE",
-      sz: "SZ",
-      et: "ET",
-      fk: "FK",
-      fo: "FO",
-      fj: "FJ",
-      fi: "FI",
-      fr: "FR",
-      gf: "GF",
-      pf: "PF",
-      tf: "TF",
-      ga: "GA",
-      gm: "GM",
-      ge: "GE",
-      de: "DE",
-      gh: "GH",
-      gi: "GI",
-      gr: "GR",
-      gl: "GL",
-      gd: "GD",
-      gp: "GP",
-      gu: "GU",
-      gt: "GT",
-      gg: "GG",
-      gn: "GN",
-      gw: "GW",
-      gy: "GY",
-      ht: "HT",
-      hm: "HM",
-      va: "VA",
-      hn: "HN",
-      hk: "HK",
-      hu: "HU",
-      is: "IS",
-      in_: "IN",
-      id: "ID",
-      ir: "IR",
-      iq: "IQ",
-      ie: "IE",
-      im: "IM",
-      il: "IL",
-      it: "IT",
-      jm: "JM",
-      jp: "JP",
-      je: "JE",
-      jo: "JO",
-      kz: "KZ",
-      ke: "KE",
-      ki: "KI",
-      kw: "KW",
-      kg: "KG",
-      la: "LA",
-      lv: "LV",
-      lb: "LB",
-      ls: "LS",
-      lr: "LR",
-      ly: "LY",
-      li: "LI",
-      lt: "LT",
-      lu: "LU",
-      mo: "MO",
-      mg: "MG",
-      mw: "MW",
-      my: "MY",
-      mv: "MV",
-      ml: "ML",
-      mt: "MT",
-      mh: "MH",
-      mq: "MQ",
-      mr: "MR",
-      mu: "MU",
-      yt: "YT",
-      mx: "MX",
-      fm: "FM",
-      md: "MD",
-      mc: "MC",
-      mn: "MN",
-      me: "ME",
-      ms: "MS",
-      ma: "MA",
-      mz: "MZ",
-      mm: "MM",
-      na: "NA",
-      nr: "NR",
-      np: "NP",
-      nl: "NL",
-      nc: "NC",
-      nz: "NZ",
-      ni: "NI",
-      ne: "NE",
-      ng: "NG",
-      nu: "NU",
-      nf: "NF",
-      kp: "KP",
-      mk: "MK",
-      mp: "MP",
-      no: "NO",
-      om: "OM",
-      pk: "PK",
-      pw: "PW",
-      ps: "PS",
-      pa: "PA",
-      pg: "PG",
-      py: "PY",
-      pe: "PE",
-      ph: "PH",
-      pn: "PN",
-      pl: "PL",
-      pt: "PT",
-      pr: "PR",
-      qa: "QA",
-      re: "RE",
-      ro: "RO",
-      ru: "RU",
-      rw: "RW",
-      bl: "BL",
-      sh: "SH",
-      kn: "KN",
-      lc: "LC",
-      mf: "MF",
-      pm: "PM",
-      vc: "VC",
-      ws: "WS",
-      sm: "SM",
-      st: "ST",
-      sa: "SA",
-      sn: "SN",
-      rs: "RS",
-      sc: "SC",
-      sl: "SL",
-      sg: "SG",
-      sx: "SX",
-      sk: "SK",
-      si: "SI",
-      sb: "SB",
-      so: "SO",
-      za: "ZA",
-      gs: "GS",
-      kr: "KR",
-      ss: "SS",
-      es: "ES",
-      lk: "LK",
-      sd: "SD",
-      sr: "SR",
-      sj: "SJ",
-      se: "SE",
-      ch: "CH",
-      sy: "SY",
-      tw: "TW",
-      tj: "TJ",
-      tz: "TZ",
-      th: "TH",
-      tl: "TL",
-      tg: "TG",
-      tk: "TK",
-      to: "TO",
-      tt: "TT",
-      tn: "TN",
-      tr: "TR",
-      tm: "TM",
-      tc: "TC",
-      tv: "TV",
-      ug: "UG",
-      ua: "UA",
-      ae: "AE",
-      gb: "GB",
-      um: "UM",
-      us: "US",
-      uy: "UY",
-      uz: "UZ",
-      vu: "VU",
-      ve: "VE",
-      vn: "VN",
-      vg: "VG",
-      vi: "VI",
-      wf: "WF",
-      eh: "EH",
-      ye: "YE",
-      zm: "ZM",
-      zw: "ZW"
-    }.freeze
+    # - `AF` - Afghanistan
+    #  - `AX` - Åland Islands
+    #  - `AL` - Albania
+    #  - `DZ` - Algeria
+    #  - `AS` - American Samoa
+    #  - `AD` - Andorra
+    #  - `AO` - Angola
+    #  - `AI` - Anguilla
+    #  - `AQ` - Antarctica
+    #  - `AG` - Antigua and Barbuda
+    #  - `AR` - Argentina
+    #  - `AM` - Armenia
+    #  - `AW` - Aruba
+    #  - `AU` - Australia
+    #  - `AT` - Austria
+    #  - `AZ` - Azerbaijan
+    #  - `BS` - Bahamas
+    #  - `BH` - Bahrain
+    #  - `BD` - Bangladesh
+    #  - `BB` - Barbados
+    #  - `BY` - Belarus
+    #  - `BE` - Belgium
+    #  - `BZ` - Belize
+    #  - `BJ` - Benin
+    #  - `BM` - Bermuda
+    #  - `BT` - Bhutan
+    #  - `BO` - Bolivia
+    #  - `BQ` - Bonaire, Sint Eustatius and Saba
+    #  - `BA` - Bosnia and Herzegovina
+    #  - `BW` - Botswana
+    #  - `BV` - Bouvet Island
+    #  - `BR` - Brazil
+    #  - `IO` - British Indian Ocean Territory
+    #  - `BN` - Brunei
+    #  - `BG` - Bulgaria
+    #  - `BF` - Burkina Faso
+    #  - `BI` - Burundi
+    #  - `CV` - Cabo Verde
+    #  - `KH` - Cambodia
+    #  - `CM` - Cameroon
+    #  - `CA` - Canada
+    #  - `KY` - Cayman Islands
+    #  - `CF` - Central African Republic
+    #  - `TD` - Chad
+    #  - `CL` - Chile
+    #  - `CN` - China
+    #  - `CX` - Christmas Island
+    #  - `CC` - Cocos (Keeling) Islands
+    #  - `CO` - Colombia
+    #  - `KM` - Comoros
+    #  - `CG` - Congo
+    #  - `CD` - Congo (the Democratic Republic of the)
+    #  - `CK` - Cook Islands
+    #  - `CR` - Costa Rica
+    #  - `CI` - Côte d'Ivoire
+    #  - `HR` - Croatia
+    #  - `CU` - Cuba
+    #  - `CW` - Curaçao
+    #  - `CY` - Cyprus
+    #  - `CZ` - Czechia
+    #  - `DK` - Denmark
+    #  - `DJ` - Djibouti
+    #  - `DM` - Dominica
+    #  - `DO` - Dominican Republic
+    #  - `EC` - Ecuador
+    #  - `EG` - Egypt
+    #  - `SV` - El Salvador
+    #  - `GQ` - Equatorial Guinea
+    #  - `ER` - Eritrea
+    #  - `EE` - Estonia
+    #  - `SZ` - Eswatini
+    #  - `ET` - Ethiopia
+    #  - `FK` - Falkland Islands (Malvinas)
+    #  - `FO` - Faroe Islands
+    #  - `FJ` - Fiji
+    #  - `FI` - Finland
+    #  - `FR` - France
+    #  - `GF` - French Guiana
+    #  - `PF` - French Polynesia
+    #  - `TF` - French Southern Territories
+    #  - `GA` - Gabon
+    #  - `GM` - Gambia
+    #  - `GE` - Georgia
+    #  - `DE` - Germany
+    #  - `GH` - Ghana
+    #  - `GI` - Gibraltar
+    #  - `GR` - Greece
+    #  - `GL` - Greenland
+    #  - `GD` - Grenada
+    #  - `GP` - Guadeloupe
+    #  - `GU` - Guam
+    #  - `GT` - Guatemala
+    #  - `GG` - Guernsey
+    #  - `GN` - Guinea
+    #  - `GW` - Guinea-Bissau
+    #  - `GY` - Guyana
+    #  - `HT` - Haiti
+    #  - `HM` - Heard Island and McDonald Islands
+    #  - `VA` - Holy See
+    #  - `HN` - Honduras
+    #  - `HK` - Hong Kong
+    #  - `HU` - Hungary
+    #  - `IS` - Iceland
+    #  - `IN` - India
+    #  - `ID` - Indonesia
+    #  - `IR` - Iran
+    #  - `IQ` - Iraq
+    #  - `IE` - Ireland
+    #  - `IM` - Isle of Man
+    #  - `IL` - Israel
+    #  - `IT` - Italy
+    #  - `JM` - Jamaica
+    #  - `JP` - Japan
+    #  - `JE` - Jersey
+    #  - `JO` - Jordan
+    #  - `KZ` - Kazakhstan
+    #  - `KE` - Kenya
+    #  - `KI` - Kiribati
+    #  - `KW` - Kuwait
+    #  - `KG` - Kyrgyzstan
+    #  - `LA` - Laos
+    #  - `LV` - Latvia
+    #  - `LB` - Lebanon
+    #  - `LS` - Lesotho
+    #  - `LR` - Liberia
+    #  - `LY` - Libya
+    #  - `LI` - Liechtenstein
+    #  - `LT` - Lithuania
+    #  - `LU` - Luxembourg
+    #  - `MO` - Macao
+    #  - `MG` - Madagascar
+    #  - `MW` - Malawi
+    #  - `MY` - Malaysia
+    #  - `MV` - Maldives
+    #  - `ML` - Mali
+    #  - `MT` - Malta
+    #  - `MH` - Marshall Islands
+    #  - `MQ` - Martinique
+    #  - `MR` - Mauritania
+    #  - `MU` - Mauritius
+    #  - `YT` - Mayotte
+    #  - `MX` - Mexico
+    #  - `FM` - Micronesia (Federated States of)
+    #  - `MD` - Moldova
+    #  - `MC` - Monaco
+    #  - `MN` - Mongolia
+    #  - `ME` - Montenegro
+    #  - `MS` - Montserrat
+    #  - `MA` - Morocco
+    #  - `MZ` - Mozambique
+    #  - `MM` - Myanmar
+    #  - `NA` - Namibia
+    #  - `NR` - Nauru
+    #  - `NP` - Nepal
+    #  - `NL` - Netherlands
+    #  - `NC` - New Caledonia
+    #  - `NZ` - New Zealand
+    #  - `NI` - Nicaragua
+    #  - `NE` - Niger
+    #  - `NG` - Nigeria
+    #  - `NU` - Niue
+    #  - `NF` - Norfolk Island
+    #  - `KP` - North Korea
+    #  - `MK` - North Macedonia
+    #  - `MP` - Northern Mariana Islands
+    #  - `NO` - Norway
+    #  - `OM` - Oman
+    #  - `PK` - Pakistan
+    #  - `PW` - Palau
+    #  - `PS` - Palestine, State of
+    #  - `PA` - Panama
+    #  - `PG` - Papua New Guinea
+    #  - `PY` - Paraguay
+    #  - `PE` - Peru
+    #  - `PH` - Philippines
+    #  - `PN` - Pitcairn
+    #  - `PL` - Poland
+    #  - `PT` - Portugal
+    #  - `PR` - Puerto Rico
+    #  - `QA` - Qatar
+    #  - `RE` - Réunion
+    #  - `RO` - Romania
+    #  - `RU` - Russia
+    #  - `RW` - Rwanda
+    #  - `BL` - Saint Barthélemy
+    #  - `SH` - Saint Helena, Ascension and Tristan da Cunha
+    #  - `KN` - Saint Kitts and Nevis
+    #  - `LC` - Saint Lucia
+    #  - `MF` - Saint Martin (French part)
+    #  - `PM` - Saint Pierre and Miquelon
+    #  - `VC` - Saint Vincent and the Grenadines
+    #  - `WS` - Samoa
+    #  - `SM` - San Marino
+    #  - `ST` - Sao Tome and Principe
+    #  - `SA` - Saudi Arabia
+    #  - `SN` - Senegal
+    #  - `RS` - Serbia
+    #  - `SC` - Seychelles
+    #  - `SL` - Sierra Leone
+    #  - `SG` - Singapore
+    #  - `SX` - Sint Maarten (Dutch part)
+    #  - `SK` - Slovakia
+    #  - `SI` - Slovenia
+    #  - `SB` - Solomon Islands
+    #  - `SO` - Somalia
+    #  - `ZA` - South Africa
+    #  - `GS` - South Georgia and the South Sandwich Islands
+    #  - `KR` - South Korea
+    #  - `SS` - South Sudan
+    #  - `ES` - Spain
+    #  - `LK` - Sri Lanka
+    #  - `SD` - Sudan
+    #  - `SR` - Suriname
+    #  - `SJ` - Svalbard and Jan Mayen
+    #  - `SE` - Sweden
+    #  - `CH` - Switzerland
+    #  - `SY` - Syria
+    #  - `TW` - Taiwan
+    #  - `TJ` - Tajikistan
+    #  - `TZ` - Tanzania
+    #  - `TH` - Thailand
+    #  - `TL` - Timor-Leste
+    #  - `TG` - Togo
+    #  - `TK` - Tokelau
+    #  - `TO` - Tonga
+    #  - `TT` - Trinidad and Tobago
+    #  - `TN` - Tunisia
+    #  - `TR` - Turkey
+    #  - `TM` - Turkmenistan
+    #  - `TC` - Turks and Caicos Islands
+    #  - `TV` - Tuvalu
+    #  - `UG` - Uganda
+    #  - `UA` - Ukraine
+    #  - `AE` - United Arab Emirates
+    #  - `GB` - United Kingdom
+    #  - `UM` - United States Minor Outlying Islands
+    #  - `US` - United States of America
+    #  - `UY` - Uruguay
+    #  - `UZ` - Uzbekistan
+    #  - `VU` - Vanuatu
+    #  - `VE` - Venezuela
+    #  - `VN` - Vietnam
+    #  - `VG` - Virgin Islands (British)
+    #  - `VI` - Virgin Islands (U.S.)
+    #  - `WF` - Wallis and Futuna
+    #  - `EH` - Western Sahara
+    #  - `YE` - Yemen
+    #  - `ZM` - Zambia
+    #  - `ZW` - Zimbabwe
+    class CountryEnum
+      AF = "AF"
+      AX = "AX"
+      AL = "AL"
+      DZ = "DZ"
+      AS = "AS"
+      AD = "AD"
+      AO = "AO"
+      AI = "AI"
+      AQ = "AQ"
+      AG = "AG"
+      AR = "AR"
+      AM = "AM"
+      AW = "AW"
+      AU = "AU"
+      AT = "AT"
+      AZ = "AZ"
+      BS = "BS"
+      BH = "BH"
+      BD = "BD"
+      BB = "BB"
+      BY = "BY"
+      BE = "BE"
+      BZ = "BZ"
+      BJ = "BJ"
+      BM = "BM"
+      BT = "BT"
+      BO = "BO"
+      BQ = "BQ"
+      BA = "BA"
+      BW = "BW"
+      BV = "BV"
+      BR = "BR"
+      IO = "IO"
+      BN = "BN"
+      BG = "BG"
+      BF = "BF"
+      BI = "BI"
+      CV = "CV"
+      KH = "KH"
+      CM = "CM"
+      CA = "CA"
+      KY = "KY"
+      CF = "CF"
+      TD = "TD"
+      CL = "CL"
+      CN = "CN"
+      CX = "CX"
+      CC = "CC"
+      CO = "CO"
+      KM = "KM"
+      CG = "CG"
+      CD = "CD"
+      CK = "CK"
+      CR = "CR"
+      CI = "CI"
+      HR = "HR"
+      CU = "CU"
+      CW = "CW"
+      CY = "CY"
+      CZ = "CZ"
+      DK = "DK"
+      DJ = "DJ"
+      DM = "DM"
+      DO = "DO"
+      EC = "EC"
+      EG = "EG"
+      SV = "SV"
+      GQ = "GQ"
+      ER = "ER"
+      EE = "EE"
+      SZ = "SZ"
+      ET = "ET"
+      FK = "FK"
+      FO = "FO"
+      FJ = "FJ"
+      FI = "FI"
+      FR = "FR"
+      GF = "GF"
+      PF = "PF"
+      TF = "TF"
+      GA = "GA"
+      GM = "GM"
+      GE = "GE"
+      DE = "DE"
+      GH = "GH"
+      GI = "GI"
+      GR = "GR"
+      GL = "GL"
+      GD = "GD"
+      GP = "GP"
+      GU = "GU"
+      GT = "GT"
+      GG = "GG"
+      GN = "GN"
+      GW = "GW"
+      GY = "GY"
+      HT = "HT"
+      HM = "HM"
+      VA = "VA"
+      HN = "HN"
+      HK = "HK"
+      HU = "HU"
+      IS = "IS"
+      IN = "IN"
+      ID = "ID"
+      IR = "IR"
+      IQ = "IQ"
+      IE = "IE"
+      IM = "IM"
+      IL = "IL"
+      IT = "IT"
+      JM = "JM"
+      JP = "JP"
+      JE = "JE"
+      JO = "JO"
+      KZ = "KZ"
+      KE = "KE"
+      KI = "KI"
+      KW = "KW"
+      KG = "KG"
+      LA = "LA"
+      LV = "LV"
+      LB = "LB"
+      LS = "LS"
+      LR = "LR"
+      LY = "LY"
+      LI = "LI"
+      LT = "LT"
+      LU = "LU"
+      MO = "MO"
+      MG = "MG"
+      MW = "MW"
+      MY = "MY"
+      MV = "MV"
+      ML = "ML"
+      MT = "MT"
+      MH = "MH"
+      MQ = "MQ"
+      MR = "MR"
+      MU = "MU"
+      YT = "YT"
+      MX = "MX"
+      FM = "FM"
+      MD = "MD"
+      MC = "MC"
+      MN = "MN"
+      ME = "ME"
+      MS = "MS"
+      MA = "MA"
+      MZ = "MZ"
+      MM = "MM"
+      NA = "NA"
+      NR = "NR"
+      NP = "NP"
+      NL = "NL"
+      NC = "NC"
+      NZ = "NZ"
+      NI = "NI"
+      NE = "NE"
+      NG = "NG"
+      NU = "NU"
+      NF = "NF"
+      KP = "KP"
+      MK = "MK"
+      MP = "MP"
+      NO = "NO"
+      OM = "OM"
+      PK = "PK"
+      PW = "PW"
+      PS = "PS"
+      PA = "PA"
+      PG = "PG"
+      PY = "PY"
+      PE = "PE"
+      PH = "PH"
+      PN = "PN"
+      PL = "PL"
+      PT = "PT"
+      PR = "PR"
+      QA = "QA"
+      RE = "RE"
+      RO = "RO"
+      RU = "RU"
+      RW = "RW"
+      BL = "BL"
+      SH = "SH"
+      KN = "KN"
+      LC = "LC"
+      MF = "MF"
+      PM = "PM"
+      VC = "VC"
+      WS = "WS"
+      SM = "SM"
+      ST = "ST"
+      SA = "SA"
+      SN = "SN"
+      RS = "RS"
+      SC = "SC"
+      SL = "SL"
+      SG = "SG"
+      SX = "SX"
+      SK = "SK"
+      SI = "SI"
+      SB = "SB"
+      SO = "SO"
+      ZA = "ZA"
+      GS = "GS"
+      KR = "KR"
+      SS = "SS"
+      ES = "ES"
+      LK = "LK"
+      SD = "SD"
+      SR = "SR"
+      SJ = "SJ"
+      SE = "SE"
+      CH = "CH"
+      SY = "SY"
+      TW = "TW"
+      TJ = "TJ"
+      TZ = "TZ"
+      TH = "TH"
+      TL = "TL"
+      TG = "TG"
+      TK = "TK"
+      TO = "TO"
+      TT = "TT"
+      TN = "TN"
+      TR = "TR"
+      TM = "TM"
+      TC = "TC"
+      TV = "TV"
+      UG = "UG"
+      UA = "UA"
+      AE = "AE"
+      GB = "GB"
+      UM = "UM"
+      US = "US"
+      UY = "UY"
+      UZ = "UZ"
+      VU = "VU"
+      VE = "VE"
+      VN = "VN"
+      VG = "VG"
+      VI = "VI"
+      WF = "WF"
+      EH = "EH"
+      YE = "YE"
+      ZM = "ZM"
+      ZW = "ZW"
+    end
   end
 end

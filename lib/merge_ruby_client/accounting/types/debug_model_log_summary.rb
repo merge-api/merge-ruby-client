@@ -1,49 +1,65 @@
 # frozen_string_literal: true
 
+require "ostruct"
 require "json"
 
 module Merge
   module Accounting
     class DebugModelLogSummary
-      attr_reader :url, :method, :status_code, :additional_properties
+      # @return [String]
+      attr_reader :url
+      # @return [String]
+      attr_reader :method
+      # @return [Integer]
+      attr_reader :status_code
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param url [String]
       # @param method [String]
       # @param status_code [Integer]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Accounting::DebugModelLogSummary]
+      # @return [Merge::Accounting::DebugModelLogSummary]
       def initialize(url:, method:, status_code:, additional_properties: nil)
-        # @type [String]
         @url = url
-        # @type [String]
         @method = method
-        # @type [Integer]
         @status_code = status_code
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
         @additional_properties = additional_properties
+        @_field_set = { "url": url, "method": method, "status_code": status_code }
       end
 
       # Deserialize a JSON object to an instance of DebugModelLogSummary
       #
-      # @param json_object [JSON]
-      # @return [Accounting::DebugModelLogSummary]
+      # @param json_object [String]
+      # @return [Merge::Accounting::DebugModelLogSummary]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        JSON.parse(json_object)
-        url = struct.url
-        method = struct.method
-        status_code = struct.status_code
-        new(url: url, method: method, status_code: status_code, additional_properties: struct)
+        url = struct["url"]
+        method = struct["method"]
+        status_code = struct["status_code"]
+        new(
+          url: url,
+          method: method,
+          status_code: status_code,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of DebugModelLogSummary to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "url": @url, "method": @method, "status_code": @status_code }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]

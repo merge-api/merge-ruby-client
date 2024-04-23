@@ -2,17 +2,25 @@
 
 module Merge
   module Ats
-    # @type [OFFER_STATUS_ENUM]
-    OFFER_STATUS_ENUM = {
-      draft: "DRAFT",
-      approval_sent: "APPROVAL-SENT",
-      approved: "APPROVED",
-      sent: "SENT",
-      sent_manually: "SENT-MANUALLY",
-      opened: "OPENED",
-      denied: "DENIED",
-      signed: "SIGNED",
-      deprecated: "DEPRECATED"
-    }.freeze
+    # - `DRAFT` - DRAFT
+    #  - `APPROVAL-SENT` - APPROVAL-SENT
+    #  - `APPROVED` - APPROVED
+    #  - `SENT` - SENT
+    #  - `SENT-MANUALLY` - SENT-MANUALLY
+    #  - `OPENED` - OPENED
+    #  - `DENIED` - DENIED
+    #  - `SIGNED` - SIGNED
+    #  - `DEPRECATED` - DEPRECATED
+    class OfferStatusEnum
+      DRAFT = "DRAFT"
+      APPROVAL_SENT = "APPROVAL-SENT"
+      APPROVED = "APPROVED"
+      SENT = "SENT"
+      SENT_MANUALLY = "SENT-MANUALLY"
+      OPENED = "OPENED"
+      DENIED = "DENIED"
+      SIGNED = "SIGNED"
+      DEPRECATED = "DEPRECATED"
+    end
   end
 end

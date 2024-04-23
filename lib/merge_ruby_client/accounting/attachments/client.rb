@@ -12,12 +12,12 @@ require "async"
 module Merge
   module Accounting
     class AttachmentsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Accounting::AttachmentsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Accounting::AttachmentsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -28,16 +28,25 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedAccountingAttachmentList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedAccountingAttachmentList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/attachments") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -55,24 +64,32 @@ module Merge
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments"
         end
-        Accounting::PaginatedAccountingAttachmentList.from_json(json_object: response.body)
+        Merge::Accounting::PaginatedAccountingAttachmentList.from_json(json_object: response.body)
       end
 
       # Creates an `AccountingAttachment` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Accounting::AccountingAttachmentRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Accounting::AccountingAttachmentRequest, as a Hash
       #   * :file_name (String)
       #   * :file_url (String)
       #   * :company (String)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Accounting::AccountingAttachmentResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::AccountingAttachmentResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/accounting/v1/attachments") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -83,18 +100,27 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments"
         end
-        Accounting::AccountingAttachmentResponse.from_json(json_object: response.body)
+        Merge::Accounting::AccountingAttachmentResponse.from_json(json_object: response.body)
       end
 
       # Returns an `AccountingAttachment` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::AccountingAttachment]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::AccountingAttachment]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/attachments/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -103,32 +129,41 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments/#{id}"
         end
-        Accounting::AccountingAttachment.from_json(json_object: response.body)
+        Merge::Accounting::AccountingAttachment.from_json(json_object: response.body)
       end
 
       # Returns metadata for `AccountingAttachment` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Accounting::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/attachments/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments/meta/post"
         end
-        Accounting::MetaResponse.from_json(json_object: response.body)
+        Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncAttachmentsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Accounting::AsyncAttachmentsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Accounting::AsyncAttachmentsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -139,17 +174,26 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedAccountingAttachmentList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedAccountingAttachmentList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/attachments") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -167,8 +211,9 @@ module Merge
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments"
           end
-          Accounting::PaginatedAccountingAttachmentList.from_json(json_object: response.body)
+          Merge::Accounting::PaginatedAccountingAttachmentList.from_json(json_object: response.body)
         end
       end
 
@@ -176,17 +221,24 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Accounting::AccountingAttachmentRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Accounting::AccountingAttachmentRequest, as a Hash
       #   * :file_name (String)
       #   * :file_url (String)
       #   * :company (String)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Accounting::AccountingAttachmentResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::AccountingAttachmentResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/accounting/v1/attachments") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -197,20 +249,29 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments"
           end
-          Accounting::AccountingAttachmentResponse.from_json(json_object: response.body)
+          Merge::Accounting::AccountingAttachmentResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns an `AccountingAttachment` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::AccountingAttachment]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::AccountingAttachment]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/attachments/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -219,24 +280,33 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments/#{id}"
           end
-          Accounting::AccountingAttachment.from_json(json_object: response.body)
+          Merge::Accounting::AccountingAttachment.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `AccountingAttachment` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Accounting::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/attachments/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/attachments/meta/post"
           end
-          Accounting::MetaResponse.from_json(json_object: response.body)
+          Merge::Accounting::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

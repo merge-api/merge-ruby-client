@@ -1,53 +1,72 @@
 # frozen_string_literal: true
 
 require_relative "drive"
+require "ostruct"
 require "json"
 
 module Merge
   module Filestorage
     class PaginatedDriveList
-      attr_reader :next_, :previous, :results, :additional_properties
+      # @return [String]
+      attr_reader :next_
+      # @return [String]
+      attr_reader :previous
+      # @return [Array<Merge::Filestorage::Drive>]
+      attr_reader :results
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param next_ [String]
       # @param previous [String]
-      # @param results [Array<Filestorage::Drive>]
+      # @param results [Array<Merge::Filestorage::Drive>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Filestorage::PaginatedDriveList]
-      def initialize(next_: nil, previous: nil, results: nil, additional_properties: nil)
-        # @type [String]
-        @next_ = next_
-        # @type [String]
-        @previous = previous
-        # @type [Array<Filestorage::Drive>]
-        @results = results
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+      # @return [Merge::Filestorage::PaginatedDriveList]
+      def initialize(next_: OMIT, previous: OMIT, results: OMIT, additional_properties: nil)
+        @next_ = next_ if next_ != OMIT
+        @previous = previous if previous != OMIT
+        @results = results if results != OMIT
         @additional_properties = additional_properties
+        @_field_set = { "next": next_, "previous": previous, "results": results }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of PaginatedDriveList
       #
-      # @param json_object [JSON]
-      # @return [Filestorage::PaginatedDriveList]
+      # @param json_object [String]
+      # @return [Merge::Filestorage::PaginatedDriveList]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        next_ = struct.next
-        previous = struct.previous
+        next_ = struct["next"]
+        previous = struct["previous"]
         results = parsed_json["results"]&.map do |v|
           v = v.to_json
-          Filestorage::Drive.from_json(json_object: v)
+          Merge::Filestorage::Drive.from_json(json_object: v)
         end
-        new(next_: next_, previous: previous, results: results, additional_properties: struct)
+        new(
+          next_: next_,
+          previous: previous,
+          results: results,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of PaginatedDriveList to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "next": @next_, "previous": @previous, "results": @results }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]

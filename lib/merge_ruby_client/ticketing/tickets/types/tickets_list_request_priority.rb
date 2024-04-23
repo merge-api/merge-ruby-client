@@ -3,8 +3,12 @@
 module Merge
   module Ticketing
     class Tickets
-      # @type [TICKETS_LIST_REQUEST_PRIORITY]
-      TICKETS_LIST_REQUEST_PRIORITY = { high: "HIGH", low: "LOW", normal: "NORMAL", urgent: "URGENT" }.freeze
+      class TicketsListRequestPriority
+        HIGH = "HIGH"
+        LOW = "LOW"
+        NORMAL = "NORMAL"
+        URGENT = "URGENT"
+      end
     end
   end
 end

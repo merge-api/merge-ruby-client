@@ -2,13 +2,17 @@
 
 module Merge
   module Hris
-    # @type [GROUP_TYPE_ENUM]
-    GROUP_TYPE_ENUM = {
-      team: "TEAM",
-      department: "DEPARTMENT",
-      cost_center: "COST_CENTER",
-      business_unit: "BUSINESS_UNIT",
-      group: "GROUP"
-    }.freeze
+    # - `TEAM` - TEAM
+    #  - `DEPARTMENT` - DEPARTMENT
+    #  - `COST_CENTER` - COST_CENTER
+    #  - `BUSINESS_UNIT` - BUSINESS_UNIT
+    #  - `GROUP` - GROUP
+    class GroupTypeEnum
+      TEAM = "TEAM"
+      DEPARTMENT = "DEPARTMENT"
+      COST_CENTER = "COST_CENTER"
+      BUSINESS_UNIT = "BUSINESS_UNIT"
+      GROUP = "GROUP"
+    end
   end
 end

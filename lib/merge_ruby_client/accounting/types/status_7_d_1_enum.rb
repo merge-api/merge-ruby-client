@@ -2,7 +2,11 @@
 
 module Merge
   module Accounting
-    # @type [STATUS_7_D_1_ENUM]
-    STATUS_7_D_1_ENUM = { active: "ACTIVE", archived: "ARCHIVED" }.freeze
+    # - `ACTIVE` - ACTIVE
+    #  - `ARCHIVED` - ARCHIVED
+    class Status7D1Enum
+      ACTIVE = "ACTIVE"
+      ARCHIVED = "ARCHIVED"
+    end
   end
 end

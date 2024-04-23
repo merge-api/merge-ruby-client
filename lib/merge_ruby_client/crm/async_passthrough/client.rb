@@ -9,105 +9,137 @@ require "async"
 module Merge
   module Crm
     class AsyncPassthroughClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Crm::AsyncPassthroughClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Crm::AsyncPassthroughClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
       # Asynchronously pull data from an endpoint not currently supported by Merge.
       #
-      # @param request [Hash] Request of type Crm::DataPassthroughRequest, as a Hash
-      #   * :method (METHOD_ENUM)
+      # @param request [Hash] Request of type Merge::Crm::DataPassthroughRequest, as a Hash
+      #   * :method (Merge::Crm::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
-      #   * :multipart_form_data (Array<Crm::MultipartFormFieldRequest>)
-      #   * :headers (Hash{String => String})
-      #   * :request_format (REQUEST_FORMAT_ENUM)
+      #   * :multipart_form_data (Array<Merge::Crm::MultipartFormFieldRequest>)
+      #   * :headers (Hash{String => Object})
+      #   * :request_format (Merge::Crm::RequestFormatEnum)
       #   * :normalize_response (Boolean)
-      # @param request_options [RequestOptions]
-      # @return [Crm::AsyncPassthroughReciept]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::AsyncPassthroughReciept]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.create(request: { method: GET, path: "/scooters" })
       def create(request:, request_options: nil)
-        response = @request_client.conn.post("/api/crm/v1/async-passthrough") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
           req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/async-passthrough"
         end
-        Crm::AsyncPassthroughReciept.from_json(json_object: response.body)
+        Merge::Crm::AsyncPassthroughReciept.from_json(json_object: response.body)
       end
 
       # Retrieves data from earlier async-passthrough POST request
       #
       # @param async_passthrough_receipt_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Crm::RemoteResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::RemoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.retrieve(async_passthrough_receipt_id: "async_passthrough_receipt_id")
       def retrieve(async_passthrough_receipt_id:, request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/async-passthrough/#{async_passthrough_receipt_id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/async-passthrough/#{async_passthrough_receipt_id}"
         end
-        Crm::RemoteResponse.from_json(json_object: response.body)
+        Merge::Crm::RemoteResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncAsyncPassthroughClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Crm::AsyncAsyncPassthroughClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Crm::AsyncAsyncPassthroughClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
       # Asynchronously pull data from an endpoint not currently supported by Merge.
       #
-      # @param request [Hash] Request of type Crm::DataPassthroughRequest, as a Hash
-      #   * :method (METHOD_ENUM)
+      # @param request [Hash] Request of type Merge::Crm::DataPassthroughRequest, as a Hash
+      #   * :method (Merge::Crm::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
-      #   * :multipart_form_data (Array<Crm::MultipartFormFieldRequest>)
-      #   * :headers (Hash{String => String})
-      #   * :request_format (REQUEST_FORMAT_ENUM)
+      #   * :multipart_form_data (Array<Merge::Crm::MultipartFormFieldRequest>)
+      #   * :headers (Hash{String => Object})
+      #   * :request_format (Merge::Crm::RequestFormatEnum)
       #   * :normalize_response (Boolean)
-      # @param request_options [RequestOptions]
-      # @return [Crm::AsyncPassthroughReciept]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::AsyncPassthroughReciept]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.create(request: { method: GET, path: "/scooters" })
       def create(request:, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/crm/v1/async-passthrough") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
             req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/async-passthrough"
           end
-          Crm::AsyncPassthroughReciept.from_json(json_object: response.body)
+          Merge::Crm::AsyncPassthroughReciept.from_json(json_object: response.body)
         end
       end
 
       # Retrieves data from earlier async-passthrough POST request
       #
       # @param async_passthrough_receipt_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Crm::RemoteResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::RemoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.retrieve(async_passthrough_receipt_id: "async_passthrough_receipt_id")
       def retrieve(async_passthrough_receipt_id:, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/async-passthrough/#{async_passthrough_receipt_id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/async-passthrough/#{async_passthrough_receipt_id}"
           end
-          Crm::RemoteResponse.from_json(json_object: response.body)
+          Merge::Crm::RemoteResponse.from_json(json_object: response.body)
         end
       end
     end

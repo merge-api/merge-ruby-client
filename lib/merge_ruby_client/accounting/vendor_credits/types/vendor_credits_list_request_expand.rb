@@ -3,40 +3,39 @@
 module Merge
   module Accounting
     class VendorCredits
-      # @type [VENDOR_CREDITS_LIST_REQUEST_EXPAND]
-      VENDOR_CREDITS_LIST_REQUEST_EXPAND = {
-        accounting_period: "accounting_period",
-        company: "company",
-        company_accounting_period: "company,accounting_period",
-        lines: "lines",
-        lines_accounting_period: "lines,accounting_period",
-        lines_company: "lines,company",
-        lines_company_accounting_period: "lines,company,accounting_period",
-        lines_tracking_categories: "lines,tracking_categories",
-        lines_tracking_categories_accounting_period: "lines,tracking_categories,accounting_period",
-        lines_tracking_categories_company: "lines,tracking_categories,company",
-        lines_tracking_categories_company_accounting_period: "lines,tracking_categories,company,accounting_period",
-        lines_tracking_categories_vendor: "lines,tracking_categories,vendor",
-        lines_tracking_categories_vendor_accounting_period: "lines,tracking_categories,vendor,accounting_period",
-        lines_tracking_categories_vendor_company: "lines,tracking_categories,vendor,company",
-        lines_tracking_categories_vendor_company_accounting_period: "lines,tracking_categories,vendor,company,accounting_period",
-        lines_vendor: "lines,vendor",
-        lines_vendor_accounting_period: "lines,vendor,accounting_period",
-        lines_vendor_company: "lines,vendor,company",
-        lines_vendor_company_accounting_period: "lines,vendor,company,accounting_period",
-        tracking_categories: "tracking_categories",
-        tracking_categories_accounting_period: "tracking_categories,accounting_period",
-        tracking_categories_company: "tracking_categories,company",
-        tracking_categories_company_accounting_period: "tracking_categories,company,accounting_period",
-        tracking_categories_vendor: "tracking_categories,vendor",
-        tracking_categories_vendor_accounting_period: "tracking_categories,vendor,accounting_period",
-        tracking_categories_vendor_company: "tracking_categories,vendor,company",
-        tracking_categories_vendor_company_accounting_period: "tracking_categories,vendor,company,accounting_period",
-        vendor: "vendor",
-        vendor_accounting_period: "vendor,accounting_period",
-        vendor_company: "vendor,company",
-        vendor_company_accounting_period: "vendor,company,accounting_period"
-      }.freeze
+      class VendorCreditsListRequestExpand
+        ACCOUNTING_PERIOD = "accounting_period"
+        COMPANY = "company"
+        COMPANY_ACCOUNTING_PERIOD = "company,accounting_period"
+        LINES = "lines"
+        LINES_ACCOUNTING_PERIOD = "lines,accounting_period"
+        LINES_COMPANY = "lines,company"
+        LINES_COMPANY_ACCOUNTING_PERIOD = "lines,company,accounting_period"
+        LINES_TRACKING_CATEGORIES = "lines,tracking_categories"
+        LINES_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "lines,tracking_categories,accounting_period"
+        LINES_TRACKING_CATEGORIES_COMPANY = "lines,tracking_categories,company"
+        LINES_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "lines,tracking_categories,company,accounting_period"
+        LINES_TRACKING_CATEGORIES_VENDOR = "lines,tracking_categories,vendor"
+        LINES_TRACKING_CATEGORIES_VENDOR_ACCOUNTING_PERIOD = "lines,tracking_categories,vendor,accounting_period"
+        LINES_TRACKING_CATEGORIES_VENDOR_COMPANY = "lines,tracking_categories,vendor,company"
+        LINES_TRACKING_CATEGORIES_VENDOR_COMPANY_ACCOUNTING_PERIOD = "lines,tracking_categories,vendor,company,accounting_period"
+        LINES_VENDOR = "lines,vendor"
+        LINES_VENDOR_ACCOUNTING_PERIOD = "lines,vendor,accounting_period"
+        LINES_VENDOR_COMPANY = "lines,vendor,company"
+        LINES_VENDOR_COMPANY_ACCOUNTING_PERIOD = "lines,vendor,company,accounting_period"
+        TRACKING_CATEGORIES = "tracking_categories"
+        TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "tracking_categories,accounting_period"
+        TRACKING_CATEGORIES_COMPANY = "tracking_categories,company"
+        TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,company,accounting_period"
+        TRACKING_CATEGORIES_VENDOR = "tracking_categories,vendor"
+        TRACKING_CATEGORIES_VENDOR_ACCOUNTING_PERIOD = "tracking_categories,vendor,accounting_period"
+        TRACKING_CATEGORIES_VENDOR_COMPANY = "tracking_categories,vendor,company"
+        TRACKING_CATEGORIES_VENDOR_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,vendor,company,accounting_period"
+        VENDOR = "vendor"
+        VENDOR_ACCOUNTING_PERIOD = "vendor,accounting_period"
+        VENDOR_COMPANY = "vendor,company"
+        VENDOR_COMPANY_ACCOUNTING_PERIOD = "vendor,company,accounting_period"
+      end
     end
   end
 end

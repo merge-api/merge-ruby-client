@@ -2,6 +2,7 @@
 
 require_relative "../../../requests"
 require_relative "../types/linked_account_selective_sync_configuration"
+require "json"
 require_relative "../types/linked_account_selective_sync_configuration_request"
 require_relative "../types/paginated_condition_schema_list"
 require "async"
@@ -9,42 +10,56 @@ require "async"
 module Merge
   module Filestorage
     class SelectiveSyncClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Filestorage::SelectiveSyncClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Filestorage::SelectiveSyncClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
       # Get a linked account's selective syncs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Array<Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Array<Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.configurations_list
       def configurations_list(request_options: nil)
-        response = @request_client.conn.get("/api/filestorage/v1/selective-sync/configurations") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/selective-sync/configurations"
         end
-        return if response.body.nil?
-
-        response.body.map do |v|
+        parsed_json = JSON.parse(response.body)
+        parsed_json&.map do |v|
           v = v.to_json
-          Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
+          Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
         end
       end
 
       # Replace a linked account's selective syncs.
       #
-      # @param sync_configurations [Array<Hash>] The selective syncs associated with a linked account.Request of type Array<Filestorage::LinkedAccountSelectiveSyncConfigurationRequest>, as a Hash
-      #   * :linked_account_conditions (Array<Filestorage::LinkedAccountConditionRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Array<Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @param sync_configurations [Array<Hash>] The selective syncs associated with a linked account.Request of type Array<Merge::Filestorage::LinkedAccountSelectiveSyncConfigurationRequest>, as a Hash
+      #   * :linked_account_conditions (Array<Merge::Filestorage::LinkedAccountConditionRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Array<Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.configurations_update(sync_configurations: [{ linked_account_conditions:  }])
       def configurations_update(sync_configurations:, request_options: nil)
-        response = @request_client.conn.put("/api/filestorage/v1/selective-sync/configurations") do |req|
+        response = @request_client.conn.put do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -53,12 +68,12 @@ module Merge
             **(request_options&.additional_body_parameters || {}),
             sync_configurations: sync_configurations
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/selective-sync/configurations"
         end
-        return if response.body.nil?
-
-        response.body.map do |v|
+        parsed_json = JSON.parse(response.body)
+        parsed_json&.map do |v|
           v = v.to_json
-          Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
+          Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
         end
       end
 
@@ -67,10 +82,17 @@ module Merge
       # @param common_model [String]
       # @param cursor [String] The pagination cursor value.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Filestorage::PaginatedConditionSchemaList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Filestorage::PaginatedConditionSchemaList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.meta_list
       def meta_list(common_model: nil, cursor: nil, page_size: nil, request_options: nil)
-        response = @request_client.conn.get("/api/filestorage/v1/selective-sync/meta") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -81,49 +103,66 @@ module Merge
             "cursor": cursor,
             "page_size": page_size
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/selective-sync/meta"
         end
-        Filestorage::PaginatedConditionSchemaList.from_json(json_object: response.body)
+        Merge::Filestorage::PaginatedConditionSchemaList.from_json(json_object: response.body)
       end
     end
 
     class AsyncSelectiveSyncClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Filestorage::AsyncSelectiveSyncClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Filestorage::AsyncSelectiveSyncClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
       # Get a linked account's selective syncs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Array<Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Array<Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.configurations_list
       def configurations_list(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/filestorage/v1/selective-sync/configurations") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/selective-sync/configurations"
           end
-          response.body&.map do |v|
+          parsed_json = JSON.parse(response.body)
+          parsed_json&.map do |v|
             v = v.to_json
-            Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
+            Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
           end
         end
       end
 
       # Replace a linked account's selective syncs.
       #
-      # @param sync_configurations [Array<Hash>] The selective syncs associated with a linked account.Request of type Array<Filestorage::LinkedAccountSelectiveSyncConfigurationRequest>, as a Hash
-      #   * :linked_account_conditions (Array<Filestorage::LinkedAccountConditionRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Array<Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @param sync_configurations [Array<Hash>] The selective syncs associated with a linked account.Request of type Array<Merge::Filestorage::LinkedAccountSelectiveSyncConfigurationRequest>, as a Hash
+      #   * :linked_account_conditions (Array<Merge::Filestorage::LinkedAccountConditionRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Array<Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration>]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.configurations_update(sync_configurations: [{ linked_account_conditions:  }])
       def configurations_update(sync_configurations:, request_options: nil)
         Async do
-          response = @request_client.conn.put("/api/filestorage/v1/selective-sync/configurations") do |req|
+          response = @request_client.conn.put do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -132,10 +171,12 @@ module Merge
               **(request_options&.additional_body_parameters || {}),
               sync_configurations: sync_configurations
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/selective-sync/configurations"
           end
-          response.body&.map do |v|
+          parsed_json = JSON.parse(response.body)
+          parsed_json&.map do |v|
             v = v.to_json
-            Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
+            Merge::Filestorage::LinkedAccountSelectiveSyncConfiguration.from_json(json_object: v)
           end
         end
       end
@@ -145,11 +186,18 @@ module Merge
       # @param common_model [String]
       # @param cursor [String] The pagination cursor value.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Filestorage::PaginatedConditionSchemaList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Filestorage::PaginatedConditionSchemaList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.meta_list
       def meta_list(common_model: nil, cursor: nil, page_size: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/filestorage/v1/selective-sync/meta") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -160,8 +208,9 @@ module Merge
               "cursor": cursor,
               "page_size": page_size
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/selective-sync/meta"
           end
-          Filestorage::PaginatedConditionSchemaList.from_json(json_object: response.body)
+          Merge::Filestorage::PaginatedConditionSchemaList.from_json(json_object: response.body)
         end
       end
     end

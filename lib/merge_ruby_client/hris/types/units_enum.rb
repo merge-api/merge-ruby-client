@@ -2,7 +2,11 @@
 
 module Merge
   module Hris
-    # @type [UNITS_ENUM]
-    UNITS_ENUM = { hours: "HOURS", days: "DAYS" }.freeze
+    # - `HOURS` - HOURS
+    #  - `DAYS` - DAYS
+    class UnitsEnum
+      HOURS = "HOURS"
+      DAYS = "DAYS"
+    end
   end
 end

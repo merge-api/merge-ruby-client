@@ -3,8 +3,10 @@
 module Merge
   module Hris
     class BankInfo
-      # @type [BANK_INFO_LIST_REQUEST_ACCOUNT_TYPE]
-      BANK_INFO_LIST_REQUEST_ACCOUNT_TYPE = { checking: "CHECKING", savings: "SAVINGS" }.freeze
+      class BankInfoListRequestAccountType
+        CHECKING = "CHECKING"
+        SAVINGS = "SAVINGS"
+      end
     end
   end
 end

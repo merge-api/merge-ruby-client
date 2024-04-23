@@ -3,16 +3,15 @@
 module Merge
   module Ticketing
     class Comments
-      # @type [COMMENTS_RETRIEVE_REQUEST_EXPAND]
-      COMMENTS_RETRIEVE_REQUEST_EXPAND = {
-        contact: "contact",
-        contact_ticket: "contact,ticket",
-        ticket: "ticket",
-        user: "user",
-        user_contact: "user,contact",
-        user_contact_ticket: "user,contact,ticket",
-        user_ticket: "user,ticket"
-      }.freeze
+      class CommentsRetrieveRequestExpand
+        CONTACT = "contact"
+        CONTACT_TICKET = "contact,ticket"
+        TICKET = "ticket"
+        USER = "user"
+        USER_CONTACT = "user,contact"
+        USER_CONTACT_TICKET = "user,contact,ticket"
+        USER_TICKET = "user,ticket"
+      end
     end
   end
 end

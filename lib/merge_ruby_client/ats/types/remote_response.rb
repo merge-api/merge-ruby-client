@@ -1,86 +1,107 @@
 # frozen_string_literal: true
 
 require_relative "response_type_enum"
+require "ostruct"
 require "json"
 
 module Merge
   module Ats
     # # The RemoteResponse Object
-    #
-    # ### Description
-    #
-    # The `RemoteResponse` object is used to represent information returned from a third-party endpoint.
-    #
-    # ### Usage Example
-    #
-    # View the `RemoteResponse` returned from your `DataPassthrough`.
+    #  ### Description
+    #  The `RemoteResponse` object is used to represent information returned from a
+    #  third-party endpoint.
+    #  ### Usage Example
+    #  View the `RemoteResponse` returned from your `DataPassthrough`.
     class RemoteResponse
-      attr_reader :method, :path, :status, :response, :response_headers, :response_type, :headers,
-                  :additional_properties
+      # @return [String]
+      attr_reader :method
+      # @return [String]
+      attr_reader :path
+      # @return [Integer]
+      attr_reader :status
+      # @return [Object]
+      attr_reader :response
+      # @return [Hash{String => Object}]
+      attr_reader :response_headers
+      # @return [Merge::Ats::ResponseTypeEnum]
+      attr_reader :response_type
+      # @return [Hash{String => Object}]
+      attr_reader :headers
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param method [String]
       # @param path [String]
       # @param status [Integer]
       # @param response [Object]
-      # @param response_headers [Hash{String => String}]
-      # @param response_type [RESPONSE_TYPE_ENUM]
-      # @param headers [Hash{String => String}]
+      # @param response_headers [Hash{String => Object}]
+      # @param response_type [Merge::Ats::ResponseTypeEnum]
+      # @param headers [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Ats::RemoteResponse]
-      def initialize(method:, path:, status:, response:, response_headers: nil, response_type: nil, headers: nil,
+      # @return [Merge::Ats::RemoteResponse]
+      def initialize(method:, path:, status:, response:, response_headers: OMIT, response_type: OMIT, headers: OMIT,
                      additional_properties: nil)
-        # @type [String]
         @method = method
-        # @type [String]
         @path = path
-        # @type [Integer]
         @status = status
-        # @type [Object]
         @response = response
-        # @type [Hash{String => String}]
-        @response_headers = response_headers
-        # @type [RESPONSE_TYPE_ENUM]
-        @response_type = response_type
-        # @type [Hash{String => String}]
-        @headers = headers
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @response_headers = response_headers if response_headers != OMIT
+        @response_type = response_type if response_type != OMIT
+        @headers = headers if headers != OMIT
         @additional_properties = additional_properties
+        @_field_set = {
+          "method": method,
+          "path": path,
+          "status": status,
+          "response": response,
+          "response_headers": response_headers,
+          "response_type": response_type,
+          "headers": headers
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of RemoteResponse
       #
-      # @param json_object [JSON]
-      # @return [Ats::RemoteResponse]
+      # @param json_object [String]
+      # @return [Merge::Ats::RemoteResponse]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        parsed_json = JSON.parse(json_object)
-        method = struct.method
-        path = struct.path
-        status = struct.status
-        response = struct.response
-        response_headers = struct.response_headers
-        response_type = Ats::RESPONSE_TYPE_ENUM.key(parsed_json["response_type"]) || parsed_json["response_type"]
-        headers = struct.headers
-        new(method: method, path: path, status: status, response: response, response_headers: response_headers,
-            response_type: response_type, headers: headers, additional_properties: struct)
+        method = struct["method"]
+        path = struct["path"]
+        status = struct["status"]
+        response = struct["response"]
+        response_headers = struct["response_headers"]
+        response_type = struct["response_type"]
+        headers = struct["headers"]
+        new(
+          method: method,
+          path: path,
+          status: status,
+          response: response,
+          response_headers: response_headers,
+          response_type: response_type,
+          headers: headers,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of RemoteResponse to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        {
-          "method": @method,
-          "path": @path,
-          "status": @status,
-          "response": @response,
-          "response_headers": @response_headers,
-          "response_type": Ats::RESPONSE_TYPE_ENUM[@response_type] || @response_type,
-          "headers": @headers
-        }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
@@ -90,7 +111,7 @@ module Merge
         obj.status.is_a?(Integer) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.response.is_a?(Object) != false || raise("Passed value for field obj.response is not the expected type, validation failed.")
         obj.response_headers&.is_a?(Hash) != false || raise("Passed value for field obj.response_headers is not the expected type, validation failed.")
-        obj.response_type&.is_a?(Ats::RESPONSE_TYPE_ENUM) != false || raise("Passed value for field obj.response_type is not the expected type, validation failed.")
+        obj.response_type&.is_a?(Merge::Ats::ResponseTypeEnum) != false || raise("Passed value for field obj.response_type is not the expected type, validation failed.")
         obj.headers&.is_a?(Hash) != false || raise("Passed value for field obj.headers is not the expected type, validation failed.")
       end
     end

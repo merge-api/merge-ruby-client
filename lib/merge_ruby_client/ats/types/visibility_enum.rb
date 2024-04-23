@@ -2,7 +2,13 @@
 
 module Merge
   module Ats
-    # @type [VISIBILITY_ENUM]
-    VISIBILITY_ENUM = { admin_only: "ADMIN_ONLY", public: "PUBLIC", private: "PRIVATE" }.freeze
+    # - `ADMIN_ONLY` - ADMIN_ONLY
+    #  - `PUBLIC` - PUBLIC
+    #  - `PRIVATE` - PRIVATE
+    class VisibilityEnum
+      ADMIN_ONLY = "ADMIN_ONLY"
+      PUBLIC = "PUBLIC"
+      PRIVATE = "PRIVATE"
+    end
   end
 end

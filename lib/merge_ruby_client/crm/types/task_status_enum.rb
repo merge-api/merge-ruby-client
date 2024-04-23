@@ -2,7 +2,11 @@
 
 module Merge
   module Crm
-    # @type [TASK_STATUS_ENUM]
-    TASK_STATUS_ENUM = { open: "OPEN", closed: "CLOSED" }.freeze
+    # - `OPEN` - OPEN
+    #  - `CLOSED` - CLOSED
+    class TaskStatusEnum
+      OPEN = "OPEN"
+      CLOSED = "CLOSED"
+    end
   end
 end

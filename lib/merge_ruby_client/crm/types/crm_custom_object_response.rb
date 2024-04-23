@@ -4,36 +4,49 @@ require_relative "custom_object"
 require_relative "warning_validation_problem"
 require_relative "error_validation_problem"
 require_relative "debug_mode_log"
+require "ostruct"
 require "json"
 
 module Merge
   module Crm
     class CrmCustomObjectResponse
-      attr_reader :model, :warnings, :errors, :logs, :additional_properties
+      # @return [Merge::Crm::CustomObject]
+      attr_reader :model
+      # @return [Array<Merge::Crm::WarningValidationProblem>]
+      attr_reader :warnings
+      # @return [Array<Merge::Crm::ErrorValidationProblem>]
+      attr_reader :errors
+      # @return [Array<Merge::Crm::DebugModeLog>]
+      attr_reader :logs
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
 
-      # @param model [Crm::CustomObject]
-      # @param warnings [Array<Crm::WarningValidationProblem>]
-      # @param errors [Array<Crm::ErrorValidationProblem>]
-      # @param logs [Array<Crm::DebugModeLog>]
+      OMIT = Object.new
+
+      # @param model [Merge::Crm::CustomObject]
+      # @param warnings [Array<Merge::Crm::WarningValidationProblem>]
+      # @param errors [Array<Merge::Crm::ErrorValidationProblem>]
+      # @param logs [Array<Merge::Crm::DebugModeLog>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Crm::CrmCustomObjectResponse]
-      def initialize(model:, warnings:, errors:, logs: nil, additional_properties: nil)
-        # @type [Crm::CustomObject]
+      # @return [Merge::Crm::CrmCustomObjectResponse]
+      def initialize(model:, warnings:, errors:, logs: OMIT, additional_properties: nil)
         @model = model
-        # @type [Array<Crm::WarningValidationProblem>]
         @warnings = warnings
-        # @type [Array<Crm::ErrorValidationProblem>]
         @errors = errors
-        # @type [Array<Crm::DebugModeLog>]
-        @logs = logs
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @logs = logs if logs != OMIT
         @additional_properties = additional_properties
+        @_field_set = { "model": model, "warnings": warnings, "errors": errors, "logs": logs }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of CrmCustomObjectResponse
       #
-      # @param json_object [JSON]
-      # @return [Crm::CrmCustomObjectResponse]
+      # @param json_object [String]
+      # @return [Merge::Crm::CrmCustomObjectResponse]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
@@ -41,36 +54,44 @@ module Merge
           model = nil
         else
           model = parsed_json["model"].to_json
-          model = Crm::CustomObject.from_json(json_object: model)
+          model = Merge::Crm::CustomObject.from_json(json_object: model)
         end
         warnings = parsed_json["warnings"]&.map do |v|
           v = v.to_json
-          Crm::WarningValidationProblem.from_json(json_object: v)
+          Merge::Crm::WarningValidationProblem.from_json(json_object: v)
         end
         errors = parsed_json["errors"]&.map do |v|
           v = v.to_json
-          Crm::ErrorValidationProblem.from_json(json_object: v)
+          Merge::Crm::ErrorValidationProblem.from_json(json_object: v)
         end
         logs = parsed_json["logs"]&.map do |v|
           v = v.to_json
-          Crm::DebugModeLog.from_json(json_object: v)
+          Merge::Crm::DebugModeLog.from_json(json_object: v)
         end
-        new(model: model, warnings: warnings, errors: errors, logs: logs, additional_properties: struct)
+        new(
+          model: model,
+          warnings: warnings,
+          errors: errors,
+          logs: logs,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of CrmCustomObjectResponse to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "model": @model, "warnings": @warnings, "errors": @errors, "logs": @logs }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        Crm::CustomObject.validate_raw(obj: obj.model)
+        Merge::Crm::CustomObject.validate_raw(obj: obj.model)
         obj.warnings.is_a?(Array) != false || raise("Passed value for field obj.warnings is not the expected type, validation failed.")
         obj.errors.is_a?(Array) != false || raise("Passed value for field obj.errors is not the expected type, validation failed.")
         obj.logs&.is_a?(Array) != false || raise("Passed value for field obj.logs is not the expected type, validation failed.")

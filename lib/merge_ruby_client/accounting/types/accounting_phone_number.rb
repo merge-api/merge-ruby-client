@@ -1,71 +1,94 @@
 # frozen_string_literal: true
 
 require "date"
+require "ostruct"
 require "json"
 
 module Merge
   module Accounting
     # # The AccountingPhoneNumber Object
-    #
-    # ### Description
-    #
-    # The `AccountingPhoneNumber` object is used to represent a contact's or company's phone number.
-    #
-    # ### Usage Example
-    #
-    # Fetch from the `GET CompanyInfo` endpoint and view the company's phone numbers.
+    #  ### Description
+    #  The `AccountingPhoneNumber` object is used to represent a contact's or company's
+    #  phone number.
+    #  ### Usage Example
+    #  Fetch from the `GET CompanyInfo` endpoint and view the company's phone numbers.
     class AccountingPhoneNumber
-      attr_reader :number, :type, :created_at, :modified_at, :additional_properties
+      # @return [DateTime]
+      attr_reader :created_at
+      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      attr_reader :modified_at
+      # @return [String] The phone number.
+      attr_reader :number
+      # @return [String] The phone number's type.
+      attr_reader :type
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
 
-      # @param number [String] The phone number.
-      # @param type [String] The phone number's type.
+      OMIT = Object.new
+
       # @param created_at [DateTime]
       # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param number [String] The phone number.
+      # @param type [String] The phone number's type.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Accounting::AccountingPhoneNumber]
-      def initialize(number: nil, type: nil, created_at: nil, modified_at: nil, additional_properties: nil)
-        # @type [String] The phone number.
-        @number = number
-        # @type [String] The phone number's type.
-        @type = type
-        # @type [DateTime]
-        @created_at = created_at
-        # @type [DateTime] This is the datetime that this object was last updated by Merge
-        @modified_at = modified_at
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+      # @return [Merge::Accounting::AccountingPhoneNumber]
+      def initialize(created_at: OMIT, modified_at: OMIT, number: OMIT, type: OMIT, additional_properties: nil)
+        @created_at = created_at if created_at != OMIT
+        @modified_at = modified_at if modified_at != OMIT
+        @number = number if number != OMIT
+        @type = type if type != OMIT
         @additional_properties = additional_properties
+        @_field_set = {
+          "created_at": created_at,
+          "modified_at": modified_at,
+          "number": number,
+          "type": type
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of AccountingPhoneNumber
       #
-      # @param json_object [JSON]
-      # @return [Accounting::AccountingPhoneNumber]
+      # @param json_object [String]
+      # @return [Merge::Accounting::AccountingPhoneNumber]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        number = struct.number
-        type = struct.type
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        new(number: number, type: type, created_at: created_at, modified_at: modified_at, additional_properties: struct)
+        number = struct["number"]
+        type = struct["type"]
+        new(
+          created_at: created_at,
+          modified_at: modified_at,
+          number: number,
+          type: type,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of AccountingPhoneNumber to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "number": @number, "type": @type, "created_at": @created_at, "modified_at": @modified_at }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.number&.is_a?(String) != false || raise("Passed value for field obj.number is not the expected type, validation failed.")
-        obj.type&.is_a?(String) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
+        obj.number&.is_a?(String) != false || raise("Passed value for field obj.number is not the expected type, validation failed.")
+        obj.type&.is_a?(String) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
       end
     end
   end

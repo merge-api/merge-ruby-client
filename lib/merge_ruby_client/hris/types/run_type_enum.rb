@@ -2,13 +2,17 @@
 
 module Merge
   module Hris
-    # @type [RUN_TYPE_ENUM]
-    RUN_TYPE_ENUM = {
-      regular: "REGULAR",
-      off_cycle: "OFF_CYCLE",
-      correction: "CORRECTION",
-      termination: "TERMINATION",
-      sign_on_bonus: "SIGN_ON_BONUS"
-    }.freeze
+    # - `REGULAR` - REGULAR
+    #  - `OFF_CYCLE` - OFF_CYCLE
+    #  - `CORRECTION` - CORRECTION
+    #  - `TERMINATION` - TERMINATION
+    #  - `SIGN_ON_BONUS` - SIGN_ON_BONUS
+    class RunTypeEnum
+      REGULAR = "REGULAR"
+      OFF_CYCLE = "OFF_CYCLE"
+      CORRECTION = "CORRECTION"
+      TERMINATION = "TERMINATION"
+      SIGN_ON_BONUS = "SIGN_ON_BONUS"
+    end
   end
 end

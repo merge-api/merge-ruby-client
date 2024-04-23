@@ -3,14 +3,13 @@
 module Merge
   module Ats
     class Jobs
-      # @type [JOBS_LIST_REQUEST_STATUS]
-      JOBS_LIST_REQUEST_STATUS = {
-        archived: "ARCHIVED",
-        closed: "CLOSED",
-        draft: "DRAFT",
-        open: "OPEN",
-        pending: "PENDING"
-      }.freeze
+      class JobsListRequestStatus
+        ARCHIVED = "ARCHIVED"
+        CLOSED = "CLOSED"
+        DRAFT = "DRAFT"
+        OPEN = "OPEN"
+        PENDING = "PENDING"
+      end
     end
   end
 end

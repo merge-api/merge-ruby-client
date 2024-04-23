@@ -2,13 +2,17 @@
 
 module Merge
   module Ats
-    # @type [GENDER_ENUM]
-    GENDER_ENUM = {
-      male: "MALE",
-      female: "FEMALE",
-      non_binary: "NON-BINARY",
-      other: "OTHER",
-      decline_to_self_identify: "DECLINE_TO_SELF_IDENTIFY"
-    }.freeze
+    # - `MALE` - MALE
+    #  - `FEMALE` - FEMALE
+    #  - `NON-BINARY` - NON-BINARY
+    #  - `OTHER` - OTHER
+    #  - `DECLINE_TO_SELF_IDENTIFY` - DECLINE_TO_SELF_IDENTIFY
+    class GenderEnum
+      MALE = "MALE"
+      FEMALE = "FEMALE"
+      NON_BINARY = "NON-BINARY"
+      OTHER = "OTHER"
+      DECLINE_TO_SELF_IDENTIFY = "DECLINE_TO_SELF_IDENTIFY"
+    end
   end
 end

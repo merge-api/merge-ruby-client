@@ -15,12 +15,12 @@ require "async"
 module Merge
   module Accounting
     class CreditNotesClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Accounting::CreditNotesClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Accounting::CreditNotesClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -30,22 +30,34 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [CREDIT_NOTES_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Accounting::CreditNotes::CreditNotesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [CREDIT_NOTES_LIST_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
+      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [CREDIT_NOTES_LIST_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedCreditNoteList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedCreditNoteList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, transaction_date_after: nil, transaction_date_before: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/credit-notes") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -68,22 +80,34 @@ module Merge
             "transaction_date_after": transaction_date_after,
             "transaction_date_before": transaction_date_before
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes"
         end
-        Accounting::PaginatedCreditNoteList.from_json(json_object: response.body)
+        Merge::Accounting::PaginatedCreditNoteList.from_json(json_object: response.body)
       end
 
       # Returns a `CreditNote` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [CREDIT_NOTES_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param remote_fields [CREDIT_NOTES_RETRIEVE_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [CREDIT_NOTES_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::CreditNote]
+      # @param expand [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::CreditNote]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
                    request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/credit-notes/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -95,18 +119,19 @@ module Merge
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/#{id}"
         end
-        Accounting::CreditNote.from_json(json_object: response.body)
+        Merge::Accounting::CreditNote.from_json(json_object: response.body)
       end
     end
 
     class AsyncCreditNotesClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Accounting::AsyncCreditNotesClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Accounting::AsyncCreditNotesClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -116,23 +141,35 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [CREDIT_NOTES_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Accounting::CreditNotes::CreditNotesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [CREDIT_NOTES_LIST_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
+      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [CREDIT_NOTES_LIST_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedCreditNoteList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedCreditNoteList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, transaction_date_after: nil, transaction_date_before: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/credit-notes") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -155,24 +192,36 @@ module Merge
               "transaction_date_after": transaction_date_after,
               "transaction_date_before": transaction_date_before
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes"
           end
-          Accounting::PaginatedCreditNoteList.from_json(json_object: response.body)
+          Merge::Accounting::PaginatedCreditNoteList.from_json(json_object: response.body)
         end
       end
 
       # Returns a `CreditNote` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [CREDIT_NOTES_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param remote_fields [CREDIT_NOTES_RETRIEVE_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [CREDIT_NOTES_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::CreditNote]
+      # @param expand [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::CreditNote]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
                    request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/credit-notes/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -184,8 +233,9 @@ module Merge
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/#{id}"
           end
-          Accounting::CreditNote.from_json(json_object: response.body)
+          Merge::Accounting::CreditNote.from_json(json_object: response.body)
         end
       end
     end

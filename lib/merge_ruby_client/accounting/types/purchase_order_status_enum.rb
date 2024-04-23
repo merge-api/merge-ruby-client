@@ -2,13 +2,17 @@
 
 module Merge
   module Accounting
-    # @type [PURCHASE_ORDER_STATUS_ENUM]
-    PURCHASE_ORDER_STATUS_ENUM = {
-      draft: "DRAFT",
-      submitted: "SUBMITTED",
-      authorized: "AUTHORIZED",
-      billed: "BILLED",
-      deleted: "DELETED"
-    }.freeze
+    # - `DRAFT` - DRAFT
+    #  - `SUBMITTED` - SUBMITTED
+    #  - `AUTHORIZED` - AUTHORIZED
+    #  - `BILLED` - BILLED
+    #  - `DELETED` - DELETED
+    class PurchaseOrderStatusEnum
+      DRAFT = "DRAFT"
+      SUBMITTED = "SUBMITTED"
+      AUTHORIZED = "AUTHORIZED"
+      BILLED = "BILLED"
+      DELETED = "DELETED"
+    end
   end
 end

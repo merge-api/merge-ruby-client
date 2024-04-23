@@ -7,12 +7,12 @@ require "async"
 module Merge
   module Hris
     class AuditTrailClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Hris::AuditTrailClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Hris::AuditTrailClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -20,15 +20,43 @@ module Merge
       #
       # @param cursor [String] The pagination cursor value.
       # @param end_date [String] If included, will only include audit trail events that occurred before this time
-      # @param event_type [String] If included, will only include events with the given event type. Possible values include: `CREATED_REMOTE_PRODUCTION_API_KEY`, `DELETED_REMOTE_PRODUCTION_API_KEY`, `CREATED_TEST_API_KEY`, `DELETED_TEST_API_KEY`, `REGENERATED_PRODUCTION_API_KEY`, `INVITED_USER`, `TWO_FACTOR_AUTH_ENABLED`, `TWO_FACTOR_AUTH_DISABLED`, `DELETED_LINKED_ACCOUNT`, `CREATED_DESTINATION`, `DELETED_DESTINATION`, `CHANGED_SCOPES`, `CHANGED_PERSONAL_INFORMATION`, `CHANGED_ORGANIZATION_SETTINGS`, `ENABLED_INTEGRATION`, `DISABLED_INTEGRATION`, `ENABLED_CATEGORY`, `DISABLED_CATEGORY`, `CHANGED_PASSWORD`, `RESET_PASSWORD`, `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`, `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`, `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`, `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`, `CREATED_INTEGRATION_WIDE_FIELD_MAPPING`, `CREATED_LINKED_ACCOUNT_FIELD_MAPPING`, `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`, `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`, `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`, `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`
+      # @param event_type [String] If included, will only include events with the given event type. Possible values
+      #  include: `CREATED_REMOTE_PRODUCTION_API_KEY`,
+      #  `DELETED_REMOTE_PRODUCTION_API_KEY`, `CREATED_TEST_API_KEY`,
+      #  `DELETED_TEST_API_KEY`, `REGENERATED_PRODUCTION_API_KEY`, `INVITED_USER`,
+      #  `TWO_FACTOR_AUTH_ENABLED`, `TWO_FACTOR_AUTH_DISABLED`, `DELETED_LINKED_ACCOUNT`,
+      #  `CREATED_DESTINATION`, `DELETED_DESTINATION`, `CHANGED_DESTINATION`,
+      #  `CHANGED_SCOPES`, `CHANGED_PERSONAL_INFORMATION`,
+      #  `CHANGED_ORGANIZATION_SETTINGS`, `ENABLED_INTEGRATION`, `DISABLED_INTEGRATION`,
+      #  `ENABLED_CATEGORY`, `DISABLED_CATEGORY`, `CHANGED_PASSWORD`, `RESET_PASSWORD`,
+      #  `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`,
+      #  `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`,
+      #  `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`,
+      #  `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`,
+      #  `CREATED_INTEGRATION_WIDE_FIELD_MAPPING`,
+      #  `CREATED_LINKED_ACCOUNT_FIELD_MAPPING`,
+      #  `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`,
+      #  `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`,
+      #  `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`,
+      #  `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`, `FORCED_LINKED_ACCOUNT_RESYNC`,
+      #  `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`
       # @param page_size [Integer] Number of results to return per page.
       # @param start_date [String] If included, will only include audit trail events that occurred after this time
-      # @param user_email [String] If provided, this will return events associated with the specified user email. Please note that the email address reflects the user's email at the time of the event, and may not be their current email.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedAuditLogEventList]
+      # @param user_email [String] If provided, this will return events associated with the specified user email.
+      #  Please note that the email address reflects the user's email at the time of the
+      #  event, and may not be their current email.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedAuditLogEventList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(cursor: nil, end_date: nil, event_type: nil, page_size: nil, start_date: nil, user_email: nil,
                request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/audit-trail") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -42,18 +70,19 @@ module Merge
             "start_date": start_date,
             "user_email": user_email
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/audit-trail"
         end
-        Hris::PaginatedAuditLogEventList.from_json(json_object: response.body)
+        Merge::Hris::PaginatedAuditLogEventList.from_json(json_object: response.body)
       end
     end
 
     class AsyncAuditTrailClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Hris::AsyncAuditTrailClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Hris::AsyncAuditTrailClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -61,16 +90,44 @@ module Merge
       #
       # @param cursor [String] The pagination cursor value.
       # @param end_date [String] If included, will only include audit trail events that occurred before this time
-      # @param event_type [String] If included, will only include events with the given event type. Possible values include: `CREATED_REMOTE_PRODUCTION_API_KEY`, `DELETED_REMOTE_PRODUCTION_API_KEY`, `CREATED_TEST_API_KEY`, `DELETED_TEST_API_KEY`, `REGENERATED_PRODUCTION_API_KEY`, `INVITED_USER`, `TWO_FACTOR_AUTH_ENABLED`, `TWO_FACTOR_AUTH_DISABLED`, `DELETED_LINKED_ACCOUNT`, `CREATED_DESTINATION`, `DELETED_DESTINATION`, `CHANGED_SCOPES`, `CHANGED_PERSONAL_INFORMATION`, `CHANGED_ORGANIZATION_SETTINGS`, `ENABLED_INTEGRATION`, `DISABLED_INTEGRATION`, `ENABLED_CATEGORY`, `DISABLED_CATEGORY`, `CHANGED_PASSWORD`, `RESET_PASSWORD`, `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`, `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`, `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`, `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`, `CREATED_INTEGRATION_WIDE_FIELD_MAPPING`, `CREATED_LINKED_ACCOUNT_FIELD_MAPPING`, `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`, `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`, `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`, `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`
+      # @param event_type [String] If included, will only include events with the given event type. Possible values
+      #  include: `CREATED_REMOTE_PRODUCTION_API_KEY`,
+      #  `DELETED_REMOTE_PRODUCTION_API_KEY`, `CREATED_TEST_API_KEY`,
+      #  `DELETED_TEST_API_KEY`, `REGENERATED_PRODUCTION_API_KEY`, `INVITED_USER`,
+      #  `TWO_FACTOR_AUTH_ENABLED`, `TWO_FACTOR_AUTH_DISABLED`, `DELETED_LINKED_ACCOUNT`,
+      #  `CREATED_DESTINATION`, `DELETED_DESTINATION`, `CHANGED_DESTINATION`,
+      #  `CHANGED_SCOPES`, `CHANGED_PERSONAL_INFORMATION`,
+      #  `CHANGED_ORGANIZATION_SETTINGS`, `ENABLED_INTEGRATION`, `DISABLED_INTEGRATION`,
+      #  `ENABLED_CATEGORY`, `DISABLED_CATEGORY`, `CHANGED_PASSWORD`, `RESET_PASSWORD`,
+      #  `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`,
+      #  `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`,
+      #  `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`,
+      #  `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`,
+      #  `CREATED_INTEGRATION_WIDE_FIELD_MAPPING`,
+      #  `CREATED_LINKED_ACCOUNT_FIELD_MAPPING`,
+      #  `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`,
+      #  `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`,
+      #  `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`,
+      #  `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`, `FORCED_LINKED_ACCOUNT_RESYNC`,
+      #  `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`
       # @param page_size [Integer] Number of results to return per page.
       # @param start_date [String] If included, will only include audit trail events that occurred after this time
-      # @param user_email [String] If provided, this will return events associated with the specified user email. Please note that the email address reflects the user's email at the time of the event, and may not be their current email.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedAuditLogEventList]
+      # @param user_email [String] If provided, this will return events associated with the specified user email.
+      #  Please note that the email address reflects the user's email at the time of the
+      #  event, and may not be their current email.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedAuditLogEventList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(cursor: nil, end_date: nil, event_type: nil, page_size: nil, start_date: nil, user_email: nil,
                request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/audit-trail") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -84,8 +141,9 @@ module Merge
               "start_date": start_date,
               "user_email": user_email
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/audit-trail"
           end
-          Hris::PaginatedAuditLogEventList.from_json(json_object: response.body)
+          Merge::Hris::PaginatedAuditLogEventList.from_json(json_object: response.body)
         end
       end
     end

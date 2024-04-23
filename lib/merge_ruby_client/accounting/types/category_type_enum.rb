@@ -2,7 +2,11 @@
 
 module Merge
   module Accounting
-    # @type [CATEGORY_TYPE_ENUM]
-    CATEGORY_TYPE_ENUM = { class_: "CLASS", department: "DEPARTMENT" }.freeze
+    # - `CLASS` - CLASS
+    #  - `DEPARTMENT` - DEPARTMENT
+    class CategoryTypeEnum
+      CLASS = "CLASS"
+      DEPARTMENT = "DEPARTMENT"
+    end
   end
 end

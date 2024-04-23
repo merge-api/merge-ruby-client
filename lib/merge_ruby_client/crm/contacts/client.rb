@@ -17,12 +17,12 @@ require "async"
 module Merge
   module Crm
     class ContactsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Crm::ContactsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Crm::ContactsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -32,21 +32,34 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param email_addresses [String] If provided, will only return contacts matching the email addresses; multiple email_addresses can be separated by commas.
-      # @param expand [CONTACTS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param email_addresses [String] If provided, will only return contacts matching the email addresses; multiple
+      #  email_addresses can be separated by commas.
+      # @param expand [Merge::Crm::Contacts::ContactsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param phone_numbers [String] If provided, will only return contacts matching the phone numbers; multiple phone numbers can be separated by commas.
+      # @param phone_numbers [String] If provided, will only return contacts matching the phone numbers; multiple
+      #  phone numbers can be separated by commas.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Crm::PaginatedContactList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedContactList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, email_addresses: nil,
                expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, phone_numbers: nil, remote_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/contacts") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -68,30 +81,38 @@ module Merge
             "phone_numbers": phone_numbers,
             "remote_id": remote_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts"
         end
-        Crm::PaginatedContactList.from_json(json_object: response.body)
+        Merge::Crm::PaginatedContactList.from_json(json_object: response.body)
       end
 
       # Creates a `Contact` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Crm::ContactRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Crm::ContactRequest, as a Hash
       #   * :first_name (String)
       #   * :last_name (String)
       #   * :account (Hash)
       #   * :owner (Hash)
-      #   * :addresses (Array<Crm::AddressRequest>)
-      #   * :email_addresses (Array<Crm::EmailAddressRequest>)
-      #   * :phone_numbers (Array<Crm::PhoneNumberRequest>)
+      #   * :addresses (Array<Merge::Crm::AddressRequest>)
+      #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
+      #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
       #   * :last_activity_at (DateTime)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Crm::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Crm::CrmContactResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Crm::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::CrmContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/crm/v1/contacts") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -102,20 +123,31 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts"
         end
-        Crm::CrmContactResponse.from_json(json_object: response.body)
+        Merge::Crm::CrmContactResponse.from_json(json_object: response.body)
       end
 
       # Returns a `Contact` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [CONTACTS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
-      # @param request_options [RequestOptions]
-      # @return [Crm::Contact]
+      # @param expand [Merge::Crm::Contacts::ContactsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::Contact]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/contacts/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -126,8 +158,9 @@ module Merge
             "include_remote_data": include_remote_data,
             "include_remote_fields": include_remote_fields
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/#{id}"
         end
-        Crm::Contact.from_json(json_object: response.body)
+        Merge::Crm::Contact.from_json(json_object: response.body)
       end
 
       # Updates a `Contact` object with the given `id`.
@@ -135,22 +168,29 @@ module Merge
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Crm::PatchedContactRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Crm::PatchedContactRequest, as a Hash
       #   * :first_name (String)
       #   * :last_name (String)
       #   * :account (String)
       #   * :owner (Hash)
-      #   * :addresses (Array<Crm::AddressRequest>)
-      #   * :email_addresses (Array<Crm::EmailAddressRequest>)
-      #   * :phone_numbers (Array<Crm::PhoneNumberRequest>)
+      #   * :addresses (Array<Merge::Crm::AddressRequest>)
+      #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
+      #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
       #   * :last_activity_at (DateTime)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Crm::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Crm::CrmContactResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Crm::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::CrmContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.partial_update(id: "id", model: {  })
       def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.patch("/api/crm/v1/contacts/#{id}") do |req|
+        response = @request_client.conn.patch do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -161,69 +201,106 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/#{id}"
         end
-        Crm::CrmContactResponse.from_json(json_object: response.body)
+        Merge::Crm::CrmContactResponse.from_json(json_object: response.body)
       end
 
-      # Ignores a specific row based on the `model_id` in the url. These records will have their properties set to null, and will not be updated in future syncs. The "reason" and "message" fields in the request body will be stored for audit purposes.
+      # Ignores a specific row based on the `model_id` in the url. These records will
+      #  have their properties set to null, and will not be updated in future syncs. The
+      #  "reason" and "message" fields in the request body will be stored for audit
+      #  purposes.
       #
       # @param model_id [String]
-      # @param request [Hash] Request of type Crm::IgnoreCommonModelRequest, as a Hash
-      #   * :reason (REASON_ENUM)
+      # @param request [Hash] Request of type Merge::Crm::IgnoreCommonModelRequest, as a Hash
+      #   * :reason (Merge::Crm::ReasonEnum)
       #   * :message (String)
-      # @param request_options [RequestOptions]
+      # @param request_options [Merge::RequestOptions]
       # @return [Void]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.ignore_create(model_id: "model_id", request: { reason: GENERAL_CUSTOMER_REQUEST })
       def ignore_create(model_id:, request:, request_options: nil)
-        @request_client.conn.post("/api/crm/v1/contacts/ignore/#{model_id}") do |req|
+        @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
           req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/ignore/#{model_id}"
         end
       end
 
       # Returns metadata for `CRMContact` PATCHs.
       #
       # @param id [String]
-      # @param request_options [RequestOptions]
-      # @return [Crm::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.meta_patch_retrieve(id: "id")
       def meta_patch_retrieve(id:, request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/contacts/meta/patch/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/patch/#{id}"
         end
-        Crm::MetaResponse.from_json(json_object: response.body)
+        Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
       # Returns metadata for `CRMContact` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Crm::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/contacts/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/post"
         end
-        Crm::MetaResponse.from_json(json_object: response.body)
+        Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
       # Returns a list of `RemoteFieldClass` objects.
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Crm::PaginatedRemoteFieldClassList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedRemoteFieldClassList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_remote_fields: nil, page_size: nil, request_options: nil)
-        response = @request_client.conn.get("/api/crm/v1/contacts/remote-field-classes") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -236,18 +313,19 @@ module Merge
             "include_remote_fields": include_remote_fields,
             "page_size": page_size
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/remote-field-classes"
         end
-        Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
+        Merge::Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
     end
 
     class AsyncContactsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Crm::AsyncContactsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Crm::AsyncContactsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -257,22 +335,35 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param email_addresses [String] If provided, will only return contacts matching the email addresses; multiple email_addresses can be separated by commas.
-      # @param expand [CONTACTS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param email_addresses [String] If provided, will only return contacts matching the email addresses; multiple
+      #  email_addresses can be separated by commas.
+      # @param expand [Merge::Crm::Contacts::ContactsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param phone_numbers [String] If provided, will only return contacts matching the phone numbers; multiple phone numbers can be separated by commas.
+      # @param phone_numbers [String] If provided, will only return contacts matching the phone numbers; multiple
+      #  phone numbers can be separated by commas.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Crm::PaginatedContactList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedContactList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, email_addresses: nil,
                expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, phone_numbers: nil, remote_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/contacts") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -294,8 +385,9 @@ module Merge
               "phone_numbers": phone_numbers,
               "remote_id": remote_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts"
           end
-          Crm::PaginatedContactList.from_json(json_object: response.body)
+          Merge::Crm::PaginatedContactList.from_json(json_object: response.body)
         end
       end
 
@@ -303,23 +395,30 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Crm::ContactRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Crm::ContactRequest, as a Hash
       #   * :first_name (String)
       #   * :last_name (String)
       #   * :account (Hash)
       #   * :owner (Hash)
-      #   * :addresses (Array<Crm::AddressRequest>)
-      #   * :email_addresses (Array<Crm::EmailAddressRequest>)
-      #   * :phone_numbers (Array<Crm::PhoneNumberRequest>)
+      #   * :addresses (Array<Merge::Crm::AddressRequest>)
+      #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
+      #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
       #   * :last_activity_at (DateTime)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Crm::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Crm::CrmContactResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Crm::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::CrmContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/crm/v1/contacts") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -330,22 +429,33 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts"
           end
-          Crm::CrmContactResponse.from_json(json_object: response.body)
+          Merge::Crm::CrmContactResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns a `Contact` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [CONTACTS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
-      # @param request_options [RequestOptions]
-      # @return [Crm::Contact]
+      # @param expand [Merge::Crm::Contacts::ContactsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::Contact]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/contacts/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -356,8 +466,9 @@ module Merge
               "include_remote_data": include_remote_data,
               "include_remote_fields": include_remote_fields
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/#{id}"
           end
-          Crm::Contact.from_json(json_object: response.body)
+          Merge::Crm::Contact.from_json(json_object: response.body)
         end
       end
 
@@ -366,23 +477,30 @@ module Merge
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Crm::PatchedContactRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Crm::PatchedContactRequest, as a Hash
       #   * :first_name (String)
       #   * :last_name (String)
       #   * :account (String)
       #   * :owner (Hash)
-      #   * :addresses (Array<Crm::AddressRequest>)
-      #   * :email_addresses (Array<Crm::EmailAddressRequest>)
-      #   * :phone_numbers (Array<Crm::PhoneNumberRequest>)
+      #   * :addresses (Array<Merge::Crm::AddressRequest>)
+      #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
+      #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
       #   * :last_activity_at (DateTime)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Crm::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Crm::CrmContactResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Crm::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::CrmContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.partial_update(id: "id", model: {  })
       def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.patch("/api/crm/v1/contacts/#{id}") do |req|
+          response = @request_client.conn.patch do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -393,27 +511,39 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/#{id}"
           end
-          Crm::CrmContactResponse.from_json(json_object: response.body)
+          Merge::Crm::CrmContactResponse.from_json(json_object: response.body)
         end
       end
 
-      # Ignores a specific row based on the `model_id` in the url. These records will have their properties set to null, and will not be updated in future syncs. The "reason" and "message" fields in the request body will be stored for audit purposes.
+      # Ignores a specific row based on the `model_id` in the url. These records will
+      #  have their properties set to null, and will not be updated in future syncs. The
+      #  "reason" and "message" fields in the request body will be stored for audit
+      #  purposes.
       #
       # @param model_id [String]
-      # @param request [Hash] Request of type Crm::IgnoreCommonModelRequest, as a Hash
-      #   * :reason (REASON_ENUM)
+      # @param request [Hash] Request of type Merge::Crm::IgnoreCommonModelRequest, as a Hash
+      #   * :reason (Merge::Crm::ReasonEnum)
       #   * :message (String)
-      # @param request_options [RequestOptions]
+      # @param request_options [Merge::RequestOptions]
       # @return [Void]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.ignore_create(model_id: "model_id", request: { reason: GENERAL_CUSTOMER_REQUEST })
       def ignore_create(model_id:, request:, request_options: nil)
         Async do
-          @request_client.conn.post("/api/crm/v1/contacts/ignore/#{model_id}") do |req|
+          @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
             req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/ignore/#{model_id}"
           end
         end
       end
@@ -421,33 +551,49 @@ module Merge
       # Returns metadata for `CRMContact` PATCHs.
       #
       # @param id [String]
-      # @param request_options [RequestOptions]
-      # @return [Crm::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.meta_patch_retrieve(id: "id")
       def meta_patch_retrieve(id:, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/contacts/meta/patch/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/patch/#{id}"
           end
-          Crm::MetaResponse.from_json(json_object: response.body)
+          Merge::Crm::MetaResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `CRMContact` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Crm::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/contacts/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/post"
           end
-          Crm::MetaResponse.from_json(json_object: response.body)
+          Merge::Crm::MetaResponse.from_json(json_object: response.body)
         end
       end
 
@@ -455,15 +601,24 @@ module Merge
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Crm::PaginatedRemoteFieldClassList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedRemoteFieldClassList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_remote_fields: nil, page_size: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/crm/v1/contacts/remote-field-classes") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -476,8 +631,9 @@ module Merge
               "include_remote_fields": include_remote_fields,
               "page_size": page_size
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/remote-field-classes"
           end
-          Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
+          Merge::Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
         end
       end
     end

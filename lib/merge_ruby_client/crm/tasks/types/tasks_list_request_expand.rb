@@ -3,16 +3,15 @@
 module Merge
   module Crm
     class Tasks
-      # @type [TASKS_LIST_REQUEST_EXPAND]
-      TASKS_LIST_REQUEST_EXPAND = {
-        account: "account",
-        account_opportunity: "account,opportunity",
-        opportunity: "opportunity",
-        owner: "owner",
-        owner_account: "owner,account",
-        owner_account_opportunity: "owner,account,opportunity",
-        owner_opportunity: "owner,opportunity"
-      }.freeze
+      class TasksListRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_OPPORTUNITY = "account,opportunity"
+        OPPORTUNITY = "opportunity"
+        OWNER = "owner"
+        OWNER_ACCOUNT = "owner,account"
+        OWNER_ACCOUNT_OPPORTUNITY = "owner,account,opportunity"
+        OWNER_OPPORTUNITY = "owner,opportunity"
+      end
     end
   end
 end

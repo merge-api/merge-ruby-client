@@ -5,53 +5,89 @@ require_relative "types_export"
 require_relative "requests"
 require_relative "merge_ruby_client/ats/client"
 require_relative "merge_ruby_client/crm/client"
+require_relative "merge_ruby_client/ticketing/client"
 require_relative "merge_ruby_client/filestorage/client"
 require_relative "merge_ruby_client/hris/client"
-require_relative "merge_ruby_client/ticketing/client"
 require_relative "merge_ruby_client/accounting/client"
 
 module Merge
   class Client
-    attr_reader :ats, :crm, :filestorage, :hris, :ticketing, :accounting
+    # @return [Merge::Ats::Client]
+    attr_reader :ats
+    # @return [Merge::Crm::Client]
+    attr_reader :crm
+    # @return [Merge::Ticketing::Client]
+    attr_reader :ticketing
+    # @return [Merge::Filestorage::Client]
+    attr_reader :filestorage
+    # @return [Merge::Hris::Client]
+    attr_reader :hris
+    # @return [Merge::Accounting::Client]
+    attr_reader :accounting
 
-    # @param environment [Environment]
+    # @param environment [Merge::Environment]
+    # @param base_url [String]
     # @param max_retries [Long] The number of times to retry a failed request, defaults to 2.
     # @param timeout_in_seconds [Long]
     # @param api_key [String]
     # @param account_token [String] Token identifying the end user.
-    # @return [Client]
-    def initialize(api_key:, environment: Environment::PRODUCTION, max_retries: nil, timeout_in_seconds: nil,
-                   account_token: nil)
-      @request_client = RequestClient.new(environment: environment, max_retries: max_retries,
-                                          timeout_in_seconds: timeout_in_seconds, api_key: api_key, account_token: account_token)
-      @ats = Ats::Client.new(request_client: @request_client)
-      @crm = Crm::Client.new(request_client: @request_client)
-      @filestorage = Filestorage::Client.new(request_client: @request_client)
-      @hris = Hris::Client.new(request_client: @request_client)
-      @ticketing = Ticketing::Client.new(request_client: @request_client)
-      @accounting = Accounting::Client.new(request_client: @request_client)
+    # @return [Merge::Client]
+    def initialize(api_key:, environment: Environment::PRODUCTION, base_url: nil, max_retries: nil,
+                   timeout_in_seconds: nil, account_token: nil)
+      @request_client = Merge::RequestClient.new(
+        environment: environment,
+        base_url: base_url,
+        max_retries: max_retries,
+        timeout_in_seconds: timeout_in_seconds,
+        api_key: api_key,
+        account_token: account_token
+      )
+      @ats = Merge::Ats::Client.new(request_client: @request_client)
+      @crm = Merge::Crm::Client.new(request_client: @request_client)
+      @ticketing = Merge::Ticketing::Client.new(request_client: @request_client)
+      @filestorage = Merge::Filestorage::Client.new(request_client: @request_client)
+      @hris = Merge::Hris::Client.new(request_client: @request_client)
+      @accounting = Merge::Accounting::Client.new(request_client: @request_client)
     end
   end
 
   class AsyncClient
-    attr_reader :ats, :crm, :filestorage, :hris, :ticketing, :accounting
+    # @return [Merge::Ats::AsyncClient]
+    attr_reader :ats
+    # @return [Merge::Crm::AsyncClient]
+    attr_reader :crm
+    # @return [Merge::Ticketing::AsyncClient]
+    attr_reader :ticketing
+    # @return [Merge::Filestorage::AsyncClient]
+    attr_reader :filestorage
+    # @return [Merge::Hris::AsyncClient]
+    attr_reader :hris
+    # @return [Merge::Accounting::AsyncClient]
+    attr_reader :accounting
 
-    # @param environment [Environment]
+    # @param environment [Merge::Environment]
+    # @param base_url [String]
     # @param max_retries [Long] The number of times to retry a failed request, defaults to 2.
     # @param timeout_in_seconds [Long]
     # @param api_key [String]
     # @param account_token [String] Token identifying the end user.
-    # @return [AsyncClient]
-    def initialize(api_key:, environment: Environment::PRODUCTION, max_retries: nil, timeout_in_seconds: nil,
-                   account_token: nil)
-      @async_request_client = AsyncRequestClient.new(environment: environment, max_retries: max_retries,
-                                                     timeout_in_seconds: timeout_in_seconds, api_key: api_key, account_token: account_token)
-      @ats = Ats::AsyncClient.new(request_client: @async_request_client)
-      @crm = Crm::AsyncClient.new(request_client: @async_request_client)
-      @filestorage = Filestorage::AsyncClient.new(request_client: @async_request_client)
-      @hris = Hris::AsyncClient.new(request_client: @async_request_client)
-      @ticketing = Ticketing::AsyncClient.new(request_client: @async_request_client)
-      @accounting = Accounting::AsyncClient.new(request_client: @async_request_client)
+    # @return [Merge::AsyncClient]
+    def initialize(api_key:, environment: Environment::PRODUCTION, base_url: nil, max_retries: nil,
+                   timeout_in_seconds: nil, account_token: nil)
+      @async_request_client = Merge::AsyncRequestClient.new(
+        environment: environment,
+        base_url: base_url,
+        max_retries: max_retries,
+        timeout_in_seconds: timeout_in_seconds,
+        api_key: api_key,
+        account_token: account_token
+      )
+      @ats = Merge::Ats::AsyncClient.new(request_client: @async_request_client)
+      @crm = Merge::Crm::AsyncClient.new(request_client: @async_request_client)
+      @ticketing = Merge::Ticketing::AsyncClient.new(request_client: @async_request_client)
+      @filestorage = Merge::Filestorage::AsyncClient.new(request_client: @async_request_client)
+      @hris = Merge::Hris::AsyncClient.new(request_client: @async_request_client)
+      @accounting = Merge::Accounting::AsyncClient.new(request_client: @async_request_client)
     end
   end
 end

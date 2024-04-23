@@ -2,13 +2,17 @@
 
 module Merge
   module Hris
-    # @type [TIME_OFF_STATUS_ENUM]
-    TIME_OFF_STATUS_ENUM = {
-      requested: "REQUESTED",
-      approved: "APPROVED",
-      declined: "DECLINED",
-      cancelled: "CANCELLED",
-      deleted: "DELETED"
-    }.freeze
+    # - `REQUESTED` - REQUESTED
+    #  - `APPROVED` - APPROVED
+    #  - `DECLINED` - DECLINED
+    #  - `CANCELLED` - CANCELLED
+    #  - `DELETED` - DELETED
+    class TimeOffStatusEnum
+      REQUESTED = "REQUESTED"
+      APPROVED = "APPROVED"
+      DECLINED = "DECLINED"
+      CANCELLED = "CANCELLED"
+      DELETED = "DELETED"
+    end
   end
 end

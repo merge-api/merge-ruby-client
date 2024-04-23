@@ -2,13 +2,17 @@
 
 module Merge
   module Hris
-    # @type [BENEFIT_PLAN_TYPE_ENUM]
-    BENEFIT_PLAN_TYPE_ENUM = {
-      medical: "MEDICAL",
-      health_savings: "HEALTH_SAVINGS",
-      insurance: "INSURANCE",
-      retirement: "RETIREMENT",
-      other: "OTHER"
-    }.freeze
+    # - `MEDICAL` - MEDICAL
+    #  - `HEALTH_SAVINGS` - HEALTH_SAVINGS
+    #  - `INSURANCE` - INSURANCE
+    #  - `RETIREMENT` - RETIREMENT
+    #  - `OTHER` - OTHER
+    class BenefitPlanTypeEnum
+      MEDICAL = "MEDICAL"
+      HEALTH_SAVINGS = "HEALTH_SAVINGS"
+      INSURANCE = "INSURANCE"
+      RETIREMENT = "RETIREMENT"
+      OTHER = "OTHER"
+    end
   end
 end

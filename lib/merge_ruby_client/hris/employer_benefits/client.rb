@@ -9,12 +9,12 @@ require "async"
 module Merge
   module Hris
     class EmployerBenefitsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Hris::EmployerBenefitsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Hris::EmployerBenefitsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -24,16 +24,25 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedEmployerBenefitList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedEmployerBenefitList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/employer-benefits") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -50,18 +59,27 @@ module Merge
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employer-benefits"
         end
-        Hris::PaginatedEmployerBenefitList.from_json(json_object: response.body)
+        Merge::Hris::PaginatedEmployerBenefitList.from_json(json_object: response.body)
       end
 
       # Returns an `EmployerBenefit` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Hris::EmployerBenefit]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::EmployerBenefit]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/employer-benefits/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -70,18 +88,19 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employer-benefits/#{id}"
         end
-        Hris::EmployerBenefit.from_json(json_object: response.body)
+        Merge::Hris::EmployerBenefit.from_json(json_object: response.body)
       end
     end
 
     class AsyncEmployerBenefitsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Hris::AsyncEmployerBenefitsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Hris::AsyncEmployerBenefitsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -91,17 +110,26 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedEmployerBenefitList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedEmployerBenefitList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/employer-benefits") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -118,20 +146,29 @@ module Merge
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employer-benefits"
           end
-          Hris::PaginatedEmployerBenefitList.from_json(json_object: response.body)
+          Merge::Hris::PaginatedEmployerBenefitList.from_json(json_object: response.body)
         end
       end
 
       # Returns an `EmployerBenefit` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Hris::EmployerBenefit]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::EmployerBenefit]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/employer-benefits/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -140,8 +177,9 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employer-benefits/#{id}"
           end
-          Hris::EmployerBenefit.from_json(json_object: response.body)
+          Merge::Hris::EmployerBenefit.from_json(json_object: response.body)
         end
       end
     end

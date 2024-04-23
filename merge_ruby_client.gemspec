@@ -4,7 +4,7 @@ require_relative "lib/gemconfig"
 
 Gem::Specification.new do |spec|
   spec.name = "merge_ruby_client"
-  spec.version = "0.0.3"
+  spec.version = "0.1.0"
   spec.authors = Merge::Gemconfig::AUTHORS
   spec.email = Merge::Gemconfig::EMAIL
   spec.summary = Merge::Gemconfig::SUMMARY

@@ -2,15 +2,21 @@
 
 module Merge
   module Ticketing
-    # @type [CONDITION_TYPE_ENUM]
-    CONDITION_TYPE_ENUM = {
-      boolean: "BOOLEAN",
-      date: "DATE",
-      date_time: "DATE_TIME",
-      integer: "INTEGER",
-      float: "FLOAT",
-      string: "STRING",
-      list_of_strings: "LIST_OF_STRINGS"
-    }.freeze
+    # - `BOOLEAN` - BOOLEAN
+    #  - `DATE` - DATE
+    #  - `DATE_TIME` - DATE_TIME
+    #  - `INTEGER` - INTEGER
+    #  - `FLOAT` - FLOAT
+    #  - `STRING` - STRING
+    #  - `LIST_OF_STRINGS` - LIST_OF_STRINGS
+    class ConditionTypeEnum
+      BOOLEAN = "BOOLEAN"
+      DATE = "DATE"
+      DATE_TIME = "DATE_TIME"
+      INTEGER = "INTEGER"
+      FLOAT = "FLOAT"
+      STRING = "STRING"
+      LIST_OF_STRINGS = "LIST_OF_STRINGS"
+    end
   end
 end

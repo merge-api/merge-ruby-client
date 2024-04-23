@@ -24,20 +24,22 @@ require "async"
 module Merge
   module Ticketing
     class TicketsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Ticketing::TicketsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Ticketing::TicketsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
       # Returns a list of `Ticket` objects.
       #
       # @param account_id [String] If provided, will only return tickets for this account.
-      # @param assignee_ids [String] If provided, will only return tickets assigned to the assignee_ids; multiple assignee_ids can be separated by commas.
-      # @param collection_ids [String] If provided, will only return tickets assigned to the collection_ids; multiple collection_ids can be separated by commas.
+      # @param assignee_ids [String] If provided, will only return tickets assigned to the assignee_ids; multiple
+      #  assignee_ids can be separated by commas.
+      # @param collection_ids [String] If provided, will only return tickets assigned to the collection_ids; multiple
+      #  collection_ids can be separated by commas.
       # @param completed_after [DateTime] If provided, will only return tickets completed after this datetime.
       # @param completed_before [DateTime] If provided, will only return tickets completed before this datetime.
       # @param contact_id [String] If provided, will only return tickets for this contact.
@@ -46,39 +48,56 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param due_after [DateTime] If provided, will only return tickets due after this datetime.
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
-      # @param expand [TICKETS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ticketing::Tickets::TicketsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param parent_ticket_id [String] If provided, will only return sub tickets of the parent_ticket_id.
-      # @param priority [TICKETS_LIST_REQUEST_PRIORITY] If provided, will only return tickets of this priority.
-      #   - `URGENT` - URGENT
-      #   - `HIGH` - HIGH
-      #   - `NORMAL` - NORMAL
-      #   - `LOW` - LOW
-      # @param project_id [String] If provided, will only return tickets for this project.
-      # @param remote_created_after [DateTime] If provided, will only return tickets created in the third party platform after this datetime.
-      # @param remote_created_before [DateTime] If provided, will only return tickets created in the third party platform before this datetime.
-      # @param remote_fields [TICKETS_LIST_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
+      # @param priority [Merge::Ticketing::Tickets::TicketsListRequestPriority] If provided, will only return tickets of this priority.
+      #  - `URGENT` - URGENT
+      #  - `HIGH` - HIGH
+      #  - `NORMAL` - NORMAL
+      #  - `LOW` - LOW
+      # @param remote_created_after [DateTime] If provided, will only return tickets created in the third party platform after
+      #  this datetime.
+      # @param remote_created_before [DateTime] If provided, will only return tickets created in the third party platform before
+      #  this datetime.
+      # @param remote_fields [Merge::Ticketing::Tickets::TicketsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param remote_updated_after [DateTime] If provided, will only return tickets updated in the third party platform after this datetime.
-      # @param remote_updated_before [DateTime] If provided, will only return tickets updated in the third party platform before this datetime.
-      # @param show_enum_origins [TICKETS_LIST_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
-      # @param status [TICKETS_LIST_REQUEST_STATUS] If provided, will only return tickets of this status.
-      #   - `OPEN` - OPEN
-      #   - `CLOSED` - CLOSED
-      #   - `IN_PROGRESS` - IN_PROGRESS
-      #   - `ON_HOLD` - ON_HOLD
-      # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be separated by commas.
+      # @param remote_updated_after [DateTime] If provided, will only return tickets updated in the third party platform after
+      #  this datetime.
+      # @param remote_updated_before [DateTime] If provided, will only return tickets updated in the third party platform before
+      #  this datetime.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [Merge::Ticketing::Tickets::TicketsListRequestStatus] If provided, will only return tickets of this status.
+      #  - `OPEN` - OPEN
+      #  - `CLOSED` - CLOSED
+      #  - `IN_PROGRESS` - IN_PROGRESS
+      #  - `ON_HOLD` - ON_HOLD
+      # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be
+      #  separated by commas.
       # @param ticket_type [String] If provided, will only return tickets of this type.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedTicketList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedTicketList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.list
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, project_id: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/tickets") do |req|
+               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, request_options: nil)
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -105,7 +124,6 @@ module Merge
             "page_size": page_size,
             "parent_ticket_id": parent_ticket_id,
             "priority": priority,
-            "project_id": project_id,
             "remote_created_after": remote_created_after,
             "remote_created_before": remote_created_before,
             "remote_fields": remote_fields,
@@ -117,38 +135,46 @@ module Merge
             "tags": tags,
             "ticket_type": ticket_type
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets"
         end
-        Ticketing::PaginatedTicketList.from_json(json_object: response.body)
+        Merge::Ticketing::PaginatedTicketList.from_json(json_object: response.body)
       end
 
       # Creates a `Ticket` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ticketing::TicketRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ticketing::TicketRequest, as a Hash
       #   * :name (String)
-      #   * :assignees (Array<Ticketing::TicketRequestAssigneesItem>)
+      #   * :assignees (Array<Merge::Ticketing::TicketRequestAssigneesItem>)
       #   * :creator (Hash)
       #   * :due_date (DateTime)
-      #   * :status (TICKET_STATUS_ENUM)
+      #   * :status (Merge::Ticketing::TicketStatusEnum)
       #   * :description (String)
-      #   * :collections (Array<Ticketing::TicketRequestCollectionsItem>)
+      #   * :collections (Array<Merge::Ticketing::TicketRequestCollectionsItem>)
       #   * :ticket_type (String)
       #   * :account (Hash)
       #   * :contact (Hash)
       #   * :parent_ticket (Hash)
-      #   * :attachments (Array<Ticketing::TicketRequestAttachmentsItem>)
+      #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
       #   * :tags (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
-      #   * :priority (PRIORITY_ENUM)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Ticketing::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::TicketResponse]
+      #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/ticketing/v1/tickets") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -159,23 +185,36 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets"
         end
-        Ticketing::TicketResponse.from_json(json_object: response.body)
+        Merge::Ticketing::TicketResponse.from_json(json_object: response.body)
       end
 
       # Returns a `Ticket` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [TICKETS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
-      # @param remote_fields [TICKETS_RETRIEVE_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [TICKETS_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::Ticket]
+      # @param expand [Merge::Ticketing::Tickets::TicketsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param remote_fields [Merge::Ticketing::Tickets::TicketsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::Ticket]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, remote_fields: nil,
                    show_enum_origins: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/tickets/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -188,8 +227,9 @@ module Merge
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{id}"
         end
-        Ticketing::Ticket.from_json(json_object: response.body)
+        Merge::Ticketing::Ticket.from_json(json_object: response.body)
       end
 
       # Updates a `Ticket` object with the given `id`.
@@ -197,12 +237,12 @@ module Merge
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ticketing::PatchedTicketRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ticketing::PatchedTicketRequest, as a Hash
       #   * :name (String)
       #   * :assignees (Array<String>)
       #   * :creator (String)
       #   * :due_date (DateTime)
-      #   * :status (TICKET_STATUS_ENUM)
+      #   * :status (Merge::Ticketing::TicketStatusEnum)
       #   * :description (String)
       #   * :collections (Array<String>)
       #   * :ticket_type (String)
@@ -212,14 +252,21 @@ module Merge
       #   * :tags (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
-      #   * :priority (PRIORITY_ENUM)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Ticketing::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::TicketResponse]
+      #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.partial_update(id: "id", model: {  })
       def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.patch("/api/ticketing/v1/tickets/#{id}") do |req|
+        response = @request_client.conn.patch do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -230,23 +277,33 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{id}"
         end
-        Ticketing::TicketResponse.from_json(json_object: response.body)
+        Merge::Ticketing::TicketResponse.from_json(json_object: response.body)
       end
 
       # Returns a list of `User` objects.
       #
       # @param parent_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [TICKETS_COLLABORATORS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ticketing::Tickets::TicketsCollaboratorsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedUserList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedUserList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.collaborators_list(parent_id: "parent_id")
       def collaborators_list(parent_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
                              page_size: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/tickets/#{parent_id}/collaborators") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -259,50 +316,75 @@ module Merge
             "include_remote_data": include_remote_data,
             "page_size": page_size
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{parent_id}/collaborators"
         end
-        Ticketing::PaginatedUserList.from_json(json_object: response.body)
+        Merge::Ticketing::PaginatedUserList.from_json(json_object: response.body)
       end
 
       # Returns metadata for `Ticket` PATCHs.
       #
       # @param id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_patch_retrieve(id: "id")
       def meta_patch_retrieve(id:, request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/tickets/meta/patch/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/meta/patch/#{id}"
         end
-        Ticketing::MetaResponse.from_json(json_object: response.body)
+        Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
       end
 
       # Returns metadata for `Ticket` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/tickets/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/meta/post"
         end
-        Ticketing::MetaResponse.from_json(json_object: response.body)
+        Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
       end
 
       # Returns a list of `RemoteFieldClass` objects.
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedRemoteFieldClassList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil, page_size: nil,
                                     request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/tickets/remote-field-classes") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -314,26 +396,29 @@ module Merge
             "include_remote_data": include_remote_data,
             "page_size": page_size
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/remote-field-classes"
         end
-        Ticketing::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
+        Merge::Ticketing::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
     end
 
     class AsyncTicketsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Ticketing::AsyncTicketsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Ticketing::AsyncTicketsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
       # Returns a list of `Ticket` objects.
       #
       # @param account_id [String] If provided, will only return tickets for this account.
-      # @param assignee_ids [String] If provided, will only return tickets assigned to the assignee_ids; multiple assignee_ids can be separated by commas.
-      # @param collection_ids [String] If provided, will only return tickets assigned to the collection_ids; multiple collection_ids can be separated by commas.
+      # @param assignee_ids [String] If provided, will only return tickets assigned to the assignee_ids; multiple
+      #  assignee_ids can be separated by commas.
+      # @param collection_ids [String] If provided, will only return tickets assigned to the collection_ids; multiple
+      #  collection_ids can be separated by commas.
       # @param completed_after [DateTime] If provided, will only return tickets completed after this datetime.
       # @param completed_before [DateTime] If provided, will only return tickets completed before this datetime.
       # @param contact_id [String] If provided, will only return tickets for this contact.
@@ -342,40 +427,57 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param due_after [DateTime] If provided, will only return tickets due after this datetime.
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
-      # @param expand [TICKETS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ticketing::Tickets::TicketsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param parent_ticket_id [String] If provided, will only return sub tickets of the parent_ticket_id.
-      # @param priority [TICKETS_LIST_REQUEST_PRIORITY] If provided, will only return tickets of this priority.
-      #   - `URGENT` - URGENT
-      #   - `HIGH` - HIGH
-      #   - `NORMAL` - NORMAL
-      #   - `LOW` - LOW
-      # @param project_id [String] If provided, will only return tickets for this project.
-      # @param remote_created_after [DateTime] If provided, will only return tickets created in the third party platform after this datetime.
-      # @param remote_created_before [DateTime] If provided, will only return tickets created in the third party platform before this datetime.
-      # @param remote_fields [TICKETS_LIST_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
+      # @param priority [Merge::Ticketing::Tickets::TicketsListRequestPriority] If provided, will only return tickets of this priority.
+      #  - `URGENT` - URGENT
+      #  - `HIGH` - HIGH
+      #  - `NORMAL` - NORMAL
+      #  - `LOW` - LOW
+      # @param remote_created_after [DateTime] If provided, will only return tickets created in the third party platform after
+      #  this datetime.
+      # @param remote_created_before [DateTime] If provided, will only return tickets created in the third party platform before
+      #  this datetime.
+      # @param remote_fields [Merge::Ticketing::Tickets::TicketsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param remote_updated_after [DateTime] If provided, will only return tickets updated in the third party platform after this datetime.
-      # @param remote_updated_before [DateTime] If provided, will only return tickets updated in the third party platform before this datetime.
-      # @param show_enum_origins [TICKETS_LIST_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
-      # @param status [TICKETS_LIST_REQUEST_STATUS] If provided, will only return tickets of this status.
-      #   - `OPEN` - OPEN
-      #   - `CLOSED` - CLOSED
-      #   - `IN_PROGRESS` - IN_PROGRESS
-      #   - `ON_HOLD` - ON_HOLD
-      # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be separated by commas.
+      # @param remote_updated_after [DateTime] If provided, will only return tickets updated in the third party platform after
+      #  this datetime.
+      # @param remote_updated_before [DateTime] If provided, will only return tickets updated in the third party platform before
+      #  this datetime.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [Merge::Ticketing::Tickets::TicketsListRequestStatus] If provided, will only return tickets of this status.
+      #  - `OPEN` - OPEN
+      #  - `CLOSED` - CLOSED
+      #  - `IN_PROGRESS` - IN_PROGRESS
+      #  - `ON_HOLD` - ON_HOLD
+      # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be
+      #  separated by commas.
       # @param ticket_type [String] If provided, will only return tickets of this type.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedTicketList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedTicketList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.list
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, project_id: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/tickets") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -402,7 +504,6 @@ module Merge
               "page_size": page_size,
               "parent_ticket_id": parent_ticket_id,
               "priority": priority,
-              "project_id": project_id,
               "remote_created_after": remote_created_after,
               "remote_created_before": remote_created_before,
               "remote_fields": remote_fields,
@@ -414,8 +515,9 @@ module Merge
               "tags": tags,
               "ticket_type": ticket_type
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets"
           end
-          Ticketing::PaginatedTicketList.from_json(json_object: response.body)
+          Merge::Ticketing::PaginatedTicketList.from_json(json_object: response.body)
         end
       end
 
@@ -423,31 +525,38 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ticketing::TicketRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ticketing::TicketRequest, as a Hash
       #   * :name (String)
-      #   * :assignees (Array<Ticketing::TicketRequestAssigneesItem>)
+      #   * :assignees (Array<Merge::Ticketing::TicketRequestAssigneesItem>)
       #   * :creator (Hash)
       #   * :due_date (DateTime)
-      #   * :status (TICKET_STATUS_ENUM)
+      #   * :status (Merge::Ticketing::TicketStatusEnum)
       #   * :description (String)
-      #   * :collections (Array<Ticketing::TicketRequestCollectionsItem>)
+      #   * :collections (Array<Merge::Ticketing::TicketRequestCollectionsItem>)
       #   * :ticket_type (String)
       #   * :account (Hash)
       #   * :contact (Hash)
       #   * :parent_ticket (Hash)
-      #   * :attachments (Array<Ticketing::TicketRequestAttachmentsItem>)
+      #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
       #   * :tags (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
-      #   * :priority (PRIORITY_ENUM)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Ticketing::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::TicketResponse]
+      #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/ticketing/v1/tickets") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -458,25 +567,38 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets"
           end
-          Ticketing::TicketResponse.from_json(json_object: response.body)
+          Merge::Ticketing::TicketResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns a `Ticket` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [TICKETS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
-      # @param remote_fields [TICKETS_RETRIEVE_REQUEST_REMOTE_FIELDS] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [TICKETS_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::Ticket]
+      # @param expand [Merge::Ticketing::Tickets::TicketsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param remote_fields [Merge::Ticketing::Tickets::TicketsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::Ticket]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, remote_fields: nil,
                    show_enum_origins: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/tickets/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -489,8 +611,9 @@ module Merge
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{id}"
           end
-          Ticketing::Ticket.from_json(json_object: response.body)
+          Merge::Ticketing::Ticket.from_json(json_object: response.body)
         end
       end
 
@@ -499,12 +622,12 @@ module Merge
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ticketing::PatchedTicketRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ticketing::PatchedTicketRequest, as a Hash
       #   * :name (String)
       #   * :assignees (Array<String>)
       #   * :creator (String)
       #   * :due_date (DateTime)
-      #   * :status (TICKET_STATUS_ENUM)
+      #   * :status (Merge::Ticketing::TicketStatusEnum)
       #   * :description (String)
       #   * :collections (Array<String>)
       #   * :ticket_type (String)
@@ -514,15 +637,22 @@ module Merge
       #   * :tags (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
-      #   * :priority (PRIORITY_ENUM)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      #   * :remote_fields (Array<Ticketing::RemoteFieldRequest>)
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::TicketResponse]
+      #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.partial_update(id: "id", model: {  })
       def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.patch("/api/ticketing/v1/tickets/#{id}") do |req|
+          response = @request_client.conn.patch do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -533,8 +663,9 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{id}"
           end
-          Ticketing::TicketResponse.from_json(json_object: response.body)
+          Merge::Ticketing::TicketResponse.from_json(json_object: response.body)
         end
       end
 
@@ -542,16 +673,25 @@ module Merge
       #
       # @param parent_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [TICKETS_COLLABORATORS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ticketing::Tickets::TicketsCollaboratorsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedUserList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedUserList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.collaborators_list(parent_id: "parent_id")
       def collaborators_list(parent_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
                              page_size: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/tickets/#{parent_id}/collaborators") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -564,41 +704,58 @@ module Merge
               "include_remote_data": include_remote_data,
               "page_size": page_size
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{parent_id}/collaborators"
           end
-          Ticketing::PaginatedUserList.from_json(json_object: response.body)
+          Merge::Ticketing::PaginatedUserList.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `Ticket` PATCHs.
       #
       # @param id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_patch_retrieve(id: "id")
       def meta_patch_retrieve(id:, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/tickets/meta/patch/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/meta/patch/#{id}"
           end
-          Ticketing::MetaResponse.from_json(json_object: response.body)
+          Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `Ticket` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/tickets/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/meta/post"
           end
-          Ticketing::MetaResponse.from_json(json_object: response.body)
+          Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
         end
       end
 
@@ -606,14 +763,22 @@ module Merge
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedRemoteFieldClassList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil, page_size: nil,
                                     request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/tickets/remote-field-classes") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -625,8 +790,9 @@ module Merge
               "include_remote_data": include_remote_data,
               "page_size": page_size
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/remote-field-classes"
           end
-          Ticketing::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
+          Merge::Ticketing::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
         end
       end
     end

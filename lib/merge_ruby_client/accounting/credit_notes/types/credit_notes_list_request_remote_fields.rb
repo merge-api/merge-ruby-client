@@ -3,8 +3,11 @@
 module Merge
   module Accounting
     class CreditNotes
-      # @type [CREDIT_NOTES_LIST_REQUEST_REMOTE_FIELDS]
-      CREDIT_NOTES_LIST_REQUEST_REMOTE_FIELDS = { status: "status", status_type: "status,type", type: "type" }.freeze
+      class CreditNotesListRequestRemoteFields
+        STATUS = "status"
+        STATUS_TYPE = "status,type"
+        TYPE = "type"
+      end
     end
   end
 end

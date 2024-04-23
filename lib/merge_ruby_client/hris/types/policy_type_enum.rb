@@ -2,14 +2,19 @@
 
 module Merge
   module Hris
-    # @type [POLICY_TYPE_ENUM]
-    POLICY_TYPE_ENUM = {
-      vacation: "VACATION",
-      sick: "SICK",
-      personal: "PERSONAL",
-      jury_duty: "JURY_DUTY",
-      volunteer: "VOLUNTEER",
-      bereavement: "BEREAVEMENT"
-    }.freeze
+    # - `VACATION` - VACATION
+    #  - `SICK` - SICK
+    #  - `PERSONAL` - PERSONAL
+    #  - `JURY_DUTY` - JURY_DUTY
+    #  - `VOLUNTEER` - VOLUNTEER
+    #  - `BEREAVEMENT` - BEREAVEMENT
+    class PolicyTypeEnum
+      VACATION = "VACATION"
+      SICK = "SICK"
+      PERSONAL = "PERSONAL"
+      JURY_DUTY = "JURY_DUTY"
+      VOLUNTEER = "VOLUNTEER"
+      BEREAVEMENT = "BEREAVEMENT"
+    end
   end
 end

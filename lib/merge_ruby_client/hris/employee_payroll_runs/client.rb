@@ -11,12 +11,12 @@ require "async"
 module Merge
   module Hris
     class EmployeePayrollRunsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Hris::EmployeePayrollRunsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Hris::EmployeePayrollRunsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -28,21 +28,32 @@ module Merge
       # @param employee_id [String] If provided, will only return employee payroll runs for this employee.
       # @param ended_after [DateTime] If provided, will only return employee payroll runs ended after this datetime.
       # @param ended_before [DateTime] If provided, will only return employee payroll runs ended before this datetime.
-      # @param expand [EMPLOYEE_PAYROLL_RUNS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param payroll_run_id [String] If provided, will only return employee payroll runs for this employee.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return employee payroll runs started after this datetime.
-      # @param started_before [DateTime] If provided, will only return employee payroll runs started before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedEmployeePayrollRunList]
+      # @param started_before [DateTime] If provided, will only return employee payroll runs started before this
+      #  datetime.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedEmployeePayrollRunList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
                ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, payroll_run_id: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/employee-payroll-runs") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -66,19 +77,29 @@ module Merge
             "started_after": started_after,
             "started_before": started_before
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employee-payroll-runs"
         end
-        Hris::PaginatedEmployeePayrollRunList.from_json(json_object: response.body)
+        Merge::Hris::PaginatedEmployeePayrollRunList.from_json(json_object: response.body)
       end
 
       # Returns an `EmployeePayrollRun` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [EMPLOYEE_PAYROLL_RUNS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Hris::EmployeePayrollRun]
+      # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::EmployeePayrollRun]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/employee-payroll-runs/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -88,18 +109,19 @@ module Merge
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employee-payroll-runs/#{id}"
         end
-        Hris::EmployeePayrollRun.from_json(json_object: response.body)
+        Merge::Hris::EmployeePayrollRun.from_json(json_object: response.body)
       end
     end
 
     class AsyncEmployeePayrollRunsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Hris::AsyncEmployeePayrollRunsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Hris::AsyncEmployeePayrollRunsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -111,22 +133,33 @@ module Merge
       # @param employee_id [String] If provided, will only return employee payroll runs for this employee.
       # @param ended_after [DateTime] If provided, will only return employee payroll runs ended after this datetime.
       # @param ended_before [DateTime] If provided, will only return employee payroll runs ended before this datetime.
-      # @param expand [EMPLOYEE_PAYROLL_RUNS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param payroll_run_id [String] If provided, will only return employee payroll runs for this employee.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return employee payroll runs started after this datetime.
-      # @param started_before [DateTime] If provided, will only return employee payroll runs started before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedEmployeePayrollRunList]
+      # @param started_before [DateTime] If provided, will only return employee payroll runs started before this
+      #  datetime.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedEmployeePayrollRunList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
                ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, payroll_run_id: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/employee-payroll-runs") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -150,21 +183,31 @@ module Merge
               "started_after": started_after,
               "started_before": started_before
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employee-payroll-runs"
           end
-          Hris::PaginatedEmployeePayrollRunList.from_json(json_object: response.body)
+          Merge::Hris::PaginatedEmployeePayrollRunList.from_json(json_object: response.body)
         end
       end
 
       # Returns an `EmployeePayrollRun` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [EMPLOYEE_PAYROLL_RUNS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Hris::EmployeePayrollRun]
+      # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::EmployeePayrollRun]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/employee-payroll-runs/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -174,8 +217,9 @@ module Merge
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employee-payroll-runs/#{id}"
           end
-          Hris::EmployeePayrollRun.from_json(json_object: response.body)
+          Merge::Hris::EmployeePayrollRun.from_json(json_object: response.body)
         end
       end
     end

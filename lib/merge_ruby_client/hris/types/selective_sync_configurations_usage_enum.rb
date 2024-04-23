@@ -2,7 +2,11 @@
 
 module Merge
   module Hris
-    # @type [SELECTIVE_SYNC_CONFIGURATIONS_USAGE_ENUM]
-    SELECTIVE_SYNC_CONFIGURATIONS_USAGE_ENUM = { in_next_sync: "IN_NEXT_SYNC", in_last_sync: "IN_LAST_SYNC" }.freeze
+    # - `IN_NEXT_SYNC` - IN_NEXT_SYNC
+    #  - `IN_LAST_SYNC` - IN_LAST_SYNC
+    class SelectiveSyncConfigurationsUsageEnum
+      IN_NEXT_SYNC = "IN_NEXT_SYNC"
+      IN_LAST_SYNC = "IN_LAST_SYNC"
+    end
   end
 end

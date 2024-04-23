@@ -7,46 +7,34 @@ module Merge
   module Crm
     # The contact's account.
     class ContactAccount
-      attr_reader :member
-      alias kind_of? is_a?
-      # @param member [Object]
-      # @return [Crm::ContactAccount]
-      def initialize(member:)
-        # @type [Object]
-        @member = member
-      end
-
       # Deserialize a JSON object to an instance of ContactAccount
       #
-      # @param json_object [JSON]
-      # @return [Crm::ContactAccount]
+      # @param json_object [String]
+      # @return [Merge::Crm::ContactAccount]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         begin
           struct.is_a?(String) != false || raise("Passed value for field struct is not the expected type, validation failed.")
-          member = json_object
-          return new(member: member)
+          return json_object unless json_object.nil?
+
+          return nil
         rescue StandardError
           # noop
         end
         begin
-          Crm::Account.validate_raw(obj: struct)
-          member = Crm::Account.from_json(json_object: json_object)
-          return new(member: member)
+          Merge::Crm::Account.validate_raw(obj: struct)
+          return Merge::Crm::Account.from_json(json_object: json_object) unless json_object.nil?
+
+          return nil
         rescue StandardError
           # noop
         end
-        new(member: struct)
+        struct
       end
 
-      # For Union Types, to_json functionality is delegated to the wrapped member.
-      #
-      # @return [JSON]
-      def to_json(*_args)
-        @member.to_json
-      end
-
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
@@ -57,19 +45,11 @@ module Merge
           # noop
         end
         begin
-          return Crm::Account.validate_raw(obj: obj)
+          return Merge::Crm::Account.validate_raw(obj: obj)
         rescue StandardError
           # noop
         end
         raise("Passed value matched no type within the union, validation failed.")
-      end
-
-      # For Union Types, is_a? functionality is delegated to the wrapped member.
-      #
-      # @param obj [Object]
-      # @return [Boolean]
-      def is_a?(obj)
-        @member.is_a?(obj)
       end
     end
   end

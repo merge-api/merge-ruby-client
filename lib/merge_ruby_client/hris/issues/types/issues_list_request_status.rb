@@ -3,8 +3,10 @@
 module Merge
   module Hris
     class Issues
-      # @type [ISSUES_LIST_REQUEST_STATUS]
-      ISSUES_LIST_REQUEST_STATUS = { ongoing: "ONGOING", resolved: "RESOLVED" }.freeze
+      class IssuesListRequestStatus
+        ONGOING = "ONGOING"
+        RESOLVED = "RESOLVED"
+      end
     end
   end
 end
