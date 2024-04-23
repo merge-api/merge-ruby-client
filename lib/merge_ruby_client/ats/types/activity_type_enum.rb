@@ -2,7 +2,13 @@
 
 module Merge
   module Ats
-    # @type [ACTIVITY_TYPE_ENUM]
-    ACTIVITY_TYPE_ENUM = { note: "NOTE", email: "EMAIL", other: "OTHER" }.freeze
+    # - `NOTE` - NOTE
+    #  - `EMAIL` - EMAIL
+    #  - `OTHER` - OTHER
+    class ActivityTypeEnum
+      NOTE = "NOTE"
+      EMAIL = "EMAIL"
+      OTHER = "OTHER"
+    end
   end
 end

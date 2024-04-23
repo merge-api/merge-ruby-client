@@ -2,7 +2,11 @@
 
 module Merge
   module Accounting
-    # @type [POSTING_STATUS_ENUM]
-    POSTING_STATUS_ENUM = { unposted: "UNPOSTED", posted: "POSTED" }.freeze
+    # - `UNPOSTED` - UNPOSTED
+    #  - `POSTED` - POSTED
+    class PostingStatusEnum
+      UNPOSTED = "UNPOSTED"
+      POSTED = "POSTED"
+    end
   end
 end

@@ -2,42 +2,55 @@
 
 require_relative "account_integration"
 require_relative "model_operation"
+require "ostruct"
 require "json"
 
 module Merge
   module Accounting
     # # The AvailableActions Object
-    #
-    # ### Description
-    #
-    # The `Activity` object is used to see all available model/operation combinations for an integration.
-    #
-    # ### Usage Example
-    #
-    # Fetch all the actions available for the `Zenefits` integration.
+    #  ### Description
+    #  The `Activity` object is used to see all available model/operation combinations
+    #  for an integration.
+    #  ### Usage Example
+    #  Fetch all the actions available for the `Zenefits` integration.
     class AvailableActions
-      attr_reader :integration, :passthrough_available, :available_model_operations, :additional_properties
+      # @return [Merge::Accounting::AccountIntegration]
+      attr_reader :integration
+      # @return [Boolean]
+      attr_reader :passthrough_available
+      # @return [Array<Merge::Accounting::ModelOperation>]
+      attr_reader :available_model_operations
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
 
-      # @param integration [Accounting::AccountIntegration]
+      OMIT = Object.new
+
+      # @param integration [Merge::Accounting::AccountIntegration]
       # @param passthrough_available [Boolean]
-      # @param available_model_operations [Array<Accounting::ModelOperation>]
+      # @param available_model_operations [Array<Merge::Accounting::ModelOperation>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Accounting::AvailableActions]
-      def initialize(integration:, passthrough_available:, available_model_operations: nil, additional_properties: nil)
-        # @type [Accounting::AccountIntegration]
+      # @return [Merge::Accounting::AvailableActions]
+      def initialize(integration:, passthrough_available:, available_model_operations: OMIT, additional_properties: nil)
         @integration = integration
-        # @type [Boolean]
         @passthrough_available = passthrough_available
-        # @type [Array<Accounting::ModelOperation>]
-        @available_model_operations = available_model_operations
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @available_model_operations = available_model_operations if available_model_operations != OMIT
         @additional_properties = additional_properties
+        @_field_set = {
+          "integration": integration,
+          "passthrough_available": passthrough_available,
+          "available_model_operations": available_model_operations
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of AvailableActions
       #
-      # @param json_object [JSON]
-      # @return [Accounting::AvailableActions]
+      # @param json_object [String]
+      # @return [Merge::Accounting::AvailableActions]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
@@ -45,34 +58,36 @@ module Merge
           integration = nil
         else
           integration = parsed_json["integration"].to_json
-          integration = Accounting::AccountIntegration.from_json(json_object: integration)
+          integration = Merge::Accounting::AccountIntegration.from_json(json_object: integration)
         end
-        passthrough_available = struct.passthrough_available
+        passthrough_available = struct["passthrough_available"]
         available_model_operations = parsed_json["available_model_operations"]&.map do |v|
           v = v.to_json
-          Accounting::ModelOperation.from_json(json_object: v)
+          Merge::Accounting::ModelOperation.from_json(json_object: v)
         end
-        new(integration: integration, passthrough_available: passthrough_available,
-            available_model_operations: available_model_operations, additional_properties: struct)
+        new(
+          integration: integration,
+          passthrough_available: passthrough_available,
+          available_model_operations: available_model_operations,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of AvailableActions to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        {
-          "integration": @integration,
-          "passthrough_available": @passthrough_available,
-          "available_model_operations": @available_model_operations
-        }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        Accounting::AccountIntegration.validate_raw(obj: obj.integration)
+        Merge::Accounting::AccountIntegration.validate_raw(obj: obj.integration)
         obj.passthrough_available.is_a?(Boolean) != false || raise("Passed value for field obj.passthrough_available is not the expected type, validation failed.")
         obj.available_model_operations&.is_a?(Array) != false || raise("Passed value for field obj.available_model_operations is not the expected type, validation failed.")
       end

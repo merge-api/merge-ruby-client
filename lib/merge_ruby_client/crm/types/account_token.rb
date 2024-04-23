@@ -1,57 +1,72 @@
 # frozen_string_literal: true
 
 require_relative "account_integration"
+require "ostruct"
 require "json"
 
 module Merge
   module Crm
     class AccountToken
-      attr_reader :account_token, :integration, :additional_properties
+      # @return [String]
+      attr_reader :account_token
+      # @return [Merge::Crm::AccountIntegration]
+      attr_reader :integration
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param account_token [String]
-      # @param integration [Crm::AccountIntegration]
+      # @param integration [Merge::Crm::AccountIntegration]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Crm::AccountToken]
+      # @return [Merge::Crm::AccountToken]
       def initialize(account_token:, integration:, additional_properties: nil)
-        # @type [String]
         @account_token = account_token
-        # @type [Crm::AccountIntegration]
         @integration = integration
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
         @additional_properties = additional_properties
+        @_field_set = { "account_token": account_token, "integration": integration }
       end
 
       # Deserialize a JSON object to an instance of AccountToken
       #
-      # @param json_object [JSON]
-      # @return [Crm::AccountToken]
+      # @param json_object [String]
+      # @return [Merge::Crm::AccountToken]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        account_token = struct.account_token
+        account_token = struct["account_token"]
         if parsed_json["integration"].nil?
           integration = nil
         else
           integration = parsed_json["integration"].to_json
-          integration = Crm::AccountIntegration.from_json(json_object: integration)
+          integration = Merge::Crm::AccountIntegration.from_json(json_object: integration)
         end
-        new(account_token: account_token, integration: integration, additional_properties: struct)
+        new(
+          account_token: account_token,
+          integration: integration,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of AccountToken to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "account_token": @account_token, "integration": @integration }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
         obj.account_token.is_a?(String) != false || raise("Passed value for field obj.account_token is not the expected type, validation failed.")
-        Crm::AccountIntegration.validate_raw(obj: obj.integration)
+        Merge::Crm::AccountIntegration.validate_raw(obj: obj.integration)
       end
     end
   end

@@ -2,17 +2,25 @@
 
 module Merge
   module Hris
-    # @type [PAY_FREQUENCY_ENUM]
-    PAY_FREQUENCY_ENUM = {
-      weekly: "WEEKLY",
-      biweekly: "BIWEEKLY",
-      monthly: "MONTHLY",
-      quarterly: "QUARTERLY",
-      semiannually: "SEMIANNUALLY",
-      annually: "ANNUALLY",
-      thirteen_monthly: "THIRTEEN-MONTHLY",
-      pro_rata: "PRO_RATA",
-      semimonthly: "SEMIMONTHLY"
-    }.freeze
+    # - `WEEKLY` - WEEKLY
+    #  - `BIWEEKLY` - BIWEEKLY
+    #  - `MONTHLY` - MONTHLY
+    #  - `QUARTERLY` - QUARTERLY
+    #  - `SEMIANNUALLY` - SEMIANNUALLY
+    #  - `ANNUALLY` - ANNUALLY
+    #  - `THIRTEEN-MONTHLY` - THIRTEEN-MONTHLY
+    #  - `PRO_RATA` - PRO_RATA
+    #  - `SEMIMONTHLY` - SEMIMONTHLY
+    class PayFrequencyEnum
+      WEEKLY = "WEEKLY"
+      BIWEEKLY = "BIWEEKLY"
+      MONTHLY = "MONTHLY"
+      QUARTERLY = "QUARTERLY"
+      SEMIANNUALLY = "SEMIANNUALLY"
+      ANNUALLY = "ANNUALLY"
+      THIRTEEN_MONTHLY = "THIRTEEN-MONTHLY"
+      PRO_RATA = "PRO_RATA"
+      SEMIMONTHLY = "SEMIMONTHLY"
+    end
   end
 end

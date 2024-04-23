@@ -2,314 +2,619 @@
 
 module Merge
   module Hris
-    # @type [PAY_CURRENCY_ENUM]
-    PAY_CURRENCY_ENUM = {
-      xua: "XUA",
-      afn: "AFN",
-      afa: "AFA",
-      all: "ALL",
-      alk: "ALK",
-      dzd: "DZD",
-      adp: "ADP",
-      aoa: "AOA",
-      aok: "AOK",
-      aon: "AON",
-      aor: "AOR",
-      ara: "ARA",
-      ars: "ARS",
-      arm: "ARM",
-      arp: "ARP",
-      arl: "ARL",
-      amd: "AMD",
-      awg: "AWG",
-      aud: "AUD",
-      ats: "ATS",
-      azn: "AZN",
-      azm: "AZM",
-      bsd: "BSD",
-      bhd: "BHD",
-      bdt: "BDT",
-      bbd: "BBD",
-      byn: "BYN",
-      byb: "BYB",
-      byr: "BYR",
-      bef: "BEF",
-      bec: "BEC",
-      bel: "BEL",
-      bzd: "BZD",
-      bmd: "BMD",
-      btn: "BTN",
-      bob: "BOB",
-      bol: "BOL",
-      bov: "BOV",
-      bop: "BOP",
-      bam: "BAM",
-      bad: "BAD",
-      ban: "BAN",
-      bwp: "BWP",
-      brc: "BRC",
-      brz: "BRZ",
-      bre: "BRE",
-      brr: "BRR",
-      brn: "BRN",
-      brb: "BRB",
-      brl: "BRL",
-      gbp: "GBP",
-      bnd: "BND",
-      bgl: "BGL",
-      bgn: "BGN",
-      bgo: "BGO",
-      bgm: "BGM",
-      buk: "BUK",
-      bif: "BIF",
-      xpf: "XPF",
-      khr: "KHR",
-      cad: "CAD",
-      cve: "CVE",
-      kyd: "KYD",
-      xaf: "XAF",
-      cle: "CLE",
-      clp: "CLP",
-      clf: "CLF",
-      cnx: "CNX",
-      cny: "CNY",
-      cnh: "CNH",
-      cop: "COP",
-      cou: "COU",
-      kmf: "KMF",
-      cdf: "CDF",
-      crc: "CRC",
-      hrd: "HRD",
-      hrk: "HRK",
-      cuc: "CUC",
-      cup: "CUP",
-      cyp: "CYP",
-      czk: "CZK",
-      csk: "CSK",
-      dkk: "DKK",
-      djf: "DJF",
-      dop: "DOP",
-      nlg: "NLG",
-      xcd: "XCD",
-      ddm: "DDM",
-      ecs: "ECS",
-      ecv: "ECV",
-      egp: "EGP",
-      gqe: "GQE",
-      ern: "ERN",
-      eek: "EEK",
-      etb: "ETB",
-      eur: "EUR",
-      xba: "XBA",
-      xeu: "XEU",
-      xbb: "XBB",
-      xbc: "XBC",
-      xbd: "XBD",
-      fkp: "FKP",
-      fjd: "FJD",
-      fim: "FIM",
-      frf: "FRF",
-      xfo: "XFO",
-      xfu: "XFU",
-      gmd: "GMD",
-      gek: "GEK",
-      gel: "GEL",
-      dem: "DEM",
-      ghs: "GHS",
-      ghc: "GHC",
-      gip: "GIP",
-      xau: "XAU",
-      grd: "GRD",
-      gtq: "GTQ",
-      gwp: "GWP",
-      gnf: "GNF",
-      gns: "GNS",
-      gyd: "GYD",
-      htg: "HTG",
-      hnl: "HNL",
-      hkd: "HKD",
-      huf: "HUF",
-      imp: "IMP",
-      isk: "ISK",
-      isj: "ISJ",
-      inr: "INR",
-      idr: "IDR",
-      irr: "IRR",
-      iqd: "IQD",
-      iep: "IEP",
-      ils: "ILS",
-      ilp: "ILP",
-      ilr: "ILR",
-      itl: "ITL",
-      jmd: "JMD",
-      jpy: "JPY",
-      jod: "JOD",
-      kzt: "KZT",
-      kes: "KES",
-      kwd: "KWD",
-      kgs: "KGS",
-      lak: "LAK",
-      lvl: "LVL",
-      lvr: "LVR",
-      lbp: "LBP",
-      lsl: "LSL",
-      lrd: "LRD",
-      lyd: "LYD",
-      ltl: "LTL",
-      ltt: "LTT",
-      lul: "LUL",
-      luc: "LUC",
-      luf: "LUF",
-      mop: "MOP",
-      mkd: "MKD",
-      mkn: "MKN",
-      mga: "MGA",
-      mgf: "MGF",
-      mwk: "MWK",
-      myr: "MYR",
-      mvr: "MVR",
-      mvp: "MVP",
-      mlf: "MLF",
-      mtl: "MTL",
-      mtp: "MTP",
-      mru: "MRU",
-      mro: "MRO",
-      mur: "MUR",
-      mxv: "MXV",
-      mxn: "MXN",
-      mxp: "MXP",
-      mdc: "MDC",
-      mdl: "MDL",
-      mcf: "MCF",
-      mnt: "MNT",
-      mad: "MAD",
-      maf: "MAF",
-      mze: "MZE",
-      mzn: "MZN",
-      mzm: "MZM",
-      mmk: "MMK",
-      nad: "NAD",
-      npr: "NPR",
-      ang: "ANG",
-      twd: "TWD",
-      nzd: "NZD",
-      nio: "NIO",
-      nic: "NIC",
-      ngn: "NGN",
-      kpw: "KPW",
-      nok: "NOK",
-      omr: "OMR",
-      pkr: "PKR",
-      xpd: "XPD",
-      pab: "PAB",
-      pgk: "PGK",
-      pyg: "PYG",
-      pei: "PEI",
-      pen: "PEN",
-      pes: "PES",
-      php: "PHP",
-      xpt: "XPT",
-      pln: "PLN",
-      plz: "PLZ",
-      pte: "PTE",
-      gwe: "GWE",
-      qar: "QAR",
-      xre: "XRE",
-      rhd: "RHD",
-      ron: "RON",
-      rol: "ROL",
-      rub: "RUB",
-      rur: "RUR",
-      rwf: "RWF",
-      svc: "SVC",
-      wst: "WST",
-      sar: "SAR",
-      rsd: "RSD",
-      csd: "CSD",
-      scr: "SCR",
-      sll: "SLL",
-      xag: "XAG",
-      sgd: "SGD",
-      skk: "SKK",
-      sit: "SIT",
-      sbd: "SBD",
-      sos: "SOS",
-      zar: "ZAR",
-      zal: "ZAL",
-      krh: "KRH",
-      krw: "KRW",
-      kro: "KRO",
-      ssp: "SSP",
-      sur: "SUR",
-      esp: "ESP",
-      esa: "ESA",
-      esb: "ESB",
-      xdr: "XDR",
-      lkr: "LKR",
-      shp: "SHP",
-      xsu: "XSU",
-      sdd: "SDD",
-      sdg: "SDG",
-      sdp: "SDP",
-      srd: "SRD",
-      srg: "SRG",
-      szl: "SZL",
-      sek: "SEK",
-      chf: "CHF",
-      syp: "SYP",
-      stn: "STN",
-      std: "STD",
-      tvd: "TVD",
-      tjr: "TJR",
-      tjs: "TJS",
-      tzs: "TZS",
-      xts: "XTS",
-      thb: "THB",
-      xxx: "XXX",
-      tpe: "TPE",
-      top: "TOP",
-      ttd: "TTD",
-      tnd: "TND",
-      try: "TRY",
-      trl: "TRL",
-      tmt: "TMT",
-      tmm: "TMM",
-      usd: "USD",
-      usn: "USN",
-      uss: "USS",
-      ugx: "UGX",
-      ugs: "UGS",
-      uah: "UAH",
-      uak: "UAK",
-      aed: "AED",
-      uyw: "UYW",
-      uyu: "UYU",
-      uyp: "UYP",
-      uyi: "UYI",
-      uzs: "UZS",
-      vuv: "VUV",
-      ves: "VES",
-      veb: "VEB",
-      vef: "VEF",
-      vnd: "VND",
-      vnn: "VNN",
-      che: "CHE",
-      chw: "CHW",
-      xof: "XOF",
-      ydd: "YDD",
-      yer: "YER",
-      yun: "YUN",
-      yud: "YUD",
-      yum: "YUM",
-      yur: "YUR",
-      zwn: "ZWN",
-      zrn: "ZRN",
-      zrz: "ZRZ",
-      zmw: "ZMW",
-      zmk: "ZMK",
-      zwd: "ZWD",
-      zwr: "ZWR",
-      zwl: "ZWL"
-    }.freeze
+    # - `XUA` - ADB Unit of Account
+    #  - `AFN` - Afghan Afghani
+    #  - `AFA` - Afghan Afghani (1927–2002)
+    #  - `ALL` - Albanian Lek
+    #  - `ALK` - Albanian Lek (1946–1965)
+    #  - `DZD` - Algerian Dinar
+    #  - `ADP` - Andorran Peseta
+    #  - `AOA` - Angolan Kwanza
+    #  - `AOK` - Angolan Kwanza (1977–1991)
+    #  - `AON` - Angolan New Kwanza (1990–2000)
+    #  - `AOR` - Angolan Readjusted Kwanza (1995–1999)
+    #  - `ARA` - Argentine Austral
+    #  - `ARS` - Argentine Peso
+    #  - `ARM` - Argentine Peso (1881–1970)
+    #  - `ARP` - Argentine Peso (1983–1985)
+    #  - `ARL` - Argentine Peso Ley (1970–1983)
+    #  - `AMD` - Armenian Dram
+    #  - `AWG` - Aruban Florin
+    #  - `AUD` - Australian Dollar
+    #  - `ATS` - Austrian Schilling
+    #  - `AZN` - Azerbaijani Manat
+    #  - `AZM` - Azerbaijani Manat (1993–2006)
+    #  - `BSD` - Bahamian Dollar
+    #  - `BHD` - Bahraini Dinar
+    #  - `BDT` - Bangladeshi Taka
+    #  - `BBD` - Barbadian Dollar
+    #  - `BYN` - Belarusian Ruble
+    #  - `BYB` - Belarusian Ruble (1994–1999)
+    #  - `BYR` - Belarusian Ruble (2000–2016)
+    #  - `BEF` - Belgian Franc
+    #  - `BEC` - Belgian Franc (convertible)
+    #  - `BEL` - Belgian Franc (financial)
+    #  - `BZD` - Belize Dollar
+    #  - `BMD` - Bermudan Dollar
+    #  - `BTN` - Bhutanese Ngultrum
+    #  - `BOB` - Bolivian Boliviano
+    #  - `BOL` - Bolivian Boliviano (1863–1963)
+    #  - `BOV` - Bolivian Mvdol
+    #  - `BOP` - Bolivian Peso
+    #  - `BAM` - Bosnia-Herzegovina Convertible Mark
+    #  - `BAD` - Bosnia-Herzegovina Dinar (1992–1994)
+    #  - `BAN` - Bosnia-Herzegovina New Dinar (1994–1997)
+    #  - `BWP` - Botswanan Pula
+    #  - `BRC` - Brazilian Cruzado (1986–1989)
+    #  - `BRZ` - Brazilian Cruzeiro (1942–1967)
+    #  - `BRE` - Brazilian Cruzeiro (1990–1993)
+    #  - `BRR` - Brazilian Cruzeiro (1993–1994)
+    #  - `BRN` - Brazilian New Cruzado (1989–1990)
+    #  - `BRB` - Brazilian New Cruzeiro (1967–1986)
+    #  - `BRL` - Brazilian Real
+    #  - `GBP` - British Pound
+    #  - `BND` - Brunei Dollar
+    #  - `BGL` - Bulgarian Hard Lev
+    #  - `BGN` - Bulgarian Lev
+    #  - `BGO` - Bulgarian Lev (1879–1952)
+    #  - `BGM` - Bulgarian Socialist Lev
+    #  - `BUK` - Burmese Kyat
+    #  - `BIF` - Burundian Franc
+    #  - `XPF` - CFP Franc
+    #  - `KHR` - Cambodian Riel
+    #  - `CAD` - Canadian Dollar
+    #  - `CVE` - Cape Verdean Escudo
+    #  - `KYD` - Cayman Islands Dollar
+    #  - `XAF` - Central African CFA Franc
+    #  - `CLE` - Chilean Escudo
+    #  - `CLP` - Chilean Peso
+    #  - `CLF` - Chilean Unit of Account (UF)
+    #  - `CNX` - Chinese People’s Bank Dollar
+    #  - `CNY` - Chinese Yuan
+    #  - `CNH` - Chinese Yuan (offshore)
+    #  - `COP` - Colombian Peso
+    #  - `COU` - Colombian Real Value Unit
+    #  - `KMF` - Comorian Franc
+    #  - `CDF` - Congolese Franc
+    #  - `CRC` - Costa Rican Colón
+    #  - `HRD` - Croatian Dinar
+    #  - `HRK` - Croatian Kuna
+    #  - `CUC` - Cuban Convertible Peso
+    #  - `CUP` - Cuban Peso
+    #  - `CYP` - Cypriot Pound
+    #  - `CZK` - Czech Koruna
+    #  - `CSK` - Czechoslovak Hard Koruna
+    #  - `DKK` - Danish Krone
+    #  - `DJF` - Djiboutian Franc
+    #  - `DOP` - Dominican Peso
+    #  - `NLG` - Dutch Guilder
+    #  - `XCD` - East Caribbean Dollar
+    #  - `DDM` - East German Mark
+    #  - `ECS` - Ecuadorian Sucre
+    #  - `ECV` - Ecuadorian Unit of Constant Value
+    #  - `EGP` - Egyptian Pound
+    #  - `GQE` - Equatorial Guinean Ekwele
+    #  - `ERN` - Eritrean Nakfa
+    #  - `EEK` - Estonian Kroon
+    #  - `ETB` - Ethiopian Birr
+    #  - `EUR` - Euro
+    #  - `XBA` - European Composite Unit
+    #  - `XEU` - European Currency Unit
+    #  - `XBB` - European Monetary Unit
+    #  - `XBC` - European Unit of Account (XBC)
+    #  - `XBD` - European Unit of Account (XBD)
+    #  - `FKP` - Falkland Islands Pound
+    #  - `FJD` - Fijian Dollar
+    #  - `FIM` - Finnish Markka
+    #  - `FRF` - French Franc
+    #  - `XFO` - French Gold Franc
+    #  - `XFU` - French UIC-Franc
+    #  - `GMD` - Gambian Dalasi
+    #  - `GEK` - Georgian Kupon Larit
+    #  - `GEL` - Georgian Lari
+    #  - `DEM` - German Mark
+    #  - `GHS` - Ghanaian Cedi
+    #  - `GHC` - Ghanaian Cedi (1979–2007)
+    #  - `GIP` - Gibraltar Pound
+    #  - `XAU` - Gold
+    #  - `GRD` - Greek Drachma
+    #  - `GTQ` - Guatemalan Quetzal
+    #  - `GWP` - Guinea-Bissau Peso
+    #  - `GNF` - Guinean Franc
+    #  - `GNS` - Guinean Syli
+    #  - `GYD` - Guyanaese Dollar
+    #  - `HTG` - Haitian Gourde
+    #  - `HNL` - Honduran Lempira
+    #  - `HKD` - Hong Kong Dollar
+    #  - `HUF` - Hungarian Forint
+    #  - `IMP` - IMP
+    #  - `ISK` - Icelandic Króna
+    #  - `ISJ` - Icelandic Króna (1918–1981)
+    #  - `INR` - Indian Rupee
+    #  - `IDR` - Indonesian Rupiah
+    #  - `IRR` - Iranian Rial
+    #  - `IQD` - Iraqi Dinar
+    #  - `IEP` - Irish Pound
+    #  - `ILS` - Israeli New Shekel
+    #  - `ILP` - Israeli Pound
+    #  - `ILR` - Israeli Shekel (1980–1985)
+    #  - `ITL` - Italian Lira
+    #  - `JMD` - Jamaican Dollar
+    #  - `JPY` - Japanese Yen
+    #  - `JOD` - Jordanian Dinar
+    #  - `KZT` - Kazakhstani Tenge
+    #  - `KES` - Kenyan Shilling
+    #  - `KWD` - Kuwaiti Dinar
+    #  - `KGS` - Kyrgystani Som
+    #  - `LAK` - Laotian Kip
+    #  - `LVL` - Latvian Lats
+    #  - `LVR` - Latvian Ruble
+    #  - `LBP` - Lebanese Pound
+    #  - `LSL` - Lesotho Loti
+    #  - `LRD` - Liberian Dollar
+    #  - `LYD` - Libyan Dinar
+    #  - `LTL` - Lithuanian Litas
+    #  - `LTT` - Lithuanian Talonas
+    #  - `LUL` - Luxembourg Financial Franc
+    #  - `LUC` - Luxembourgian Convertible Franc
+    #  - `LUF` - Luxembourgian Franc
+    #  - `MOP` - Macanese Pataca
+    #  - `MKD` - Macedonian Denar
+    #  - `MKN` - Macedonian Denar (1992–1993)
+    #  - `MGA` - Malagasy Ariary
+    #  - `MGF` - Malagasy Franc
+    #  - `MWK` - Malawian Kwacha
+    #  - `MYR` - Malaysian Ringgit
+    #  - `MVR` - Maldivian Rufiyaa
+    #  - `MVP` - Maldivian Rupee (1947–1981)
+    #  - `MLF` - Malian Franc
+    #  - `MTL` - Maltese Lira
+    #  - `MTP` - Maltese Pound
+    #  - `MRU` - Mauritanian Ouguiya
+    #  - `MRO` - Mauritanian Ouguiya (1973–2017)
+    #  - `MUR` - Mauritian Rupee
+    #  - `MXV` - Mexican Investment Unit
+    #  - `MXN` - Mexican Peso
+    #  - `MXP` - Mexican Silver Peso (1861–1992)
+    #  - `MDC` - Moldovan Cupon
+    #  - `MDL` - Moldovan Leu
+    #  - `MCF` - Monegasque Franc
+    #  - `MNT` - Mongolian Tugrik
+    #  - `MAD` - Moroccan Dirham
+    #  - `MAF` - Moroccan Franc
+    #  - `MZE` - Mozambican Escudo
+    #  - `MZN` - Mozambican Metical
+    #  - `MZM` - Mozambican Metical (1980–2006)
+    #  - `MMK` - Myanmar Kyat
+    #  - `NAD` - Namibian Dollar
+    #  - `NPR` - Nepalese Rupee
+    #  - `ANG` - Netherlands Antillean Guilder
+    #  - `TWD` - New Taiwan Dollar
+    #  - `NZD` - New Zealand Dollar
+    #  - `NIO` - Nicaraguan Córdoba
+    #  - `NIC` - Nicaraguan Córdoba (1988–1991)
+    #  - `NGN` - Nigerian Naira
+    #  - `KPW` - North Korean Won
+    #  - `NOK` - Norwegian Krone
+    #  - `OMR` - Omani Rial
+    #  - `PKR` - Pakistani Rupee
+    #  - `XPD` - Palladium
+    #  - `PAB` - Panamanian Balboa
+    #  - `PGK` - Papua New Guinean Kina
+    #  - `PYG` - Paraguayan Guarani
+    #  - `PEI` - Peruvian Inti
+    #  - `PEN` - Peruvian Sol
+    #  - `PES` - Peruvian Sol (1863–1965)
+    #  - `PHP` - Philippine Peso
+    #  - `XPT` - Platinum
+    #  - `PLN` - Polish Zloty
+    #  - `PLZ` - Polish Zloty (1950–1995)
+    #  - `PTE` - Portuguese Escudo
+    #  - `GWE` - Portuguese Guinea Escudo
+    #  - `QAR` - Qatari Rial
+    #  - `XRE` - RINET Funds
+    #  - `RHD` - Rhodesian Dollar
+    #  - `RON` - Romanian Leu
+    #  - `ROL` - Romanian Leu (1952–2006)
+    #  - `RUB` - Russian Ruble
+    #  - `RUR` - Russian Ruble (1991–1998)
+    #  - `RWF` - Rwandan Franc
+    #  - `SVC` - Salvadoran Colón
+    #  - `WST` - Samoan Tala
+    #  - `SAR` - Saudi Riyal
+    #  - `RSD` - Serbian Dinar
+    #  - `CSD` - Serbian Dinar (2002–2006)
+    #  - `SCR` - Seychellois Rupee
+    #  - `SLL` - Sierra Leonean Leone
+    #  - `XAG` - Silver
+    #  - `SGD` - Singapore Dollar
+    #  - `SKK` - Slovak Koruna
+    #  - `SIT` - Slovenian Tolar
+    #  - `SBD` - Solomon Islands Dollar
+    #  - `SOS` - Somali Shilling
+    #  - `ZAR` - South African Rand
+    #  - `ZAL` - South African Rand (financial)
+    #  - `KRH` - South Korean Hwan (1953–1962)
+    #  - `KRW` - South Korean Won
+    #  - `KRO` - South Korean Won (1945–1953)
+    #  - `SSP` - South Sudanese Pound
+    #  - `SUR` - Soviet Rouble
+    #  - `ESP` - Spanish Peseta
+    #  - `ESA` - Spanish Peseta (A account)
+    #  - `ESB` - Spanish Peseta (convertible account)
+    #  - `XDR` - Special Drawing Rights
+    #  - `LKR` - Sri Lankan Rupee
+    #  - `SHP` - St. Helena Pound
+    #  - `XSU` - Sucre
+    #  - `SDD` - Sudanese Dinar (1992–2007)
+    #  - `SDG` - Sudanese Pound
+    #  - `SDP` - Sudanese Pound (1957–1998)
+    #  - `SRD` - Surinamese Dollar
+    #  - `SRG` - Surinamese Guilder
+    #  - `SZL` - Swazi Lilangeni
+    #  - `SEK` - Swedish Krona
+    #  - `CHF` - Swiss Franc
+    #  - `SYP` - Syrian Pound
+    #  - `STN` - São Tomé & Príncipe Dobra
+    #  - `STD` - São Tomé & Príncipe Dobra (1977–2017)
+    #  - `TVD` - TVD
+    #  - `TJR` - Tajikistani Ruble
+    #  - `TJS` - Tajikistani Somoni
+    #  - `TZS` - Tanzanian Shilling
+    #  - `XTS` - Testing Currency Code
+    #  - `THB` - Thai Baht
+    #  - `XXX` - The codes assigned for transactions where no currency is involved
+    #  - `TPE` - Timorese Escudo
+    #  - `TOP` - Tongan Paʻanga
+    #  - `TTD` - Trinidad & Tobago Dollar
+    #  - `TND` - Tunisian Dinar
+    #  - `TRY` - Turkish Lira
+    #  - `TRL` - Turkish Lira (1922–2005)
+    #  - `TMT` - Turkmenistani Manat
+    #  - `TMM` - Turkmenistani Manat (1993–2009)
+    #  - `USD` - US Dollar
+    #  - `USN` - US Dollar (Next day)
+    #  - `USS` - US Dollar (Same day)
+    #  - `UGX` - Ugandan Shilling
+    #  - `UGS` - Ugandan Shilling (1966–1987)
+    #  - `UAH` - Ukrainian Hryvnia
+    #  - `UAK` - Ukrainian Karbovanets
+    #  - `AED` - United Arab Emirates Dirham
+    #  - `UYW` - Uruguayan Nominal Wage Index Unit
+    #  - `UYU` - Uruguayan Peso
+    #  - `UYP` - Uruguayan Peso (1975–1993)
+    #  - `UYI` - Uruguayan Peso (Indexed Units)
+    #  - `UZS` - Uzbekistani Som
+    #  - `VUV` - Vanuatu Vatu
+    #  - `VES` - Venezuelan Bolívar
+    #  - `VEB` - Venezuelan Bolívar (1871–2008)
+    #  - `VEF` - Venezuelan Bolívar (2008–2018)
+    #  - `VND` - Vietnamese Dong
+    #  - `VNN` - Vietnamese Dong (1978–1985)
+    #  - `CHE` - WIR Euro
+    #  - `CHW` - WIR Franc
+    #  - `XOF` - West African CFA Franc
+    #  - `YDD` - Yemeni Dinar
+    #  - `YER` - Yemeni Rial
+    #  - `YUN` - Yugoslavian Convertible Dinar (1990–1992)
+    #  - `YUD` - Yugoslavian Hard Dinar (1966–1990)
+    #  - `YUM` - Yugoslavian New Dinar (1994–2002)
+    #  - `YUR` - Yugoslavian Reformed Dinar (1992–1993)
+    #  - `ZWN` - ZWN
+    #  - `ZRN` - Zairean New Zaire (1993–1998)
+    #  - `ZRZ` - Zairean Zaire (1971–1993)
+    #  - `ZMW` - Zambian Kwacha
+    #  - `ZMK` - Zambian Kwacha (1968–2012)
+    #  - `ZWD` - Zimbabwean Dollar (1980–2008)
+    #  - `ZWR` - Zimbabwean Dollar (2008)
+    #  - `ZWL` - Zimbabwean Dollar (2009)
+    class PayCurrencyEnum
+      XUA = "XUA"
+      AFN = "AFN"
+      AFA = "AFA"
+      ALL = "ALL"
+      ALK = "ALK"
+      DZD = "DZD"
+      ADP = "ADP"
+      AOA = "AOA"
+      AOK = "AOK"
+      AON = "AON"
+      AOR = "AOR"
+      ARA = "ARA"
+      ARS = "ARS"
+      ARM = "ARM"
+      ARP = "ARP"
+      ARL = "ARL"
+      AMD = "AMD"
+      AWG = "AWG"
+      AUD = "AUD"
+      ATS = "ATS"
+      AZN = "AZN"
+      AZM = "AZM"
+      BSD = "BSD"
+      BHD = "BHD"
+      BDT = "BDT"
+      BBD = "BBD"
+      BYN = "BYN"
+      BYB = "BYB"
+      BYR = "BYR"
+      BEF = "BEF"
+      BEC = "BEC"
+      BEL = "BEL"
+      BZD = "BZD"
+      BMD = "BMD"
+      BTN = "BTN"
+      BOB = "BOB"
+      BOL = "BOL"
+      BOV = "BOV"
+      BOP = "BOP"
+      BAM = "BAM"
+      BAD = "BAD"
+      BAN = "BAN"
+      BWP = "BWP"
+      BRC = "BRC"
+      BRZ = "BRZ"
+      BRE = "BRE"
+      BRR = "BRR"
+      BRN = "BRN"
+      BRB = "BRB"
+      BRL = "BRL"
+      GBP = "GBP"
+      BND = "BND"
+      BGL = "BGL"
+      BGN = "BGN"
+      BGO = "BGO"
+      BGM = "BGM"
+      BUK = "BUK"
+      BIF = "BIF"
+      XPF = "XPF"
+      KHR = "KHR"
+      CAD = "CAD"
+      CVE = "CVE"
+      KYD = "KYD"
+      XAF = "XAF"
+      CLE = "CLE"
+      CLP = "CLP"
+      CLF = "CLF"
+      CNX = "CNX"
+      CNY = "CNY"
+      CNH = "CNH"
+      COP = "COP"
+      COU = "COU"
+      KMF = "KMF"
+      CDF = "CDF"
+      CRC = "CRC"
+      HRD = "HRD"
+      HRK = "HRK"
+      CUC = "CUC"
+      CUP = "CUP"
+      CYP = "CYP"
+      CZK = "CZK"
+      CSK = "CSK"
+      DKK = "DKK"
+      DJF = "DJF"
+      DOP = "DOP"
+      NLG = "NLG"
+      XCD = "XCD"
+      DDM = "DDM"
+      ECS = "ECS"
+      ECV = "ECV"
+      EGP = "EGP"
+      GQE = "GQE"
+      ERN = "ERN"
+      EEK = "EEK"
+      ETB = "ETB"
+      EUR = "EUR"
+      XBA = "XBA"
+      XEU = "XEU"
+      XBB = "XBB"
+      XBC = "XBC"
+      XBD = "XBD"
+      FKP = "FKP"
+      FJD = "FJD"
+      FIM = "FIM"
+      FRF = "FRF"
+      XFO = "XFO"
+      XFU = "XFU"
+      GMD = "GMD"
+      GEK = "GEK"
+      GEL = "GEL"
+      DEM = "DEM"
+      GHS = "GHS"
+      GHC = "GHC"
+      GIP = "GIP"
+      XAU = "XAU"
+      GRD = "GRD"
+      GTQ = "GTQ"
+      GWP = "GWP"
+      GNF = "GNF"
+      GNS = "GNS"
+      GYD = "GYD"
+      HTG = "HTG"
+      HNL = "HNL"
+      HKD = "HKD"
+      HUF = "HUF"
+      IMP = "IMP"
+      ISK = "ISK"
+      ISJ = "ISJ"
+      INR = "INR"
+      IDR = "IDR"
+      IRR = "IRR"
+      IQD = "IQD"
+      IEP = "IEP"
+      ILS = "ILS"
+      ILP = "ILP"
+      ILR = "ILR"
+      ITL = "ITL"
+      JMD = "JMD"
+      JPY = "JPY"
+      JOD = "JOD"
+      KZT = "KZT"
+      KES = "KES"
+      KWD = "KWD"
+      KGS = "KGS"
+      LAK = "LAK"
+      LVL = "LVL"
+      LVR = "LVR"
+      LBP = "LBP"
+      LSL = "LSL"
+      LRD = "LRD"
+      LYD = "LYD"
+      LTL = "LTL"
+      LTT = "LTT"
+      LUL = "LUL"
+      LUC = "LUC"
+      LUF = "LUF"
+      MOP = "MOP"
+      MKD = "MKD"
+      MKN = "MKN"
+      MGA = "MGA"
+      MGF = "MGF"
+      MWK = "MWK"
+      MYR = "MYR"
+      MVR = "MVR"
+      MVP = "MVP"
+      MLF = "MLF"
+      MTL = "MTL"
+      MTP = "MTP"
+      MRU = "MRU"
+      MRO = "MRO"
+      MUR = "MUR"
+      MXV = "MXV"
+      MXN = "MXN"
+      MXP = "MXP"
+      MDC = "MDC"
+      MDL = "MDL"
+      MCF = "MCF"
+      MNT = "MNT"
+      MAD = "MAD"
+      MAF = "MAF"
+      MZE = "MZE"
+      MZN = "MZN"
+      MZM = "MZM"
+      MMK = "MMK"
+      NAD = "NAD"
+      NPR = "NPR"
+      ANG = "ANG"
+      TWD = "TWD"
+      NZD = "NZD"
+      NIO = "NIO"
+      NIC = "NIC"
+      NGN = "NGN"
+      KPW = "KPW"
+      NOK = "NOK"
+      OMR = "OMR"
+      PKR = "PKR"
+      XPD = "XPD"
+      PAB = "PAB"
+      PGK = "PGK"
+      PYG = "PYG"
+      PEI = "PEI"
+      PEN = "PEN"
+      PES = "PES"
+      PHP = "PHP"
+      XPT = "XPT"
+      PLN = "PLN"
+      PLZ = "PLZ"
+      PTE = "PTE"
+      GWE = "GWE"
+      QAR = "QAR"
+      XRE = "XRE"
+      RHD = "RHD"
+      RON = "RON"
+      ROL = "ROL"
+      RUB = "RUB"
+      RUR = "RUR"
+      RWF = "RWF"
+      SVC = "SVC"
+      WST = "WST"
+      SAR = "SAR"
+      RSD = "RSD"
+      CSD = "CSD"
+      SCR = "SCR"
+      SLL = "SLL"
+      XAG = "XAG"
+      SGD = "SGD"
+      SKK = "SKK"
+      SIT = "SIT"
+      SBD = "SBD"
+      SOS = "SOS"
+      ZAR = "ZAR"
+      ZAL = "ZAL"
+      KRH = "KRH"
+      KRW = "KRW"
+      KRO = "KRO"
+      SSP = "SSP"
+      SUR = "SUR"
+      ESP = "ESP"
+      ESA = "ESA"
+      ESB = "ESB"
+      XDR = "XDR"
+      LKR = "LKR"
+      SHP = "SHP"
+      XSU = "XSU"
+      SDD = "SDD"
+      SDG = "SDG"
+      SDP = "SDP"
+      SRD = "SRD"
+      SRG = "SRG"
+      SZL = "SZL"
+      SEK = "SEK"
+      CHF = "CHF"
+      SYP = "SYP"
+      STN = "STN"
+      STD = "STD"
+      TVD = "TVD"
+      TJR = "TJR"
+      TJS = "TJS"
+      TZS = "TZS"
+      XTS = "XTS"
+      THB = "THB"
+      XXX = "XXX"
+      TPE = "TPE"
+      TOP = "TOP"
+      TTD = "TTD"
+      TND = "TND"
+      TRY = "TRY"
+      TRL = "TRL"
+      TMT = "TMT"
+      TMM = "TMM"
+      USD = "USD"
+      USN = "USN"
+      USS = "USS"
+      UGX = "UGX"
+      UGS = "UGS"
+      UAH = "UAH"
+      UAK = "UAK"
+      AED = "AED"
+      UYW = "UYW"
+      UYU = "UYU"
+      UYP = "UYP"
+      UYI = "UYI"
+      UZS = "UZS"
+      VUV = "VUV"
+      VES = "VES"
+      VEB = "VEB"
+      VEF = "VEF"
+      VND = "VND"
+      VNN = "VNN"
+      CHE = "CHE"
+      CHW = "CHW"
+      XOF = "XOF"
+      YDD = "YDD"
+      YER = "YER"
+      YUN = "YUN"
+      YUD = "YUD"
+      YUM = "YUM"
+      YUR = "YUR"
+      ZWN = "ZWN"
+      ZRN = "ZRN"
+      ZRZ = "ZRZ"
+      ZMW = "ZMW"
+      ZMK = "ZMK"
+      ZWD = "ZWD"
+      ZWR = "ZWR"
+      ZWL = "ZWL"
+    end
   end
 end

@@ -3,8 +3,11 @@
 module Merge
   module Crm
     class Contacts
-      # @type [CONTACTS_LIST_REQUEST_EXPAND]
-      CONTACTS_LIST_REQUEST_EXPAND = { account: "account", account_owner: "account,owner", owner: "owner" }.freeze
+      class ContactsListRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_OWNER = "account,owner"
+        OWNER = "owner"
+      end
     end
   end
 end

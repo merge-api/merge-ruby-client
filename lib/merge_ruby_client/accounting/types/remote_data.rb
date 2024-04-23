@@ -1,45 +1,61 @@
 # frozen_string_literal: true
 
+require "ostruct"
 require "json"
 
 module Merge
   module Accounting
     class RemoteData
-      attr_reader :path, :data, :additional_properties
+      # @return [String]
+      attr_reader :path
+      # @return [Object]
+      attr_reader :data
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param path [String]
       # @param data [Object]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Accounting::RemoteData]
-      def initialize(path:, data: nil, additional_properties: nil)
-        # @type [String]
+      # @return [Merge::Accounting::RemoteData]
+      def initialize(path:, data: OMIT, additional_properties: nil)
         @path = path
-        # @type [Object]
-        @data = data
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @data = data if data != OMIT
         @additional_properties = additional_properties
+        @_field_set = { "path": path, "data": data }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of RemoteData
       #
-      # @param json_object [JSON]
-      # @return [Accounting::RemoteData]
+      # @param json_object [String]
+      # @return [Merge::Accounting::RemoteData]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        JSON.parse(json_object)
-        path = struct.path
-        data = struct.data
-        new(path: path, data: data, additional_properties: struct)
+        path = struct["path"]
+        data = struct["data"]
+        new(
+          path: path,
+          data: data,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of RemoteData to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "path": @path, "data": @data }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]

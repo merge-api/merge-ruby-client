@@ -4,36 +4,49 @@ require_relative "accounting_attachment"
 require_relative "warning_validation_problem"
 require_relative "error_validation_problem"
 require_relative "debug_mode_log"
+require "ostruct"
 require "json"
 
 module Merge
   module Accounting
     class AccountingAttachmentResponse
-      attr_reader :model, :warnings, :errors, :logs, :additional_properties
+      # @return [Merge::Accounting::AccountingAttachment]
+      attr_reader :model
+      # @return [Array<Merge::Accounting::WarningValidationProblem>]
+      attr_reader :warnings
+      # @return [Array<Merge::Accounting::ErrorValidationProblem>]
+      attr_reader :errors
+      # @return [Array<Merge::Accounting::DebugModeLog>]
+      attr_reader :logs
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
 
-      # @param model [Accounting::AccountingAttachment]
-      # @param warnings [Array<Accounting::WarningValidationProblem>]
-      # @param errors [Array<Accounting::ErrorValidationProblem>]
-      # @param logs [Array<Accounting::DebugModeLog>]
+      OMIT = Object.new
+
+      # @param model [Merge::Accounting::AccountingAttachment]
+      # @param warnings [Array<Merge::Accounting::WarningValidationProblem>]
+      # @param errors [Array<Merge::Accounting::ErrorValidationProblem>]
+      # @param logs [Array<Merge::Accounting::DebugModeLog>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Accounting::AccountingAttachmentResponse]
-      def initialize(model:, warnings:, errors:, logs: nil, additional_properties: nil)
-        # @type [Accounting::AccountingAttachment]
+      # @return [Merge::Accounting::AccountingAttachmentResponse]
+      def initialize(model:, warnings:, errors:, logs: OMIT, additional_properties: nil)
         @model = model
-        # @type [Array<Accounting::WarningValidationProblem>]
         @warnings = warnings
-        # @type [Array<Accounting::ErrorValidationProblem>]
         @errors = errors
-        # @type [Array<Accounting::DebugModeLog>]
-        @logs = logs
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @logs = logs if logs != OMIT
         @additional_properties = additional_properties
+        @_field_set = { "model": model, "warnings": warnings, "errors": errors, "logs": logs }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of AccountingAttachmentResponse
       #
-      # @param json_object [JSON]
-      # @return [Accounting::AccountingAttachmentResponse]
+      # @param json_object [String]
+      # @return [Merge::Accounting::AccountingAttachmentResponse]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
@@ -41,36 +54,44 @@ module Merge
           model = nil
         else
           model = parsed_json["model"].to_json
-          model = Accounting::AccountingAttachment.from_json(json_object: model)
+          model = Merge::Accounting::AccountingAttachment.from_json(json_object: model)
         end
         warnings = parsed_json["warnings"]&.map do |v|
           v = v.to_json
-          Accounting::WarningValidationProblem.from_json(json_object: v)
+          Merge::Accounting::WarningValidationProblem.from_json(json_object: v)
         end
         errors = parsed_json["errors"]&.map do |v|
           v = v.to_json
-          Accounting::ErrorValidationProblem.from_json(json_object: v)
+          Merge::Accounting::ErrorValidationProblem.from_json(json_object: v)
         end
         logs = parsed_json["logs"]&.map do |v|
           v = v.to_json
-          Accounting::DebugModeLog.from_json(json_object: v)
+          Merge::Accounting::DebugModeLog.from_json(json_object: v)
         end
-        new(model: model, warnings: warnings, errors: errors, logs: logs, additional_properties: struct)
+        new(
+          model: model,
+          warnings: warnings,
+          errors: errors,
+          logs: logs,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of AccountingAttachmentResponse to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "model": @model, "warnings": @warnings, "errors": @errors, "logs": @logs }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        Accounting::AccountingAttachment.validate_raw(obj: obj.model)
+        Merge::Accounting::AccountingAttachment.validate_raw(obj: obj.model)
         obj.warnings.is_a?(Array) != false || raise("Passed value for field obj.warnings is not the expected type, validation failed.")
         obj.errors.is_a?(Array) != false || raise("Passed value for field obj.errors is not the expected type, validation failed.")
         obj.logs&.is_a?(Array) != false || raise("Passed value for field obj.logs is not the expected type, validation failed.")

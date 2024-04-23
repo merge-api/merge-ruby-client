@@ -2,14 +2,19 @@
 
 module Merge
   module Crm
-    # @type [ITEM_FORMAT_ENUM]
-    ITEM_FORMAT_ENUM = {
-      string: "string",
-      number: "number",
-      date: "date",
-      datetime: "datetime",
-      bool: "bool",
-      list: "list"
-    }.freeze
+    # - `string` - uuid
+    #  - `number` - url
+    #  - `date` - email
+    #  - `datetime` - phone
+    #  - `bool` - currency
+    #  - `list` - decimal
+    class ItemFormatEnum
+      STRING = "string"
+      NUMBER = "number"
+      DATE = "date"
+      DATETIME = "datetime"
+      BOOL = "bool"
+      LIST = "list"
+    end
   end
 end

@@ -2,7 +2,15 @@
 
 module Merge
   module Ticketing
-    # @type [TICKET_STATUS_ENUM]
-    TICKET_STATUS_ENUM = { open: "OPEN", closed: "CLOSED", in_progress: "IN_PROGRESS", on_hold: "ON_HOLD" }.freeze
+    # - `OPEN` - OPEN
+    #  - `CLOSED` - CLOSED
+    #  - `IN_PROGRESS` - IN_PROGRESS
+    #  - `ON_HOLD` - ON_HOLD
+    class TicketStatusEnum
+      OPEN = "OPEN"
+      CLOSED = "CLOSED"
+      IN_PROGRESS = "IN_PROGRESS"
+      ON_HOLD = "ON_HOLD"
+    end
   end
 end

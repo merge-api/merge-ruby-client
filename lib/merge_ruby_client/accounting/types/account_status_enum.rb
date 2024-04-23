@@ -2,7 +2,13 @@
 
 module Merge
   module Accounting
-    # @type [ACCOUNT_STATUS_ENUM]
-    ACCOUNT_STATUS_ENUM = { active: "ACTIVE", pending: "PENDING", inactive: "INACTIVE" }.freeze
+    # - `ACTIVE` - ACTIVE
+    #  - `PENDING` - PENDING
+    #  - `INACTIVE` - INACTIVE
+    class AccountStatusEnum
+      ACTIVE = "ACTIVE"
+      PENDING = "PENDING"
+      INACTIVE = "INACTIVE"
+    end
   end
 end

@@ -3,16 +3,15 @@
 module Merge
   module Ticketing
     class Tickets
-      # @type [TICKETS_RETRIEVE_REQUEST_REMOTE_FIELDS]
-      TICKETS_RETRIEVE_REQUEST_REMOTE_FIELDS = {
-        priority: "priority",
-        priority_status: "priority,status",
-        priority_status_ticket_type: "priority,status,ticket_type",
-        priority_ticket_type: "priority,ticket_type",
-        status: "status",
-        status_ticket_type: "status,ticket_type",
-        ticket_type: "ticket_type"
-      }.freeze
+      class TicketsRetrieveRequestRemoteFields
+        PRIORITY = "priority"
+        PRIORITY_STATUS = "priority,status"
+        PRIORITY_STATUS_TICKET_TYPE = "priority,status,ticket_type"
+        PRIORITY_TICKET_TYPE = "priority,ticket_type"
+        STATUS = "status"
+        STATUS_TICKET_TYPE = "status,ticket_type"
+        TICKET_TYPE = "ticket_type"
+      end
     end
   end
 end

@@ -2,13 +2,17 @@
 
 module Merge
   module Hris
-    # @type [EMPLOYMENT_TYPE_ENUM]
-    EMPLOYMENT_TYPE_ENUM = {
-      full_time: "FULL_TIME",
-      part_time: "PART_TIME",
-      intern: "INTERN",
-      contractor: "CONTRACTOR",
-      freelance: "FREELANCE"
-    }.freeze
+    # - `FULL_TIME` - FULL_TIME
+    #  - `PART_TIME` - PART_TIME
+    #  - `INTERN` - INTERN
+    #  - `CONTRACTOR` - CONTRACTOR
+    #  - `FREELANCE` - FREELANCE
+    class EmploymentTypeEnum
+      FULL_TIME = "FULL_TIME"
+      PART_TIME = "PART_TIME"
+      INTERN = "INTERN"
+      CONTRACTOR = "CONTRACTOR"
+      FREELANCE = "FREELANCE"
+    end
   end
 end

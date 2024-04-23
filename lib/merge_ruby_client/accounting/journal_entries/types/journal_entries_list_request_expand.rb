@@ -3,72 +3,71 @@
 module Merge
   module Accounting
     class JournalEntries
-      # @type [JOURNAL_ENTRIES_LIST_REQUEST_EXPAND]
-      JOURNAL_ENTRIES_LIST_REQUEST_EXPAND = {
-        accounting_period: "accounting_period",
-        applied_payments: "applied_payments",
-        applied_payments_accounting_period: "applied_payments,accounting_period",
-        applied_payments_company: "applied_payments,company",
-        applied_payments_company_accounting_period: "applied_payments,company,accounting_period",
-        applied_payments_tracking_categories: "applied_payments,tracking_categories",
-        applied_payments_tracking_categories_accounting_period: "applied_payments,tracking_categories,accounting_period",
-        applied_payments_tracking_categories_company: "applied_payments,tracking_categories,company",
-        applied_payments_tracking_categories_company_accounting_period: "applied_payments,tracking_categories,company,accounting_period",
-        company: "company",
-        company_accounting_period: "company,accounting_period",
-        lines: "lines",
-        lines_accounting_period: "lines,accounting_period",
-        lines_applied_payments: "lines,applied_payments",
-        lines_applied_payments_accounting_period: "lines,applied_payments,accounting_period",
-        lines_applied_payments_company: "lines,applied_payments,company",
-        lines_applied_payments_company_accounting_period: "lines,applied_payments,company,accounting_period",
-        lines_applied_payments_tracking_categories: "lines,applied_payments,tracking_categories",
-        lines_applied_payments_tracking_categories_accounting_period: "lines,applied_payments,tracking_categories,accounting_period",
-        lines_applied_payments_tracking_categories_company: "lines,applied_payments,tracking_categories,company",
-        lines_applied_payments_tracking_categories_company_accounting_period: "lines,applied_payments,tracking_categories,company,accounting_period",
-        lines_company: "lines,company",
-        lines_company_accounting_period: "lines,company,accounting_period",
-        lines_payments: "lines,payments",
-        lines_payments_accounting_period: "lines,payments,accounting_period",
-        lines_payments_applied_payments: "lines,payments,applied_payments",
-        lines_payments_applied_payments_accounting_period: "lines,payments,applied_payments,accounting_period",
-        lines_payments_applied_payments_company: "lines,payments,applied_payments,company",
-        lines_payments_applied_payments_company_accounting_period: "lines,payments,applied_payments,company,accounting_period",
-        lines_payments_applied_payments_tracking_categories: "lines,payments,applied_payments,tracking_categories",
-        lines_payments_applied_payments_tracking_categories_accounting_period: "lines,payments,applied_payments,tracking_categories,accounting_period",
-        lines_payments_applied_payments_tracking_categories_company: "lines,payments,applied_payments,tracking_categories,company",
-        lines_payments_applied_payments_tracking_categories_company_accounting_period: "lines,payments,applied_payments,tracking_categories,company,accounting_period",
-        lines_payments_company: "lines,payments,company",
-        lines_payments_company_accounting_period: "lines,payments,company,accounting_period",
-        lines_payments_tracking_categories: "lines,payments,tracking_categories",
-        lines_payments_tracking_categories_accounting_period: "lines,payments,tracking_categories,accounting_period",
-        lines_payments_tracking_categories_company: "lines,payments,tracking_categories,company",
-        lines_payments_tracking_categories_company_accounting_period: "lines,payments,tracking_categories,company,accounting_period",
-        lines_tracking_categories: "lines,tracking_categories",
-        lines_tracking_categories_accounting_period: "lines,tracking_categories,accounting_period",
-        lines_tracking_categories_company: "lines,tracking_categories,company",
-        lines_tracking_categories_company_accounting_period: "lines,tracking_categories,company,accounting_period",
-        payments: "payments",
-        payments_accounting_period: "payments,accounting_period",
-        payments_applied_payments: "payments,applied_payments",
-        payments_applied_payments_accounting_period: "payments,applied_payments,accounting_period",
-        payments_applied_payments_company: "payments,applied_payments,company",
-        payments_applied_payments_company_accounting_period: "payments,applied_payments,company,accounting_period",
-        payments_applied_payments_tracking_categories: "payments,applied_payments,tracking_categories",
-        payments_applied_payments_tracking_categories_accounting_period: "payments,applied_payments,tracking_categories,accounting_period",
-        payments_applied_payments_tracking_categories_company: "payments,applied_payments,tracking_categories,company",
-        payments_applied_payments_tracking_categories_company_accounting_period: "payments,applied_payments,tracking_categories,company,accounting_period",
-        payments_company: "payments,company",
-        payments_company_accounting_period: "payments,company,accounting_period",
-        payments_tracking_categories: "payments,tracking_categories",
-        payments_tracking_categories_accounting_period: "payments,tracking_categories,accounting_period",
-        payments_tracking_categories_company: "payments,tracking_categories,company",
-        payments_tracking_categories_company_accounting_period: "payments,tracking_categories,company,accounting_period",
-        tracking_categories: "tracking_categories",
-        tracking_categories_accounting_period: "tracking_categories,accounting_period",
-        tracking_categories_company: "tracking_categories,company",
-        tracking_categories_company_accounting_period: "tracking_categories,company,accounting_period"
-      }.freeze
+      class JournalEntriesListRequestExpand
+        ACCOUNTING_PERIOD = "accounting_period"
+        APPLIED_PAYMENTS = "applied_payments"
+        APPLIED_PAYMENTS_ACCOUNTING_PERIOD = "applied_payments,accounting_period"
+        APPLIED_PAYMENTS_COMPANY = "applied_payments,company"
+        APPLIED_PAYMENTS_COMPANY_ACCOUNTING_PERIOD = "applied_payments,company,accounting_period"
+        APPLIED_PAYMENTS_TRACKING_CATEGORIES = "applied_payments,tracking_categories"
+        APPLIED_PAYMENTS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "applied_payments,tracking_categories,accounting_period"
+        APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY = "applied_payments,tracking_categories,company"
+        APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "applied_payments,tracking_categories,company,accounting_period"
+        COMPANY = "company"
+        COMPANY_ACCOUNTING_PERIOD = "company,accounting_period"
+        LINES = "lines"
+        LINES_ACCOUNTING_PERIOD = "lines,accounting_period"
+        LINES_APPLIED_PAYMENTS = "lines,applied_payments"
+        LINES_APPLIED_PAYMENTS_ACCOUNTING_PERIOD = "lines,applied_payments,accounting_period"
+        LINES_APPLIED_PAYMENTS_COMPANY = "lines,applied_payments,company"
+        LINES_APPLIED_PAYMENTS_COMPANY_ACCOUNTING_PERIOD = "lines,applied_payments,company,accounting_period"
+        LINES_APPLIED_PAYMENTS_TRACKING_CATEGORIES = "lines,applied_payments,tracking_categories"
+        LINES_APPLIED_PAYMENTS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "lines,applied_payments,tracking_categories,accounting_period"
+        LINES_APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY = "lines,applied_payments,tracking_categories,company"
+        LINES_APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "lines,applied_payments,tracking_categories,company,accounting_period"
+        LINES_COMPANY = "lines,company"
+        LINES_COMPANY_ACCOUNTING_PERIOD = "lines,company,accounting_period"
+        LINES_PAYMENTS = "lines,payments"
+        LINES_PAYMENTS_ACCOUNTING_PERIOD = "lines,payments,accounting_period"
+        LINES_PAYMENTS_APPLIED_PAYMENTS = "lines,payments,applied_payments"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_ACCOUNTING_PERIOD = "lines,payments,applied_payments,accounting_period"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_COMPANY = "lines,payments,applied_payments,company"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_COMPANY_ACCOUNTING_PERIOD = "lines,payments,applied_payments,company,accounting_period"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES = "lines,payments,applied_payments,tracking_categories"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "lines,payments,applied_payments,tracking_categories,accounting_period"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY = "lines,payments,applied_payments,tracking_categories,company"
+        LINES_PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "lines,payments,applied_payments,tracking_categories,company,accounting_period"
+        LINES_PAYMENTS_COMPANY = "lines,payments,company"
+        LINES_PAYMENTS_COMPANY_ACCOUNTING_PERIOD = "lines,payments,company,accounting_period"
+        LINES_PAYMENTS_TRACKING_CATEGORIES = "lines,payments,tracking_categories"
+        LINES_PAYMENTS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "lines,payments,tracking_categories,accounting_period"
+        LINES_PAYMENTS_TRACKING_CATEGORIES_COMPANY = "lines,payments,tracking_categories,company"
+        LINES_PAYMENTS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "lines,payments,tracking_categories,company,accounting_period"
+        LINES_TRACKING_CATEGORIES = "lines,tracking_categories"
+        LINES_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "lines,tracking_categories,accounting_period"
+        LINES_TRACKING_CATEGORIES_COMPANY = "lines,tracking_categories,company"
+        LINES_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "lines,tracking_categories,company,accounting_period"
+        PAYMENTS = "payments"
+        PAYMENTS_ACCOUNTING_PERIOD = "payments,accounting_period"
+        PAYMENTS_APPLIED_PAYMENTS = "payments,applied_payments"
+        PAYMENTS_APPLIED_PAYMENTS_ACCOUNTING_PERIOD = "payments,applied_payments,accounting_period"
+        PAYMENTS_APPLIED_PAYMENTS_COMPANY = "payments,applied_payments,company"
+        PAYMENTS_APPLIED_PAYMENTS_COMPANY_ACCOUNTING_PERIOD = "payments,applied_payments,company,accounting_period"
+        PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES = "payments,applied_payments,tracking_categories"
+        PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "payments,applied_payments,tracking_categories,accounting_period"
+        PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY = "payments,applied_payments,tracking_categories,company"
+        PAYMENTS_APPLIED_PAYMENTS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "payments,applied_payments,tracking_categories,company,accounting_period"
+        PAYMENTS_COMPANY = "payments,company"
+        PAYMENTS_COMPANY_ACCOUNTING_PERIOD = "payments,company,accounting_period"
+        PAYMENTS_TRACKING_CATEGORIES = "payments,tracking_categories"
+        PAYMENTS_TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "payments,tracking_categories,accounting_period"
+        PAYMENTS_TRACKING_CATEGORIES_COMPANY = "payments,tracking_categories,company"
+        PAYMENTS_TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "payments,tracking_categories,company,accounting_period"
+        TRACKING_CATEGORIES = "tracking_categories"
+        TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "tracking_categories,accounting_period"
+        TRACKING_CATEGORIES_COMPANY = "tracking_categories,company"
+        TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,company,accounting_period"
+      end
     end
   end
 end

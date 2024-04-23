@@ -8,12 +8,12 @@ require "async"
 module Merge
   module Accounting
     class AccountingPeriodsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Accounting::AccountingPeriodsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Accounting::AccountingPeriodsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -21,12 +21,20 @@ module Merge
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedAccountingPeriodList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedAccountingPeriodList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(cursor: nil, include_deleted_data: nil, include_remote_data: nil, page_size: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/accounting-periods") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -38,18 +46,27 @@ module Merge
             "include_remote_data": include_remote_data,
             "page_size": page_size
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/accounting-periods"
         end
-        Accounting::PaginatedAccountingPeriodList.from_json(json_object: response.body)
+        Merge::Accounting::PaginatedAccountingPeriodList.from_json(json_object: response.body)
       end
 
       # Returns an `AccountingPeriod` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::AccountingPeriod]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::AccountingPeriod]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/accounting/v1/accounting-periods/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -58,18 +75,19 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/accounting-periods/#{id}"
         end
-        Accounting::AccountingPeriod.from_json(json_object: response.body)
+        Merge::Accounting::AccountingPeriod.from_json(json_object: response.body)
       end
     end
 
     class AsyncAccountingPeriodsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Accounting::AsyncAccountingPeriodsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Accounting::AsyncAccountingPeriodsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -77,13 +95,21 @@ module Merge
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param page_size [Integer] Number of results to return per page.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::PaginatedAccountingPeriodList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::PaginatedAccountingPeriodList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.list
       def list(cursor: nil, include_deleted_data: nil, include_remote_data: nil, page_size: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/accounting-periods") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -95,20 +121,29 @@ module Merge
               "include_remote_data": include_remote_data,
               "page_size": page_size
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/accounting-periods"
           end
-          Accounting::PaginatedAccountingPeriodList.from_json(json_object: response.body)
+          Merge::Accounting::PaginatedAccountingPeriodList.from_json(json_object: response.body)
         end
       end
 
       # Returns an `AccountingPeriod` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Accounting::AccountingPeriod]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::AccountingPeriod]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/accounting/v1/accounting-periods/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -117,8 +152,9 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/accounting-periods/#{id}"
           end
-          Accounting::AccountingPeriod.from_json(json_object: response.body)
+          Merge::Accounting::AccountingPeriod.from_json(json_object: response.body)
         end
       end
     end

@@ -3,8 +3,11 @@
 module Merge
   module Hris
     class Employees
-      # @type [EMPLOYEES_LIST_REQUEST_EMPLOYMENT_STATUS]
-      EMPLOYEES_LIST_REQUEST_EMPLOYMENT_STATUS = { active: "ACTIVE", inactive: "INACTIVE", pending: "PENDING" }.freeze
+      class EmployeesListRequestEmploymentStatus
+        ACTIVE = "ACTIVE"
+        INACTIVE = "INACTIVE"
+        PENDING = "PENDING"
+      end
     end
   end
 end

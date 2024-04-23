@@ -2,15 +2,21 @@
 
 module Merge
   module Ats
-    # @type [URL_TYPE_ENUM]
-    URL_TYPE_ENUM = {
-      personal: "PERSONAL",
-      company: "COMPANY",
-      portfolio: "PORTFOLIO",
-      blog: "BLOG",
-      social_media: "SOCIAL_MEDIA",
-      other: "OTHER",
-      job_posting: "JOB_POSTING"
-    }.freeze
+    # - `PERSONAL` - PERSONAL
+    #  - `COMPANY` - COMPANY
+    #  - `PORTFOLIO` - PORTFOLIO
+    #  - `BLOG` - BLOG
+    #  - `SOCIAL_MEDIA` - SOCIAL_MEDIA
+    #  - `OTHER` - OTHER
+    #  - `JOB_POSTING` - JOB_POSTING
+    class UrlTypeEnum
+      PERSONAL = "PERSONAL"
+      COMPANY = "COMPANY"
+      PORTFOLIO = "PORTFOLIO"
+      BLOG = "BLOG"
+      SOCIAL_MEDIA = "SOCIAL_MEDIA"
+      OTHER = "OTHER"
+      JOB_POSTING = "JOB_POSTING"
+    end
   end
 end

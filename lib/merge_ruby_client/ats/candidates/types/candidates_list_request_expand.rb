@@ -3,12 +3,11 @@
 module Merge
   module Ats
     class Candidates
-      # @type [CANDIDATES_LIST_REQUEST_EXPAND]
-      CANDIDATES_LIST_REQUEST_EXPAND = {
-        applications: "applications",
-        applications_attachments: "applications,attachments",
-        attachments: "attachments"
-      }.freeze
+      class CandidatesListRequestExpand
+        APPLICATIONS = "applications"
+        APPLICATIONS_ATTACHMENTS = "applications,attachments"
+        ATTACHMENTS = "attachments"
+      end
     end
   end
 end

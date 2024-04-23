@@ -2,7 +2,17 @@
 
 module Merge
   module Ats
-    # @type [PHONE_NUMBER_TYPE_ENUM]
-    PHONE_NUMBER_TYPE_ENUM = { home: "HOME", work: "WORK", mobile: "MOBILE", skype: "SKYPE", other: "OTHER" }.freeze
+    # - `HOME` - HOME
+    #  - `WORK` - WORK
+    #  - `MOBILE` - MOBILE
+    #  - `SKYPE` - SKYPE
+    #  - `OTHER` - OTHER
+    class PhoneNumberTypeEnum
+      HOME = "HOME"
+      WORK = "WORK"
+      MOBILE = "MOBILE"
+      SKYPE = "SKYPE"
+      OTHER = "OTHER"
+    end
   end
 end

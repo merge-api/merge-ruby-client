@@ -3,11 +3,10 @@
 module Merge
   module Hris
     class TimesheetEntries
-      # @type [TIMESHEET_ENTRIES_LIST_REQUEST_ORDER_BY]
-      TIMESHEET_ENTRIES_LIST_REQUEST_ORDER_BY = {
-        start_time_descending: "-start_time",
-        start_time_ascending: "start_time"
-      }.freeze
+      class TimesheetEntriesListRequestOrderBy
+        START_TIME_DESCENDING = "-start_time"
+        START_TIME_ASCENDING = "start_time"
+      end
     end
   end
 end

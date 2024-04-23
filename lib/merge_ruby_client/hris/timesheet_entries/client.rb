@@ -13,12 +13,12 @@ require "async"
 module Merge
   module Hris
     class TimesheetEntriesClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Hris::TimesheetEntriesClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Hris::TimesheetEntriesClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -31,19 +31,30 @@ module Merge
       # @param ended_after [String] If provided, will only return employee payroll runs ended after this datetime.
       # @param ended_before [String] If provided, will only return employee payroll runs ended before this datetime.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
-      # @param order_by [TIMESHEET_ENTRIES_LIST_REQUEST_ORDER_BY] Overrides the default ordering for this endpoint. Possible values include: start_time, -start_time.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
+      # @param order_by [Merge::Hris::TimesheetEntries::TimesheetEntriesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  start_time, -start_time.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [String] If provided, will only return employee payroll runs started after this datetime.
-      # @param started_before [String] If provided, will only return employee payroll runs started before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedTimesheetEntryList]
+      # @param started_before [String] If provided, will only return employee payroll runs started before this
+      #  datetime.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedTimesheetEntryList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
                ended_before: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/timesheet-entries") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -66,25 +77,33 @@ module Merge
             "started_after": started_after,
             "started_before": started_before
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries"
         end
-        Hris::PaginatedTimesheetEntryList.from_json(json_object: response.body)
+        Merge::Hris::PaginatedTimesheetEntryList.from_json(json_object: response.body)
       end
 
       # Creates a `TimesheetEntry` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Hris::TimesheetEntryRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Hris::TimesheetEntryRequest, as a Hash
       #   * :employee (String)
       #   * :hours_worked (Float)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Hris::TimesheetEntryResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::TimesheetEntryResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/hris/v1/timesheet-entries") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -95,18 +114,27 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries"
         end
-        Hris::TimesheetEntryResponse.from_json(json_object: response.body)
+        Merge::Hris::TimesheetEntryResponse.from_json(json_object: response.body)
       end
 
       # Returns a `TimesheetEntry` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Hris::TimesheetEntry]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::TimesheetEntry]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/timesheet-entries/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -115,32 +143,41 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries/#{id}"
         end
-        Hris::TimesheetEntry.from_json(json_object: response.body)
+        Merge::Hris::TimesheetEntry.from_json(json_object: response.body)
       end
 
       # Returns metadata for `TimesheetEntry` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Hris::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/hris/v1/timesheet-entries/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries/meta/post"
         end
-        Hris::MetaResponse.from_json(json_object: response.body)
+        Merge::Hris::MetaResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncTimesheetEntriesClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Hris::AsyncTimesheetEntriesClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Hris::AsyncTimesheetEntriesClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -153,20 +190,31 @@ module Merge
       # @param ended_after [String] If provided, will only return employee payroll runs ended after this datetime.
       # @param ended_before [String] If provided, will only return employee payroll runs ended before this datetime.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
-      # @param order_by [TIMESHEET_ENTRIES_LIST_REQUEST_ORDER_BY] Overrides the default ordering for this endpoint. Possible values include: start_time, -start_time.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
+      # @param order_by [Merge::Hris::TimesheetEntries::TimesheetEntriesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  start_time, -start_time.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [String] If provided, will only return employee payroll runs started after this datetime.
-      # @param started_before [String] If provided, will only return employee payroll runs started before this datetime.
-      # @param request_options [RequestOptions]
-      # @return [Hris::PaginatedTimesheetEntryList]
+      # @param started_before [String] If provided, will only return employee payroll runs started before this
+      #  datetime.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::PaginatedTimesheetEntryList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
                ended_before: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/timesheet-entries") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -189,8 +237,9 @@ module Merge
               "started_after": started_after,
               "started_before": started_before
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries"
           end
-          Hris::PaginatedTimesheetEntryList.from_json(json_object: response.body)
+          Merge::Hris::PaginatedTimesheetEntryList.from_json(json_object: response.body)
         end
       end
 
@@ -198,18 +247,25 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Hris::TimesheetEntryRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Hris::TimesheetEntryRequest, as a Hash
       #   * :employee (String)
       #   * :hours_worked (Float)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Hris::TimesheetEntryResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::TimesheetEntryResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/hris/v1/timesheet-entries") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -220,20 +276,29 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries"
           end
-          Hris::TimesheetEntryResponse.from_json(json_object: response.body)
+          Merge::Hris::TimesheetEntryResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns a `TimesheetEntry` object with the given `id`.
       #
       # @param id [String]
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Hris::TimesheetEntry]
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::TimesheetEntry]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/timesheet-entries/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -242,24 +307,33 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries/#{id}"
           end
-          Hris::TimesheetEntry.from_json(json_object: response.body)
+          Merge::Hris::TimesheetEntry.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `TimesheetEntry` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Hris::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Hris::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.hris.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/hris/v1/timesheet-entries/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/timesheet-entries/meta/post"
           end
-          Hris::MetaResponse.from_json(json_object: response.body)
+          Merge::Hris::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

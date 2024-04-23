@@ -2,11 +2,13 @@
 
 module Merge
   module Ats
-    # @type [SCHEDULED_INTERVIEW_STATUS_ENUM]
-    SCHEDULED_INTERVIEW_STATUS_ENUM = {
-      scheduled: "SCHEDULED",
-      awaiting_feedback: "AWAITING_FEEDBACK",
-      complete: "COMPLETE"
-    }.freeze
+    # - `SCHEDULED` - SCHEDULED
+    #  - `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
+    #  - `COMPLETE` - COMPLETE
+    class ScheduledInterviewStatusEnum
+      SCHEDULED = "SCHEDULED"
+      AWAITING_FEEDBACK = "AWAITING_FEEDBACK"
+      COMPLETE = "COMPLETE"
+    end
   end
 end

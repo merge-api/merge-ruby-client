@@ -2,14 +2,19 @@
 
 module Merge
   module Ticketing
-    # @type [FIELD_FORMAT_ENUM]
-    FIELD_FORMAT_ENUM = {
-      string: "string",
-      number: "number",
-      date: "date",
-      datetime: "datetime",
-      bool: "bool",
-      list: "list"
-    }.freeze
+    # - `string` - string
+    #  - `number` - number
+    #  - `date` - date
+    #  - `datetime` - datetime
+    #  - `bool` - bool
+    #  - `list` - list
+    class FieldFormatEnum
+      STRING = "string"
+      NUMBER = "number"
+      DATE = "date"
+      DATETIME = "datetime"
+      BOOL = "bool"
+      LIST = "list"
+    end
   end
 end

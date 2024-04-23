@@ -3,16 +3,15 @@
 module Merge
   module Ats
     class Scorecards
-      # @type [SCORECARDS_LIST_REQUEST_EXPAND]
-      SCORECARDS_LIST_REQUEST_EXPAND = {
-        application: "application",
-        application_interview: "application,interview",
-        application_interview_interviewer: "application,interview,interviewer",
-        application_interviewer: "application,interviewer",
-        interview: "interview",
-        interview_interviewer: "interview,interviewer",
-        interviewer: "interviewer"
-      }.freeze
+      class ScorecardsListRequestExpand
+        APPLICATION = "application"
+        APPLICATION_INTERVIEW = "application,interview"
+        APPLICATION_INTERVIEW_INTERVIEWER = "application,interview,interviewer"
+        APPLICATION_INTERVIEWER = "application,interviewer"
+        INTERVIEW = "interview"
+        INTERVIEW_INTERVIEWER = "interview,interviewer"
+        INTERVIEWER = "interviewer"
+      end
     end
   end
 end

@@ -2,12 +2,15 @@
 
 module Merge
   module Ats
-    # @type [ATTACHMENT_TYPE_ENUM]
-    ATTACHMENT_TYPE_ENUM = {
-      resume: "RESUME",
-      cover_letter: "COVER_LETTER",
-      offer_letter: "OFFER_LETTER",
-      other: "OTHER"
-    }.freeze
+    # - `RESUME` - RESUME
+    #  - `COVER_LETTER` - COVER_LETTER
+    #  - `OFFER_LETTER` - OFFER_LETTER
+    #  - `OTHER` - OTHER
+    class AttachmentTypeEnum
+      RESUME = "RESUME"
+      COVER_LETTER = "COVER_LETTER"
+      OFFER_LETTER = "OFFER_LETTER"
+      OTHER = "OTHER"
+    end
   end
 end

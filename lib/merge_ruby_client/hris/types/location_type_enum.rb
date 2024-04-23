@@ -2,7 +2,11 @@
 
 module Merge
   module Hris
-    # @type [LOCATION_TYPE_ENUM]
-    LOCATION_TYPE_ENUM = { home: "HOME", work: "WORK" }.freeze
+    # - `HOME` - HOME
+    #  - `WORK` - WORK
+    class LocationTypeEnum
+      HOME = "HOME"
+      WORK = "WORK"
+    end
   end
 end

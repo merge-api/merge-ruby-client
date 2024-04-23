@@ -2,15 +2,21 @@
 
 module Merge
   module Filestorage
-    # @type [METHOD_ENUM]
-    METHOD_ENUM = {
-      get: "GET",
-      options: "OPTIONS",
-      head: "HEAD",
-      post: "POST",
-      put: "PUT",
-      patch: "PATCH",
-      delete: "DELETE"
-    }.freeze
+    # - `GET` - GET
+    #  - `OPTIONS` - OPTIONS
+    #  - `HEAD` - HEAD
+    #  - `POST` - POST
+    #  - `PUT` - PUT
+    #  - `PATCH` - PATCH
+    #  - `DELETE` - DELETE
+    class MethodEnum
+      GET = "GET"
+      OPTIONS = "OPTIONS"
+      HEAD = "HEAD"
+      POST = "POST"
+      PUT = "PUT"
+      PATCH = "PATCH"
+      DELETE = "DELETE"
+    end
   end
 end

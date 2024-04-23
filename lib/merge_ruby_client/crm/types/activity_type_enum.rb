@@ -2,7 +2,13 @@
 
 module Merge
   module Crm
-    # @type [ACTIVITY_TYPE_ENUM]
-    ACTIVITY_TYPE_ENUM = { call: "CALL", meeting: "MEETING", email: "EMAIL" }.freeze
+    # - `CALL` - CALL
+    #  - `MEETING` - MEETING
+    #  - `EMAIL` - EMAIL
+    class ActivityTypeEnum
+      CALL = "CALL"
+      MEETING = "MEETING"
+      EMAIL = "EMAIL"
+    end
   end
 end

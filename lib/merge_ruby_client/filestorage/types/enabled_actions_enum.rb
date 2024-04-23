@@ -2,7 +2,11 @@
 
 module Merge
   module Filestorage
-    # @type [ENABLED_ACTIONS_ENUM]
-    ENABLED_ACTIONS_ENUM = { read: "READ", write: "WRITE" }.freeze
+    # - `READ` - READ
+    #  - `WRITE` - WRITE
+    class EnabledActionsEnum
+      READ = "READ"
+      WRITE = "WRITE"
+    end
   end
 end

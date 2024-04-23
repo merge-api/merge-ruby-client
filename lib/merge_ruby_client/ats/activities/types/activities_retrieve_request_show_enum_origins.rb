@@ -3,12 +3,11 @@
 module Merge
   module Ats
     class Activities
-      # @type [ACTIVITIES_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS]
-      ACTIVITIES_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS = {
-        activity_type: "activity_type",
-        activity_type_visibility: "activity_type,visibility",
-        visibility: "visibility"
-      }.freeze
+      class ActivitiesRetrieveRequestShowEnumOrigins
+        ACTIVITY_TYPE = "activity_type"
+        ACTIVITY_TYPE_VISIBILITY = "activity_type,visibility"
+        VISIBILITY = "visibility"
+      end
     end
   end
 end

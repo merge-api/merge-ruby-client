@@ -3,12 +3,11 @@
 module Merge
   module Hris
     class EmployeePayrollRuns
-      # @type [EMPLOYEE_PAYROLL_RUNS_LIST_REQUEST_EXPAND]
-      EMPLOYEE_PAYROLL_RUNS_LIST_REQUEST_EXPAND = {
-        employee: "employee",
-        employee_payroll_run: "employee,payroll_run",
-        payroll_run: "payroll_run"
-      }.freeze
+      class EmployeePayrollRunsListRequestExpand
+        EMPLOYEE = "employee"
+        EMPLOYEE_PAYROLL_RUN = "employee,payroll_run"
+        PAYROLL_RUN = "payroll_run"
+      end
     end
   end
 end

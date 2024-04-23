@@ -3,16 +3,15 @@
 module Merge
   module Accounting
     class Contacts
-      # @type [CONTACTS_LIST_REQUEST_EXPAND]
-      CONTACTS_LIST_REQUEST_EXPAND = {
-        addresses: "addresses",
-        addresses_company: "addresses,company",
-        addresses_phone_numbers: "addresses,phone_numbers",
-        addresses_phone_numbers_company: "addresses,phone_numbers,company",
-        company: "company",
-        phone_numbers: "phone_numbers",
-        phone_numbers_company: "phone_numbers,company"
-      }.freeze
+      class ContactsListRequestExpand
+        ADDRESSES = "addresses"
+        ADDRESSES_COMPANY = "addresses,company"
+        ADDRESSES_PHONE_NUMBERS = "addresses,phone_numbers"
+        ADDRESSES_PHONE_NUMBERS_COMPANY = "addresses,phone_numbers,company"
+        COMPANY = "company"
+        PHONE_NUMBERS = "phone_numbers"
+        PHONE_NUMBERS_COMPANY = "phone_numbers,company"
+      end
     end
   end
 end

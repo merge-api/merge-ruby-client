@@ -2,7 +2,15 @@
 
 module Merge
   module Ticketing
-    # @type [PRIORITY_ENUM]
-    PRIORITY_ENUM = { urgent: "URGENT", high: "HIGH", normal: "NORMAL", low: "LOW" }.freeze
+    # - `URGENT` - URGENT
+    #  - `HIGH` - HIGH
+    #  - `NORMAL` - NORMAL
+    #  - `LOW` - LOW
+    class PriorityEnum
+      URGENT = "URGENT"
+      HIGH = "HIGH"
+      NORMAL = "NORMAL"
+      LOW = "LOW"
+    end
   end
 end

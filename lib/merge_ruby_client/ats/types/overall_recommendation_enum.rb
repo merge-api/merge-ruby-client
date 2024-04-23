@@ -2,13 +2,17 @@
 
 module Merge
   module Ats
-    # @type [OVERALL_RECOMMENDATION_ENUM]
-    OVERALL_RECOMMENDATION_ENUM = {
-      definitely_no: "DEFINITELY_NO",
-      no: "NO",
-      yes: "YES",
-      strong_yes: "STRONG_YES",
-      no_decision: "NO_DECISION"
-    }.freeze
+    # - `DEFINITELY_NO` - DEFINITELY_NO
+    #  - `NO` - NO
+    #  - `YES` - YES
+    #  - `STRONG_YES` - STRONG_YES
+    #  - `NO_DECISION` - NO_DECISION
+    class OverallRecommendationEnum
+      DEFINITELY_NO = "DEFINITELY_NO"
+      NO = "NO"
+      YES = "YES"
+      STRONG_YES = "STRONG_YES"
+      NO_DECISION = "NO_DECISION"
+    end
   end
 end

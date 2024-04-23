@@ -54,7 +54,7 @@ class TestMerge < Minitest::Test
       end_user_email_address: "john.smith@gmail.com",
       end_user_organization_name: "acme",
       end_user_origin_id: "1234",
-      categories: [Merge::Ats::CATEGORIES_ENUM[:ats]],
+      categories: [Merge::Ats::CategoriesEnum::ATS],
       link_expiry_mins: 30
     )
     assert !lt_response.nil?

@@ -14,12 +14,12 @@ require "async"
 module Merge
   module Ats
     class InterviewsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Ats::InterviewsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Ats::InterviewsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -29,23 +29,35 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [INTERVIEWS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ats::Interviews::InterviewsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param job_id [String] If provided, wll only return interviews organized for this job.
       # @param job_interview_stage_id [String] If provided, will only return interviews at this stage.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param organizer_id [String] If provided, will only return interviews organized by this user.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Ats::PaginatedScheduledInterviewList]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::PaginatedScheduledInterviewList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.list
       def list(application_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, job_id: nil, job_interview_stage_id: nil, modified_after: nil, modified_before: nil, organizer_id: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/interviews") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -69,30 +81,38 @@ module Merge
             "remote_id": remote_id,
             "show_enum_origins": show_enum_origins
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews"
         end
-        Ats::PaginatedScheduledInterviewList.from_json(json_object: response.body)
+        Merge::Ats::PaginatedScheduledInterviewList.from_json(json_object: response.body)
       end
 
       # Creates a `ScheduledInterview` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ats::ScheduledInterviewRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ats::ScheduledInterviewRequest, as a Hash
       #   * :application (Hash)
       #   * :job_interview_stage (Hash)
       #   * :organizer (Hash)
-      #   * :interviewers (Array<Ats::ScheduledInterviewRequestInterviewersItem>)
+      #   * :interviewers (Array<Merge::Ats::ScheduledInterviewRequestInterviewersItem>)
       #   * :location (String)
       #   * :start_at (DateTime)
       #   * :end_at (DateTime)
-      #   * :status (SCHEDULED_INTERVIEW_STATUS_ENUM)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
+      #   * :status (Merge::Ats::ScheduledInterviewStatusEnum)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
       # @param remote_user_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ats::ScheduledInterviewResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ScheduledInterviewResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.create(model: {  }, remote_user_id: "remote_user_id")
       def create(model:, remote_user_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/ats/v1/interviews") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -107,22 +127,34 @@ module Merge
             model: model,
             remote_user_id: remote_user_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews"
         end
-        Ats::ScheduledInterviewResponse.from_json(json_object: response.body)
+        Merge::Ats::ScheduledInterviewResponse.from_json(json_object: response.body)
       end
 
       # Returns a `ScheduledInterview` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [INTERVIEWS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param expand [Merge::Ats::Interviews::InterviewsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Ats::ScheduledInterview]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ScheduledInterview]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
                    request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/interviews/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -134,32 +166,41 @@ module Merge
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews/#{id}"
         end
-        Ats::ScheduledInterview.from_json(json_object: response.body)
+        Merge::Ats::ScheduledInterview.from_json(json_object: response.body)
       end
 
       # Returns metadata for `ScheduledInterview` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Ats::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/interviews/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews/meta/post"
         end
-        Ats::MetaResponse.from_json(json_object: response.body)
+        Merge::Ats::MetaResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncInterviewsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Ats::AsyncInterviewsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Ats::AsyncInterviewsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -169,24 +210,36 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [INTERVIEWS_LIST_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [Merge::Ats::Interviews::InterviewsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param job_id [String] If provided, wll only return interviews organized for this job.
       # @param job_interview_stage_id [String] If provided, will only return interviews at this stage.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param organizer_id [String] If provided, will only return interviews organized by this user.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Ats::PaginatedScheduledInterviewList]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::PaginatedScheduledInterviewList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.list
       def list(application_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, job_id: nil, job_interview_stage_id: nil, modified_after: nil, modified_before: nil, organizer_id: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/interviews") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -210,8 +263,9 @@ module Merge
               "remote_id": remote_id,
               "show_enum_origins": show_enum_origins
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews"
           end
-          Ats::PaginatedScheduledInterviewList.from_json(json_object: response.body)
+          Merge::Ats::PaginatedScheduledInterviewList.from_json(json_object: response.body)
         end
       end
 
@@ -219,23 +273,30 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ats::ScheduledInterviewRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ats::ScheduledInterviewRequest, as a Hash
       #   * :application (Hash)
       #   * :job_interview_stage (Hash)
       #   * :organizer (Hash)
-      #   * :interviewers (Array<Ats::ScheduledInterviewRequestInterviewersItem>)
+      #   * :interviewers (Array<Merge::Ats::ScheduledInterviewRequestInterviewersItem>)
       #   * :location (String)
       #   * :start_at (DateTime)
       #   * :end_at (DateTime)
-      #   * :status (SCHEDULED_INTERVIEW_STATUS_ENUM)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
+      #   * :status (Merge::Ats::ScheduledInterviewStatusEnum)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
       # @param remote_user_id [String]
-      # @param request_options [RequestOptions]
-      # @return [Ats::ScheduledInterviewResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ScheduledInterviewResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.create(model: {  }, remote_user_id: "remote_user_id")
       def create(model:, remote_user_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/ats/v1/interviews") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -250,24 +311,36 @@ module Merge
               model: model,
               remote_user_id: remote_user_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews"
           end
-          Ats::ScheduledInterviewResponse.from_json(json_object: response.body)
+          Merge::Ats::ScheduledInterviewResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns a `ScheduledInterview` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [INTERVIEWS_RETRIEVE_REQUEST_EXPAND] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param expand [Merge::Ats::Interviews::InterviewsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [String] Which fields should be returned in non-normalized form.
-      # @param request_options [RequestOptions]
-      # @return [Ats::ScheduledInterview]
+      # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::ScheduledInterview]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
                    request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/interviews/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -279,24 +352,33 @@ module Merge
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews/#{id}"
           end
-          Ats::ScheduledInterview.from_json(json_object: response.body)
+          Merge::Ats::ScheduledInterview.from_json(json_object: response.body)
         end
       end
 
       # Returns metadata for `ScheduledInterview` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Ats::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/interviews/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/interviews/meta/post"
           end
-          Ats::MetaResponse.from_json(json_object: response.body)
+          Merge::Ats::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

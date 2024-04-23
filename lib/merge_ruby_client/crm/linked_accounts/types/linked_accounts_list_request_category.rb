@@ -3,16 +3,15 @@
 module Merge
   module Crm
     class LinkedAccounts
-      # @type [LINKED_ACCOUNTS_LIST_REQUEST_CATEGORY]
-      LINKED_ACCOUNTS_LIST_REQUEST_CATEGORY = {
-        accounting: "accounting",
-        ats: "ats",
-        crm: "crm",
-        filestorage: "filestorage",
-        hris: "hris",
-        mktg: "mktg",
-        ticketing: "ticketing"
-      }.freeze
+      class LinkedAccountsListRequestCategory
+        ACCOUNTING = "accounting"
+        ATS = "ats"
+        CRM = "crm"
+        FILESTORAGE = "filestorage"
+        HRIS = "hris"
+        MKTG = "mktg"
+        TICKETING = "ticketing"
+      end
     end
   end
 end

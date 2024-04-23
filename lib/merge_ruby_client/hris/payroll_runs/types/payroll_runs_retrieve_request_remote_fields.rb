@@ -3,12 +3,11 @@
 module Merge
   module Hris
     class PayrollRuns
-      # @type [PAYROLL_RUNS_RETRIEVE_REQUEST_REMOTE_FIELDS]
-      PAYROLL_RUNS_RETRIEVE_REQUEST_REMOTE_FIELDS = {
-        run_state: "run_state",
-        run_state_run_type: "run_state,run_type",
-        run_type: "run_type"
-      }.freeze
+      class PayrollRunsRetrieveRequestRemoteFields
+        RUN_STATE = "run_state"
+        RUN_STATE_RUN_TYPE = "run_state,run_type"
+        RUN_TYPE = "run_type"
+      end
     end
   end
 end

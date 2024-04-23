@@ -2,7 +2,11 @@
 
 module Merge
   module Accounting
-    # @type [INVOICE_TYPE_ENUM]
-    INVOICE_TYPE_ENUM = { accounts_receivable: "ACCOUNTS_RECEIVABLE", accounts_payable: "ACCOUNTS_PAYABLE" }.freeze
+    # - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
+    #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+    class InvoiceTypeEnum
+      ACCOUNTS_RECEIVABLE = "ACCOUNTS_RECEIVABLE"
+      ACCOUNTS_PAYABLE = "ACCOUNTS_PAYABLE"
+    end
   end
 end

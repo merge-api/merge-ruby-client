@@ -3,14 +3,13 @@
 module Merge
   module Hris
     class PayrollRuns
-      # @type [PAYROLL_RUNS_LIST_REQUEST_RUN_TYPE]
-      PAYROLL_RUNS_LIST_REQUEST_RUN_TYPE = {
-        correction: "CORRECTION",
-        off_cycle: "OFF_CYCLE",
-        regular: "REGULAR",
-        sign_on_bonus: "SIGN_ON_BONUS",
-        termination: "TERMINATION"
-      }.freeze
+      class PayrollRunsListRequestRunType
+        CORRECTION = "CORRECTION"
+        OFF_CYCLE = "OFF_CYCLE"
+        REGULAR = "REGULAR"
+        SIGN_ON_BONUS = "SIGN_ON_BONUS"
+        TERMINATION = "TERMINATION"
+      end
     end
   end
 end

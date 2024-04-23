@@ -3,136 +3,135 @@
 module Merge
   module Ticketing
     class Tickets
-      # @type [TICKETS_RETRIEVE_REQUEST_EXPAND]
-      TICKETS_RETRIEVE_REQUEST_EXPAND = {
-        account: "account",
-        account_contact: "account,contact",
-        account_contact_creator: "account,contact,creator",
-        account_contact_creator_parent_ticket: "account,contact,creator,parent_ticket",
-        account_contact_parent_ticket: "account,contact,parent_ticket",
-        account_creator: "account,creator",
-        account_creator_parent_ticket: "account,creator,parent_ticket",
-        account_parent_ticket: "account,parent_ticket",
-        assignees: "assignees",
-        assignees_account: "assignees,account",
-        assignees_account_contact: "assignees,account,contact",
-        assignees_account_contact_creator: "assignees,account,contact,creator",
-        assignees_account_contact_creator_parent_ticket: "assignees,account,contact,creator,parent_ticket",
-        assignees_account_contact_parent_ticket: "assignees,account,contact,parent_ticket",
-        assignees_account_creator: "assignees,account,creator",
-        assignees_account_creator_parent_ticket: "assignees,account,creator,parent_ticket",
-        assignees_account_parent_ticket: "assignees,account,parent_ticket",
-        assignees_collections: "assignees,collections",
-        assignees_collections_account: "assignees,collections,account",
-        assignees_collections_account_contact: "assignees,collections,account,contact",
-        assignees_collections_account_contact_creator: "assignees,collections,account,contact,creator",
-        assignees_collections_account_contact_creator_parent_ticket: "assignees,collections,account,contact,creator,parent_ticket",
-        assignees_collections_account_contact_parent_ticket: "assignees,collections,account,contact,parent_ticket",
-        assignees_collections_account_creator: "assignees,collections,account,creator",
-        assignees_collections_account_creator_parent_ticket: "assignees,collections,account,creator,parent_ticket",
-        assignees_collections_account_parent_ticket: "assignees,collections,account,parent_ticket",
-        assignees_collections_contact: "assignees,collections,contact",
-        assignees_collections_contact_creator: "assignees,collections,contact,creator",
-        assignees_collections_contact_creator_parent_ticket: "assignees,collections,contact,creator,parent_ticket",
-        assignees_collections_contact_parent_ticket: "assignees,collections,contact,parent_ticket",
-        assignees_collections_creator: "assignees,collections,creator",
-        assignees_collections_creator_parent_ticket: "assignees,collections,creator,parent_ticket",
-        assignees_collections_parent_ticket: "assignees,collections,parent_ticket",
-        assignees_contact: "assignees,contact",
-        assignees_contact_creator: "assignees,contact,creator",
-        assignees_contact_creator_parent_ticket: "assignees,contact,creator,parent_ticket",
-        assignees_contact_parent_ticket: "assignees,contact,parent_ticket",
-        assignees_creator: "assignees,creator",
-        assignees_creator_parent_ticket: "assignees,creator,parent_ticket",
-        assignees_parent_ticket: "assignees,parent_ticket",
-        attachments: "attachments",
-        attachments_account: "attachments,account",
-        attachments_account_contact: "attachments,account,contact",
-        attachments_account_contact_creator: "attachments,account,contact,creator",
-        attachments_account_contact_creator_parent_ticket: "attachments,account,contact,creator,parent_ticket",
-        attachments_account_contact_parent_ticket: "attachments,account,contact,parent_ticket",
-        attachments_account_creator: "attachments,account,creator",
-        attachments_account_creator_parent_ticket: "attachments,account,creator,parent_ticket",
-        attachments_account_parent_ticket: "attachments,account,parent_ticket",
-        attachments_assignees: "attachments,assignees",
-        attachments_assignees_account: "attachments,assignees,account",
-        attachments_assignees_account_contact: "attachments,assignees,account,contact",
-        attachments_assignees_account_contact_creator: "attachments,assignees,account,contact,creator",
-        attachments_assignees_account_contact_creator_parent_ticket: "attachments,assignees,account,contact,creator,parent_ticket",
-        attachments_assignees_account_contact_parent_ticket: "attachments,assignees,account,contact,parent_ticket",
-        attachments_assignees_account_creator: "attachments,assignees,account,creator",
-        attachments_assignees_account_creator_parent_ticket: "attachments,assignees,account,creator,parent_ticket",
-        attachments_assignees_account_parent_ticket: "attachments,assignees,account,parent_ticket",
-        attachments_assignees_collections: "attachments,assignees,collections",
-        attachments_assignees_collections_account: "attachments,assignees,collections,account",
-        attachments_assignees_collections_account_contact: "attachments,assignees,collections,account,contact",
-        attachments_assignees_collections_account_contact_creator: "attachments,assignees,collections,account,contact,creator",
-        attachments_assignees_collections_account_contact_creator_parent_ticket: "attachments,assignees,collections,account,contact,creator,parent_ticket",
-        attachments_assignees_collections_account_contact_parent_ticket: "attachments,assignees,collections,account,contact,parent_ticket",
-        attachments_assignees_collections_account_creator: "attachments,assignees,collections,account,creator",
-        attachments_assignees_collections_account_creator_parent_ticket: "attachments,assignees,collections,account,creator,parent_ticket",
-        attachments_assignees_collections_account_parent_ticket: "attachments,assignees,collections,account,parent_ticket",
-        attachments_assignees_collections_contact: "attachments,assignees,collections,contact",
-        attachments_assignees_collections_contact_creator: "attachments,assignees,collections,contact,creator",
-        attachments_assignees_collections_contact_creator_parent_ticket: "attachments,assignees,collections,contact,creator,parent_ticket",
-        attachments_assignees_collections_contact_parent_ticket: "attachments,assignees,collections,contact,parent_ticket",
-        attachments_assignees_collections_creator: "attachments,assignees,collections,creator",
-        attachments_assignees_collections_creator_parent_ticket: "attachments,assignees,collections,creator,parent_ticket",
-        attachments_assignees_collections_parent_ticket: "attachments,assignees,collections,parent_ticket",
-        attachments_assignees_contact: "attachments,assignees,contact",
-        attachments_assignees_contact_creator: "attachments,assignees,contact,creator",
-        attachments_assignees_contact_creator_parent_ticket: "attachments,assignees,contact,creator,parent_ticket",
-        attachments_assignees_contact_parent_ticket: "attachments,assignees,contact,parent_ticket",
-        attachments_assignees_creator: "attachments,assignees,creator",
-        attachments_assignees_creator_parent_ticket: "attachments,assignees,creator,parent_ticket",
-        attachments_assignees_parent_ticket: "attachments,assignees,parent_ticket",
-        attachments_collections: "attachments,collections",
-        attachments_collections_account: "attachments,collections,account",
-        attachments_collections_account_contact: "attachments,collections,account,contact",
-        attachments_collections_account_contact_creator: "attachments,collections,account,contact,creator",
-        attachments_collections_account_contact_creator_parent_ticket: "attachments,collections,account,contact,creator,parent_ticket",
-        attachments_collections_account_contact_parent_ticket: "attachments,collections,account,contact,parent_ticket",
-        attachments_collections_account_creator: "attachments,collections,account,creator",
-        attachments_collections_account_creator_parent_ticket: "attachments,collections,account,creator,parent_ticket",
-        attachments_collections_account_parent_ticket: "attachments,collections,account,parent_ticket",
-        attachments_collections_contact: "attachments,collections,contact",
-        attachments_collections_contact_creator: "attachments,collections,contact,creator",
-        attachments_collections_contact_creator_parent_ticket: "attachments,collections,contact,creator,parent_ticket",
-        attachments_collections_contact_parent_ticket: "attachments,collections,contact,parent_ticket",
-        attachments_collections_creator: "attachments,collections,creator",
-        attachments_collections_creator_parent_ticket: "attachments,collections,creator,parent_ticket",
-        attachments_collections_parent_ticket: "attachments,collections,parent_ticket",
-        attachments_contact: "attachments,contact",
-        attachments_contact_creator: "attachments,contact,creator",
-        attachments_contact_creator_parent_ticket: "attachments,contact,creator,parent_ticket",
-        attachments_contact_parent_ticket: "attachments,contact,parent_ticket",
-        attachments_creator: "attachments,creator",
-        attachments_creator_parent_ticket: "attachments,creator,parent_ticket",
-        attachments_parent_ticket: "attachments,parent_ticket",
-        collections: "collections",
-        collections_account: "collections,account",
-        collections_account_contact: "collections,account,contact",
-        collections_account_contact_creator: "collections,account,contact,creator",
-        collections_account_contact_creator_parent_ticket: "collections,account,contact,creator,parent_ticket",
-        collections_account_contact_parent_ticket: "collections,account,contact,parent_ticket",
-        collections_account_creator: "collections,account,creator",
-        collections_account_creator_parent_ticket: "collections,account,creator,parent_ticket",
-        collections_account_parent_ticket: "collections,account,parent_ticket",
-        collections_contact: "collections,contact",
-        collections_contact_creator: "collections,contact,creator",
-        collections_contact_creator_parent_ticket: "collections,contact,creator,parent_ticket",
-        collections_contact_parent_ticket: "collections,contact,parent_ticket",
-        collections_creator: "collections,creator",
-        collections_creator_parent_ticket: "collections,creator,parent_ticket",
-        collections_parent_ticket: "collections,parent_ticket",
-        contact: "contact",
-        contact_creator: "contact,creator",
-        contact_creator_parent_ticket: "contact,creator,parent_ticket",
-        contact_parent_ticket: "contact,parent_ticket",
-        creator: "creator",
-        creator_parent_ticket: "creator,parent_ticket",
-        parent_ticket: "parent_ticket"
-      }.freeze
+      class TicketsRetrieveRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_CONTACT = "account,contact"
+        ACCOUNT_CONTACT_CREATOR = "account,contact,creator"
+        ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "account,contact,creator,parent_ticket"
+        ACCOUNT_CONTACT_PARENT_TICKET = "account,contact,parent_ticket"
+        ACCOUNT_CREATOR = "account,creator"
+        ACCOUNT_CREATOR_PARENT_TICKET = "account,creator,parent_ticket"
+        ACCOUNT_PARENT_TICKET = "account,parent_ticket"
+        ASSIGNEES = "assignees"
+        ASSIGNEES_ACCOUNT = "assignees,account"
+        ASSIGNEES_ACCOUNT_CONTACT = "assignees,account,contact"
+        ASSIGNEES_ACCOUNT_CONTACT_CREATOR = "assignees,account,contact,creator"
+        ASSIGNEES_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "assignees,account,contact,creator,parent_ticket"
+        ASSIGNEES_ACCOUNT_CONTACT_PARENT_TICKET = "assignees,account,contact,parent_ticket"
+        ASSIGNEES_ACCOUNT_CREATOR = "assignees,account,creator"
+        ASSIGNEES_ACCOUNT_CREATOR_PARENT_TICKET = "assignees,account,creator,parent_ticket"
+        ASSIGNEES_ACCOUNT_PARENT_TICKET = "assignees,account,parent_ticket"
+        ASSIGNEES_COLLECTIONS = "assignees,collections"
+        ASSIGNEES_COLLECTIONS_ACCOUNT = "assignees,collections,account"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT = "assignees,collections,account,contact"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT_CREATOR = "assignees,collections,account,contact,creator"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "assignees,collections,account,contact,creator,parent_ticket"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT_PARENT_TICKET = "assignees,collections,account,contact,parent_ticket"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_CREATOR = "assignees,collections,account,creator"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_CREATOR_PARENT_TICKET = "assignees,collections,account,creator,parent_ticket"
+        ASSIGNEES_COLLECTIONS_ACCOUNT_PARENT_TICKET = "assignees,collections,account,parent_ticket"
+        ASSIGNEES_COLLECTIONS_CONTACT = "assignees,collections,contact"
+        ASSIGNEES_COLLECTIONS_CONTACT_CREATOR = "assignees,collections,contact,creator"
+        ASSIGNEES_COLLECTIONS_CONTACT_CREATOR_PARENT_TICKET = "assignees,collections,contact,creator,parent_ticket"
+        ASSIGNEES_COLLECTIONS_CONTACT_PARENT_TICKET = "assignees,collections,contact,parent_ticket"
+        ASSIGNEES_COLLECTIONS_CREATOR = "assignees,collections,creator"
+        ASSIGNEES_COLLECTIONS_CREATOR_PARENT_TICKET = "assignees,collections,creator,parent_ticket"
+        ASSIGNEES_COLLECTIONS_PARENT_TICKET = "assignees,collections,parent_ticket"
+        ASSIGNEES_CONTACT = "assignees,contact"
+        ASSIGNEES_CONTACT_CREATOR = "assignees,contact,creator"
+        ASSIGNEES_CONTACT_CREATOR_PARENT_TICKET = "assignees,contact,creator,parent_ticket"
+        ASSIGNEES_CONTACT_PARENT_TICKET = "assignees,contact,parent_ticket"
+        ASSIGNEES_CREATOR = "assignees,creator"
+        ASSIGNEES_CREATOR_PARENT_TICKET = "assignees,creator,parent_ticket"
+        ASSIGNEES_PARENT_TICKET = "assignees,parent_ticket"
+        ATTACHMENTS = "attachments"
+        ATTACHMENTS_ACCOUNT = "attachments,account"
+        ATTACHMENTS_ACCOUNT_CONTACT = "attachments,account,contact"
+        ATTACHMENTS_ACCOUNT_CONTACT_CREATOR = "attachments,account,contact,creator"
+        ATTACHMENTS_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "attachments,account,contact,creator,parent_ticket"
+        ATTACHMENTS_ACCOUNT_CONTACT_PARENT_TICKET = "attachments,account,contact,parent_ticket"
+        ATTACHMENTS_ACCOUNT_CREATOR = "attachments,account,creator"
+        ATTACHMENTS_ACCOUNT_CREATOR_PARENT_TICKET = "attachments,account,creator,parent_ticket"
+        ATTACHMENTS_ACCOUNT_PARENT_TICKET = "attachments,account,parent_ticket"
+        ATTACHMENTS_ASSIGNEES = "attachments,assignees"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT = "attachments,assignees,account"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_CONTACT = "attachments,assignees,account,contact"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_CONTACT_CREATOR = "attachments,assignees,account,contact,creator"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "attachments,assignees,account,contact,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_CONTACT_PARENT_TICKET = "attachments,assignees,account,contact,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_CREATOR = "attachments,assignees,account,creator"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_CREATOR_PARENT_TICKET = "attachments,assignees,account,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_ACCOUNT_PARENT_TICKET = "attachments,assignees,account,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS = "attachments,assignees,collections"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT = "attachments,assignees,collections,account"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT = "attachments,assignees,collections,account,contact"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT_CREATOR = "attachments,assignees,collections,account,contact,creator"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "attachments,assignees,collections,account,contact,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_CONTACT_PARENT_TICKET = "attachments,assignees,collections,account,contact,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_CREATOR = "attachments,assignees,collections,account,creator"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_CREATOR_PARENT_TICKET = "attachments,assignees,collections,account,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_ACCOUNT_PARENT_TICKET = "attachments,assignees,collections,account,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_CONTACT = "attachments,assignees,collections,contact"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_CONTACT_CREATOR = "attachments,assignees,collections,contact,creator"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_CONTACT_CREATOR_PARENT_TICKET = "attachments,assignees,collections,contact,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_CONTACT_PARENT_TICKET = "attachments,assignees,collections,contact,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_CREATOR = "attachments,assignees,collections,creator"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_CREATOR_PARENT_TICKET = "attachments,assignees,collections,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_COLLECTIONS_PARENT_TICKET = "attachments,assignees,collections,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_CONTACT = "attachments,assignees,contact"
+        ATTACHMENTS_ASSIGNEES_CONTACT_CREATOR = "attachments,assignees,contact,creator"
+        ATTACHMENTS_ASSIGNEES_CONTACT_CREATOR_PARENT_TICKET = "attachments,assignees,contact,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_CONTACT_PARENT_TICKET = "attachments,assignees,contact,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_CREATOR = "attachments,assignees,creator"
+        ATTACHMENTS_ASSIGNEES_CREATOR_PARENT_TICKET = "attachments,assignees,creator,parent_ticket"
+        ATTACHMENTS_ASSIGNEES_PARENT_TICKET = "attachments,assignees,parent_ticket"
+        ATTACHMENTS_COLLECTIONS = "attachments,collections"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT = "attachments,collections,account"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_CONTACT = "attachments,collections,account,contact"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_CONTACT_CREATOR = "attachments,collections,account,contact,creator"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "attachments,collections,account,contact,creator,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_CONTACT_PARENT_TICKET = "attachments,collections,account,contact,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_CREATOR = "attachments,collections,account,creator"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_CREATOR_PARENT_TICKET = "attachments,collections,account,creator,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_ACCOUNT_PARENT_TICKET = "attachments,collections,account,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_CONTACT = "attachments,collections,contact"
+        ATTACHMENTS_COLLECTIONS_CONTACT_CREATOR = "attachments,collections,contact,creator"
+        ATTACHMENTS_COLLECTIONS_CONTACT_CREATOR_PARENT_TICKET = "attachments,collections,contact,creator,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_CONTACT_PARENT_TICKET = "attachments,collections,contact,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_CREATOR = "attachments,collections,creator"
+        ATTACHMENTS_COLLECTIONS_CREATOR_PARENT_TICKET = "attachments,collections,creator,parent_ticket"
+        ATTACHMENTS_COLLECTIONS_PARENT_TICKET = "attachments,collections,parent_ticket"
+        ATTACHMENTS_CONTACT = "attachments,contact"
+        ATTACHMENTS_CONTACT_CREATOR = "attachments,contact,creator"
+        ATTACHMENTS_CONTACT_CREATOR_PARENT_TICKET = "attachments,contact,creator,parent_ticket"
+        ATTACHMENTS_CONTACT_PARENT_TICKET = "attachments,contact,parent_ticket"
+        ATTACHMENTS_CREATOR = "attachments,creator"
+        ATTACHMENTS_CREATOR_PARENT_TICKET = "attachments,creator,parent_ticket"
+        ATTACHMENTS_PARENT_TICKET = "attachments,parent_ticket"
+        COLLECTIONS = "collections"
+        COLLECTIONS_ACCOUNT = "collections,account"
+        COLLECTIONS_ACCOUNT_CONTACT = "collections,account,contact"
+        COLLECTIONS_ACCOUNT_CONTACT_CREATOR = "collections,account,contact,creator"
+        COLLECTIONS_ACCOUNT_CONTACT_CREATOR_PARENT_TICKET = "collections,account,contact,creator,parent_ticket"
+        COLLECTIONS_ACCOUNT_CONTACT_PARENT_TICKET = "collections,account,contact,parent_ticket"
+        COLLECTIONS_ACCOUNT_CREATOR = "collections,account,creator"
+        COLLECTIONS_ACCOUNT_CREATOR_PARENT_TICKET = "collections,account,creator,parent_ticket"
+        COLLECTIONS_ACCOUNT_PARENT_TICKET = "collections,account,parent_ticket"
+        COLLECTIONS_CONTACT = "collections,contact"
+        COLLECTIONS_CONTACT_CREATOR = "collections,contact,creator"
+        COLLECTIONS_CONTACT_CREATOR_PARENT_TICKET = "collections,contact,creator,parent_ticket"
+        COLLECTIONS_CONTACT_PARENT_TICKET = "collections,contact,parent_ticket"
+        COLLECTIONS_CREATOR = "collections,creator"
+        COLLECTIONS_CREATOR_PARENT_TICKET = "collections,creator,parent_ticket"
+        COLLECTIONS_PARENT_TICKET = "collections,parent_ticket"
+        CONTACT = "contact"
+        CONTACT_CREATOR = "contact,creator"
+        CONTACT_CREATOR_PARENT_TICKET = "contact,creator,parent_ticket"
+        CONTACT_PARENT_TICKET = "contact,parent_ticket"
+        CREATOR = "creator"
+        CREATOR_PARENT_TICKET = "creator,parent_ticket"
+        PARENT_TICKET = "parent_ticket"
+      end
     end
   end
 end

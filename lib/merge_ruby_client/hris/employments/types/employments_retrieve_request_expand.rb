@@ -3,12 +3,11 @@
 module Merge
   module Hris
     class Employments
-      # @type [EMPLOYMENTS_RETRIEVE_REQUEST_EXPAND]
-      EMPLOYMENTS_RETRIEVE_REQUEST_EXPAND = {
-        employee: "employee",
-        employee_pay_group: "employee,pay_group",
-        pay_group: "pay_group"
-      }.freeze
+      class EmploymentsRetrieveRequestExpand
+        EMPLOYEE = "employee"
+        EMPLOYEE_PAY_GROUP = "employee,pay_group"
+        PAY_GROUP = "pay_group"
+      end
     end
   end
 end

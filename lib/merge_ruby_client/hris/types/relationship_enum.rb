@@ -2,7 +2,13 @@
 
 module Merge
   module Hris
-    # @type [RELATIONSHIP_ENUM]
-    RELATIONSHIP_ENUM = { child: "CHILD", spouse: "SPOUSE", domestic_partner: "DOMESTIC_PARTNER" }.freeze
+    # - `CHILD` - CHILD
+    #  - `SPOUSE` - SPOUSE
+    #  - `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
+    class RelationshipEnum
+      CHILD = "CHILD"
+      SPOUSE = "SPOUSE"
+      DOMESTIC_PARTNER = "DOMESTIC_PARTNER"
+    end
   end
 end

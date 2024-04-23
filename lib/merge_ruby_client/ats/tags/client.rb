@@ -8,12 +8,12 @@ require "async"
 module Merge
   module Ats
     class TagsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Ats::TagsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Ats::TagsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -23,16 +23,25 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Ats::PaginatedTagList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::PaginatedTagList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.list
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ats/v1/tags") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -49,18 +58,19 @@ module Merge
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/tags"
         end
-        Ats::PaginatedTagList.from_json(json_object: response.body)
+        Merge::Ats::PaginatedTagList.from_json(json_object: response.body)
       end
     end
 
     class AsyncTagsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Ats::AsyncTagsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Ats::AsyncTagsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -70,17 +80,26 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param request_options [RequestOptions]
-      # @return [Ats::PaginatedTagList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ats::PaginatedTagList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ats.list
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ats/v1/tags") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -97,8 +116,9 @@ module Merge
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/tags"
           end
-          Ats::PaginatedTagList.from_json(json_object: response.body)
+          Merge::Ats::PaginatedTagList.from_json(json_object: response.body)
         end
       end
     end

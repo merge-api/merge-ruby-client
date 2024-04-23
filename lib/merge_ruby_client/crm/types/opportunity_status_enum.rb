@@ -2,7 +2,13 @@
 
 module Merge
   module Crm
-    # @type [OPPORTUNITY_STATUS_ENUM]
-    OPPORTUNITY_STATUS_ENUM = { open: "OPEN", won: "WON", lost: "LOST" }.freeze
+    # - `OPEN` - OPEN
+    #  - `WON` - WON
+    #  - `LOST` - LOST
+    class OpportunityStatusEnum
+      OPEN = "OPEN"
+      WON = "WON"
+      LOST = "LOST"
+    end
   end
 end

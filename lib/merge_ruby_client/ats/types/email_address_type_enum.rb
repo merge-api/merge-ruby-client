@@ -2,7 +2,13 @@
 
 module Merge
   module Ats
-    # @type [EMAIL_ADDRESS_TYPE_ENUM]
-    EMAIL_ADDRESS_TYPE_ENUM = { personal: "PERSONAL", work: "WORK", other: "OTHER" }.freeze
+    # - `PERSONAL` - PERSONAL
+    #  - `WORK` - WORK
+    #  - `OTHER` - OTHER
+    class EmailAddressTypeEnum
+      PERSONAL = "PERSONAL"
+      WORK = "WORK"
+      OTHER = "OTHER"
+    end
   end
 end

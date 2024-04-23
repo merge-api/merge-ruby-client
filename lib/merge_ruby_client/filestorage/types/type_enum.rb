@@ -2,7 +2,15 @@
 
 module Merge
   module Filestorage
-    # @type [TYPE_ENUM]
-    TYPE_ENUM = { user: "USER", group: "GROUP", company: "COMPANY", anyone: "ANYONE" }.freeze
+    # - `USER` - USER
+    #  - `GROUP` - GROUP
+    #  - `COMPANY` - COMPANY
+    #  - `ANYONE` - ANYONE
+    class TypeEnum
+      USER = "USER"
+      GROUP = "GROUP"
+      COMPANY = "COMPANY"
+      ANYONE = "ANYONE"
+    end
   end
 end

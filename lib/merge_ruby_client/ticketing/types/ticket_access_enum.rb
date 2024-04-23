@@ -2,7 +2,13 @@
 
 module Merge
   module Ticketing
-    # @type [TICKET_ACCESS_ENUM]
-    TICKET_ACCESS_ENUM = { all: "ALL", assigned_only: "ASSIGNED_ONLY", team_only: "TEAM_ONLY" }.freeze
+    # - `ALL` - ALL
+    #  - `ASSIGNED_ONLY` - ASSIGNED_ONLY
+    #  - `TEAM_ONLY` - TEAM_ONLY
+    class TicketAccessEnum
+      ALL = "ALL"
+      ASSIGNED_ONLY = "ASSIGNED_ONLY"
+      TEAM_ONLY = "TEAM_ONLY"
+    end
   end
 end

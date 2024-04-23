@@ -2,7 +2,11 @@
 
 module Merge
   module Ticketing
-    # @type [COLLECTION_TYPE_ENUM]
-    COLLECTION_TYPE_ENUM = { list: "LIST", project: "PROJECT" }.freeze
+    # - `LIST` - LIST
+    #  - `PROJECT` - PROJECT
+    class CollectionTypeEnum
+      LIST = "LIST"
+      PROJECT = "PROJECT"
+    end
   end
 end

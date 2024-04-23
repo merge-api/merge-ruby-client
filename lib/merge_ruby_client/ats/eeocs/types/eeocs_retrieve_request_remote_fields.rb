@@ -3,24 +3,23 @@
 module Merge
   module Ats
     class Eeocs
-      # @type [EEOCS_RETRIEVE_REQUEST_REMOTE_FIELDS]
-      EEOCS_RETRIEVE_REQUEST_REMOTE_FIELDS = {
-        disability_status: "disability_status",
-        disability_status_gender: "disability_status,gender",
-        disability_status_gender_race: "disability_status,gender,race",
-        disability_status_gender_race_veteran_status: "disability_status,gender,race,veteran_status",
-        disability_status_gender_veteran_status: "disability_status,gender,veteran_status",
-        disability_status_race: "disability_status,race",
-        disability_status_race_veteran_status: "disability_status,race,veteran_status",
-        disability_status_veteran_status: "disability_status,veteran_status",
-        gender: "gender",
-        gender_race: "gender,race",
-        gender_race_veteran_status: "gender,race,veteran_status",
-        gender_veteran_status: "gender,veteran_status",
-        race: "race",
-        race_veteran_status: "race,veteran_status",
-        veteran_status: "veteran_status"
-      }.freeze
+      class EeocsRetrieveRequestRemoteFields
+        DISABILITY_STATUS = "disability_status"
+        DISABILITY_STATUS_GENDER = "disability_status,gender"
+        DISABILITY_STATUS_GENDER_RACE = "disability_status,gender,race"
+        DISABILITY_STATUS_GENDER_RACE_VETERAN_STATUS = "disability_status,gender,race,veteran_status"
+        DISABILITY_STATUS_GENDER_VETERAN_STATUS = "disability_status,gender,veteran_status"
+        DISABILITY_STATUS_RACE = "disability_status,race"
+        DISABILITY_STATUS_RACE_VETERAN_STATUS = "disability_status,race,veteran_status"
+        DISABILITY_STATUS_VETERAN_STATUS = "disability_status,veteran_status"
+        GENDER = "gender"
+        GENDER_RACE = "gender,race"
+        GENDER_RACE_VETERAN_STATUS = "gender,race,veteran_status"
+        GENDER_VETERAN_STATUS = "gender,veteran_status"
+        RACE = "race"
+        RACE_VETERAN_STATUS = "race,veteran_status"
+        VETERAN_STATUS = "veteran_status"
+      end
     end
   end
 end

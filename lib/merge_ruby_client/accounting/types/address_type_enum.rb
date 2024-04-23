@@ -2,7 +2,11 @@
 
 module Merge
   module Accounting
-    # @type [ADDRESS_TYPE_ENUM]
-    ADDRESS_TYPE_ENUM = { billing: "BILLING", shipping: "SHIPPING" }.freeze
+    # - `BILLING` - BILLING
+    #  - `SHIPPING` - SHIPPING
+    class AddressTypeEnum
+      BILLING = "BILLING"
+      SHIPPING = "SHIPPING"
+    end
   end
 end

@@ -3,15 +3,14 @@
 module Merge
   module Hris
     class TimeOff
-      # @type [TIME_OFF_LIST_REQUEST_REQUEST_TYPE]
-      TIME_OFF_LIST_REQUEST_REQUEST_TYPE = {
-        bereavement: "BEREAVEMENT",
-        jury_duty: "JURY_DUTY",
-        personal: "PERSONAL",
-        sick: "SICK",
-        vacation: "VACATION",
-        volunteer: "VOLUNTEER"
-      }.freeze
+      class TimeOffListRequestRequestType
+        BEREAVEMENT = "BEREAVEMENT"
+        JURY_DUTY = "JURY_DUTY"
+        PERSONAL = "PERSONAL"
+        SICK = "SICK"
+        VACATION = "VACATION"
+        VOLUNTEER = "VOLUNTEER"
+      end
     end
   end
 end

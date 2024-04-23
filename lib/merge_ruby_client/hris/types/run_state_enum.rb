@@ -2,7 +2,17 @@
 
 module Merge
   module Hris
-    # @type [RUN_STATE_ENUM]
-    RUN_STATE_ENUM = { paid: "PAID", draft: "DRAFT", approved: "APPROVED", failed: "FAILED", closed: "CLOSED" }.freeze
+    # - `PAID` - PAID
+    #  - `DRAFT` - DRAFT
+    #  - `APPROVED` - APPROVED
+    #  - `FAILED` - FAILED
+    #  - `CLOSED` - CLOSED
+    class RunStateEnum
+      PAID = "PAID"
+      DRAFT = "DRAFT"
+      APPROVED = "APPROVED"
+      FAILED = "FAILED"
+      CLOSED = "CLOSED"
+    end
   end
 end

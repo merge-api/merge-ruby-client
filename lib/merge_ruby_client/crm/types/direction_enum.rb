@@ -2,7 +2,11 @@
 
 module Merge
   module Crm
-    # @type [DIRECTION_ENUM]
-    DIRECTION_ENUM = { inbound: "INBOUND", outbound: "OUTBOUND" }.freeze
+    # - `INBOUND` - INBOUND
+    #  - `OUTBOUND` - OUTBOUND
+    class DirectionEnum
+      INBOUND = "INBOUND"
+      OUTBOUND = "OUTBOUND"
+    end
   end
 end

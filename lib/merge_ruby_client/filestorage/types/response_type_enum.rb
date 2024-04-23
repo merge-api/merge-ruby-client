@@ -2,7 +2,11 @@
 
 module Merge
   module Filestorage
-    # @type [RESPONSE_TYPE_ENUM]
-    RESPONSE_TYPE_ENUM = { json: "JSON", base_64_gzip: "BASE64_GZIP" }.freeze
+    # - `JSON` - JSON
+    #  - `BASE64_GZIP` - BASE64_GZIP
+    class ResponseTypeEnum
+      JSON = "JSON"
+      BASE_64_GZIP = "BASE64_GZIP"
+    end
   end
 end

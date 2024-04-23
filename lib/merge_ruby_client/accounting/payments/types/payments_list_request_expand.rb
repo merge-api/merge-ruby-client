@@ -3,72 +3,71 @@
 module Merge
   module Accounting
     class Payments
-      # @type [PAYMENTS_LIST_REQUEST_EXPAND]
-      PAYMENTS_LIST_REQUEST_EXPAND = {
-        account: "account",
-        account_accounting_period: "account,accounting_period",
-        account_company: "account,company",
-        account_company_accounting_period: "account,company,accounting_period",
-        accounting_period: "accounting_period",
-        applied_to_lines: "applied_to_lines",
-        applied_to_lines_account: "applied_to_lines,account",
-        applied_to_lines_account_accounting_period: "applied_to_lines,account,accounting_period",
-        applied_to_lines_account_company: "applied_to_lines,account,company",
-        applied_to_lines_account_company_accounting_period: "applied_to_lines,account,company,accounting_period",
-        applied_to_lines_accounting_period: "applied_to_lines,accounting_period",
-        applied_to_lines_company: "applied_to_lines,company",
-        applied_to_lines_company_accounting_period: "applied_to_lines,company,accounting_period",
-        applied_to_lines_contact: "applied_to_lines,contact",
-        applied_to_lines_contact_account: "applied_to_lines,contact,account",
-        applied_to_lines_contact_account_accounting_period: "applied_to_lines,contact,account,accounting_period",
-        applied_to_lines_contact_account_company: "applied_to_lines,contact,account,company",
-        applied_to_lines_contact_account_company_accounting_period: "applied_to_lines,contact,account,company,accounting_period",
-        applied_to_lines_contact_accounting_period: "applied_to_lines,contact,accounting_period",
-        applied_to_lines_contact_company: "applied_to_lines,contact,company",
-        applied_to_lines_contact_company_accounting_period: "applied_to_lines,contact,company,accounting_period",
-        company: "company",
-        company_accounting_period: "company,accounting_period",
-        contact: "contact",
-        contact_account: "contact,account",
-        contact_account_accounting_period: "contact,account,accounting_period",
-        contact_account_company: "contact,account,company",
-        contact_account_company_accounting_period: "contact,account,company,accounting_period",
-        contact_accounting_period: "contact,accounting_period",
-        contact_company: "contact,company",
-        contact_company_accounting_period: "contact,company,accounting_period",
-        tracking_categories: "tracking_categories",
-        tracking_categories_account: "tracking_categories,account",
-        tracking_categories_account_accounting_period: "tracking_categories,account,accounting_period",
-        tracking_categories_account_company: "tracking_categories,account,company",
-        tracking_categories_account_company_accounting_period: "tracking_categories,account,company,accounting_period",
-        tracking_categories_accounting_period: "tracking_categories,accounting_period",
-        tracking_categories_applied_to_lines: "tracking_categories,applied_to_lines",
-        tracking_categories_applied_to_lines_account: "tracking_categories,applied_to_lines,account",
-        tracking_categories_applied_to_lines_account_accounting_period: "tracking_categories,applied_to_lines,account,accounting_period",
-        tracking_categories_applied_to_lines_account_company: "tracking_categories,applied_to_lines,account,company",
-        tracking_categories_applied_to_lines_account_company_accounting_period: "tracking_categories,applied_to_lines,account,company,accounting_period",
-        tracking_categories_applied_to_lines_accounting_period: "tracking_categories,applied_to_lines,accounting_period",
-        tracking_categories_applied_to_lines_company: "tracking_categories,applied_to_lines,company",
-        tracking_categories_applied_to_lines_company_accounting_period: "tracking_categories,applied_to_lines,company,accounting_period",
-        tracking_categories_applied_to_lines_contact: "tracking_categories,applied_to_lines,contact",
-        tracking_categories_applied_to_lines_contact_account: "tracking_categories,applied_to_lines,contact,account",
-        tracking_categories_applied_to_lines_contact_account_accounting_period: "tracking_categories,applied_to_lines,contact,account,accounting_period",
-        tracking_categories_applied_to_lines_contact_account_company: "tracking_categories,applied_to_lines,contact,account,company",
-        tracking_categories_applied_to_lines_contact_account_company_accounting_period: "tracking_categories,applied_to_lines,contact,account,company,accounting_period",
-        tracking_categories_applied_to_lines_contact_accounting_period: "tracking_categories,applied_to_lines,contact,accounting_period",
-        tracking_categories_applied_to_lines_contact_company: "tracking_categories,applied_to_lines,contact,company",
-        tracking_categories_applied_to_lines_contact_company_accounting_period: "tracking_categories,applied_to_lines,contact,company,accounting_period",
-        tracking_categories_company: "tracking_categories,company",
-        tracking_categories_company_accounting_period: "tracking_categories,company,accounting_period",
-        tracking_categories_contact: "tracking_categories,contact",
-        tracking_categories_contact_account: "tracking_categories,contact,account",
-        tracking_categories_contact_account_accounting_period: "tracking_categories,contact,account,accounting_period",
-        tracking_categories_contact_account_company: "tracking_categories,contact,account,company",
-        tracking_categories_contact_account_company_accounting_period: "tracking_categories,contact,account,company,accounting_period",
-        tracking_categories_contact_accounting_period: "tracking_categories,contact,accounting_period",
-        tracking_categories_contact_company: "tracking_categories,contact,company",
-        tracking_categories_contact_company_accounting_period: "tracking_categories,contact,company,accounting_period"
-      }.freeze
+      class PaymentsListRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_ACCOUNTING_PERIOD = "account,accounting_period"
+        ACCOUNT_COMPANY = "account,company"
+        ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "account,company,accounting_period"
+        ACCOUNTING_PERIOD = "accounting_period"
+        APPLIED_TO_LINES = "applied_to_lines"
+        APPLIED_TO_LINES_ACCOUNT = "applied_to_lines,account"
+        APPLIED_TO_LINES_ACCOUNT_ACCOUNTING_PERIOD = "applied_to_lines,account,accounting_period"
+        APPLIED_TO_LINES_ACCOUNT_COMPANY = "applied_to_lines,account,company"
+        APPLIED_TO_LINES_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "applied_to_lines,account,company,accounting_period"
+        APPLIED_TO_LINES_ACCOUNTING_PERIOD = "applied_to_lines,accounting_period"
+        APPLIED_TO_LINES_COMPANY = "applied_to_lines,company"
+        APPLIED_TO_LINES_COMPANY_ACCOUNTING_PERIOD = "applied_to_lines,company,accounting_period"
+        APPLIED_TO_LINES_CONTACT = "applied_to_lines,contact"
+        APPLIED_TO_LINES_CONTACT_ACCOUNT = "applied_to_lines,contact,account"
+        APPLIED_TO_LINES_CONTACT_ACCOUNT_ACCOUNTING_PERIOD = "applied_to_lines,contact,account,accounting_period"
+        APPLIED_TO_LINES_CONTACT_ACCOUNT_COMPANY = "applied_to_lines,contact,account,company"
+        APPLIED_TO_LINES_CONTACT_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "applied_to_lines,contact,account,company,accounting_period"
+        APPLIED_TO_LINES_CONTACT_ACCOUNTING_PERIOD = "applied_to_lines,contact,accounting_period"
+        APPLIED_TO_LINES_CONTACT_COMPANY = "applied_to_lines,contact,company"
+        APPLIED_TO_LINES_CONTACT_COMPANY_ACCOUNTING_PERIOD = "applied_to_lines,contact,company,accounting_period"
+        COMPANY = "company"
+        COMPANY_ACCOUNTING_PERIOD = "company,accounting_period"
+        CONTACT = "contact"
+        CONTACT_ACCOUNT = "contact,account"
+        CONTACT_ACCOUNT_ACCOUNTING_PERIOD = "contact,account,accounting_period"
+        CONTACT_ACCOUNT_COMPANY = "contact,account,company"
+        CONTACT_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "contact,account,company,accounting_period"
+        CONTACT_ACCOUNTING_PERIOD = "contact,accounting_period"
+        CONTACT_COMPANY = "contact,company"
+        CONTACT_COMPANY_ACCOUNTING_PERIOD = "contact,company,accounting_period"
+        TRACKING_CATEGORIES = "tracking_categories"
+        TRACKING_CATEGORIES_ACCOUNT = "tracking_categories,account"
+        TRACKING_CATEGORIES_ACCOUNT_ACCOUNTING_PERIOD = "tracking_categories,account,accounting_period"
+        TRACKING_CATEGORIES_ACCOUNT_COMPANY = "tracking_categories,account,company"
+        TRACKING_CATEGORIES_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,account,company,accounting_period"
+        TRACKING_CATEGORIES_ACCOUNTING_PERIOD = "tracking_categories,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES = "tracking_categories,applied_to_lines"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_ACCOUNT = "tracking_categories,applied_to_lines,account"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_ACCOUNT_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,account,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_ACCOUNT_COMPANY = "tracking_categories,applied_to_lines,account,company"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,account,company,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_COMPANY = "tracking_categories,applied_to_lines,company"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,company,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT = "tracking_categories,applied_to_lines,contact"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_ACCOUNT = "tracking_categories,applied_to_lines,contact,account"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_ACCOUNT_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,contact,account,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_ACCOUNT_COMPANY = "tracking_categories,applied_to_lines,contact,account,company"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,contact,account,company,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,contact,accounting_period"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_COMPANY = "tracking_categories,applied_to_lines,contact,company"
+        TRACKING_CATEGORIES_APPLIED_TO_LINES_CONTACT_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,applied_to_lines,contact,company,accounting_period"
+        TRACKING_CATEGORIES_COMPANY = "tracking_categories,company"
+        TRACKING_CATEGORIES_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,company,accounting_period"
+        TRACKING_CATEGORIES_CONTACT = "tracking_categories,contact"
+        TRACKING_CATEGORIES_CONTACT_ACCOUNT = "tracking_categories,contact,account"
+        TRACKING_CATEGORIES_CONTACT_ACCOUNT_ACCOUNTING_PERIOD = "tracking_categories,contact,account,accounting_period"
+        TRACKING_CATEGORIES_CONTACT_ACCOUNT_COMPANY = "tracking_categories,contact,account,company"
+        TRACKING_CATEGORIES_CONTACT_ACCOUNT_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,contact,account,company,accounting_period"
+        TRACKING_CATEGORIES_CONTACT_ACCOUNTING_PERIOD = "tracking_categories,contact,accounting_period"
+        TRACKING_CATEGORIES_CONTACT_COMPANY = "tracking_categories,contact,company"
+        TRACKING_CATEGORIES_CONTACT_COMPANY_ACCOUNTING_PERIOD = "tracking_categories,contact,company,accounting_period"
+      end
     end
   end
 end

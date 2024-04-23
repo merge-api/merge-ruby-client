@@ -2,7 +2,13 @@
 
 module Merge
   module Filestorage
-    # @type [ROLES_ENUM]
-    ROLES_ENUM = { read: "READ", write: "WRITE", owner: "OWNER" }.freeze
+    # - `READ` - READ
+    #  - `WRITE` - WRITE
+    #  - `OWNER` - OWNER
+    class RolesEnum
+      READ = "READ"
+      WRITE = "WRITE"
+      OWNER = "OWNER"
+    end
   end
 end

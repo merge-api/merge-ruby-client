@@ -1,45 +1,59 @@
 # frozen_string_literal: true
 
 require_relative "linked_account_condition"
+require "ostruct"
 require "json"
 
 module Merge
   module Accounting
     class LinkedAccountSelectiveSyncConfiguration
-      attr_reader :linked_account_conditions, :additional_properties
+      # @return [Array<Merge::Accounting::LinkedAccountCondition>] The conditions belonging to a selective sync.
+      attr_reader :linked_account_conditions
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
 
-      # @param linked_account_conditions [Array<Accounting::LinkedAccountCondition>] The conditions belonging to a selective sync.
+      OMIT = Object.new
+
+      # @param linked_account_conditions [Array<Merge::Accounting::LinkedAccountCondition>] The conditions belonging to a selective sync.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Accounting::LinkedAccountSelectiveSyncConfiguration]
-      def initialize(linked_account_conditions: nil, additional_properties: nil)
-        # @type [Array<Accounting::LinkedAccountCondition>] The conditions belonging to a selective sync.
-        @linked_account_conditions = linked_account_conditions
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+      # @return [Merge::Accounting::LinkedAccountSelectiveSyncConfiguration]
+      def initialize(linked_account_conditions: OMIT, additional_properties: nil)
+        @linked_account_conditions = linked_account_conditions if linked_account_conditions != OMIT
         @additional_properties = additional_properties
+        @_field_set = { "linked_account_conditions": linked_account_conditions }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
-      # Deserialize a JSON object to an instance of LinkedAccountSelectiveSyncConfiguration
+      # Deserialize a JSON object to an instance of
+      #  LinkedAccountSelectiveSyncConfiguration
       #
-      # @param json_object [JSON]
-      # @return [Accounting::LinkedAccountSelectiveSyncConfiguration]
+      # @param json_object [String]
+      # @return [Merge::Accounting::LinkedAccountSelectiveSyncConfiguration]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         linked_account_conditions = parsed_json["linked_account_conditions"]&.map do |v|
           v = v.to_json
-          Accounting::LinkedAccountCondition.from_json(json_object: v)
+          Merge::Accounting::LinkedAccountCondition.from_json(json_object: v)
         end
         new(linked_account_conditions: linked_account_conditions, additional_properties: struct)
       end
 
-      # Serialize an instance of LinkedAccountSelectiveSyncConfiguration to a JSON object
+      # Serialize an instance of LinkedAccountSelectiveSyncConfiguration to a JSON
+      #  object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        { "linked_account_conditions": @linked_account_conditions }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]

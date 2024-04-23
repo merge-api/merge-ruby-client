@@ -2,7 +2,13 @@
 
 module Merge
   module Hris
-    # @type [EMPLOYMENT_STATUS_ENUM]
-    EMPLOYMENT_STATUS_ENUM = { active: "ACTIVE", pending: "PENDING", inactive: "INACTIVE" }.freeze
+    # - `ACTIVE` - ACTIVE
+    #  - `PENDING` - PENDING
+    #  - `INACTIVE` - INACTIVE
+    class EmploymentStatusEnum
+      ACTIVE = "ACTIVE"
+      PENDING = "PENDING"
+      INACTIVE = "INACTIVE"
+    end
   end
 end

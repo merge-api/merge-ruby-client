@@ -3,16 +3,15 @@
 module Merge
   module Hris
     class TimeOff
-      # @type [TIME_OFF_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS]
-      TIME_OFF_RETRIEVE_REQUEST_SHOW_ENUM_ORIGINS = {
-        request_type: "request_type",
-        request_type_status: "request_type,status",
-        request_type_status_units: "request_type,status,units",
-        request_type_units: "request_type,units",
-        status: "status",
-        status_units: "status,units",
-        units: "units"
-      }.freeze
+      class TimeOffRetrieveRequestShowEnumOrigins
+        REQUEST_TYPE = "request_type"
+        REQUEST_TYPE_STATUS = "request_type,status"
+        REQUEST_TYPE_STATUS_UNITS = "request_type,status,units"
+        REQUEST_TYPE_UNITS = "request_type,units"
+        STATUS = "status"
+        STATUS_UNITS = "status,units"
+        UNITS = "units"
+      end
     end
   end
 end

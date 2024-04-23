@@ -8,73 +8,89 @@ require "async"
 module Merge
   module Accounting
     class PassthroughClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Accounting::PassthroughClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Accounting::PassthroughClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
       # Pull data from an endpoint not currently supported by Merge.
       #
-      # @param request [Hash] Request of type Accounting::DataPassthroughRequest, as a Hash
-      #   * :method (METHOD_ENUM)
+      # @param request [Hash] Request of type Merge::Accounting::DataPassthroughRequest, as a Hash
+      #   * :method (Merge::Accounting::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
-      #   * :multipart_form_data (Array<Accounting::MultipartFormFieldRequest>)
-      #   * :headers (Hash{String => String})
-      #   * :request_format (REQUEST_FORMAT_ENUM)
+      #   * :multipart_form_data (Array<Merge::Accounting::MultipartFormFieldRequest>)
+      #   * :headers (Hash{String => Object})
+      #   * :request_format (Merge::Accounting::RequestFormatEnum)
       #   * :normalize_response (Boolean)
-      # @param request_options [RequestOptions]
-      # @return [Accounting::RemoteResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::RemoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.create(request: { method: GET, path: "/scooters" })
       def create(request:, request_options: nil)
-        response = @request_client.conn.post("/api/accounting/v1/passthrough") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
           req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/passthrough"
         end
-        Accounting::RemoteResponse.from_json(json_object: response.body)
+        Merge::Accounting::RemoteResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncPassthroughClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Accounting::AsyncPassthroughClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Accounting::AsyncPassthroughClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
       # Pull data from an endpoint not currently supported by Merge.
       #
-      # @param request [Hash] Request of type Accounting::DataPassthroughRequest, as a Hash
-      #   * :method (METHOD_ENUM)
+      # @param request [Hash] Request of type Merge::Accounting::DataPassthroughRequest, as a Hash
+      #   * :method (Merge::Accounting::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
-      #   * :multipart_form_data (Array<Accounting::MultipartFormFieldRequest>)
-      #   * :headers (Hash{String => String})
-      #   * :request_format (REQUEST_FORMAT_ENUM)
+      #   * :multipart_form_data (Array<Merge::Accounting::MultipartFormFieldRequest>)
+      #   * :headers (Hash{String => Object})
+      #   * :request_format (Merge::Accounting::RequestFormatEnum)
       #   * :normalize_response (Boolean)
-      # @param request_options [RequestOptions]
-      # @return [Accounting::RemoteResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::RemoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.create(request: { method: GET, path: "/scooters" })
       def create(request:, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/accounting/v1/passthrough") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
             req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/passthrough"
           end
-          Accounting::RemoteResponse.from_json(json_object: response.body)
+          Merge::Accounting::RemoteResponse.from_json(json_object: response.body)
         end
       end
     end

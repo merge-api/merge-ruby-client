@@ -1,79 +1,100 @@
 # frozen_string_literal: true
 
 require_relative "linked_account_status"
+require "ostruct"
 require "json"
 
 module Merge
   module Hris
     class MetaResponse
-      attr_reader :request_schema, :remote_field_classes, :status, :has_conditional_params,
-                  :has_required_linked_account_params, :additional_properties
+      # @return [Hash{String => Object}]
+      attr_reader :request_schema
+      # @return [Hash{String => Object}]
+      attr_reader :remote_field_classes
+      # @return [Merge::Hris::LinkedAccountStatus]
+      attr_reader :status
+      # @return [Boolean]
+      attr_reader :has_conditional_params
+      # @return [Boolean]
+      attr_reader :has_required_linked_account_params
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
 
-      # @param request_schema [Hash{String => String}]
-      # @param remote_field_classes [Hash{String => String}]
-      # @param status [Hris::LinkedAccountStatus]
+      OMIT = Object.new
+
+      # @param request_schema [Hash{String => Object}]
+      # @param remote_field_classes [Hash{String => Object}]
+      # @param status [Merge::Hris::LinkedAccountStatus]
       # @param has_conditional_params [Boolean]
       # @param has_required_linked_account_params [Boolean]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Hris::MetaResponse]
+      # @return [Merge::Hris::MetaResponse]
       def initialize(request_schema:, has_conditional_params:, has_required_linked_account_params:,
-                     remote_field_classes: nil, status: nil, additional_properties: nil)
-        # @type [Hash{String => String}]
+                     remote_field_classes: OMIT, status: OMIT, additional_properties: nil)
         @request_schema = request_schema
-        # @type [Hash{String => String}]
-        @remote_field_classes = remote_field_classes
-        # @type [Hris::LinkedAccountStatus]
-        @status = status
-        # @type [Boolean]
+        @remote_field_classes = remote_field_classes if remote_field_classes != OMIT
+        @status = status if status != OMIT
         @has_conditional_params = has_conditional_params
-        # @type [Boolean]
         @has_required_linked_account_params = has_required_linked_account_params
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
         @additional_properties = additional_properties
+        @_field_set = {
+          "request_schema": request_schema,
+          "remote_field_classes": remote_field_classes,
+          "status": status,
+          "has_conditional_params": has_conditional_params,
+          "has_required_linked_account_params": has_required_linked_account_params
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of MetaResponse
       #
-      # @param json_object [JSON]
-      # @return [Hris::MetaResponse]
+      # @param json_object [String]
+      # @return [Merge::Hris::MetaResponse]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        request_schema = struct.request_schema
-        remote_field_classes = struct.remote_field_classes
+        request_schema = struct["request_schema"]
+        remote_field_classes = struct["remote_field_classes"]
         if parsed_json["status"].nil?
           status = nil
         else
           status = parsed_json["status"].to_json
-          status = Hris::LinkedAccountStatus.from_json(json_object: status)
+          status = Merge::Hris::LinkedAccountStatus.from_json(json_object: status)
         end
-        has_conditional_params = struct.has_conditional_params
-        has_required_linked_account_params = struct.has_required_linked_account_params
-        new(request_schema: request_schema, remote_field_classes: remote_field_classes, status: status,
-            has_conditional_params: has_conditional_params, has_required_linked_account_params: has_required_linked_account_params, additional_properties: struct)
+        has_conditional_params = struct["has_conditional_params"]
+        has_required_linked_account_params = struct["has_required_linked_account_params"]
+        new(
+          request_schema: request_schema,
+          remote_field_classes: remote_field_classes,
+          status: status,
+          has_conditional_params: has_conditional_params,
+          has_required_linked_account_params: has_required_linked_account_params,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of MetaResponse to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        {
-          "request_schema": @request_schema,
-          "remote_field_classes": @remote_field_classes,
-          "status": @status,
-          "has_conditional_params": @has_conditional_params,
-          "has_required_linked_account_params": @has_required_linked_account_params
-        }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
         obj.request_schema.is_a?(Hash) != false || raise("Passed value for field obj.request_schema is not the expected type, validation failed.")
         obj.remote_field_classes&.is_a?(Hash) != false || raise("Passed value for field obj.remote_field_classes is not the expected type, validation failed.")
-        obj.status.nil? || Hris::LinkedAccountStatus.validate_raw(obj: obj.status)
+        obj.status.nil? || Merge::Hris::LinkedAccountStatus.validate_raw(obj: obj.status)
         obj.has_conditional_params.is_a?(Boolean) != false || raise("Passed value for field obj.has_conditional_params is not the expected type, validation failed.")
         obj.has_required_linked_account_params.is_a?(Boolean) != false || raise("Passed value for field obj.has_required_linked_account_params is not the expected type, validation failed.")
       end

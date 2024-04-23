@@ -12,12 +12,12 @@ require "async"
 module Merge
   module Ticketing
     class AttachmentsClient
+      # @return [Merge::RequestClient]
       attr_reader :request_client
 
-      # @param request_client [RequestClient]
-      # @return [Ticketing::AttachmentsClient]
+      # @param request_client [Merge::RequestClient]
+      # @return [Merge::Ticketing::AttachmentsClient]
       def initialize(request_client:)
-        # @type [RequestClient]
         @request_client = request_client
       end
 
@@ -26,20 +26,31 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param remote_created_after [DateTime] If provided, will only return attachments created in the third party platform after this datetime.
+      # @param remote_created_after [DateTime] If provided, will only return attachments created in the third party platform
+      #  after this datetime.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param ticket_id [String] If provided, will only return comments for this ticket.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedAttachmentList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedAttachmentList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.list
       def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_created_after: nil, remote_id: nil, ticket_id: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/attachments") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -59,26 +70,34 @@ module Merge
             "remote_id": remote_id,
             "ticket_id": ticket_id
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments"
         end
-        Ticketing::PaginatedAttachmentList.from_json(json_object: response.body)
+        Merge::Ticketing::PaginatedAttachmentList.from_json(json_object: response.body)
       end
 
       # Creates an `Attachment` object with the given values.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ticketing::AttachmentRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ticketing::AttachmentRequest, as a Hash
       #   * :file_name (String)
       #   * :ticket (Hash)
       #   * :file_url (String)
       #   * :content_type (String)
       #   * :uploaded_by (String)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::TicketingAttachmentResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketingAttachmentResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post("/api/ticketing/v1/attachments") do |req|
+        response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -89,19 +108,29 @@ module Merge
             "run_async": run_async
           }.compact
           req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments"
         end
-        Ticketing::TicketingAttachmentResponse.from_json(json_object: response.body)
+        Merge::Ticketing::TicketingAttachmentResponse.from_json(json_object: response.body)
       end
 
       # Returns an `Attachment` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::Attachment]
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::Attachment]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/attachments/#{id}") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -111,50 +140,66 @@ module Merge
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments/#{id}"
         end
-        Ticketing::Attachment.from_json(json_object: response.body)
+        Merge::Ticketing::Attachment.from_json(json_object: response.body)
       end
 
       # Returns an `Attachment` object with the given `id`.
       #
       # @param id [String]
-      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For information on supported export formats, please refer to our <a href='https://help.merge.dev/en/articles/8615316-file-export-and-download-specification' target='_blank'>export format help center article</a>.
-      # @param request_options [RequestOptions]
-      # @yield on_data[chunk, overall_received_bytes, env] Leverage the Faraday on_data callback which will receive tuples of strings, the sum of characters received so far, and the response environment. The latter will allow access to the response status, headers and reason, as well as the request info.
+      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
+      #  information on supported export formats, please refer to our <a
+      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
+      #  target='_blank'>export format help center article</a>.
+      # @param request_options [Merge::RequestOptions]
+      # @yield on_data[chunk, overall_received_bytes, env] Leverage the Faraday on_data callback which
+      #  will receive tuples of strings, the sum of characters received so far, and the
+      #  response environment. The latter will allow access to the response status,
+      #  headers and reason, as well as the request info.
       # @return [Void]
       def download_retrieve(id:, mime_type: nil, request_options: nil, &on_data)
-        @request_client.conn.get("/api/ticketing/v1/attachments/#{id}/download") do |req|
+        @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
           req.options.on_data = on_data
           req.params = { **(request_options&.additional_query_parameters || {}), "mime_type": mime_type }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments/#{id}/download"
         end
       end
 
       # Returns metadata for `TicketingAttachment` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
-        response = @request_client.conn.get("/api/ticketing/v1/attachments/meta/post") do |req|
+        response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments/meta/post"
         end
-        Ticketing::MetaResponse.from_json(json_object: response.body)
+        Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
       end
     end
 
     class AsyncAttachmentsClient
+      # @return [Merge::AsyncRequestClient]
       attr_reader :request_client
 
-      # @param request_client [AsyncRequestClient]
-      # @return [Ticketing::AsyncAttachmentsClient]
+      # @param request_client [Merge::AsyncRequestClient]
+      # @return [Merge::Ticketing::AsyncAttachmentsClient]
       def initialize(request_client:)
-        # @type [AsyncRequestClient]
         @request_client = request_client
       end
 
@@ -163,21 +208,32 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
-      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be returned.
+      # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
+      #  returned.
       # @param page_size [Integer] Number of results to return per page.
-      # @param remote_created_after [DateTime] If provided, will only return attachments created in the third party platform after this datetime.
+      # @param remote_created_after [DateTime] If provided, will only return attachments created in the third party platform
+      #  after this datetime.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param ticket_id [String] If provided, will only return comments for this ticket.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::PaginatedAttachmentList]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::PaginatedAttachmentList]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.list
       def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_created_after: nil, remote_id: nil, ticket_id: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/attachments") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -197,8 +253,9 @@ module Merge
               "remote_id": remote_id,
               "ticket_id": ticket_id
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments"
           end
-          Ticketing::PaginatedAttachmentList.from_json(json_object: response.body)
+          Merge::Ticketing::PaginatedAttachmentList.from_json(json_object: response.body)
         end
       end
 
@@ -206,19 +263,26 @@ module Merge
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Ticketing::AttachmentRequest, as a Hash
+      # @param model [Hash] Request of type Merge::Ticketing::AttachmentRequest, as a Hash
       #   * :file_name (String)
       #   * :ticket (Hash)
       #   * :file_url (String)
       #   * :content_type (String)
       #   * :uploaded_by (String)
-      #   * :integration_params (Hash{String => String})
-      #   * :linked_account_params (Hash{String => String})
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::TicketingAttachmentResponse]
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketingAttachmentResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
-          response = @request_client.conn.post("/api/ticketing/v1/attachments") do |req|
+          response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -229,21 +293,31 @@ module Merge
               "run_async": run_async
             }.compact
             req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments"
           end
-          Ticketing::TicketingAttachmentResponse.from_json(json_object: response.body)
+          Merge::Ticketing::TicketingAttachmentResponse.from_json(json_object: response.body)
         end
       end
 
       # Returns an `Attachment` object with the given `id`.
       #
       # @param id [String]
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
-      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to produce these models.
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::Attachment]
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::Attachment]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/attachments/#{id}") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
@@ -253,44 +327,60 @@ module Merge
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments/#{id}"
           end
-          Ticketing::Attachment.from_json(json_object: response.body)
+          Merge::Ticketing::Attachment.from_json(json_object: response.body)
         end
       end
 
       # Returns an `Attachment` object with the given `id`.
       #
       # @param id [String]
-      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For information on supported export formats, please refer to our <a href='https://help.merge.dev/en/articles/8615316-file-export-and-download-specification' target='_blank'>export format help center article</a>.
-      # @param request_options [RequestOptions]
-      # @yield on_data[chunk, overall_received_bytes, env] Leverage the Faraday on_data callback which will receive tuples of strings, the sum of characters received so far, and the response environment. The latter will allow access to the response status, headers and reason, as well as the request info.
+      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
+      #  information on supported export formats, please refer to our <a
+      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
+      #  target='_blank'>export format help center article</a>.
+      # @param request_options [Merge::RequestOptions]
+      # @yield on_data[chunk, overall_received_bytes, env] Leverage the Faraday on_data callback which
+      #  will receive tuples of strings, the sum of characters received so far, and the
+      #  response environment. The latter will allow access to the response status,
+      #  headers and reason, as well as the request info.
       # @return [Void]
       def download_retrieve(id:, mime_type: nil, request_options: nil, &on_data)
         Async do
-          @request_client.conn.get("/api/ticketing/v1/attachments/#{id}/download") do |req|
+          @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
             req.options.on_data = on_data
             req.params = { **(request_options&.additional_query_parameters || {}), "mime_type": mime_type }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments/#{id}/download"
           end
         end
       end
 
       # Returns metadata for `TicketingAttachment` POSTs.
       #
-      # @param request_options [RequestOptions]
-      # @return [Ticketing::MetaResponse]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
-          response = @request_client.conn.get("/api/ticketing/v1/attachments/meta/post") do |req|
+          response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/attachments/meta/post"
           end
-          Ticketing::MetaResponse.from_json(json_object: response.body)
+          Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

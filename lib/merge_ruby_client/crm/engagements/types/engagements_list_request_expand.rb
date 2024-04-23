@@ -3,24 +3,23 @@
 module Merge
   module Crm
     class Engagements
-      # @type [ENGAGEMENTS_LIST_REQUEST_EXPAND]
-      ENGAGEMENTS_LIST_REQUEST_EXPAND = {
-        account: "account",
-        account_engagement_type: "account,engagement_type",
-        contacts: "contacts",
-        contacts_account: "contacts,account",
-        contacts_account_engagement_type: "contacts,account,engagement_type",
-        contacts_engagement_type: "contacts,engagement_type",
-        contacts_owner: "contacts,owner",
-        contacts_owner_account: "contacts,owner,account",
-        contacts_owner_account_engagement_type: "contacts,owner,account,engagement_type",
-        contacts_owner_engagement_type: "contacts,owner,engagement_type",
-        engagement_type: "engagement_type",
-        owner: "owner",
-        owner_account: "owner,account",
-        owner_account_engagement_type: "owner,account,engagement_type",
-        owner_engagement_type: "owner,engagement_type"
-      }.freeze
+      class EngagementsListRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_ENGAGEMENT_TYPE = "account,engagement_type"
+        CONTACTS = "contacts"
+        CONTACTS_ACCOUNT = "contacts,account"
+        CONTACTS_ACCOUNT_ENGAGEMENT_TYPE = "contacts,account,engagement_type"
+        CONTACTS_ENGAGEMENT_TYPE = "contacts,engagement_type"
+        CONTACTS_OWNER = "contacts,owner"
+        CONTACTS_OWNER_ACCOUNT = "contacts,owner,account"
+        CONTACTS_OWNER_ACCOUNT_ENGAGEMENT_TYPE = "contacts,owner,account,engagement_type"
+        CONTACTS_OWNER_ENGAGEMENT_TYPE = "contacts,owner,engagement_type"
+        ENGAGEMENT_TYPE = "engagement_type"
+        OWNER = "owner"
+        OWNER_ACCOUNT = "owner,account"
+        OWNER_ACCOUNT_ENGAGEMENT_TYPE = "owner,account,engagement_type"
+        OWNER_ENGAGEMENT_TYPE = "owner,engagement_type"
+      end
     end
   end
 end

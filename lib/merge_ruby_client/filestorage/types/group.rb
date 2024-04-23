@@ -1,107 +1,137 @@
 # frozen_string_literal: true
 
 require "date"
+require "ostruct"
 require "json"
 
 module Merge
   module Filestorage
     # # The Group Object
-    #
-    # ### Description
-    #
-    # The `Group` object is used to represent any subset of `User`s. This can extend to company domains as well.
-    #
-    # ### Usage Example
-    #
-    # Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.
+    #  ### Description
+    #  The `Group` object is used to represent any subset of `User`s. This can extend
+    #  to company domains as well.
+    #  ### Usage Example
+    #  Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.
     class Group
-      attr_reader :id, :remote_id, :name, :users, :remote_was_deleted, :created_at, :modified_at, :field_mappings,
-                  :remote_data, :additional_properties
+      # @return [String]
+      attr_reader :id
+      # @return [String] The third-party API ID of the matching object.
+      attr_reader :remote_id
+      # @return [DateTime]
+      attr_reader :created_at
+      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      attr_reader :modified_at
+      # @return [String] The group's name.
+      attr_reader :name
+      # @return [Array<String>] The users that belong in the group. If null, this typically means it's either a
+      #  domain or the third-party platform does not surface this information.
+      attr_reader :users
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform.
+      attr_reader :remote_was_deleted
+      # @return [Hash{String => Object}]
+      attr_reader :field_mappings
+      # @return [Array<Hash{String => Object}>]
+      attr_reader :remote_data
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param name [String] The group's name.
-      # @param users [Array<String>] The users that belong in the group. If null, this typically means it's either a domain or the third-party platform does not surface this information.
-      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party platform.
       # @param created_at [DateTime]
       # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
-      # @param field_mappings [Hash{String => String}]
-      # @param remote_data [Array<Hash>]
+      # @param name [String] The group's name.
+      # @param users [Array<String>] The users that belong in the group. If null, this typically means it's either a
+      #  domain or the third-party platform does not surface this information.
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform.
+      # @param field_mappings [Hash{String => Object}]
+      # @param remote_data [Array<Hash{String => Object}>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Filestorage::Group]
-      def initialize(users:, id: nil, remote_id: nil, name: nil, remote_was_deleted: nil, created_at: nil,
-                     modified_at: nil, field_mappings: nil, remote_data: nil, additional_properties: nil)
-        # @type [String]
-        @id = id
-        # @type [String] The third-party API ID of the matching object.
-        @remote_id = remote_id
-        # @type [String] The group's name.
-        @name = name
-        # @type [Array<String>] The users that belong in the group. If null, this typically means it's either a domain or the third-party platform does not surface this information.
+      # @return [Merge::Filestorage::Group]
+      def initialize(users:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT,
+                     remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+        @id = id if id != OMIT
+        @remote_id = remote_id if remote_id != OMIT
+        @created_at = created_at if created_at != OMIT
+        @modified_at = modified_at if modified_at != OMIT
+        @name = name if name != OMIT
         @users = users
-        # @type [Boolean] Indicates whether or not this object has been deleted in the third party platform.
-        @remote_was_deleted = remote_was_deleted
-        # @type [DateTime]
-        @created_at = created_at
-        # @type [DateTime] This is the datetime that this object was last updated by Merge
-        @modified_at = modified_at
-        # @type [Hash{String => String}]
-        @field_mappings = field_mappings
-        # @type [Array<Hash>]
-        @remote_data = remote_data
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
+        @field_mappings = field_mappings if field_mappings != OMIT
+        @remote_data = remote_data if remote_data != OMIT
         @additional_properties = additional_properties
+        @_field_set = {
+          "id": id,
+          "remote_id": remote_id,
+          "created_at": created_at,
+          "modified_at": modified_at,
+          "name": name,
+          "users": users,
+          "remote_was_deleted": remote_was_deleted,
+          "field_mappings": field_mappings,
+          "remote_data": remote_data
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of Group
       #
-      # @param json_object [JSON]
-      # @return [Filestorage::Group]
+      # @param json_object [String]
+      # @return [Merge::Filestorage::Group]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct.id
-        remote_id = struct.remote_id
-        name = struct.name
-        users = struct.users
-        remote_was_deleted = struct.remote_was_deleted
+        id = struct["id"]
+        remote_id = struct["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        field_mappings = struct.field_mappings
-        remote_data = struct.remote_data
-        new(id: id, remote_id: remote_id, name: name, users: users, remote_was_deleted: remote_was_deleted,
-            created_at: created_at, modified_at: modified_at, field_mappings: field_mappings, remote_data: remote_data, additional_properties: struct)
+        name = struct["name"]
+        users = struct["users"]
+        remote_was_deleted = struct["remote_was_deleted"]
+        field_mappings = struct["field_mappings"]
+        remote_data = struct["remote_data"]
+        new(
+          id: id,
+          remote_id: remote_id,
+          created_at: created_at,
+          modified_at: modified_at,
+          name: name,
+          users: users,
+          remote_was_deleted: remote_was_deleted,
+          field_mappings: field_mappings,
+          remote_data: remote_data,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of Group to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        {
-          "id": @id,
-          "remote_id": @remote_id,
-          "name": @name,
-          "users": @users,
-          "remote_was_deleted": @remote_was_deleted,
-          "created_at": @created_at,
-          "modified_at": @modified_at,
-          "field_mappings": @field_mappings,
-          "remote_data": @remote_data
-        }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
         obj.id&.is_a?(String) != false || raise("Passed value for field obj.id is not the expected type, validation failed.")
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
+        obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
+        obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.users.is_a?(Array) != false || raise("Passed value for field obj.users is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
-        obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
-        obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end

@@ -3,12 +3,11 @@
 module Merge
   module Ats
     class Jobs
-      # @type [JOBS_SCREENING_QUESTIONS_LIST_REQUEST_EXPAND]
-      JOBS_SCREENING_QUESTIONS_LIST_REQUEST_EXPAND = {
-        job: "job",
-        options: "options",
-        options_job: "options,job"
-      }.freeze
+      class JobsScreeningQuestionsListRequestExpand
+        JOB = "job"
+        OPTIONS = "options"
+        OPTIONS_JOB = "options,job"
+      end
     end
   end
 end

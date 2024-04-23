@@ -3,24 +3,23 @@
 module Merge
   module Crm
     class Notes
-      # @type [NOTES_RETRIEVE_REQUEST_EXPAND]
-      NOTES_RETRIEVE_REQUEST_EXPAND = {
-        account: "account",
-        account_opportunity: "account,opportunity",
-        contact: "contact",
-        contact_account: "contact,account",
-        contact_account_opportunity: "contact,account,opportunity",
-        contact_opportunity: "contact,opportunity",
-        opportunity: "opportunity",
-        owner: "owner",
-        owner_account: "owner,account",
-        owner_account_opportunity: "owner,account,opportunity",
-        owner_contact: "owner,contact",
-        owner_contact_account: "owner,contact,account",
-        owner_contact_account_opportunity: "owner,contact,account,opportunity",
-        owner_contact_opportunity: "owner,contact,opportunity",
-        owner_opportunity: "owner,opportunity"
-      }.freeze
+      class NotesRetrieveRequestExpand
+        ACCOUNT = "account"
+        ACCOUNT_OPPORTUNITY = "account,opportunity"
+        CONTACT = "contact"
+        CONTACT_ACCOUNT = "contact,account"
+        CONTACT_ACCOUNT_OPPORTUNITY = "contact,account,opportunity"
+        CONTACT_OPPORTUNITY = "contact,opportunity"
+        OPPORTUNITY = "opportunity"
+        OWNER = "owner"
+        OWNER_ACCOUNT = "owner,account"
+        OWNER_ACCOUNT_OPPORTUNITY = "owner,account,opportunity"
+        OWNER_CONTACT = "owner,contact"
+        OWNER_CONTACT_ACCOUNT = "owner,contact,account"
+        OWNER_CONTACT_ACCOUNT_OPPORTUNITY = "owner,contact,account,opportunity"
+        OWNER_CONTACT_OPPORTUNITY = "owner,contact,opportunity"
+        OWNER_OPPORTUNITY = "owner,opportunity"
+      end
     end
   end
 end

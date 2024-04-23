@@ -2,7 +2,11 @@
 
 module Merge
   module Hris
-    # @type [ISSUE_STATUS_ENUM]
-    ISSUE_STATUS_ENUM = { ongoing: "ONGOING", resolved: "RESOLVED" }.freeze
+    # - `ONGOING` - ONGOING
+    #  - `RESOLVED` - RESOLVED
+    class IssueStatusEnum
+      ONGOING = "ONGOING"
+      RESOLVED = "RESOLVED"
+    end
   end
 end

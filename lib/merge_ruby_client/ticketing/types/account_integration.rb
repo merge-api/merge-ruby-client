@@ -1,90 +1,131 @@
 # frozen_string_literal: true
 
 require_relative "categories_enum"
+require "ostruct"
 require "json"
 
 module Merge
   module Ticketing
     class AccountIntegration
-      attr_reader :name, :categories, :image, :square_image, :color, :slug, :is_in_beta,
-                  :api_endpoints_to_documentation_urls, :webhook_setup_guide_url, :additional_properties
+      # @return [String] Company name.
+      attr_reader :name
+      # @return [Array<Merge::Ticketing::CategoriesEnum>] Category or categories this integration belongs to. Multiple categories should
+      #  be comma separated, i.e. [ats, hris].
+      attr_reader :categories
+      # @return [String] Company logo in rectangular shape. <b>Upload an image with a clear
+      #  background.</b>
+      attr_reader :image
+      # @return [String] Company logo in square shape. <b>Upload an image with a white background.</b>
+      attr_reader :square_image
+      # @return [String] The color of this integration used for buttons and text throughout the app and
+      #  landing pages. <b>Choose a darker, saturated color.</b>
+      attr_reader :color
+      # @return [String]
+      attr_reader :slug
+      # @return [Hash{String => Object}] Mapping of API endpoints to documentation urls for support. Example: {'GET':
+      #  [['/common-model-scopes',
+      #  ng/common-model-scopes/#common_model_scopes_retrieve'],['/common-model-actions',
+      #  ocs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve']],
+      #  'POST': []}
+      attr_reader :api_endpoints_to_documentation_urls
+      # @return [String] Setup guide URL for third party webhook creation. Exposed in Merge Docs.
+      attr_reader :webhook_setup_guide_url
+      # @return [Hash{String => Object}] Category or categories this integration is in beta status for.
+      attr_reader :category_beta_status
+      # @return [OpenStruct] Additional properties unmapped to the current class definition
+      attr_reader :additional_properties
+      # @return [Object]
+      attr_reader :_field_set
+      protected :_field_set
+
+      OMIT = Object.new
 
       # @param name [String] Company name.
-      # @param categories [Array<Ticketing::CATEGORIES_ENUM>] Category or categories this integration belongs to. Multiple categories should be comma separated, i.e. [ats, hris].
-      # @param image [String] Company logo in rectangular shape. <b>Upload an image with a clear background.</b>
+      # @param categories [Array<Merge::Ticketing::CategoriesEnum>] Category or categories this integration belongs to. Multiple categories should
+      #  be comma separated, i.e. [ats, hris].
+      # @param image [String] Company logo in rectangular shape. <b>Upload an image with a clear
+      #  background.</b>
       # @param square_image [String] Company logo in square shape. <b>Upload an image with a white background.</b>
-      # @param color [String] The color of this integration used for buttons and text throughout the app and landing pages. <b>Choose a darker, saturated color.</b>
+      # @param color [String] The color of this integration used for buttons and text throughout the app and
+      #  landing pages. <b>Choose a darker, saturated color.</b>
       # @param slug [String]
-      # @param is_in_beta [Boolean] If checked, this integration will not appear in the linking flow, and will appear elsewhere with a Beta tag.
-      # @param api_endpoints_to_documentation_urls [Hash{String => String}] Mapping of API endpoints to documentation urls for support. Example: {'GET': [['/common-model-scopes', 'https://docs.merge.dev/accounting/common-model-scopes/#common_model_scopes_retrieve'],['/common-model-actions', 'https://docs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve']], 'POST': []}
+      # @param api_endpoints_to_documentation_urls [Hash{String => Object}] Mapping of API endpoints to documentation urls for support. Example: {'GET':
+      #  [['/common-model-scopes',
+      #  ng/common-model-scopes/#common_model_scopes_retrieve'],['/common-model-actions',
+      #  ocs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve']],
+      #  'POST': []}
       # @param webhook_setup_guide_url [String] Setup guide URL for third party webhook creation. Exposed in Merge Docs.
+      # @param category_beta_status [Hash{String => Object}] Category or categories this integration is in beta status for.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
-      # @return [Ticketing::AccountIntegration]
-      def initialize(name:, categories: nil, image: nil, square_image: nil, color: nil, slug: nil, is_in_beta: nil,
-                     api_endpoints_to_documentation_urls: nil, webhook_setup_guide_url: nil, additional_properties: nil)
-        # @type [String] Company name.
+      # @return [Merge::Ticketing::AccountIntegration]
+      def initialize(name:, categories: OMIT, image: OMIT, square_image: OMIT, color: OMIT, slug: OMIT,
+                     api_endpoints_to_documentation_urls: OMIT, webhook_setup_guide_url: OMIT, category_beta_status: OMIT, additional_properties: nil)
         @name = name
-        # @type [Array<Ticketing::CATEGORIES_ENUM>] Category or categories this integration belongs to. Multiple categories should be comma separated, i.e. [ats, hris].
-        @categories = categories
-        # @type [String] Company logo in rectangular shape. <b>Upload an image with a clear background.</b>
-        @image = image
-        # @type [String] Company logo in square shape. <b>Upload an image with a white background.</b>
-        @square_image = square_image
-        # @type [String] The color of this integration used for buttons and text throughout the app and landing pages. <b>Choose a darker, saturated color.</b>
-        @color = color
-        # @type [String]
-        @slug = slug
-        # @type [Boolean] If checked, this integration will not appear in the linking flow, and will appear elsewhere with a Beta tag.
-        @is_in_beta = is_in_beta
-        # @type [Hash{String => String}] Mapping of API endpoints to documentation urls for support. Example: {'GET': [['/common-model-scopes', 'https://docs.merge.dev/accounting/common-model-scopes/#common_model_scopes_retrieve'],['/common-model-actions', 'https://docs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve']], 'POST': []}
-        @api_endpoints_to_documentation_urls = api_endpoints_to_documentation_urls
-        # @type [String] Setup guide URL for third party webhook creation. Exposed in Merge Docs.
-        @webhook_setup_guide_url = webhook_setup_guide_url
-        # @type [OpenStruct] Additional properties unmapped to the current class definition
+        @categories = categories if categories != OMIT
+        @image = image if image != OMIT
+        @square_image = square_image if square_image != OMIT
+        @color = color if color != OMIT
+        @slug = slug if slug != OMIT
+        if api_endpoints_to_documentation_urls != OMIT
+          @api_endpoints_to_documentation_urls = api_endpoints_to_documentation_urls
+        end
+        @webhook_setup_guide_url = webhook_setup_guide_url if webhook_setup_guide_url != OMIT
+        @category_beta_status = category_beta_status if category_beta_status != OMIT
         @additional_properties = additional_properties
+        @_field_set = {
+          "name": name,
+          "categories": categories,
+          "image": image,
+          "square_image": square_image,
+          "color": color,
+          "slug": slug,
+          "api_endpoints_to_documentation_urls": api_endpoints_to_documentation_urls,
+          "webhook_setup_guide_url": webhook_setup_guide_url,
+          "category_beta_status": category_beta_status
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of AccountIntegration
       #
-      # @param json_object [JSON]
-      # @return [Ticketing::AccountIntegration]
+      # @param json_object [String]
+      # @return [Merge::Ticketing::AccountIntegration]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        parsed_json = JSON.parse(json_object)
-        name = struct.name
-        categories = parsed_json["categories"]&.map do |v|
-          v = v.to_json
-          Ticketing::CATEGORIES_ENUM.key(v) || v
-        end
-        image = struct.image
-        square_image = struct.square_image
-        color = struct.color
-        slug = struct.slug
-        is_in_beta = struct.is_in_beta
-        api_endpoints_to_documentation_urls = struct.api_endpoints_to_documentation_urls
-        webhook_setup_guide_url = struct.webhook_setup_guide_url
-        new(name: name, categories: categories, image: image, square_image: square_image, color: color, slug: slug,
-            is_in_beta: is_in_beta, api_endpoints_to_documentation_urls: api_endpoints_to_documentation_urls, webhook_setup_guide_url: webhook_setup_guide_url, additional_properties: struct)
+        name = struct["name"]
+        categories = struct["categories"]
+        image = struct["image"]
+        square_image = struct["square_image"]
+        color = struct["color"]
+        slug = struct["slug"]
+        api_endpoints_to_documentation_urls = struct["api_endpoints_to_documentation_urls"]
+        webhook_setup_guide_url = struct["webhook_setup_guide_url"]
+        category_beta_status = struct["category_beta_status"]
+        new(
+          name: name,
+          categories: categories,
+          image: image,
+          square_image: square_image,
+          color: color,
+          slug: slug,
+          api_endpoints_to_documentation_urls: api_endpoints_to_documentation_urls,
+          webhook_setup_guide_url: webhook_setup_guide_url,
+          category_beta_status: category_beta_status,
+          additional_properties: struct
+        )
       end
 
       # Serialize an instance of AccountIntegration to a JSON object
       #
-      # @return [JSON]
+      # @return [String]
       def to_json(*_args)
-        {
-          "name": @name,
-          "categories": @categories,
-          "image": @image,
-          "square_image": @square_image,
-          "color": @color,
-          "slug": @slug,
-          "is_in_beta": @is_in_beta,
-          "api_endpoints_to_documentation_urls": @api_endpoints_to_documentation_urls,
-          "webhook_setup_guide_url": @webhook_setup_guide_url
-        }.to_json
+        @_field_set&.to_json
       end
 
-      # Leveraged for Union-type generation, validate_raw attempts to parse the given hash and check each fields type against the current object's property definitions.
+      # Leveraged for Union-type generation, validate_raw attempts to parse the given
+      #  hash and check each fields type against the current object's property
+      #  definitions.
       #
       # @param obj [Object]
       # @return [Void]
@@ -95,9 +136,9 @@ module Merge
         obj.square_image&.is_a?(String) != false || raise("Passed value for field obj.square_image is not the expected type, validation failed.")
         obj.color&.is_a?(String) != false || raise("Passed value for field obj.color is not the expected type, validation failed.")
         obj.slug&.is_a?(String) != false || raise("Passed value for field obj.slug is not the expected type, validation failed.")
-        obj.is_in_beta&.is_a?(Boolean) != false || raise("Passed value for field obj.is_in_beta is not the expected type, validation failed.")
         obj.api_endpoints_to_documentation_urls&.is_a?(Hash) != false || raise("Passed value for field obj.api_endpoints_to_documentation_urls is not the expected type, validation failed.")
         obj.webhook_setup_guide_url&.is_a?(String) != false || raise("Passed value for field obj.webhook_setup_guide_url is not the expected type, validation failed.")
+        obj.category_beta_status&.is_a?(Hash) != false || raise("Passed value for field obj.category_beta_status is not the expected type, validation failed.")
       end
     end
   end
