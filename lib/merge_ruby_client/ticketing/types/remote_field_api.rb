@@ -2,6 +2,7 @@
 
 require_relative "remote_endpoint_info"
 require_relative "advanced_metadata"
+require_relative "remote_field_api_coverage"
 require "ostruct"
 require "json"
 
@@ -18,6 +19,8 @@ module Merge
       attr_reader :example_values
       # @return [Merge::Ticketing::AdvancedMetadata]
       attr_reader :advanced_metadata
+      # @return [Merge::Ticketing::RemoteFieldApiCoverage]
+      attr_reader :coverage
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -31,22 +34,25 @@ module Merge
       # @param remote_endpoint_info [Merge::Ticketing::RemoteEndpointInfo]
       # @param example_values [Array<Object>]
       # @param advanced_metadata [Merge::Ticketing::AdvancedMetadata]
+      # @param coverage [Merge::Ticketing::RemoteFieldApiCoverage]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::RemoteFieldApi]
       def initialize(schema:, remote_key_name:, remote_endpoint_info:, example_values:, advanced_metadata: OMIT,
-                     additional_properties: nil)
+                     coverage: OMIT, additional_properties: nil)
         @schema = schema
         @remote_key_name = remote_key_name
         @remote_endpoint_info = remote_endpoint_info
         @example_values = example_values
         @advanced_metadata = advanced_metadata if advanced_metadata != OMIT
+        @coverage = coverage if coverage != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "schema": schema,
           "remote_key_name": remote_key_name,
           "remote_endpoint_info": remote_endpoint_info,
           "example_values": example_values,
-          "advanced_metadata": advanced_metadata
+          "advanced_metadata": advanced_metadata,
+          "coverage": coverage
         }.reject do |_k, v|
           v == OMIT
         end
@@ -74,12 +80,19 @@ module Merge
           advanced_metadata = parsed_json["advanced_metadata"].to_json
           advanced_metadata = Merge::Ticketing::AdvancedMetadata.from_json(json_object: advanced_metadata)
         end
+        if parsed_json["coverage"].nil?
+          coverage = nil
+        else
+          coverage = parsed_json["coverage"].to_json
+          coverage = Merge::Ticketing::RemoteFieldApiCoverage.from_json(json_object: coverage)
+        end
         new(
           schema: schema,
           remote_key_name: remote_key_name,
           remote_endpoint_info: remote_endpoint_info,
           example_values: example_values,
           advanced_metadata: advanced_metadata,
+          coverage: coverage,
           additional_properties: struct
         )
       end
@@ -103,6 +116,7 @@ module Merge
         Merge::Ticketing::RemoteEndpointInfo.validate_raw(obj: obj.remote_endpoint_info)
         obj.example_values.is_a?(Array) != false || raise("Passed value for field obj.example_values is not the expected type, validation failed.")
         obj.advanced_metadata.nil? || Merge::Ticketing::AdvancedMetadata.validate_raw(obj: obj.advanced_metadata)
+        obj.coverage.nil? || Merge::Ticketing::RemoteFieldApiCoverage.validate_raw(obj: obj.coverage)
       end
     end
   end

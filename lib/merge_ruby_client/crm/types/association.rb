@@ -13,15 +13,15 @@ module Merge
     #  ### Usage Example
     #  TODO
     class Association
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Hash{String => Object}]
       attr_reader :source_object
       # @return [Hash{String => Object}]
       attr_reader :target_object
-      # @return [Merge::Crm::AssociationAssociationType]
+      # @return [Merge::Crm::AssociationAssociationType] The association type the association belongs to.
       attr_reader :association_type
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -31,11 +31,11 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param source_object [Hash{String => Object}]
       # @param target_object [Hash{String => Object}]
-      # @param association_type [Merge::Crm::AssociationAssociationType]
+      # @param association_type [Merge::Crm::AssociationAssociationType] The association type the association belongs to.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::Association]
       def initialize(created_at: OMIT, modified_at: OMIT, source_object: OMIT, target_object: OMIT,

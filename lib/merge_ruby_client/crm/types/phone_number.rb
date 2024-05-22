@@ -12,9 +12,9 @@ module Merge
     #  ### Usage Example
     #  Fetch from the `GET Contact` endpoint and view their phone numbers.
     class PhoneNumber
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] The phone number.
       attr_reader :phone_number
@@ -28,8 +28,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param phone_number [String] The phone number.
       # @param phone_number_type [String] The phone number's type.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

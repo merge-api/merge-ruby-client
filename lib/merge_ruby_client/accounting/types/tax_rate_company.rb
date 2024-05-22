@@ -5,7 +5,8 @@ require_relative "company_info"
 
 module Merge
   module Accounting
-    # The company the tax rate belongs to.
+    # The subsidiary that the tax rate belongs to (in the case of multi-entity
+    #  systems).
     class TaxRateCompany
       # Deserialize a JSON object to an instance of TaxRateCompany
       #

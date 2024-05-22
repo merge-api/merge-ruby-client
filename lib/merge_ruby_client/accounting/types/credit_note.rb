@@ -30,9 +30,9 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [DateTime] The credit note's transaction date.
       attr_reader :transaction_date
@@ -393,8 +393,8 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param transaction_date [DateTime] The credit note's transaction date.
       # @param status [Merge::Accounting::CreditNoteStatusEnum] The credit note's status.
       #  - `SUBMITTED` - SUBMITTED

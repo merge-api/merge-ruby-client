@@ -46,6 +46,7 @@ module Merge
       #  apply to the account that is going to be linked. Any model or field not
       #  specified in link token payload will default to existing settings.
       # @param language [String] The language code for the language to localize Merge Link to.
+      # @param integration_specific_config [Hash{String => Object}] A JSON object containing integration-specific configuration options.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::LinkToken]
       # @example
@@ -61,7 +62,7 @@ module Merge
       #    categories: [HRIS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -78,7 +79,8 @@ module Merge
             should_create_magic_link_url: should_create_magic_link_url,
             common_models: common_models,
             category_common_model_scopes: category_common_model_scopes,
-            language: language
+            language: language,
+            integration_specific_config: integration_specific_config
           }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/link-token"
         end
@@ -124,6 +126,7 @@ module Merge
       #  apply to the account that is going to be linked. Any model or field not
       #  specified in link token payload will default to existing settings.
       # @param language [String] The language code for the language to localize Merge Link to.
+      # @param integration_specific_config [Hash{String => Object}] A JSON object containing integration-specific configuration options.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::LinkToken]
       # @example
@@ -139,7 +142,7 @@ module Merge
       #    categories: [HRIS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -157,7 +160,8 @@ module Merge
               should_create_magic_link_url: should_create_magic_link_url,
               common_models: common_models,
               category_common_model_scopes: category_common_model_scopes,
-              language: language
+              language: language,
+              integration_specific_config: integration_specific_config
             }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/link-token"
           end

@@ -29,7 +29,6 @@ require_relative "passthrough/client"
 require_relative "regenerate_key/client"
 require_relative "reject_reasons/client"
 require_relative "scorecards/client"
-require_relative "selective_sync/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "tags/client"
@@ -95,8 +94,6 @@ module Merge
       attr_reader :reject_reasons
       # @return [Merge::Ats::ScorecardsClient]
       attr_reader :scorecards
-      # @return [Merge::Ats::SelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Ats::SyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Ats::ForceResyncClient]
@@ -139,7 +136,6 @@ module Merge
         @regenerate_key = Merge::Ats::RegenerateKeyClient.new(request_client: request_client)
         @reject_reasons = Merge::Ats::RejectReasonsClient.new(request_client: request_client)
         @scorecards = Merge::Ats::ScorecardsClient.new(request_client: request_client)
-        @selective_sync = Merge::Ats::SelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Ats::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Ats::ForceResyncClient.new(request_client: request_client)
         @tags = Merge::Ats::TagsClient.new(request_client: request_client)
@@ -205,8 +201,6 @@ module Merge
       attr_reader :reject_reasons
       # @return [Merge::Ats::AsyncScorecardsClient]
       attr_reader :scorecards
-      # @return [Merge::Ats::AsyncSelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Ats::AsyncSyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Ats::AsyncForceResyncClient]
@@ -249,7 +243,6 @@ module Merge
         @regenerate_key = Merge::Ats::AsyncRegenerateKeyClient.new(request_client: request_client)
         @reject_reasons = Merge::Ats::AsyncRejectReasonsClient.new(request_client: request_client)
         @scorecards = Merge::Ats::AsyncScorecardsClient.new(request_client: request_client)
-        @selective_sync = Merge::Ats::AsyncSelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Ats::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Ats::AsyncForceResyncClient.new(request_client: request_client)
         @tags = Merge::Ats::AsyncTagsClient.new(request_client: request_client)

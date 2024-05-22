@@ -20,9 +20,9 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] An internal note used by the business to clarify purpose of the transaction.
       attr_reader :memo
@@ -40,7 +40,7 @@ module Merge
       attr_reader :tracking_categories
       # @return [String] The line item's total.
       attr_reader :total_line_amount
-      # @return [String] The line item's tax rate.
+      # @return [String]
       attr_reader :tax_rate
       # @return [Merge::Accounting::CurrencyEnum] The line item's currency.
       #  - `XUA` - ADB Unit of Account
@@ -367,8 +367,8 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param memo [String] An internal note used by the business to clarify purpose of the transaction.
       # @param unit_price [String] The line item's unit price.
       # @param quantity [String] The line item's quantity.
@@ -377,7 +377,7 @@ module Merge
       # @param tracking_category [String] The line's associated tracking category.
       # @param tracking_categories [Array<String>] The line's associated tracking categories.
       # @param total_line_amount [String] The line item's total.
-      # @param tax_rate [String] The line item's tax rate.
+      # @param tax_rate [String]
       # @param currency [Merge::Accounting::CurrencyEnum] The line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani

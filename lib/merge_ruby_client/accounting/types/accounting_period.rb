@@ -17,9 +17,9 @@ module Merge
     class AccountingPeriod
       # @return [String]
       attr_reader :id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [DateTime] Beginning date of the period
       attr_reader :start_date
@@ -38,8 +38,8 @@ module Merge
       OMIT = Object.new
 
       # @param id [String]
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param start_date [DateTime] Beginning date of the period
       # @param end_date [DateTime] End date of the period
       # @param status [Merge::Accounting::AccountingPeriodStatusEnum]

@@ -14,9 +14,9 @@ module Merge
     #  ### Usage Example
     #  Fetch from the `GET CompanyInfo` endpoint and view the company's addresses.
     class Address
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Merge::Accounting::AddressTypeEnum] The address type.
       #  - `BILLING` - BILLING
@@ -293,8 +293,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param type [Merge::Accounting::AddressTypeEnum] The address type.
       #  - `BILLING` - BILLING
       #  - `SHIPPING` - SHIPPING

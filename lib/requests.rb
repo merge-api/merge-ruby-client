@@ -28,7 +28,12 @@ module Merge
                    timeout_in_seconds: nil, account_token: nil)
       @default_environment = environment
       @base_url = environment || base_url
-      @headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge", "Authorization": "Bearer #{api_key}" }
+      @headers = {
+        "X-Fern-Language": "Ruby",
+        "X-Fern-SDK-Name": "merge_ruby_client",
+        "X-Fern-SDK-Version": "0.0.5",
+        "Authorization": "Bearer #{api_key}"
+      }
       @headers["X-Account-Token"] = account_token unless account_token.nil?
       @conn = Faraday.new(headers: @headers) do |faraday|
         faraday.request :multipart
@@ -67,7 +72,12 @@ module Merge
                    timeout_in_seconds: nil, account_token: nil)
       @default_environment = environment
       @base_url = environment || base_url
-      @headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge", "Authorization": "Bearer #{api_key}" }
+      @headers = {
+        "X-Fern-Language": "Ruby",
+        "X-Fern-SDK-Name": "merge_ruby_client",
+        "X-Fern-SDK-Version": "0.0.5",
+        "Authorization": "Bearer #{api_key}"
+      }
       @headers["X-Account-Token"] = account_token unless account_token.nil?
       @conn = Faraday.new(headers: @headers) do |faraday|
         faraday.request :multipart

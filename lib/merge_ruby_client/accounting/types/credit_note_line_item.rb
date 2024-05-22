@@ -13,9 +13,9 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Merge::Accounting::CreditNoteLineItemItem]
       attr_reader :item
@@ -29,8 +29,6 @@ module Merge
       attr_reader :memo
       # @return [String] The credit note line item's unit price.
       attr_reader :unit_price
-      # @return [String] The credit note line item's tax rate.
-      attr_reader :tax_rate
       # @return [String] The credit note line item's total.
       attr_reader :total_line_amount
       # @return [String] The credit note line item's associated tracking category.
@@ -54,15 +52,14 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param item [Merge::Accounting::CreditNoteLineItemItem]
       # @param name [String] The credit note line item's name.
       # @param description [String] The description of the item that is owed.
       # @param quantity [String] The credit note line item's quantity.
       # @param memo [String] The credit note line item's memo.
       # @param unit_price [String] The credit note line item's unit price.
-      # @param tax_rate [String] The credit note line item's tax rate.
       # @param total_line_amount [String] The credit note line item's total.
       # @param tracking_category [String] The credit note line item's associated tracking category.
       # @param tracking_categories [Array<String>] The credit note line item's associated tracking categories.
@@ -73,7 +70,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::CreditNoteLineItem]
       def initialize(tracking_categories:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, item: OMIT, name: OMIT,
-                     description: OMIT, quantity: OMIT, memo: OMIT, unit_price: OMIT, tax_rate: OMIT, total_line_amount: OMIT, tracking_category: OMIT, account: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+                     description: OMIT, quantity: OMIT, memo: OMIT, unit_price: OMIT, total_line_amount: OMIT, tracking_category: OMIT, account: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -84,7 +81,6 @@ module Merge
         @quantity = quantity if quantity != OMIT
         @memo = memo if memo != OMIT
         @unit_price = unit_price if unit_price != OMIT
-        @tax_rate = tax_rate if tax_rate != OMIT
         @total_line_amount = total_line_amount if total_line_amount != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
         @tracking_categories = tracking_categories
@@ -103,7 +99,6 @@ module Merge
           "quantity": quantity,
           "memo": memo,
           "unit_price": unit_price,
-          "tax_rate": tax_rate,
           "total_line_amount": total_line_amount,
           "tracking_category": tracking_category,
           "tracking_categories": tracking_categories,
@@ -137,7 +132,6 @@ module Merge
         quantity = struct["quantity"]
         memo = struct["memo"]
         unit_price = struct["unit_price"]
-        tax_rate = struct["tax_rate"]
         total_line_amount = struct["total_line_amount"]
         tracking_category = struct["tracking_category"]
         tracking_categories = struct["tracking_categories"]
@@ -160,7 +154,6 @@ module Merge
           quantity: quantity,
           memo: memo,
           unit_price: unit_price,
-          tax_rate: tax_rate,
           total_line_amount: total_line_amount,
           tracking_category: tracking_category,
           tracking_categories: tracking_categories,
@@ -195,7 +188,6 @@ module Merge
         obj.quantity&.is_a?(String) != false || raise("Passed value for field obj.quantity is not the expected type, validation failed.")
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.unit_price&.is_a?(String) != false || raise("Passed value for field obj.unit_price is not the expected type, validation failed.")
-        obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.total_line_amount&.is_a?(String) != false || raise("Passed value for field obj.total_line_amount is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")

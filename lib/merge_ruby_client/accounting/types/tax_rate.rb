@@ -19,17 +19,18 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] The tax rate's description.
       attr_reader :description
-      # @return [Float] The tax rate's total tax rate.
+      # @return [Float] The tax’s total tax rate - sum of the tax components (not compounded).
       attr_reader :total_tax_rate
-      # @return [Float] The tax rate's effective tax rate.
+      # @return [Float] The tax rate’s effective tax rate - total amount of tax with compounding.
       attr_reader :effective_tax_rate
-      # @return [Merge::Accounting::TaxRateCompany] The company the tax rate belongs to.
+      # @return [Merge::Accounting::TaxRateCompany] The subsidiary that the tax rate belongs to (in the case of multi-entity
+      #  systems).
       attr_reader :company
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
@@ -48,12 +49,13 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param description [String] The tax rate's description.
-      # @param total_tax_rate [Float] The tax rate's total tax rate.
-      # @param effective_tax_rate [Float] The tax rate's effective tax rate.
-      # @param company [Merge::Accounting::TaxRateCompany] The company the tax rate belongs to.
+      # @param total_tax_rate [Float] The tax’s total tax rate - sum of the tax components (not compounded).
+      # @param effective_tax_rate [Float] The tax rate’s effective tax rate - total amount of tax with compounding.
+      # @param company [Merge::Accounting::TaxRateCompany] The subsidiary that the tax rate belongs to (in the case of multi-entity
+      #  systems).
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
       # @param field_mappings [Hash{String => Object}]

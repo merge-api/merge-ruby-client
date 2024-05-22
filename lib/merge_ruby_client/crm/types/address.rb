@@ -14,9 +14,9 @@ module Merge
     #  ### Usage Example
     #  TODO
     class Address
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] Line 1 of the address's street.
       attr_reader :street_1
@@ -291,8 +291,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param street_1 [String] Line 1 of the address's street.
       # @param street_2 [String] Line 2 of the address's street.
       # @param city [String] The address's city.

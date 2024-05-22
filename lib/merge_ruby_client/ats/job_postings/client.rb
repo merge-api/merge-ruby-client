@@ -24,6 +24,8 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -48,7 +50,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ats.list
-      def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
+      def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -60,6 +62,7 @@ module Merge
             "created_after": created_after,
             "created_before": created_before,
             "cursor": cursor,
+            "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "modified_after": modified_after,
@@ -76,6 +79,8 @@ module Merge
       # Returns a `JobPosting` object with the given `id`.
       #
       # @param id [String]
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param request_options [Merge::RequestOptions]
@@ -87,7 +92,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ats.retrieve(id: "id")
-      def retrieve(id:, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -95,6 +100,7 @@ module Merge
           req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
+            "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/job-postings/#{id}"
@@ -118,6 +124,8 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -142,7 +150,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ats.list
-      def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
+      def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
                include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
@@ -155,6 +163,7 @@ module Merge
               "created_after": created_after,
               "created_before": created_before,
               "cursor": cursor,
+              "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "modified_after": modified_after,
@@ -172,6 +181,8 @@ module Merge
       # Returns a `JobPosting` object with the given `id`.
       #
       # @param id [String]
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param request_options [Merge::RequestOptions]
@@ -183,7 +194,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ats.retrieve(id: "id")
-      def retrieve(id:, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -192,6 +203,7 @@ module Merge
             req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
+              "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/job-postings/#{id}"
