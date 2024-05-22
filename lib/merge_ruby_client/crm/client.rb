@@ -26,7 +26,6 @@ require_relative "notes/client"
 require_relative "opportunities/client"
 require_relative "passthrough/client"
 require_relative "regenerate_key/client"
-require_relative "selective_sync/client"
 require_relative "stages/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
@@ -87,8 +86,6 @@ module Merge
       attr_reader :passthrough
       # @return [Merge::Crm::RegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Crm::SelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Crm::StagesClient]
       attr_reader :stages
       # @return [Merge::Crm::SyncStatusClient]
@@ -130,7 +127,6 @@ module Merge
         @opportunities = Merge::Crm::OpportunitiesClient.new(request_client: request_client)
         @passthrough = Merge::Crm::PassthroughClient.new(request_client: request_client)
         @regenerate_key = Merge::Crm::RegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Crm::SelectiveSyncClient.new(request_client: request_client)
         @stages = Merge::Crm::StagesClient.new(request_client: request_client)
         @sync_status = Merge::Crm::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Crm::ForceResyncClient.new(request_client: request_client)
@@ -191,8 +187,6 @@ module Merge
       attr_reader :passthrough
       # @return [Merge::Crm::AsyncRegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Crm::AsyncSelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Crm::AsyncStagesClient]
       attr_reader :stages
       # @return [Merge::Crm::AsyncSyncStatusClient]
@@ -234,7 +228,6 @@ module Merge
         @opportunities = Merge::Crm::AsyncOpportunitiesClient.new(request_client: request_client)
         @passthrough = Merge::Crm::AsyncPassthroughClient.new(request_client: request_client)
         @regenerate_key = Merge::Crm::AsyncRegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Crm::AsyncSelectiveSyncClient.new(request_client: request_client)
         @stages = Merge::Crm::AsyncStagesClient.new(request_client: request_client)
         @sync_status = Merge::Crm::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Crm::AsyncForceResyncClient.new(request_client: request_client)

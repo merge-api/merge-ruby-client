@@ -22,7 +22,6 @@ require_relative "passthrough/client"
 require_relative "projects/client"
 require_relative "regenerate_key/client"
 require_relative "roles/client"
-require_relative "selective_sync/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "tags/client"
@@ -76,8 +75,6 @@ module Merge
       attr_reader :regenerate_key
       # @return [Merge::Ticketing::RolesClient]
       attr_reader :roles
-      # @return [Merge::Ticketing::SelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Ticketing::SyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Ticketing::ForceResyncClient]
@@ -117,7 +114,6 @@ module Merge
         @projects = Merge::Ticketing::ProjectsClient.new(request_client: request_client)
         @regenerate_key = Merge::Ticketing::RegenerateKeyClient.new(request_client: request_client)
         @roles = Merge::Ticketing::RolesClient.new(request_client: request_client)
-        @selective_sync = Merge::Ticketing::SelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Ticketing::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Ticketing::ForceResyncClient.new(request_client: request_client)
         @tags = Merge::Ticketing::TagsClient.new(request_client: request_client)
@@ -171,8 +167,6 @@ module Merge
       attr_reader :regenerate_key
       # @return [Merge::Ticketing::AsyncRolesClient]
       attr_reader :roles
-      # @return [Merge::Ticketing::AsyncSelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Ticketing::AsyncSyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Ticketing::AsyncForceResyncClient]
@@ -212,7 +206,6 @@ module Merge
         @projects = Merge::Ticketing::AsyncProjectsClient.new(request_client: request_client)
         @regenerate_key = Merge::Ticketing::AsyncRegenerateKeyClient.new(request_client: request_client)
         @roles = Merge::Ticketing::AsyncRolesClient.new(request_client: request_client)
-        @selective_sync = Merge::Ticketing::AsyncSelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Ticketing::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Ticketing::AsyncForceResyncClient.new(request_client: request_client)
         @tags = Merge::Ticketing::AsyncTagsClient.new(request_client: request_client)

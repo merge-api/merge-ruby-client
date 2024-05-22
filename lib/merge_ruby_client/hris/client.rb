@@ -27,7 +27,6 @@ require_relative "passthrough/client"
 require_relative "pay_groups/client"
 require_relative "payroll_runs/client"
 require_relative "regenerate_key/client"
-require_relative "selective_sync/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "teams/client"
@@ -91,8 +90,6 @@ module Merge
       attr_reader :payroll_runs
       # @return [Merge::Hris::RegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Hris::SelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Hris::SyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Hris::ForceResyncClient]
@@ -137,7 +134,6 @@ module Merge
         @pay_groups = Merge::Hris::PayGroupsClient.new(request_client: request_client)
         @payroll_runs = Merge::Hris::PayrollRunsClient.new(request_client: request_client)
         @regenerate_key = Merge::Hris::RegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Hris::SelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Hris::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Hris::ForceResyncClient.new(request_client: request_client)
         @teams = Merge::Hris::TeamsClient.new(request_client: request_client)
@@ -201,8 +197,6 @@ module Merge
       attr_reader :payroll_runs
       # @return [Merge::Hris::AsyncRegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Hris::AsyncSelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Hris::AsyncSyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Hris::AsyncForceResyncClient]
@@ -247,7 +241,6 @@ module Merge
         @pay_groups = Merge::Hris::AsyncPayGroupsClient.new(request_client: request_client)
         @payroll_runs = Merge::Hris::AsyncPayrollRunsClient.new(request_client: request_client)
         @regenerate_key = Merge::Hris::AsyncRegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Hris::AsyncSelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Hris::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Hris::AsyncForceResyncClient.new(request_client: request_client)
         @teams = Merge::Hris::AsyncTeamsClient.new(request_client: request_client)

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "account_request_owner"
+require_relative "address_request"
 require "date"
 require_relative "remote_field_request"
 require "ostruct"
@@ -26,6 +27,8 @@ module Merge
       attr_reader :website
       # @return [Integer] The account's number of employees.
       attr_reader :number_of_employees
+      # @return [Array<Merge::Crm::AddressRequest>]
+      attr_reader :addresses
       # @return [DateTime] The last date (either most recent or furthest in the future) of when an activity
       #  occurs in an account.
       attr_reader :last_activity_at
@@ -49,6 +52,7 @@ module Merge
       # @param industry [String] The account's industry.
       # @param website [String] The account's website.
       # @param number_of_employees [Integer] The account's number of employees.
+      # @param addresses [Array<Merge::Crm::AddressRequest>]
       # @param last_activity_at [DateTime] The last date (either most recent or furthest in the future) of when an activity
       #  occurs in an account.
       # @param integration_params [Hash{String => Object}]
@@ -57,13 +61,14 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::AccountRequest]
       def initialize(owner: OMIT, name: OMIT, description: OMIT, industry: OMIT, website: OMIT,
-                     number_of_employees: OMIT, last_activity_at: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     number_of_employees: OMIT, addresses: OMIT, last_activity_at: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @owner = owner if owner != OMIT
         @name = name if name != OMIT
         @description = description if description != OMIT
         @industry = industry if industry != OMIT
         @website = website if website != OMIT
         @number_of_employees = number_of_employees if number_of_employees != OMIT
+        @addresses = addresses if addresses != OMIT
         @last_activity_at = last_activity_at if last_activity_at != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
@@ -76,6 +81,7 @@ module Merge
           "industry": industry,
           "website": website,
           "number_of_employees": number_of_employees,
+          "addresses": addresses,
           "last_activity_at": last_activity_at,
           "integration_params": integration_params,
           "linked_account_params": linked_account_params,
@@ -103,6 +109,10 @@ module Merge
         industry = struct["industry"]
         website = struct["website"]
         number_of_employees = struct["number_of_employees"]
+        addresses = parsed_json["addresses"]&.map do |v|
+          v = v.to_json
+          Merge::Crm::AddressRequest.from_json(json_object: v)
+        end
         last_activity_at = (DateTime.parse(parsed_json["last_activity_at"]) unless parsed_json["last_activity_at"].nil?)
         integration_params = struct["integration_params"]
         linked_account_params = struct["linked_account_params"]
@@ -117,6 +127,7 @@ module Merge
           industry: industry,
           website: website,
           number_of_employees: number_of_employees,
+          addresses: addresses,
           last_activity_at: last_activity_at,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
@@ -145,6 +156,7 @@ module Merge
         obj.industry&.is_a?(String) != false || raise("Passed value for field obj.industry is not the expected type, validation failed.")
         obj.website&.is_a?(String) != false || raise("Passed value for field obj.website is not the expected type, validation failed.")
         obj.number_of_employees&.is_a?(Integer) != false || raise("Passed value for field obj.number_of_employees is not the expected type, validation failed.")
+        obj.addresses&.is_a?(Array) != false || raise("Passed value for field obj.addresses is not the expected type, validation failed.")
         obj.last_activity_at&.is_a?(DateTime) != false || raise("Passed value for field obj.last_activity_at is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")

@@ -3,7 +3,10 @@
 require_relative "../../../requests"
 require "date"
 require_relative "../types/paginated_contact_list"
+require_relative "../types/contact_request"
+require_relative "../types/ticketing_contact_response"
 require_relative "../types/contact"
+require_relative "../types/meta_response"
 require "async"
 
 module Merge
@@ -67,6 +70,44 @@ module Merge
         Merge::Ticketing::PaginatedContactList.from_json(json_object: response.body)
       end
 
+      # Creates a `Contact` object with the given values.
+      #
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Ticketing::ContactRequest, as a Hash
+      #   * :name (String)
+      #   * :email_address (String)
+      #   * :phone_number (String)
+      #   * :details (String)
+      #   * :account (Hash)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketingContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.create(model: {  })
+      def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        response = @request_client.conn.post do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "is_debug_mode": is_debug_mode,
+            "run_async": run_async
+          }.compact
+          req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/contacts"
+        end
+        Merge::Ticketing::TicketingContactResponse.from_json(json_object: response.body)
+      end
+
       # Returns a `Contact` object with the given `id`.
       #
       # @param id [String]
@@ -97,6 +138,28 @@ module Merge
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/contacts/#{id}"
         end
         Merge::Ticketing::Contact.from_json(json_object: response.body)
+      end
+
+      # Returns metadata for `TicketingContact` POSTs.
+      #
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_post_retrieve
+      def meta_post_retrieve(request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/contacts/meta/post"
+        end
+        Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
       end
     end
 
@@ -161,6 +224,46 @@ module Merge
         end
       end
 
+      # Creates a `Contact` object with the given values.
+      #
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Ticketing::ContactRequest, as a Hash
+      #   * :name (String)
+      #   * :email_address (String)
+      #   * :phone_number (String)
+      #   * :details (String)
+      #   * :account (Hash)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::TicketingContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.create(model: {  })
+      def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.post do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "is_debug_mode": is_debug_mode,
+              "run_async": run_async
+            }.compact
+            req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/contacts"
+          end
+          Merge::Ticketing::TicketingContactResponse.from_json(json_object: response.body)
+        end
+      end
+
       # Returns a `Contact` object with the given `id`.
       #
       # @param id [String]
@@ -192,6 +295,30 @@ module Merge
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/contacts/#{id}"
           end
           Merge::Ticketing::Contact.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata for `TicketingContact` POSTs.
+      #
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Ticketing::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    environment: Environment::PRODUCTION,
+      #    base_url: "https://api.example.com",
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.ticketing.meta_post_retrieve
+      def meta_post_retrieve(request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/contacts/meta/post"
+          end
+          Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

@@ -22,15 +22,16 @@ module Merge
       attr_reader :created_at
       # @return [DateTime]
       attr_reader :modified_at
-      # @return [String]
+      # @return [String] The custom object class's name.
       attr_reader :name
-      # @return [String]
+      # @return [String] The custom object class's description.
       attr_reader :description
-      # @return [Hash{String => String}]
+      # @return [Hash{String => String}] The custom object class's singular and plural labels.
       attr_reader :labels
       # @return [Array<Merge::Crm::RemoteFieldClassForCustomObjectClass>]
       attr_reader :fields
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Hash{String => Object}>] The types of associations with other models that the custom object class can
+      #  have.
       attr_reader :association_types
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -44,11 +45,12 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime]
       # @param modified_at [DateTime]
-      # @param name [String]
-      # @param description [String]
-      # @param labels [Hash{String => String}]
+      # @param name [String] The custom object class's name.
+      # @param description [String] The custom object class's description.
+      # @param labels [Hash{String => String}] The custom object class's singular and plural labels.
       # @param fields [Array<Merge::Crm::RemoteFieldClassForCustomObjectClass>]
-      # @param association_types [Array<Hash{String => Object}>]
+      # @param association_types [Array<Hash{String => Object}>] The types of associations with other models that the custom object class can
+      #  have.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::CustomObjectClass]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, description: OMIT,

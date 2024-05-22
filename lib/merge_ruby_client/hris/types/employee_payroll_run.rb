@@ -24,9 +24,9 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Merge::Hris::EmployeePayrollRunEmployee] The employee whose payroll is being run.
       attr_reader :employee
@@ -67,8 +67,8 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param employee [Merge::Hris::EmployeePayrollRunEmployee] The employee whose payroll is being run.
       # @param payroll_run [Merge::Hris::EmployeePayrollRunPayrollRun] The payroll being run.
       # @param gross_pay [Float] The total earnings throughout a given period for an employee before any

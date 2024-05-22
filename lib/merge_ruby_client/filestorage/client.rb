@@ -19,7 +19,6 @@ require_relative "link_token/client"
 require_relative "linked_accounts/client"
 require_relative "passthrough/client"
 require_relative "regenerate_key/client"
-require_relative "selective_sync/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "users/client"
@@ -64,8 +63,6 @@ module Merge
       attr_reader :passthrough
       # @return [Merge::Filestorage::RegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Filestorage::SelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Filestorage::SyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Filestorage::ForceResyncClient]
@@ -96,7 +93,6 @@ module Merge
         @linked_accounts = Merge::Filestorage::LinkedAccountsClient.new(request_client: request_client)
         @passthrough = Merge::Filestorage::PassthroughClient.new(request_client: request_client)
         @regenerate_key = Merge::Filestorage::RegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Filestorage::SelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Filestorage::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Filestorage::ForceResyncClient.new(request_client: request_client)
         @users = Merge::Filestorage::UsersClient.new(request_client: request_client)
@@ -141,8 +137,6 @@ module Merge
       attr_reader :passthrough
       # @return [Merge::Filestorage::AsyncRegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Filestorage::AsyncSelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Filestorage::AsyncSyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Filestorage::AsyncForceResyncClient]
@@ -173,7 +167,6 @@ module Merge
         @linked_accounts = Merge::Filestorage::AsyncLinkedAccountsClient.new(request_client: request_client)
         @passthrough = Merge::Filestorage::AsyncPassthroughClient.new(request_client: request_client)
         @regenerate_key = Merge::Filestorage::AsyncRegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Filestorage::AsyncSelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Filestorage::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Filestorage::AsyncForceResyncClient.new(request_client: request_client)
         @users = Merge::Filestorage::AsyncUsersClient.new(request_client: request_client)

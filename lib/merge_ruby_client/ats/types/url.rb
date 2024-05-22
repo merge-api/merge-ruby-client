@@ -14,9 +14,9 @@ module Merge
     #  ### Usage Example
     #  Fetch from the `GET Candidate` endpoint and view their website urls.
     class Url
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] The site's url.
       attr_reader :value
@@ -37,8 +37,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param value [String] The site's url.
       # @param url_type [Merge::Ats::UrlTypeEnum] The type of site.
       #  - `PERSONAL` - PERSONAL

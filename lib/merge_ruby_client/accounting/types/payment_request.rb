@@ -5,6 +5,7 @@ require_relative "payment_request_contact"
 require_relative "payment_request_account"
 require_relative "currency_enum"
 require_relative "payment_request_company"
+require_relative "payment_type_enum"
 require_relative "payment_request_tracking_categories_item"
 require_relative "payment_request_accounting_period"
 require_relative "payment_request_applied_to_lines_item"
@@ -340,6 +341,10 @@ module Merge
       attr_reader :company
       # @return [Float] The total amount of money being paid to the supplier, or customer, after taxes.
       attr_reader :total_amount
+      # @return [Merge::Accounting::PaymentTypeEnum] The type of the invoice.
+      #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+      #  - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
+      attr_reader :type
       # @return [Array<Merge::Accounting::PaymentRequestTrackingCategoriesItem>]
       attr_reader :tracking_categories
       # @return [Merge::Accounting::PaymentRequestAccountingPeriod] The accounting period that the Payment was generated in.
@@ -671,6 +676,9 @@ module Merge
       # @param exchange_rate [String] The payment's exchange rate.
       # @param company [Merge::Accounting::PaymentRequestCompany] The company the payment belongs to.
       # @param total_amount [Float] The total amount of money being paid to the supplier, or customer, after taxes.
+      # @param type [Merge::Accounting::PaymentTypeEnum] The type of the invoice.
+      #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+      #  - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       # @param tracking_categories [Array<Merge::Accounting::PaymentRequestTrackingCategoriesItem>]
       # @param accounting_period [Merge::Accounting::PaymentRequestAccountingPeriod] The accounting period that the Payment was generated in.
       # @param applied_to_lines [Array<Merge::Accounting::PaymentRequestAppliedToLinesItem>] A list of “Payment Applied to Lines” objects.
@@ -679,7 +687,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PaymentRequest]
       def initialize(transaction_date: OMIT, contact: OMIT, account: OMIT, currency: OMIT, exchange_rate: OMIT,
-                     company: OMIT, total_amount: OMIT, tracking_categories: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     company: OMIT, total_amount: OMIT, type: OMIT, tracking_categories: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
         @transaction_date = transaction_date if transaction_date != OMIT
         @contact = contact if contact != OMIT
         @account = account if account != OMIT
@@ -687,6 +695,7 @@ module Merge
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @company = company if company != OMIT
         @total_amount = total_amount if total_amount != OMIT
+        @type = type if type != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @accounting_period = accounting_period if accounting_period != OMIT
         @applied_to_lines = applied_to_lines if applied_to_lines != OMIT
@@ -701,6 +710,7 @@ module Merge
           "exchange_rate": exchange_rate,
           "company": company,
           "total_amount": total_amount,
+          "type": type,
           "tracking_categories": tracking_categories,
           "accounting_period": accounting_period,
           "applied_to_lines": applied_to_lines,
@@ -740,6 +750,7 @@ module Merge
           company = Merge::Accounting::PaymentRequestCompany.from_json(json_object: company)
         end
         total_amount = struct["total_amount"]
+        type = struct["type"]
         tracking_categories = parsed_json["tracking_categories"]&.map do |v|
           v = v.to_json
           Merge::Accounting::PaymentRequestTrackingCategoriesItem.from_json(json_object: v)
@@ -764,6 +775,7 @@ module Merge
           exchange_rate: exchange_rate,
           company: company,
           total_amount: total_amount,
+          type: type,
           tracking_categories: tracking_categories,
           accounting_period: accounting_period,
           applied_to_lines: applied_to_lines,
@@ -794,6 +806,7 @@ module Merge
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PaymentRequestCompany.validate_raw(obj: obj.company)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
+        obj.type&.is_a?(Merge::Accounting::PaymentTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.accounting_period.nil? || Merge::Accounting::PaymentRequestAccountingPeriod.validate_raw(obj: obj.accounting_period)
         obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")

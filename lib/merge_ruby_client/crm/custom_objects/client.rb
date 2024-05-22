@@ -86,7 +86,7 @@ module Merge
       #    base_url: "https://api.example.com",
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_custom_objects_create(custom_object_class_id: "custom_object_class_id", model: { fields: { "test_field": "hello" } })
+      #  api.crm.custom_object_classes_custom_objects_create(custom_object_class_id: "custom_object_class_id", model: { fields: {  } })
       def custom_object_classes_custom_objects_create(custom_object_class_id:, model:, is_debug_mode: nil,
                                                       run_async: nil, request_options: nil)
         response = @request_client.conn.post do |req|
@@ -240,7 +240,7 @@ module Merge
       #    base_url: "https://api.example.com",
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_custom_objects_create(custom_object_class_id: "custom_object_class_id", model: { fields: { "test_field": "hello" } })
+      #  api.crm.custom_object_classes_custom_objects_create(custom_object_class_id: "custom_object_class_id", model: { fields: {  } })
       def custom_object_classes_custom_objects_create(custom_object_class_id:, model:, is_debug_mode: nil,
                                                       run_async: nil, request_options: nil)
         Async do

@@ -68,6 +68,9 @@ module Merge
       #  - `FORCED_LINKED_ACCOUNT_RESYNC` - FORCED_LINKED_ACCOUNT_RESYNC
       #  - `MUTED_ISSUE` - MUTED_ISSUE
       #  - `GENERATED_MAGIC_LINK` - GENERATED_MAGIC_LINK
+      #  - `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
+      #  - `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
+      #  - `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
       attr_reader :event_type
       # @return [String]
       attr_reader :event_description
@@ -135,6 +138,9 @@ module Merge
       #  - `FORCED_LINKED_ACCOUNT_RESYNC` - FORCED_LINKED_ACCOUNT_RESYNC
       #  - `MUTED_ISSUE` - MUTED_ISSUE
       #  - `GENERATED_MAGIC_LINK` - GENERATED_MAGIC_LINK
+      #  - `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
+      #  - `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
+      #  - `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
       # @param event_description [String]
       # @param created_at [DateTime]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

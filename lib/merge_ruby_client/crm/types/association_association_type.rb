@@ -5,6 +5,7 @@ require_relative "association_type"
 
 module Merge
   module Crm
+    # The association type the association belongs to.
     class AssociationAssociationType
       # Deserialize a JSON object to an instance of AssociationAssociationType
       #

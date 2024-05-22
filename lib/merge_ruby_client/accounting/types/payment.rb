@@ -5,6 +5,7 @@ require_relative "payment_contact"
 require_relative "payment_account"
 require_relative "currency_enum"
 require_relative "payment_company"
+require_relative "payment_type_enum"
 require_relative "payment_tracking_categories_item"
 require_relative "payment_accounting_period"
 require_relative "payment_applied_to_lines_item"
@@ -25,9 +26,9 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [DateTime] The payment's transaction date.
       attr_reader :transaction_date
@@ -349,6 +350,10 @@ module Merge
       attr_reader :company
       # @return [Float] The total amount of money being paid to the supplier, or customer, after taxes.
       attr_reader :total_amount
+      # @return [Merge::Accounting::PaymentTypeEnum] The type of the invoice.
+      #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+      #  - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
+      attr_reader :type
       # @return [Array<Merge::Accounting::PaymentTrackingCategoriesItem>]
       attr_reader :tracking_categories
       # @return [DateTime] When the third party's payment entry was updated.
@@ -374,8 +379,8 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param transaction_date [DateTime] The payment's transaction date.
       # @param contact [Merge::Accounting::PaymentContact] The supplier, or customer involved in the payment.
       # @param account [Merge::Accounting::PaymentAccount] The supplier’s or customer’s account in which the payment is made.
@@ -689,6 +694,9 @@ module Merge
       # @param exchange_rate [String] The payment's exchange rate.
       # @param company [Merge::Accounting::PaymentCompany] The company the payment belongs to.
       # @param total_amount [Float] The total amount of money being paid to the supplier, or customer, after taxes.
+      # @param type [Merge::Accounting::PaymentTypeEnum] The type of the invoice.
+      #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+      #  - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       # @param tracking_categories [Array<Merge::Accounting::PaymentTrackingCategoriesItem>]
       # @param remote_updated_at [DateTime] When the third party's payment entry was updated.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -700,7 +708,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Payment]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, transaction_date: OMIT,
-                     contact: OMIT, account: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, total_amount: OMIT, tracking_categories: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     contact: OMIT, account: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, total_amount: OMIT, type: OMIT, tracking_categories: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -712,6 +720,7 @@ module Merge
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @company = company if company != OMIT
         @total_amount = total_amount if total_amount != OMIT
+        @type = type if type != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @remote_updated_at = remote_updated_at if remote_updated_at != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
@@ -732,6 +741,7 @@ module Merge
           "exchange_rate": exchange_rate,
           "company": company,
           "total_amount": total_amount,
+          "type": type,
           "tracking_categories": tracking_categories,
           "remote_updated_at": remote_updated_at,
           "remote_was_deleted": remote_was_deleted,
@@ -777,6 +787,7 @@ module Merge
           company = Merge::Accounting::PaymentCompany.from_json(json_object: company)
         end
         total_amount = struct["total_amount"]
+        type = struct["type"]
         tracking_categories = parsed_json["tracking_categories"]&.map do |v|
           v = v.to_json
           Merge::Accounting::PaymentTrackingCategoriesItem.from_json(json_object: v)
@@ -812,6 +823,7 @@ module Merge
           exchange_rate: exchange_rate,
           company: company,
           total_amount: total_amount,
+          type: type,
           tracking_categories: tracking_categories,
           remote_updated_at: remote_updated_at,
           remote_was_deleted: remote_was_deleted,
@@ -848,6 +860,7 @@ module Merge
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PaymentCompany.validate_raw(obj: obj.company)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
+        obj.type&.is_a?(Merge::Accounting::PaymentTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

@@ -13,9 +13,9 @@ module Merge
     #  ### Usage Example
     #  Fetch from the `GET Candidate` endpoint and view their email addresses.
     class EmailAddress
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] The email address.
       attr_reader :value
@@ -32,8 +32,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param value [String] The email address.
       # @param email_address_type [Merge::Ats::EmailAddressTypeEnum] The type of email address.
       #  - `PERSONAL` - PERSONAL

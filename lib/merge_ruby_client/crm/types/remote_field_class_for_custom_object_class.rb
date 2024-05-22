@@ -11,9 +11,9 @@ require "json"
 module Merge
   module Crm
     class RemoteFieldClassForCustomObjectClass
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String]
       attr_reader :display_name
@@ -39,8 +39,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param display_name [String]
       # @param remote_key_name [String]
       # @param description [String]

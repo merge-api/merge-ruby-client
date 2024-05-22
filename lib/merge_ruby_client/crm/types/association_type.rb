@@ -18,11 +18,12 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Hash{String => Object}]
+      # @return [Hash{String => Object}] The class of the source object (Custom Object or Common Model) for the
+      #  association type.
       attr_reader :source_object_class
       # @return [Array<Merge::Crm::AssociationSubType>]
       attr_reader :target_object_classes
@@ -44,9 +45,10 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
-      # @param source_object_class [Hash{String => Object}]
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
+      # @param source_object_class [Hash{String => Object}] The class of the source object (Custom Object or Common Model) for the
+      #  association type.
       # @param target_object_classes [Array<Merge::Crm::AssociationSubType>]
       # @param remote_key_name [String]
       # @param display_name [String]

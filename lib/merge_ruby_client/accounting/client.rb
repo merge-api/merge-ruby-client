@@ -32,7 +32,6 @@ require_relative "payments/client"
 require_relative "phone_numbers/client"
 require_relative "purchase_orders/client"
 require_relative "regenerate_key/client"
-require_relative "selective_sync/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "tax_rates/client"
@@ -106,8 +105,6 @@ module Merge
       attr_reader :purchase_orders
       # @return [Merge::Accounting::RegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Accounting::SelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Accounting::SyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Accounting::ForceResyncClient]
@@ -157,7 +154,6 @@ module Merge
         @phone_numbers = Merge::Accounting::PhoneNumbersClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::PurchaseOrdersClient.new(request_client: request_client)
         @regenerate_key = Merge::Accounting::RegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Accounting::SelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Accounting::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Accounting::ForceResyncClient.new(request_client: request_client)
         @tax_rates = Merge::Accounting::TaxRatesClient.new(request_client: request_client)
@@ -231,8 +227,6 @@ module Merge
       attr_reader :purchase_orders
       # @return [Merge::Accounting::AsyncRegenerateKeyClient]
       attr_reader :regenerate_key
-      # @return [Merge::Accounting::AsyncSelectiveSyncClient]
-      attr_reader :selective_sync
       # @return [Merge::Accounting::AsyncSyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Accounting::AsyncForceResyncClient]
@@ -282,7 +276,6 @@ module Merge
         @phone_numbers = Merge::Accounting::AsyncPhoneNumbersClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::AsyncPurchaseOrdersClient.new(request_client: request_client)
         @regenerate_key = Merge::Accounting::AsyncRegenerateKeyClient.new(request_client: request_client)
-        @selective_sync = Merge::Accounting::AsyncSelectiveSyncClient.new(request_client: request_client)
         @sync_status = Merge::Accounting::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Accounting::AsyncForceResyncClient.new(request_client: request_client)
         @tax_rates = Merge::Accounting::AsyncTaxRatesClient.new(request_client: request_client)

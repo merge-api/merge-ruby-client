@@ -20,9 +20,9 @@ module Merge
       attr_reader :id
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [DateTime]
+      # @return [DateTime] The datetime that this object was created by Merge.
       attr_reader :created_at
-      # @return [DateTime] This is the datetime that this object was last updated by Merge
+      # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [String] The parent group for this group.
       attr_reader :parent_group
@@ -38,6 +38,11 @@ module Merge
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
       attr_reader :remote_was_deleted
+      # @return [Boolean] Indicates whether the Group refers to a team in the third party platform. Note
+      #  that this is an opinionated view based on how Merge observes most organizations
+      #  representing teams in each third party platform. If your customer uses a
+      #  platform different from most, there is a chance this will not be correct.
+      attr_reader :is_commonly_used_as_team
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
       # @return [Array<Merge::Hris::RemoteData>]
@@ -52,8 +57,8 @@ module Merge
 
       # @param id [String]
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param created_at [DateTime]
-      # @param modified_at [DateTime] This is the datetime that this object was last updated by Merge
+      # @param created_at [DateTime] The datetime that this object was created by Merge.
+      # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param parent_group [String] The parent group for this group.
       # @param name [String] The group name.
       # @param type [Merge::Hris::GroupTypeEnum] The Group type returned directly from the third-party.
@@ -64,12 +69,16 @@ module Merge
       #  - `GROUP` - GROUP
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
+      # @param is_commonly_used_as_team [Boolean] Indicates whether the Group refers to a team in the third party platform. Note
+      #  that this is an opinionated view based on how Merge observes most organizations
+      #  representing teams in each third party platform. If your customer uses a
+      #  platform different from most, there is a chance this will not be correct.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Hris::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Hris::Group]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, parent_group: OMIT, name: OMIT,
-                     type: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     type: OMIT, remote_was_deleted: OMIT, is_commonly_used_as_team: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -78,6 +87,7 @@ module Merge
         @name = name if name != OMIT
         @type = type if type != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
+        @is_commonly_used_as_team = is_commonly_used_as_team if is_commonly_used_as_team != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
         @additional_properties = additional_properties
@@ -90,6 +100,7 @@ module Merge
           "name": name,
           "type": type,
           "remote_was_deleted": remote_was_deleted,
+          "is_commonly_used_as_team": is_commonly_used_as_team,
           "field_mappings": field_mappings,
           "remote_data": remote_data
         }.reject do |_k, v|
@@ -112,6 +123,7 @@ module Merge
         name = struct["name"]
         type = struct["type"]
         remote_was_deleted = struct["remote_was_deleted"]
+        is_commonly_used_as_team = struct["is_commonly_used_as_team"]
         field_mappings = struct["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |v|
           v = v.to_json
@@ -126,6 +138,7 @@ module Merge
           name: name,
           type: type,
           remote_was_deleted: remote_was_deleted,
+          is_commonly_used_as_team: is_commonly_used_as_team,
           field_mappings: field_mappings,
           remote_data: remote_data,
           additional_properties: struct
@@ -154,6 +167,7 @@ module Merge
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.type&.is_a?(Merge::Hris::GroupTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
+        obj.is_commonly_used_as_team&.is_a?(Boolean) != false || raise("Passed value for field obj.is_commonly_used_as_team is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end
