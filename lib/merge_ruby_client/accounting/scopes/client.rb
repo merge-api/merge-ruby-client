@@ -83,7 +83,7 @@ module Merge
       #    base_url: "https://api.example.com",
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.linked_account_scopes_create(common_models: [{ model_name: "model_name" }])
+      #  api.accounting.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
       def linked_account_scopes_create(common_models:, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -177,7 +177,7 @@ module Merge
       #    base_url: "https://api.example.com",
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.linked_account_scopes_create(common_models: [{ model_name: "model_name" }])
+      #  api.accounting.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
       def linked_account_scopes_create(common_models:, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
