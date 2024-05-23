@@ -59,7 +59,7 @@ module Merge
       #    end_user_email_address: "example@gmail.com",
       #    end_user_organization_name: "Test Organization",
       #    end_user_origin_id: "12345",
-      #    categories: [HRIS]
+      #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
                  integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
@@ -139,7 +139,7 @@ module Merge
       #    end_user_email_address: "example@gmail.com",
       #    end_user_organization_name: "Test Organization",
       #    end_user_origin_id: "12345",
-      #    categories: [HRIS]
+      #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
                  integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)

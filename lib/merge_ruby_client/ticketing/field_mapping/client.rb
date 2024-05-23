@@ -66,7 +66,7 @@ module Merge
       #  api.ticketing.field_mappings_create(
       #    target_field_name: "example_target_field_name",
       #    target_field_description: "this is a example description of the target field",
-      #    remote_field_traversal_path: ,
+      #    remote_field_traversal_path: ["example_remote_field"],
       #    remote_method: "GET",
       #    remote_url_path: "/example-url-path",
       #    common_model_name: "ExampleCommonModel"
@@ -274,7 +274,7 @@ module Merge
       #  api.ticketing.field_mappings_create(
       #    target_field_name: "example_target_field_name",
       #    target_field_description: "this is a example description of the target field",
-      #    remote_field_traversal_path: ,
+      #    remote_field_traversal_path: ["example_remote_field"],
       #    remote_method: "GET",
       #    remote_url_path: "/example-url-path",
       #    common_model_name: "ExampleCommonModel"
