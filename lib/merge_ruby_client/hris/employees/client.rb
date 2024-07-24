@@ -81,18 +81,22 @@ module Merge
       # @return [Merge::Hris::PaginatedEmployeeList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.list
+      #  api.hris.employees.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, display_full_name: nil,
                employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "company_id": company_id,
@@ -128,6 +132,9 @@ module Merge
             "work_email": work_email,
             "work_location_id": work_location_id
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees"
         end
         Merge::Hris::PaginatedEmployeeList.from_json(json_object: response.body)
@@ -171,17 +178,21 @@ module Merge
       # @return [Merge::Hris::EmployeeResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.create(model: {  })
+      #  api.hris.employees.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -210,18 +221,22 @@ module Merge
       # @return [Merge::Hris::Employee]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.retrieve(id: "id")
+      #  api.hris.employees.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_sensitive_fields: nil, remote_fields: nil,
                    show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
@@ -230,6 +245,9 @@ module Merge
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees/#{id}"
         end
         Merge::Hris::Employee.from_json(json_object: response.body)
@@ -247,17 +265,24 @@ module Merge
       # @return [Void]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.ignore_create(model_id: "model_id", reason: GENERAL_CUSTOMER_REQUEST)
+      #  api.hris.employees.ignore_create(model_id: "model_id", reason: GENERAL_CUSTOMER_REQUEST)
       def ignore_create(model_id:, reason:, message: nil, request_options: nil)
         @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
           req.body = { **(request_options&.additional_body_parameters || {}), reason: reason, message: message }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees/ignore/#{model_id}"
         end
@@ -269,17 +294,27 @@ module Merge
       # @return [Merge::Hris::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.meta_post_retrieve
+      #  api.hris.employees.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees/meta/post"
         end
         Merge::Hris::MetaResponse.from_json(json_object: response.body)
@@ -348,11 +383,11 @@ module Merge
       # @return [Merge::Hris::PaginatedEmployeeList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.list
+      #  api.hris.employees.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, display_full_name: nil,
                employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
         Async do
@@ -360,7 +395,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "company_id": company_id,
@@ -396,6 +435,9 @@ module Merge
               "work_email": work_email,
               "work_location_id": work_location_id
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees"
           end
           Merge::Hris::PaginatedEmployeeList.from_json(json_object: response.body)
@@ -440,18 +482,22 @@ module Merge
       # @return [Merge::Hris::EmployeeResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.create(model: {  })
+      #  api.hris.employees.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -481,11 +527,11 @@ module Merge
       # @return [Merge::Hris::Employee]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.retrieve(id: "id")
+      #  api.hris.employees.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_sensitive_fields: nil, remote_fields: nil,
                    show_enum_origins: nil, request_options: nil)
         Async do
@@ -493,7 +539,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
@@ -502,6 +552,9 @@ module Merge
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees/#{id}"
           end
           Merge::Hris::Employee.from_json(json_object: response.body)
@@ -520,18 +573,25 @@ module Merge
       # @return [Void]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.ignore_create(model_id: "model_id", reason: GENERAL_CUSTOMER_REQUEST)
+      #  api.hris.employees.ignore_create(model_id: "model_id", reason: GENERAL_CUSTOMER_REQUEST)
       def ignore_create(model_id:, reason:, message: nil, request_options: nil)
         Async do
           @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
             req.body = {
               **(request_options&.additional_body_parameters || {}),
               reason: reason,
@@ -548,18 +608,28 @@ module Merge
       # @return [Merge::Hris::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.meta_post_retrieve
+      #  api.hris.employees.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees/meta/post"
           end
           Merge::Hris::MetaResponse.from_json(json_object: response.body)

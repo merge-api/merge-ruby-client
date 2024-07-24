@@ -78,41 +78,41 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        account = parsed_json["Account"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        account = parsed_json["Account"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        contact = parsed_json["Contact"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        contact = parsed_json["Contact"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        lead = parsed_json["Lead"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        lead = parsed_json["Lead"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        note = parsed_json["Note"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        note = parsed_json["Note"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        opportunity = parsed_json["Opportunity"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        opportunity = parsed_json["Opportunity"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        stage = parsed_json["Stage"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        stage = parsed_json["Stage"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        user = parsed_json["User"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        user = parsed_json["User"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        task = parsed_json["Task"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        task = parsed_json["Task"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        engagement = parsed_json["Engagement"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: v)
+        engagement = parsed_json["Engagement"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ExternalTargetFieldApi.from_json(json_object: item)
         end
         new(
           account: account,

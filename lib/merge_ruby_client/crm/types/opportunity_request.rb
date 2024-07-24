@@ -110,9 +110,9 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        description = struct["description"]
-        amount = struct["amount"]
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        amount = parsed_json["amount"]
         if parsed_json["owner"].nil?
           owner = nil
         else
@@ -131,14 +131,14 @@ module Merge
           stage = parsed_json["stage"].to_json
           stage = Merge::Crm::OpportunityRequestStage.from_json(json_object: stage)
         end
-        status = struct["status"]
+        status = parsed_json["status"]
         last_activity_at = (DateTime.parse(parsed_json["last_activity_at"]) unless parsed_json["last_activity_at"].nil?)
         close_date = (DateTime.parse(parsed_json["close_date"]) unless parsed_json["close_date"].nil?)
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           name: name,

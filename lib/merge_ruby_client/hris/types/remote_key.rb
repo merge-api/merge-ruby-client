@@ -40,8 +40,9 @@ module Merge
       # @return [Merge::Hris::RemoteKey]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        name = struct["name"]
-        key = struct["key"]
+        parsed_json = JSON.parse(json_object)
+        name = parsed_json["name"]
+        key = parsed_json["key"]
         new(
           name: name,
           key: key,

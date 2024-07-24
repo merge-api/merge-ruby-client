@@ -69,8 +69,8 @@ module Merge
       #  platform.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::CreditNoteLineItem]
-      def initialize(tracking_categories:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, item: OMIT, name: OMIT,
-                     description: OMIT, quantity: OMIT, memo: OMIT, unit_price: OMIT, total_line_amount: OMIT, tracking_category: OMIT, account: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+      def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, item: OMIT, name: OMIT,
+                     description: OMIT, quantity: OMIT, memo: OMIT, unit_price: OMIT, total_line_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT, account: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -83,7 +83,7 @@ module Merge
         @unit_price = unit_price if unit_price != OMIT
         @total_line_amount = total_line_amount if total_line_amount != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
-        @tracking_categories = tracking_categories
+        @tracking_categories = tracking_categories if tracking_categories != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
@@ -117,8 +117,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["item"].nil?
@@ -127,22 +127,22 @@ module Merge
           item = parsed_json["item"].to_json
           item = Merge::Accounting::CreditNoteLineItemItem.from_json(json_object: item)
         end
-        name = struct["name"]
-        description = struct["description"]
-        quantity = struct["quantity"]
-        memo = struct["memo"]
-        unit_price = struct["unit_price"]
-        total_line_amount = struct["total_line_amount"]
-        tracking_category = struct["tracking_category"]
-        tracking_categories = struct["tracking_categories"]
-        account = struct["account"]
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        quantity = parsed_json["quantity"]
+        memo = parsed_json["memo"]
+        unit_price = parsed_json["unit_price"]
+        total_line_amount = parsed_json["total_line_amount"]
+        tracking_category = parsed_json["tracking_category"]
+        tracking_categories = parsed_json["tracking_categories"]
+        account = parsed_json["account"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::CreditNoteLineItemCompany.from_json(json_object: company)
         end
-        remote_was_deleted = struct["remote_was_deleted"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
           remote_id: remote_id,
@@ -190,7 +190,7 @@ module Merge
         obj.unit_price&.is_a?(String) != false || raise("Passed value for field obj.unit_price is not the expected type, validation failed.")
         obj.total_line_amount&.is_a?(String) != false || raise("Passed value for field obj.total_line_amount is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
-        obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::CreditNoteLineItemCompany.validate_raw(obj: obj.company)
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

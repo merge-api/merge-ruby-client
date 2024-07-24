@@ -14,7 +14,7 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         begin
           struct.is_a?(String) != false || raise("Passed value for field struct is not the expected type, validation failed.")
-          return json_object unless json_object.nil?
+          return struct unless struct.nil?
 
           return nil
         rescue StandardError
@@ -22,7 +22,7 @@ module Merge
         end
         begin
           Merge::Ticketing::Role.validate_raw(obj: struct)
-          return Merge::Ticketing::Role.from_json(json_object: json_object) unless json_object.nil?
+          return Merge::Ticketing::Role.from_json(json_object: struct) unless struct.nil?
 
           return nil
         rescue StandardError

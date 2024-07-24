@@ -63,10 +63,11 @@ module Merge
       # @return [Merge::Ats::EmailAddressRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        value = struct["value"]
-        email_address_type = struct["email_address_type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        value = parsed_json["value"]
+        email_address_type = parsed_json["email_address_type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           value: value,
           email_address_type: email_address_type,

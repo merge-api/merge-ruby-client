@@ -768,25 +768,25 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        description = struct["description"]
-        classification = struct["classification"]
-        type = struct["type"]
-        status = struct["status"]
-        current_balance = struct["current_balance"]
-        currency = struct["currency"]
-        account_number = struct["account_number"]
-        parent_account = struct["parent_account"]
-        company = struct["company"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteData.from_json(json_object: v)
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        classification = parsed_json["classification"]
+        type = parsed_json["type"]
+        status = parsed_json["status"]
+        current_balance = parsed_json["current_balance"]
+        currency = parsed_json["currency"]
+        account_number = parsed_json["account_number"]
+        parent_account = parsed_json["parent_account"]
+        company = parsed_json["company"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

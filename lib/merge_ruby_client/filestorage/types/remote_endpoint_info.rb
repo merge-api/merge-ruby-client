@@ -39,9 +39,10 @@ module Merge
       # @return [Merge::Filestorage::RemoteEndpointInfo]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        method = struct["method"]
-        url_path = struct["url_path"]
-        field_traversal_path = struct["field_traversal_path"]
+        parsed_json = JSON.parse(json_object)
+        method = parsed_json["method"]
+        url_path = parsed_json["url_path"]
+        field_traversal_path = parsed_json["field_traversal_path"]
         new(
           method: method,
           url_path: url_path,

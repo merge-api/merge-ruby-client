@@ -128,81 +128,81 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        account = parsed_json["Account"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        account = parsed_json["Account"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        accounting_attachment = parsed_json["AccountingAttachment"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        accounting_attachment = parsed_json["AccountingAttachment"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        balance_sheet = parsed_json["BalanceSheet"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        balance_sheet = parsed_json["BalanceSheet"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        cash_flow_statement = parsed_json["CashFlowStatement"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        cash_flow_statement = parsed_json["CashFlowStatement"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        company_info = parsed_json["CompanyInfo"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        company_info = parsed_json["CompanyInfo"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        contact = parsed_json["Contact"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        contact = parsed_json["Contact"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        income_statement = parsed_json["IncomeStatement"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        income_statement = parsed_json["IncomeStatement"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        credit_note = parsed_json["CreditNote"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        credit_note = parsed_json["CreditNote"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        item = parsed_json["Item"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        item = parsed_json["Item"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        purchase_order = parsed_json["PurchaseOrder"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        purchase_order = parsed_json["PurchaseOrder"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        tracking_category = parsed_json["TrackingCategory"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        tracking_category = parsed_json["TrackingCategory"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        journal_entry = parsed_json["JournalEntry"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        journal_entry = parsed_json["JournalEntry"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        tax_rate = parsed_json["TaxRate"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        tax_rate = parsed_json["TaxRate"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        invoice = parsed_json["Invoice"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        invoice = parsed_json["Invoice"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        payment = parsed_json["Payment"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        payment = parsed_json["Payment"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        expense = parsed_json["Expense"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        expense = parsed_json["Expense"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        vendor_credit = parsed_json["VendorCredit"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        vendor_credit = parsed_json["VendorCredit"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        transaction = parsed_json["Transaction"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        transaction = parsed_json["Transaction"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
-        general_ledger_transaction = parsed_json["GeneralLedgerTransaction"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteFieldApi.from_json(json_object: v)
+        general_ledger_transaction = parsed_json["GeneralLedgerTransaction"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
         new(
           account: account,

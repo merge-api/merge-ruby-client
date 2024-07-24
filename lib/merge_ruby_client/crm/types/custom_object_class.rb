@@ -87,18 +87,18 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        description = struct["description"]
-        labels = struct["labels"]
-        fields = parsed_json["fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldClassForCustomObjectClass.from_json(json_object: v)
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        labels = parsed_json["labels"]
+        fields = parsed_json["fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldClassForCustomObjectClass.from_json(json_object: item)
         end
-        association_types = struct["association_types"]
+        association_types = parsed_json["association_types"]
         new(
           id: id,
           remote_id: remote_id,

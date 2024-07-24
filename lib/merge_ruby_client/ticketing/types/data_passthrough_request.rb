@@ -94,17 +94,17 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        method = struct["method"]
-        path = struct["path"]
-        base_url_override = struct["base_url_override"]
-        data = struct["data"]
-        multipart_form_data = parsed_json["multipart_form_data"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::MultipartFormFieldRequest.from_json(json_object: v)
+        method = parsed_json["method"]
+        path = parsed_json["path"]
+        base_url_override = parsed_json["base_url_override"]
+        data = parsed_json["data"]
+        multipart_form_data = parsed_json["multipart_form_data"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::MultipartFormFieldRequest.from_json(json_object: item)
         end
-        headers = struct["headers"]
-        request_format = struct["request_format"]
-        normalize_response = struct["normalize_response"]
+        headers = parsed_json["headers"]
+        request_format = parsed_json["request_format"]
+        normalize_response = parsed_json["normalize_response"]
         new(
           method: method,
           path: path,

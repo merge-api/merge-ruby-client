@@ -115,9 +115,9 @@ module Merge
           owner = parsed_json["owner"].to_json
           owner = Merge::Crm::EngagementRequestOwner.from_json(json_object: owner)
         end
-        content = struct["content"]
-        subject = struct["subject"]
-        direction = struct["direction"]
+        content = parsed_json["content"]
+        subject = parsed_json["subject"]
+        direction = parsed_json["direction"]
         if parsed_json["engagement_type"].nil?
           engagement_type = nil
         else
@@ -132,15 +132,15 @@ module Merge
           account = parsed_json["account"].to_json
           account = Merge::Crm::EngagementRequestAccount.from_json(json_object: account)
         end
-        contacts = parsed_json["contacts"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::EngagementRequestContactsItem.from_json(json_object: v)
+        contacts = parsed_json["contacts"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::EngagementRequestContactsItem.from_json(json_object: item)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           owner: owner,

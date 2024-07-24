@@ -803,8 +803,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["employee"].nil?
@@ -813,25 +813,25 @@ module Merge
           employee = parsed_json["employee"].to_json
           employee = Merge::Hris::EmploymentEmployee.from_json(json_object: employee)
         end
-        job_title = struct["job_title"]
-        pay_rate = struct["pay_rate"]
-        pay_period = struct["pay_period"]
-        pay_frequency = struct["pay_frequency"]
-        pay_currency = struct["pay_currency"]
+        job_title = parsed_json["job_title"]
+        pay_rate = parsed_json["pay_rate"]
+        pay_period = parsed_json["pay_period"]
+        pay_frequency = parsed_json["pay_frequency"]
+        pay_currency = parsed_json["pay_currency"]
         if parsed_json["pay_group"].nil?
           pay_group = nil
         else
           pay_group = parsed_json["pay_group"].to_json
           pay_group = Merge::Hris::EmploymentPayGroup.from_json(json_object: pay_group)
         end
-        flsa_status = struct["flsa_status"]
+        flsa_status = parsed_json["flsa_status"]
         effective_date = (DateTime.parse(parsed_json["effective_date"]) unless parsed_json["effective_date"].nil?)
-        employment_type = struct["employment_type"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        employment_type = parsed_json["employment_type"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

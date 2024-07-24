@@ -177,13 +177,13 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        user_name = struct["user_name"]
-        user_email = struct["user_email"]
-        role = struct["role"]
-        ip_address = struct["ip_address"]
-        event_type = struct["event_type"]
-        event_description = struct["event_description"]
+        id = parsed_json["id"]
+        user_name = parsed_json["user_name"]
+        user_email = parsed_json["user_email"]
+        role = parsed_json["role"]
+        ip_address = parsed_json["ip_address"]
+        event_type = parsed_json["event_type"]
+        event_description = parsed_json["event_description"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         new(
           id: id,

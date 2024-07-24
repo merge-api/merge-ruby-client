@@ -39,9 +39,10 @@ module Merge
       # @return [Merge::Ticketing::FieldMappingApiInstanceTargetField]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        name = struct["name"]
-        description = struct["description"]
-        is_organization_wide = struct["is_organization_wide"]
+        parsed_json = JSON.parse(json_object)
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        is_organization_wide = parsed_json["is_organization_wide"]
         new(
           name: name,
           description: description,

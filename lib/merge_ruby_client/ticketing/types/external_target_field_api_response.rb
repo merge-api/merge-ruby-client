@@ -88,49 +88,49 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        ticket = parsed_json["Ticket"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        ticket = parsed_json["Ticket"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        comment = parsed_json["Comment"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        comment = parsed_json["Comment"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        project = parsed_json["Project"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        project = parsed_json["Project"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        collection = parsed_json["Collection"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        collection = parsed_json["Collection"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        user = parsed_json["User"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        user = parsed_json["User"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        role = parsed_json["Role"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        role = parsed_json["Role"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        account = parsed_json["Account"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        account = parsed_json["Account"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        team = parsed_json["Team"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        team = parsed_json["Team"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        attachment = parsed_json["Attachment"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        attachment = parsed_json["Attachment"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        tag = parsed_json["Tag"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        tag = parsed_json["Tag"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        contact = parsed_json["Contact"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: v)
+        contact = parsed_json["Contact"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::ExternalTargetFieldApi.from_json(json_object: item)
         end
         new(
           ticket: ticket,

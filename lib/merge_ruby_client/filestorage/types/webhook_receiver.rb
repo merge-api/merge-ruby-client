@@ -41,9 +41,10 @@ module Merge
       # @return [Merge::Filestorage::WebhookReceiver]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        event = struct["event"]
-        is_active = struct["is_active"]
-        key = struct["key"]
+        parsed_json = JSON.parse(json_object)
+        event = parsed_json["event"]
+        is_active = parsed_json["is_active"]
+        key = parsed_json["key"]
         new(
           event: event,
           is_active: is_active,

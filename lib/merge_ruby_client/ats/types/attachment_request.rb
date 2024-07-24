@@ -76,12 +76,13 @@ module Merge
       # @return [Merge::Ats::AttachmentRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        file_name = struct["file_name"]
-        file_url = struct["file_url"]
-        candidate = struct["candidate"]
-        attachment_type = struct["attachment_type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        file_name = parsed_json["file_name"]
+        file_url = parsed_json["file_url"]
+        candidate = parsed_json["candidate"]
+        attachment_type = parsed_json["attachment_type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           file_name: file_name,
           file_url: file_url,

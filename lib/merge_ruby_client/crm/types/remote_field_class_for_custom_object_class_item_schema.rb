@@ -46,9 +46,10 @@ module Merge
       # @return [Merge::Crm::RemoteFieldClassForCustomObjectClassItemSchema]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        item_type = struct["item_type"]
-        item_format = struct["item_format"]
-        item_choices = struct["item_choices"]
+        parsed_json = JSON.parse(json_object)
+        item_type = parsed_json["item_type"]
+        item_format = parsed_json["item_format"]
+        item_choices = parsed_json["item_choices"]
         new(
           item_type: item_type,
           item_format: item_format,

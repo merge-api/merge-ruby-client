@@ -65,15 +65,15 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        schema = struct["schema"]
-        remote_key_name = struct["remote_key_name"]
+        schema = parsed_json["schema"]
+        remote_key_name = parsed_json["remote_key_name"]
         if parsed_json["remote_endpoint_info"].nil?
           remote_endpoint_info = nil
         else
           remote_endpoint_info = parsed_json["remote_endpoint_info"].to_json
           remote_endpoint_info = Merge::Hris::RemoteEndpointInfo.from_json(json_object: remote_endpoint_info)
         end
-        example_values = struct["example_values"]
+        example_values = parsed_json["example_values"]
         if parsed_json["advanced_metadata"].nil?
           advanced_metadata = nil
         else

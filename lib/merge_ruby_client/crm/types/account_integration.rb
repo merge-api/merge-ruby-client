@@ -93,15 +93,16 @@ module Merge
       # @return [Merge::Crm::AccountIntegration]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        name = struct["name"]
-        categories = struct["categories"]
-        image = struct["image"]
-        square_image = struct["square_image"]
-        color = struct["color"]
-        slug = struct["slug"]
-        api_endpoints_to_documentation_urls = struct["api_endpoints_to_documentation_urls"]
-        webhook_setup_guide_url = struct["webhook_setup_guide_url"]
-        category_beta_status = struct["category_beta_status"]
+        parsed_json = JSON.parse(json_object)
+        name = parsed_json["name"]
+        categories = parsed_json["categories"]
+        image = parsed_json["image"]
+        square_image = parsed_json["square_image"]
+        color = parsed_json["color"]
+        slug = parsed_json["slug"]
+        api_endpoints_to_documentation_urls = parsed_json["api_endpoints_to_documentation_urls"]
+        webhook_setup_guide_url = parsed_json["webhook_setup_guide_url"]
+        category_beta_status = parsed_json["category_beta_status"]
         new(
           name: name,
           categories: categories,

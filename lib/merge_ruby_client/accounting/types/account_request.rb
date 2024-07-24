@@ -738,18 +738,19 @@ module Merge
       # @return [Merge::Accounting::AccountRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        name = struct["name"]
-        description = struct["description"]
-        classification = struct["classification"]
-        type = struct["type"]
-        status = struct["status"]
-        current_balance = struct["current_balance"]
-        currency = struct["currency"]
-        account_number = struct["account_number"]
-        parent_account = struct["parent_account"]
-        company = struct["company"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        classification = parsed_json["classification"]
+        type = parsed_json["type"]
+        status = parsed_json["status"]
+        current_balance = parsed_json["current_balance"]
+        currency = parsed_json["currency"]
+        account_number = parsed_json["account_number"]
+        parent_account = parsed_json["parent_account"]
+        company = parsed_json["company"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           name: name,
           description: description,

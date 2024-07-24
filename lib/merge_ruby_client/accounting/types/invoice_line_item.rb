@@ -743,16 +743,16 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        description = struct["description"]
-        unit_price = struct["unit_price"]
-        quantity = struct["quantity"]
-        total_amount = struct["total_amount"]
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
+        description = parsed_json["description"]
+        unit_price = parsed_json["unit_price"]
+        quantity = parsed_json["quantity"]
+        total_amount = parsed_json["total_amount"]
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
         if parsed_json["item"].nil?
           item = nil
         else
@@ -771,13 +771,13 @@ module Merge
           tracking_category = parsed_json["tracking_category"].to_json
           tracking_category = Merge::Accounting::InvoiceLineItemTrackingCategory.from_json(json_object: tracking_category)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::InvoiceLineItemTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::InvoiceLineItemTrackingCategoriesItem.from_json(json_object: item)
         end
-        company = struct["company"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
+        company = parsed_json["company"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
         new(
           id: id,
           remote_id: remote_id,

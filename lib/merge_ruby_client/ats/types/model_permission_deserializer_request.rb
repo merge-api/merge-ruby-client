@@ -33,7 +33,8 @@ module Merge
       # @return [Merge::Ats::ModelPermissionDeserializerRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        is_enabled = struct["is_enabled"]
+        parsed_json = JSON.parse(json_object)
+        is_enabled = parsed_json["is_enabled"]
         new(is_enabled: is_enabled, additional_properties: struct)
       end
 

@@ -627,24 +627,24 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        phone_number = struct["phone_number"]
-        street_1 = struct["street_1"]
-        street_2 = struct["street_2"]
-        city = struct["city"]
-        state = struct["state"]
-        zip_code = struct["zip_code"]
-        country = struct["country"]
-        location_type = struct["location_type"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        name = parsed_json["name"]
+        phone_number = parsed_json["phone_number"]
+        street_1 = parsed_json["street_1"]
+        street_2 = parsed_json["street_2"]
+        city = parsed_json["city"]
+        state = parsed_json["state"]
+        zip_code = parsed_json["zip_code"]
+        country = parsed_json["country"]
+        location_type = parsed_json["location_type"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

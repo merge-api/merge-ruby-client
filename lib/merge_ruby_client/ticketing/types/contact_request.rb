@@ -74,18 +74,18 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        email_address = struct["email_address"]
-        phone_number = struct["phone_number"]
-        details = struct["details"]
+        name = parsed_json["name"]
+        email_address = parsed_json["email_address"]
+        phone_number = parsed_json["phone_number"]
+        details = parsed_json["details"]
         if parsed_json["account"].nil?
           account = nil
         else
           account = parsed_json["account"].to_json
           account = Merge::Ticketing::ContactRequestAccount.from_json(json_object: account)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           name: name,
           email_address: email_address,

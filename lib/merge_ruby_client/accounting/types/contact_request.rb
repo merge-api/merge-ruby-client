@@ -109,24 +109,24 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        is_supplier = struct["is_supplier"]
-        is_customer = struct["is_customer"]
-        email_address = struct["email_address"]
-        tax_number = struct["tax_number"]
-        status = struct["status"]
-        currency = struct["currency"]
-        company = struct["company"]
-        addresses = parsed_json["addresses"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ContactRequestAddressesItem.from_json(json_object: v)
+        name = parsed_json["name"]
+        is_supplier = parsed_json["is_supplier"]
+        is_customer = parsed_json["is_customer"]
+        email_address = parsed_json["email_address"]
+        tax_number = parsed_json["tax_number"]
+        status = parsed_json["status"]
+        currency = parsed_json["currency"]
+        company = parsed_json["company"]
+        addresses = parsed_json["addresses"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ContactRequestAddressesItem.from_json(json_object: item)
         end
-        phone_numbers = parsed_json["phone_numbers"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::AccountingPhoneNumberRequest.from_json(json_object: v)
+        phone_numbers = parsed_json["phone_numbers"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::AccountingPhoneNumberRequest.from_json(json_object: item)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           name: name,
           is_supplier: is_supplier,

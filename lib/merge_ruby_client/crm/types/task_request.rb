@@ -102,8 +102,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        subject = struct["subject"]
-        content = struct["content"]
+        subject = parsed_json["subject"]
+        content = parsed_json["content"]
         if parsed_json["owner"].nil?
           owner = nil
         else
@@ -124,12 +124,12 @@ module Merge
         end
         completed_date = (DateTime.parse(parsed_json["completed_date"]) unless parsed_json["completed_date"].nil?)
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
-        status = struct["status"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        status = parsed_json["status"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           subject: subject,

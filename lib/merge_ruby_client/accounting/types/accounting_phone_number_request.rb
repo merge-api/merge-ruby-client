@@ -57,10 +57,11 @@ module Merge
       # @return [Merge::Accounting::AccountingPhoneNumberRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        number = struct["number"]
-        type = struct["type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        number = parsed_json["number"]
+        type = parsed_json["type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           number: number,
           type: type,

@@ -733,8 +733,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["item"].nil?
@@ -743,19 +743,19 @@ module Merge
           item = parsed_json["item"].to_json
           item = Merge::Accounting::ExpenseLineItem.from_json(json_object: item)
         end
-        net_amount = struct["net_amount"]
+        net_amount = parsed_json["net_amount"]
         if parsed_json["tracking_category"].nil?
           tracking_category = nil
         else
           tracking_category = parsed_json["tracking_category"].to_json
           tracking_category = Merge::Accounting::ExpenseLineTrackingCategory.from_json(json_object: tracking_category)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ExpenseLineTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ExpenseLineTrackingCategoriesItem.from_json(json_object: item)
         end
-        company = struct["company"]
-        currency = struct["currency"]
+        company = parsed_json["company"]
+        currency = parsed_json["currency"]
         if parsed_json["account"].nil?
           account = nil
         else
@@ -768,9 +768,9 @@ module Merge
           contact = parsed_json["contact"].to_json
           contact = Merge::Accounting::ExpenseLineContact.from_json(json_object: contact)
         end
-        description = struct["description"]
-        exchange_rate = struct["exchange_rate"]
-        remote_was_deleted = struct["remote_was_deleted"]
+        description = parsed_json["description"]
+        exchange_rate = parsed_json["exchange_rate"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
           remote_id: remote_id,

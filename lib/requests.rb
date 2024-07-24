@@ -8,32 +8,28 @@ require "async/http/faraday"
 
 module Merge
   class RequestClient
-    # @return [Hash{String => String}]
-    attr_reader :headers
     # @return [Faraday]
     attr_reader :conn
     # @return [String]
     attr_reader :base_url
     # @return [String]
+    attr_reader :api_key
+    # @return [String]
     attr_reader :default_environment
 
-    # @param environment [Merge::Environment]
     # @param base_url [String]
+    # @param environment [Merge::Environment]
     # @param max_retries [Long] The number of times to retry a failed request, defaults to 2.
     # @param timeout_in_seconds [Long]
     # @param api_key [String]
     # @param account_token [String] Token identifying the end user.
     # @return [Merge::RequestClient]
-    def initialize(api_key:, environment: Environment::PRODUCTION, base_url: nil, max_retries: nil,
+    def initialize(api_key:, base_url: nil, environment: Merge::Environment::PRODUCTION, max_retries: nil,
                    timeout_in_seconds: nil, account_token: nil)
       @default_environment = environment
       @base_url = environment || base_url
-      @headers = {
-        "X-Fern-Language": "Ruby",
-        "X-Fern-SDK-Name": "merge_ruby_client",
-        "X-Fern-SDK-Version": "0.1.2",
-        "Authorization": "Bearer #{api_key}"
-      }
+      @api_key = "Bearer #{api_key}"
+      @headers = {}
       @headers["X-Account-Token"] = account_token unless account_token.nil?
       @conn = Faraday.new(headers: @headers) do |faraday|
         faraday.request :multipart
@@ -49,35 +45,38 @@ module Merge
     def get_url(request_options: nil)
       request_options&.base_url || @default_environment || @base_url
     end
+
+    # @return [Hash{String => String}]
+    def get_headers
+      headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge_ruby_client", "X-Fern-SDK-Version": "0.1.2" }
+      headers["Authorization"] = ((@api_key.is_a? Method) ? @api_key.call : @api_key) unless @api_key.nil?
+      headers
+    end
   end
 
   class AsyncRequestClient
-    # @return [Hash{String => String}]
-    attr_reader :headers
     # @return [Faraday]
     attr_reader :conn
     # @return [String]
     attr_reader :base_url
     # @return [String]
+    attr_reader :api_key
+    # @return [String]
     attr_reader :default_environment
 
-    # @param environment [Merge::Environment]
     # @param base_url [String]
+    # @param environment [Merge::Environment]
     # @param max_retries [Long] The number of times to retry a failed request, defaults to 2.
     # @param timeout_in_seconds [Long]
     # @param api_key [String]
     # @param account_token [String] Token identifying the end user.
     # @return [Merge::AsyncRequestClient]
-    def initialize(api_key:, environment: Environment::PRODUCTION, base_url: nil, max_retries: nil,
+    def initialize(api_key:, base_url: nil, environment: Merge::Environment::PRODUCTION, max_retries: nil,
                    timeout_in_seconds: nil, account_token: nil)
       @default_environment = environment
       @base_url = environment || base_url
-      @headers = {
-        "X-Fern-Language": "Ruby",
-        "X-Fern-SDK-Name": "merge_ruby_client",
-        "X-Fern-SDK-Version": "0.1.2",
-        "Authorization": "Bearer #{api_key}"
-      }
+      @api_key = "Bearer #{api_key}"
+      @headers = {}
       @headers["X-Account-Token"] = account_token unless account_token.nil?
       @conn = Faraday.new(headers: @headers) do |faraday|
         faraday.request :multipart
@@ -93,6 +92,13 @@ module Merge
     # @return [String]
     def get_url(request_options: nil)
       request_options&.base_url || @default_environment || @base_url
+    end
+
+    # @return [Hash{String => String}]
+    def get_headers
+      headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge_ruby_client", "X-Fern-SDK-Version": "0.1.2" }
+      headers["Authorization"] = ((@api_key.is_a? Method) ? @api_key.call : @api_key) unless @api_key.nil?
+      headers
     end
   end
 

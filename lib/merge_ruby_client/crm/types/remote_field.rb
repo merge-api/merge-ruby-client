@@ -45,7 +45,7 @@ module Merge
           remote_field_class = parsed_json["remote_field_class"].to_json
           remote_field_class = Merge::Crm::RemoteFieldRemoteFieldClass.from_json(json_object: remote_field_class)
         end
-        value = struct["value"]
+        value = parsed_json["value"]
         new(
           remote_field_class: remote_field_class,
           value: value,

@@ -57,25 +57,25 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        file = parsed_json["File"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: v)
+        file = parsed_json["File"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        folder = parsed_json["Folder"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: v)
+        folder = parsed_json["Folder"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        drive = parsed_json["Drive"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: v)
+        drive = parsed_json["Drive"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        group = parsed_json["Group"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: v)
+        group = parsed_json["Group"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: item)
         end
-        user = parsed_json["User"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: v)
+        user = parsed_json["User"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::ExternalTargetFieldApi.from_json(json_object: item)
         end
         new(
           file: file,

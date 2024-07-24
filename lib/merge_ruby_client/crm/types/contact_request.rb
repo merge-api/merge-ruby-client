@@ -100,8 +100,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        first_name = struct["first_name"]
-        last_name = struct["last_name"]
+        first_name = parsed_json["first_name"]
+        last_name = parsed_json["last_name"]
         if parsed_json["account"].nil?
           account = nil
         else
@@ -114,24 +114,24 @@ module Merge
           owner = parsed_json["owner"].to_json
           owner = Merge::Crm::ContactRequestOwner.from_json(json_object: owner)
         end
-        addresses = parsed_json["addresses"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::AddressRequest.from_json(json_object: v)
+        addresses = parsed_json["addresses"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::AddressRequest.from_json(json_object: item)
         end
-        email_addresses = parsed_json["email_addresses"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::EmailAddressRequest.from_json(json_object: v)
+        email_addresses = parsed_json["email_addresses"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::EmailAddressRequest.from_json(json_object: item)
         end
-        phone_numbers = parsed_json["phone_numbers"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::PhoneNumberRequest.from_json(json_object: v)
+        phone_numbers = parsed_json["phone_numbers"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::PhoneNumberRequest.from_json(json_object: item)
         end
         last_activity_at = (DateTime.parse(parsed_json["last_activity_at"]) unless parsed_json["last_activity_at"].nil?)
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           first_name: first_name,

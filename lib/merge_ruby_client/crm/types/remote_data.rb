@@ -37,8 +37,9 @@ module Merge
       # @return [Merge::Crm::RemoteData]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        path = struct["path"]
-        data = struct["data"]
+        parsed_json = JSON.parse(json_object)
+        path = parsed_json["path"]
+        data = parsed_json["data"]
         new(
           path: path,
           data: data,

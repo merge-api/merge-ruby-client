@@ -88,7 +88,7 @@ module Merge
           owner = parsed_json["owner"].to_json
           owner = Merge::Crm::NoteRequestOwner.from_json(json_object: owner)
         end
-        content = struct["content"]
+        content = parsed_json["content"]
         if parsed_json["contact"].nil?
           contact = nil
         else
@@ -107,11 +107,11 @@ module Merge
           opportunity = parsed_json["opportunity"].to_json
           opportunity = Merge::Crm::NoteRequestOpportunity.from_json(json_object: opportunity)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           owner: owner,

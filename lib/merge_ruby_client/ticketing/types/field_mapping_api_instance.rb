@@ -54,8 +54,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        is_integration_wide = struct["is_integration_wide"]
+        id = parsed_json["id"]
+        is_integration_wide = parsed_json["is_integration_wide"]
         if parsed_json["target_field"].nil?
           target_field = nil
         else

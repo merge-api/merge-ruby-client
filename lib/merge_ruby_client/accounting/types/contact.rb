@@ -143,34 +143,34 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        is_supplier = struct["is_supplier"]
-        is_customer = struct["is_customer"]
-        email_address = struct["email_address"]
-        tax_number = struct["tax_number"]
-        status = struct["status"]
-        currency = struct["currency"]
+        name = parsed_json["name"]
+        is_supplier = parsed_json["is_supplier"]
+        is_customer = parsed_json["is_customer"]
+        email_address = parsed_json["email_address"]
+        tax_number = parsed_json["tax_number"]
+        status = parsed_json["status"]
+        currency = parsed_json["currency"]
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
-        company = struct["company"]
-        addresses = parsed_json["addresses"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ContactAddressesItem.from_json(json_object: v)
+        company = parsed_json["company"]
+        addresses = parsed_json["addresses"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ContactAddressesItem.from_json(json_object: item)
         end
-        phone_numbers = parsed_json["phone_numbers"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::AccountingPhoneNumber.from_json(json_object: v)
+        phone_numbers = parsed_json["phone_numbers"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::AccountingPhoneNumber.from_json(json_object: item)
         end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

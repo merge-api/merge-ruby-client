@@ -37,8 +37,9 @@ module Merge
       # @return [Merge::Ticketing::RemoteFieldClassFieldChoicesItem]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        value = struct["value"]
-        display_name = struct["display_name"]
+        parsed_json = JSON.parse(json_object)
+        value = parsed_json["value"]
+        display_name = parsed_json["display_name"]
         new(
           value: value,
           display_name: display_name,

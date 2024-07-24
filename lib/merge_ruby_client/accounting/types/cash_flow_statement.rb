@@ -748,12 +748,12 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        currency = struct["currency"]
+        name = parsed_json["name"]
+        currency = parsed_json["currency"]
         if parsed_json["company"].nil?
           company = nil
         else
@@ -762,28 +762,28 @@ module Merge
         end
         start_period = (DateTime.parse(parsed_json["start_period"]) unless parsed_json["start_period"].nil?)
         end_period = (DateTime.parse(parsed_json["end_period"]) unless parsed_json["end_period"].nil?)
-        cash_at_beginning_of_period = struct["cash_at_beginning_of_period"]
-        cash_at_end_of_period = struct["cash_at_end_of_period"]
-        operating_activities = parsed_json["operating_activities"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ReportItem.from_json(json_object: v)
+        cash_at_beginning_of_period = parsed_json["cash_at_beginning_of_period"]
+        cash_at_end_of_period = parsed_json["cash_at_end_of_period"]
+        operating_activities = parsed_json["operating_activities"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ReportItem.from_json(json_object: item)
         end
-        investing_activities = parsed_json["investing_activities"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ReportItem.from_json(json_object: v)
+        investing_activities = parsed_json["investing_activities"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ReportItem.from_json(json_object: item)
         end
-        financing_activities = parsed_json["financing_activities"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ReportItem.from_json(json_object: v)
+        financing_activities = parsed_json["financing_activities"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ReportItem.from_json(json_object: item)
         end
         remote_generated_at = unless parsed_json["remote_generated_at"].nil?
                                 DateTime.parse(parsed_json["remote_generated_at"])
                               end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

@@ -62,15 +62,15 @@ module Merge
       #  platform.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::VendorCreditLine]
-      def initialize(tracking_categories:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, net_amount: OMIT,
-                     tracking_category: OMIT, description: OMIT, account: OMIT, company: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+      def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, net_amount: OMIT,
+                     tracking_category: OMIT, tracking_categories: OMIT, description: OMIT, account: OMIT, company: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @net_amount = net_amount if net_amount != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
-        @tracking_categories = tracking_categories
+        @tracking_categories = tracking_categories if tracking_categories != OMIT
         @description = description if description != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
@@ -102,23 +102,23 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        net_amount = struct["net_amount"]
-        tracking_category = struct["tracking_category"]
-        tracking_categories = struct["tracking_categories"]
-        description = struct["description"]
+        net_amount = parsed_json["net_amount"]
+        tracking_category = parsed_json["tracking_category"]
+        tracking_categories = parsed_json["tracking_categories"]
+        description = parsed_json["description"]
         if parsed_json["account"].nil?
           account = nil
         else
           account = parsed_json["account"].to_json
           account = Merge::Accounting::VendorCreditLineAccount.from_json(json_object: account)
         end
-        company = struct["company"]
-        exchange_rate = struct["exchange_rate"]
-        remote_was_deleted = struct["remote_was_deleted"]
+        company = parsed_json["company"]
+        exchange_rate = parsed_json["exchange_rate"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
           remote_id: remote_id,
@@ -156,7 +156,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.net_amount&.is_a?(Float) != false || raise("Passed value for field obj.net_amount is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
-        obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::VendorCreditLineAccount.validate_raw(obj: obj.account)
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")

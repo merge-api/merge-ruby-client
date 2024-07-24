@@ -128,8 +128,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["user"].nil?
@@ -141,16 +141,16 @@ module Merge
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
-        activity_type = struct["activity_type"]
-        subject = struct["subject"]
-        body = struct["body"]
-        visibility = struct["visibility"]
-        candidate = struct["candidate"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::RemoteData.from_json(json_object: v)
+        activity_type = parsed_json["activity_type"]
+        subject = parsed_json["subject"]
+        body = parsed_json["body"]
+        visibility = parsed_json["visibility"]
+        candidate = parsed_json["candidate"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

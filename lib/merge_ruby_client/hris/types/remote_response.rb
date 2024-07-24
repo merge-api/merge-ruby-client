@@ -73,13 +73,14 @@ module Merge
       # @return [Merge::Hris::RemoteResponse]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        method = struct["method"]
-        path = struct["path"]
-        status = struct["status"]
-        response = struct["response"]
-        response_headers = struct["response_headers"]
-        response_type = struct["response_type"]
-        headers = struct["headers"]
+        parsed_json = JSON.parse(json_object)
+        method = parsed_json["method"]
+        path = parsed_json["path"]
+        status = parsed_json["status"]
+        response = parsed_json["response"]
+        response_headers = parsed_json["response_headers"]
+        response_type = parsed_json["response_type"]
+        headers = parsed_json["headers"]
         new(
           method: method,
           path: path,

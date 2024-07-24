@@ -107,23 +107,23 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        category = struct["category"]
-        status = struct["status"]
-        status_detail = struct["status_detail"]
-        end_user_origin_id = struct["end_user_origin_id"]
-        end_user_organization_name = struct["end_user_organization_name"]
-        end_user_email_address = struct["end_user_email_address"]
-        subdomain = struct["subdomain"]
-        webhook_listener_url = struct["webhook_listener_url"]
-        is_duplicate = struct["is_duplicate"]
+        id = parsed_json["id"]
+        category = parsed_json["category"]
+        status = parsed_json["status"]
+        status_detail = parsed_json["status_detail"]
+        end_user_origin_id = parsed_json["end_user_origin_id"]
+        end_user_organization_name = parsed_json["end_user_organization_name"]
+        end_user_email_address = parsed_json["end_user_email_address"]
+        subdomain = parsed_json["subdomain"]
+        webhook_listener_url = parsed_json["webhook_listener_url"]
+        is_duplicate = parsed_json["is_duplicate"]
         if parsed_json["integration"].nil?
           integration = nil
         else
           integration = parsed_json["integration"].to_json
           integration = Merge::Crm::AccountDetailsAndActionsIntegration.from_json(json_object: integration)
         end
-        account_type = struct["account_type"]
+        account_type = parsed_json["account_type"]
         new(
           id: id,
           category: category,

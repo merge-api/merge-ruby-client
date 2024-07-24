@@ -92,17 +92,17 @@ module Merge
           contact = parsed_json["contact"].to_json
           contact = Merge::Ticketing::CommentRequestContact.from_json(json_object: contact)
         end
-        body = struct["body"]
-        html_body = struct["html_body"]
+        body = parsed_json["body"]
+        html_body = parsed_json["html_body"]
         if parsed_json["ticket"].nil?
           ticket = nil
         else
           ticket = parsed_json["ticket"].to_json
           ticket = Merge::Ticketing::CommentRequestTicket.from_json(json_object: ticket)
         end
-        is_private = struct["is_private"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        is_private = parsed_json["is_private"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           user: user,
           contact: contact,

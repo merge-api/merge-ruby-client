@@ -163,10 +163,10 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        assignees = parsed_json["assignees"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::TicketRequestAssigneesItem.from_json(json_object: v)
+        name = parsed_json["name"]
+        assignees = parsed_json["assignees"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketRequestAssigneesItem.from_json(json_object: item)
         end
         if parsed_json["creator"].nil?
           creator = nil
@@ -175,13 +175,13 @@ module Merge
           creator = Merge::Ticketing::TicketRequestCreator.from_json(json_object: creator)
         end
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
-        status = struct["status"]
-        description = struct["description"]
-        collections = parsed_json["collections"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::TicketRequestCollectionsItem.from_json(json_object: v)
+        status = parsed_json["status"]
+        description = parsed_json["description"]
+        collections = parsed_json["collections"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketRequestCollectionsItem.from_json(json_object: item)
         end
-        ticket_type = struct["ticket_type"]
+        ticket_type = parsed_json["ticket_type"]
         if parsed_json["account"].nil?
           account = nil
         else
@@ -200,19 +200,19 @@ module Merge
           parent_ticket = parsed_json["parent_ticket"].to_json
           parent_ticket = Merge::Ticketing::TicketRequestParentTicket.from_json(json_object: parent_ticket)
         end
-        attachments = parsed_json["attachments"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::TicketRequestAttachmentsItem.from_json(json_object: v)
+        attachments = parsed_json["attachments"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketRequestAttachmentsItem.from_json(json_object: item)
         end
-        tags = struct["tags"]
+        tags = parsed_json["tags"]
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
-        ticket_url = struct["ticket_url"]
-        priority = struct["priority"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::RemoteFieldRequest.from_json(json_object: v)
+        ticket_url = parsed_json["ticket_url"]
+        priority = parsed_json["priority"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           name: name,

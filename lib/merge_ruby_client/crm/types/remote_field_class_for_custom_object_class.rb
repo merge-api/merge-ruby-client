@@ -89,15 +89,15 @@ module Merge
         parsed_json = JSON.parse(json_object)
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        display_name = struct["display_name"]
-        remote_key_name = struct["remote_key_name"]
-        description = struct["description"]
-        is_required = struct["is_required"]
-        field_type = struct["field_type"]
-        field_format = struct["field_format"]
-        field_choices = parsed_json["field_choices"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldClassForCustomObjectClassFieldChoicesItem.from_json(json_object: v)
+        display_name = parsed_json["display_name"]
+        remote_key_name = parsed_json["remote_key_name"]
+        description = parsed_json["description"]
+        is_required = parsed_json["is_required"]
+        field_type = parsed_json["field_type"]
+        field_format = parsed_json["field_format"]
+        field_choices = parsed_json["field_choices"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldClassForCustomObjectClassFieldChoicesItem.from_json(json_object: item)
         end
         if parsed_json["item_schema"].nil?
           item_schema = nil

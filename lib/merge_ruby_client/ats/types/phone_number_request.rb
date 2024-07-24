@@ -67,10 +67,11 @@ module Merge
       # @return [Merge::Ats::PhoneNumberRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        value = struct["value"]
-        phone_number_type = struct["phone_number_type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        value = parsed_json["value"]
+        phone_number_type = parsed_json["phone_number_type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           value: value,
           phone_number_type: phone_number_type,

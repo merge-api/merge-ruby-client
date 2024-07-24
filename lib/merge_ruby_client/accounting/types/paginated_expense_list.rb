@@ -43,11 +43,11 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        next_ = struct["next"]
-        previous = struct["previous"]
-        results = parsed_json["results"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::Expense.from_json(json_object: v)
+        next_ = parsed_json["next"]
+        previous = parsed_json["previous"]
+        results = parsed_json["results"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::Expense.from_json(json_object: item)
         end
         new(
           next_: next_,

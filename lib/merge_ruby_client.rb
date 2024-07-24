@@ -25,18 +25,18 @@ module Merge
     # @return [Merge::Accounting::Client]
     attr_reader :accounting
 
-    # @param environment [Merge::Environment]
     # @param base_url [String]
+    # @param environment [Merge::Environment]
     # @param max_retries [Long] The number of times to retry a failed request, defaults to 2.
     # @param timeout_in_seconds [Long]
     # @param api_key [String]
     # @param account_token [String] Token identifying the end user.
     # @return [Merge::Client]
-    def initialize(api_key:, environment: Environment::PRODUCTION, base_url: nil, max_retries: nil,
+    def initialize(api_key:, base_url: nil, environment: Merge::Environment::PRODUCTION, max_retries: nil,
                    timeout_in_seconds: nil, account_token: nil)
       @request_client = Merge::RequestClient.new(
-        environment: environment,
         base_url: base_url,
+        environment: environment,
         max_retries: max_retries,
         timeout_in_seconds: timeout_in_seconds,
         api_key: api_key,
@@ -65,18 +65,18 @@ module Merge
     # @return [Merge::Accounting::AsyncClient]
     attr_reader :accounting
 
-    # @param environment [Merge::Environment]
     # @param base_url [String]
+    # @param environment [Merge::Environment]
     # @param max_retries [Long] The number of times to retry a failed request, defaults to 2.
     # @param timeout_in_seconds [Long]
     # @param api_key [String]
     # @param account_token [String] Token identifying the end user.
     # @return [Merge::AsyncClient]
-    def initialize(api_key:, environment: Environment::PRODUCTION, base_url: nil, max_retries: nil,
+    def initialize(api_key:, base_url: nil, environment: Merge::Environment::PRODUCTION, max_retries: nil,
                    timeout_in_seconds: nil, account_token: nil)
       @async_request_client = Merge::AsyncRequestClient.new(
-        environment: environment,
         base_url: base_url,
+        environment: environment,
         max_retries: max_retries,
         timeout_in_seconds: timeout_in_seconds,
         api_key: api_key,

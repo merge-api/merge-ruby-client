@@ -585,15 +585,16 @@ module Merge
       # @return [Merge::Crm::AddressRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        street_1 = struct["street_1"]
-        street_2 = struct["street_2"]
-        city = struct["city"]
-        state = struct["state"]
-        postal_code = struct["postal_code"]
-        country = struct["country"]
-        address_type = struct["address_type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        street_1 = parsed_json["street_1"]
+        street_2 = parsed_json["street_2"]
+        city = parsed_json["city"]
+        state = parsed_json["state"]
+        postal_code = parsed_json["postal_code"]
+        country = parsed_json["country"]
+        address_type = parsed_json["address_type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           street_1: street_1,
           street_2: street_2,

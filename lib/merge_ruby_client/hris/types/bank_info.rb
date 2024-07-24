@@ -114,8 +114,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["employee"].nil?
@@ -124,18 +124,18 @@ module Merge
           employee = parsed_json["employee"].to_json
           employee = Merge::Hris::BankInfoEmployee.from_json(json_object: employee)
         end
-        account_number = struct["account_number"]
-        routing_number = struct["routing_number"]
-        bank_name = struct["bank_name"]
-        account_type = struct["account_type"]
+        account_number = parsed_json["account_number"]
+        routing_number = parsed_json["routing_number"]
+        bank_name = parsed_json["bank_name"]
+        account_type = parsed_json["account_type"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

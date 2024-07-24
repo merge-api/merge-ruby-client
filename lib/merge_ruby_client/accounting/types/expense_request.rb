@@ -752,25 +752,25 @@ module Merge
           contact = parsed_json["contact"].to_json
           contact = Merge::Accounting::ExpenseRequestContact.from_json(json_object: contact)
         end
-        total_amount = struct["total_amount"]
-        sub_total = struct["sub_total"]
-        total_tax_amount = struct["total_tax_amount"]
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
+        total_amount = parsed_json["total_amount"]
+        sub_total = parsed_json["sub_total"]
+        total_tax_amount = parsed_json["total_tax_amount"]
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::ExpenseRequestCompany.from_json(json_object: company)
         end
-        memo = struct["memo"]
-        lines = parsed_json["lines"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ExpenseLineRequest.from_json(json_object: v)
+        memo = parsed_json["memo"]
+        lines = parsed_json["lines"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ExpenseLineRequest.from_json(json_object: item)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ExpenseRequestTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ExpenseRequestTrackingCategoriesItem.from_json(json_object: item)
         end
         if parsed_json["accounting_period"].nil?
           accounting_period = nil
@@ -778,8 +778,8 @@ module Merge
           accounting_period = parsed_json["accounting_period"].to_json
           accounting_period = Merge::Accounting::ExpenseRequestAccountingPeriod.from_json(json_object: accounting_period)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           transaction_date: transaction_date,
           account: account,

@@ -52,18 +52,22 @@ module Merge
       # @return [Merge::Accounting::PaginatedAccountDetailsAndActionsList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.list
+      #  api.accounting.linked_accounts.list
       def list(category: nil, cursor: nil, end_user_email_address: nil, end_user_organization_name: nil,
                end_user_origin_id: nil, end_user_origin_ids: nil, id: nil, ids: nil, include_duplicates: nil, integration_name: nil, is_test_account: nil, page_size: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "category": category,
@@ -80,6 +84,9 @@ module Merge
             "page_size": page_size,
             "status": status
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/linked-accounts"
         end
         Merge::Accounting::PaginatedAccountDetailsAndActionsList.from_json(json_object: response.body)
@@ -131,11 +138,11 @@ module Merge
       # @return [Merge::Accounting::PaginatedAccountDetailsAndActionsList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.list
+      #  api.accounting.linked_accounts.list
       def list(category: nil, cursor: nil, end_user_email_address: nil, end_user_organization_name: nil,
                end_user_origin_id: nil, end_user_origin_ids: nil, id: nil, ids: nil, include_duplicates: nil, integration_name: nil, is_test_account: nil, page_size: nil, status: nil, request_options: nil)
         Async do
@@ -143,7 +150,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "category": category,
@@ -160,6 +171,9 @@ module Merge
               "page_size": page_size,
               "status": status
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/linked-accounts"
           end
           Merge::Accounting::PaginatedAccountDetailsAndActionsList.from_json(json_object: response.body)

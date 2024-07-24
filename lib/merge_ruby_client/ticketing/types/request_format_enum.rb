@@ -6,7 +6,7 @@ module Merge
     #  - `XML` - XML
     #  - `MULTIPART` - MULTIPART
     class RequestFormatEnum
-      JSON = "JSON"
+      JSON_ = "JSON"
       XML = "XML"
       MULTIPART = "MULTIPART"
     end

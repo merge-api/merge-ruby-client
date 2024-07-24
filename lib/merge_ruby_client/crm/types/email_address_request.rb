@@ -56,10 +56,11 @@ module Merge
       # @return [Merge::Crm::EmailAddressRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        email_address = struct["email_address"]
-        email_address_type = struct["email_address_type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        email_address = parsed_json["email_address"]
+        email_address_type = parsed_json["email_address_type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           email_address: email_address,
           email_address_type: email_address_type,

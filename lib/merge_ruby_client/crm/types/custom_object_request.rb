@@ -31,7 +31,8 @@ module Merge
       # @return [Merge::Crm::CustomObjectRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        fields = struct["fields"]
+        parsed_json = JSON.parse(json_object)
+        fields = parsed_json["fields"]
         new(fields: fields, additional_properties: struct)
       end
 

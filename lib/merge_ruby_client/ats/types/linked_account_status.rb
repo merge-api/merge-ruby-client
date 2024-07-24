@@ -35,8 +35,9 @@ module Merge
       # @return [Merge::Ats::LinkedAccountStatus]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        linked_account_status = struct["linked_account_status"]
-        can_make_request = struct["can_make_request"]
+        parsed_json = JSON.parse(json_object)
+        linked_account_status = parsed_json["linked_account_status"]
+        can_make_request = parsed_json["can_make_request"]
         new(
           linked_account_status: linked_account_status,
           can_make_request: can_make_request,

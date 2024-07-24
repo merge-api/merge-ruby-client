@@ -39,9 +39,10 @@ module Merge
       # @return [Merge::Crm::DebugModelLogSummary]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        url = struct["url"]
-        method = struct["method"]
-        status_code = struct["status_code"]
+        parsed_json = JSON.parse(json_object)
+        url = parsed_json["url"]
+        method = parsed_json["method"]
+        status_code = parsed_json["status_code"]
         new(
           url: url,
           method: method,

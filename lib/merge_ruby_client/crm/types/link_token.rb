@@ -45,9 +45,10 @@ module Merge
       # @return [Merge::Crm::LinkToken]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        link_token = struct["link_token"]
-        integration_name = struct["integration_name"]
-        magic_link_url = struct["magic_link_url"]
+        parsed_json = JSON.parse(json_object)
+        link_token = parsed_json["link_token"]
+        integration_name = parsed_json["integration_name"]
+        magic_link_url = parsed_json["magic_link_url"]
         new(
           link_token: link_token,
           integration_name: integration_name,

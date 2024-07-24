@@ -97,22 +97,22 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        owner = struct["owner"]
-        name = struct["name"]
-        description = struct["description"]
-        industry = struct["industry"]
-        website = struct["website"]
-        number_of_employees = struct["number_of_employees"]
-        addresses = parsed_json["addresses"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::AddressRequest.from_json(json_object: v)
+        owner = parsed_json["owner"]
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        industry = parsed_json["industry"]
+        website = parsed_json["website"]
+        number_of_employees = parsed_json["number_of_employees"]
+        addresses = parsed_json["addresses"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::AddressRequest.from_json(json_object: item)
         end
         last_activity_at = (DateTime.parse(parsed_json["last_activity_at"]) unless parsed_json["last_activity_at"].nil?)
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           owner: owner,

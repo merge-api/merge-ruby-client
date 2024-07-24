@@ -72,10 +72,11 @@ module Merge
       # @return [Merge::Ats::UrlRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        value = struct["value"]
-        url_type = struct["url_type"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        value = parsed_json["value"]
+        url_type = parsed_json["url_type"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           value: value,
           url_type: url_type,

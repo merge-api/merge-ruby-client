@@ -25,17 +25,27 @@ module Merge
       # @return [Merge::Ticketing::CommonModelScopeApi]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.default_scopes_retrieve
+      #  api.ticketing.scopes.default_scopes_retrieve
       def default_scopes_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/default-scopes"
         end
         Merge::Ticketing::CommonModelScopeApi.from_json(json_object: response.body)
@@ -49,17 +59,27 @@ module Merge
       # @return [Merge::Ticketing::CommonModelScopeApi]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.linked_account_scopes_retrieve
+      #  api.ticketing.scopes.linked_account_scopes_retrieve
       def linked_account_scopes_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/linked-account-scopes"
         end
         Merge::Ticketing::CommonModelScopeApi.from_json(json_object: response.body)
@@ -79,17 +99,24 @@ module Merge
       # @return [Merge::Ticketing::CommonModelScopeApi]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
+      #  api.ticketing.scopes.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
       def linked_account_scopes_create(common_models:, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
           req.body = { **(request_options&.additional_body_parameters || {}), common_models: common_models }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/linked-account-scopes"
         end
@@ -115,18 +142,28 @@ module Merge
       # @return [Merge::Ticketing::CommonModelScopeApi]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.default_scopes_retrieve
+      #  api.ticketing.scopes.default_scopes_retrieve
       def default_scopes_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/default-scopes"
           end
           Merge::Ticketing::CommonModelScopeApi.from_json(json_object: response.body)
@@ -141,18 +178,28 @@ module Merge
       # @return [Merge::Ticketing::CommonModelScopeApi]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.linked_account_scopes_retrieve
+      #  api.ticketing.scopes.linked_account_scopes_retrieve
       def linked_account_scopes_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/linked-account-scopes"
           end
           Merge::Ticketing::CommonModelScopeApi.from_json(json_object: response.body)
@@ -173,18 +220,25 @@ module Merge
       # @return [Merge::Ticketing::CommonModelScopeApi]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
+      #  api.ticketing.scopes.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
       def linked_account_scopes_create(common_models:, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
             req.body = { **(request_options&.additional_body_parameters || {}), common_models: common_models }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/linked-account-scopes"
           end

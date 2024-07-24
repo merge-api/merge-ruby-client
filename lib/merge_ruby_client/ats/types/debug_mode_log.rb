@@ -41,8 +41,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        log_id = struct["log_id"]
-        dashboard_view = struct["dashboard_view"]
+        log_id = parsed_json["log_id"]
+        dashboard_view = parsed_json["dashboard_view"]
         if parsed_json["log_summary"].nil?
           log_summary = nil
         else

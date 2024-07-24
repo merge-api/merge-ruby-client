@@ -68,11 +68,12 @@ module Merge
       # @return [Merge::Accounting::MultipartFormFieldRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        name = struct["name"]
-        data = struct["data"]
-        encoding = struct["encoding"]
-        file_name = struct["file_name"]
-        content_type = struct["content_type"]
+        parsed_json = JSON.parse(json_object)
+        name = parsed_json["name"]
+        data = parsed_json["data"]
+        encoding = parsed_json["encoding"]
+        file_name = parsed_json["file_name"]
+        content_type = parsed_json["content_type"]
         new(
           name: name,
           data: data,
