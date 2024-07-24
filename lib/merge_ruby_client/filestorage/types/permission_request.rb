@@ -92,7 +92,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        remote_id = struct["remote_id"]
+        remote_id = parsed_json["remote_id"]
         if parsed_json["user"].nil?
           user = nil
         else
@@ -105,10 +105,10 @@ module Merge
           group = parsed_json["group"].to_json
           group = Merge::Filestorage::PermissionRequestGroup.from_json(json_object: group)
         end
-        type = struct["type"]
-        roles = struct["roles"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        type = parsed_json["type"]
+        roles = parsed_json["roles"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           remote_id: remote_id,
           user: user,

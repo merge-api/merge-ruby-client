@@ -92,19 +92,19 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        source_object_class = struct["source_object_class"]
-        target_object_classes = parsed_json["target_object_classes"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::AssociationSubType.from_json(json_object: v)
+        source_object_class = parsed_json["source_object_class"]
+        target_object_classes = parsed_json["target_object_classes"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::AssociationSubType.from_json(json_object: item)
         end
-        remote_key_name = struct["remote_key_name"]
-        display_name = struct["display_name"]
-        cardinality = struct["cardinality"]
-        is_required = struct["is_required"]
+        remote_key_name = parsed_json["remote_key_name"]
+        display_name = parsed_json["display_name"]
+        cardinality = parsed_json["cardinality"]
+        is_required = parsed_json["is_required"]
         new(
           id: id,
           remote_id: remote_id,

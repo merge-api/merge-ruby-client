@@ -41,18 +41,22 @@ module Merge
       # @return [Merge::Crm::PaginatedAssociationTypeList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_list(custom_object_class_id: "custom_object_class_id")
+      #  api.crm.association_types.custom_object_classes_association_types_list(custom_object_class_id: "custom_object_class_id")
       def custom_object_classes_association_types_list(custom_object_class_id:, created_after: nil,
                                                        created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "created_after": created_after,
@@ -66,6 +70,9 @@ module Merge
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/association-types"
         end
         Merge::Crm::PaginatedAssociationTypeList.from_json(json_object: response.body)
@@ -89,18 +96,22 @@ module Merge
       # @return [Merge::Crm::CrmAssociationTypeResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_create(custom_object_class_id: "custom_object_class_id", model: { source_object_class: { id: "id", origin_type: CUSTOM_OBJECT }, target_object_classes: [{ id: "id", origin_type: CUSTOM_OBJECT }], remote_key_name: "remote_key_name" })
+      #  api.crm.association_types.custom_object_classes_association_types_create(custom_object_class_id: "custom_object_class_id", model: { source_object_class: { id: "id", origin_type: CUSTOM_OBJECT }, target_object_classes: [{ id: "id", origin_type: CUSTOM_OBJECT }], remote_key_name: "remote_key_name" })
       def custom_object_classes_association_types_create(custom_object_class_id:, model:, is_debug_mode: nil,
                                                          run_async: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -124,23 +135,30 @@ module Merge
       # @return [Merge::Crm::AssociationType]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_retrieve(custom_object_class_id: "custom_object_class_id", id: "id")
+      #  api.crm.association_types.custom_object_classes_association_types_retrieve(custom_object_class_id: "custom_object_class_id", id: "id")
       def custom_object_classes_association_types_retrieve(custom_object_class_id:, id:, expand: nil,
                                                            include_remote_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/association-types/#{id}"
         end
         Merge::Crm::AssociationType.from_json(json_object: response.body)
@@ -153,17 +171,27 @@ module Merge
       # @return [Merge::Crm::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_meta_post_retrieve(custom_object_class_id: "custom_object_class_id")
+      #  api.crm.association_types.custom_object_classes_association_types_meta_post_retrieve(custom_object_class_id: "custom_object_class_id")
       def custom_object_classes_association_types_meta_post_retrieve(custom_object_class_id:, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/association-types/meta/post"
         end
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
@@ -200,11 +228,11 @@ module Merge
       # @return [Merge::Crm::PaginatedAssociationTypeList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_list(custom_object_class_id: "custom_object_class_id")
+      #  api.crm.association_types.custom_object_classes_association_types_list(custom_object_class_id: "custom_object_class_id")
       def custom_object_classes_association_types_list(custom_object_class_id:, created_after: nil,
                                                        created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
@@ -212,7 +240,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "created_after": created_after,
@@ -226,6 +258,9 @@ module Merge
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/association-types"
           end
           Merge::Crm::PaginatedAssociationTypeList.from_json(json_object: response.body)
@@ -250,11 +285,11 @@ module Merge
       # @return [Merge::Crm::CrmAssociationTypeResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_create(custom_object_class_id: "custom_object_class_id", model: { source_object_class: { id: "id", origin_type: CUSTOM_OBJECT }, target_object_classes: [{ id: "id", origin_type: CUSTOM_OBJECT }], remote_key_name: "remote_key_name" })
+      #  api.crm.association_types.custom_object_classes_association_types_create(custom_object_class_id: "custom_object_class_id", model: { source_object_class: { id: "id", origin_type: CUSTOM_OBJECT }, target_object_classes: [{ id: "id", origin_type: CUSTOM_OBJECT }], remote_key_name: "remote_key_name" })
       def custom_object_classes_association_types_create(custom_object_class_id:, model:, is_debug_mode: nil,
                                                          run_async: nil, request_options: nil)
         Async do
@@ -262,7 +297,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -287,11 +326,11 @@ module Merge
       # @return [Merge::Crm::AssociationType]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_retrieve(custom_object_class_id: "custom_object_class_id", id: "id")
+      #  api.crm.association_types.custom_object_classes_association_types_retrieve(custom_object_class_id: "custom_object_class_id", id: "id")
       def custom_object_classes_association_types_retrieve(custom_object_class_id:, id:, expand: nil,
                                                            include_remote_data: nil, request_options: nil)
         Async do
@@ -299,12 +338,19 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/association-types/#{id}"
           end
           Merge::Crm::AssociationType.from_json(json_object: response.body)
@@ -318,18 +364,28 @@ module Merge
       # @return [Merge::Crm::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.custom_object_classes_association_types_meta_post_retrieve(custom_object_class_id: "custom_object_class_id")
+      #  api.crm.association_types.custom_object_classes_association_types_meta_post_retrieve(custom_object_class_id: "custom_object_class_id")
       def custom_object_classes_association_types_meta_post_retrieve(custom_object_class_id:, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/association-types/meta/post"
           end
           Merge::Crm::MetaResponse.from_json(json_object: response.body)

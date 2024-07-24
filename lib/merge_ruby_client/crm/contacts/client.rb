@@ -52,18 +52,22 @@ module Merge
       # @return [Merge::Crm::PaginatedContactList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.list
+      #  api.crm.contacts.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, email_addresses: nil,
                expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, phone_numbers: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "account_id": account_id,
@@ -81,6 +85,9 @@ module Merge
             "phone_numbers": phone_numbers,
             "remote_id": remote_id
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts"
         end
         Merge::Crm::PaginatedContactList.from_json(json_object: response.body)
@@ -106,17 +113,21 @@ module Merge
       # @return [Merge::Crm::CrmContactResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.create(model: {  })
+      #  api.crm.contacts.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -141,23 +152,30 @@ module Merge
       # @return [Merge::Crm::Contact]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.retrieve(id: "id")
+      #  api.crm.contacts.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
             "include_remote_data": include_remote_data,
             "include_remote_fields": include_remote_fields
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/#{id}"
         end
         Merge::Crm::Contact.from_json(json_object: response.body)
@@ -184,17 +202,21 @@ module Merge
       # @return [Merge::Crm::CrmContactResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.partial_update(id: "id", model: {  })
+      #  api.crm.contacts.partial_update(id: "id", model: {  })
       def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         response = @request_client.conn.patch do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -219,17 +241,24 @@ module Merge
       # @return [Void]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.ignore_create(model_id: "model_id", request: { reason: GENERAL_CUSTOMER_REQUEST })
+      #  api.crm.contacts.ignore_create(model_id: "model_id", request: { reason: GENERAL_CUSTOMER_REQUEST })
       def ignore_create(model_id:, request:, request_options: nil)
         @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
           req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/ignore/#{model_id}"
         end
@@ -242,17 +271,27 @@ module Merge
       # @return [Merge::Crm::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.meta_patch_retrieve(id: "id")
+      #  api.crm.contacts.meta_patch_retrieve(id: "id")
       def meta_patch_retrieve(id:, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/patch/#{id}"
         end
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
@@ -264,17 +303,27 @@ module Merge
       # @return [Merge::Crm::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.meta_post_retrieve
+      #  api.crm.contacts.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/post"
         end
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
@@ -293,18 +342,22 @@ module Merge
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.remote_field_classes_list
+      #  api.crm.contacts.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_remote_fields: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "cursor": cursor,
@@ -313,6 +366,9 @@ module Merge
             "include_remote_fields": include_remote_fields,
             "page_size": page_size
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/remote-field-classes"
         end
         Merge::Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
@@ -355,11 +411,11 @@ module Merge
       # @return [Merge::Crm::PaginatedContactList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.list
+      #  api.crm.contacts.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, email_addresses: nil,
                expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, phone_numbers: nil, remote_id: nil, request_options: nil)
         Async do
@@ -367,7 +423,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "account_id": account_id,
@@ -385,6 +445,9 @@ module Merge
               "phone_numbers": phone_numbers,
               "remote_id": remote_id
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts"
           end
           Merge::Crm::PaginatedContactList.from_json(json_object: response.body)
@@ -411,18 +474,22 @@ module Merge
       # @return [Merge::Crm::CrmContactResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.create(model: {  })
+      #  api.crm.contacts.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -448,24 +515,31 @@ module Merge
       # @return [Merge::Crm::Contact]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.retrieve(id: "id")
+      #  api.crm.contacts.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
               "include_remote_data": include_remote_data,
               "include_remote_fields": include_remote_fields
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/#{id}"
           end
           Merge::Crm::Contact.from_json(json_object: response.body)
@@ -493,18 +567,22 @@ module Merge
       # @return [Merge::Crm::CrmContactResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.partial_update(id: "id", model: {  })
+      #  api.crm.contacts.partial_update(id: "id", model: {  })
       def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
           response = @request_client.conn.patch do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -530,18 +608,25 @@ module Merge
       # @return [Void]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.ignore_create(model_id: "model_id", request: { reason: GENERAL_CUSTOMER_REQUEST })
+      #  api.crm.contacts.ignore_create(model_id: "model_id", request: { reason: GENERAL_CUSTOMER_REQUEST })
       def ignore_create(model_id:, request:, request_options: nil)
         Async do
           @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
             req.body = { **(request || {}), **(request_options&.additional_body_parameters || {}) }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/ignore/#{model_id}"
           end
@@ -555,18 +640,28 @@ module Merge
       # @return [Merge::Crm::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.meta_patch_retrieve(id: "id")
+      #  api.crm.contacts.meta_patch_retrieve(id: "id")
       def meta_patch_retrieve(id:, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/patch/#{id}"
           end
           Merge::Crm::MetaResponse.from_json(json_object: response.body)
@@ -579,18 +674,28 @@ module Merge
       # @return [Merge::Crm::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.meta_post_retrieve
+      #  api.crm.contacts.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/meta/post"
           end
           Merge::Crm::MetaResponse.from_json(json_object: response.body)
@@ -610,11 +715,11 @@ module Merge
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.remote_field_classes_list
+      #  api.crm.contacts.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_remote_fields: nil, page_size: nil, request_options: nil)
         Async do
@@ -622,7 +727,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "cursor": cursor,
@@ -631,6 +740,9 @@ module Merge
               "include_remote_fields": include_remote_fields,
               "page_size": page_size
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/contacts/remote-field-classes"
           end
           Merge::Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)

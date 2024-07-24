@@ -74,16 +74,16 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        categories = struct["categories"]
-        image = struct["image"]
-        square_image = struct["square_image"]
-        color = struct["color"]
-        slug = struct["slug"]
-        passthrough_available = struct["passthrough_available"]
-        available_model_operations = parsed_json["available_model_operations"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::ModelOperation.from_json(json_object: v)
+        name = parsed_json["name"]
+        categories = parsed_json["categories"]
+        image = parsed_json["image"]
+        square_image = parsed_json["square_image"]
+        color = parsed_json["color"]
+        slug = parsed_json["slug"]
+        passthrough_available = parsed_json["passthrough_available"]
+        available_model_operations = parsed_json["available_model_operations"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ModelOperation.from_json(json_object: item)
         end
         new(
           name: name,

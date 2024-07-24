@@ -714,31 +714,31 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        remote_id = struct["remote_id"]
+        remote_id = parsed_json["remote_id"]
         if parsed_json["account"].nil?
           account = nil
         else
           account = parsed_json["account"].to_json
           account = Merge::Accounting::JournalLineRequestAccount.from_json(json_object: account)
         end
-        net_amount = struct["net_amount"]
+        net_amount = parsed_json["net_amount"]
         if parsed_json["tracking_category"].nil?
           tracking_category = nil
         else
           tracking_category = parsed_json["tracking_category"].to_json
           tracking_category = Merge::Accounting::JournalLineRequestTrackingCategory.from_json(json_object: tracking_category)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::JournalLineRequestTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::JournalLineRequestTrackingCategoriesItem.from_json(json_object: item)
         end
-        currency = struct["currency"]
-        company = struct["company"]
-        contact = struct["contact"]
-        description = struct["description"]
-        exchange_rate = struct["exchange_rate"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        currency = parsed_json["currency"]
+        company = parsed_json["company"]
+        contact = parsed_json["contact"]
+        description = parsed_json["description"]
+        exchange_rate = parsed_json["exchange_rate"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           remote_id: remote_id,
           account: account,

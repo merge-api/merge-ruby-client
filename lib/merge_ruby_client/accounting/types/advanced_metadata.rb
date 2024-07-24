@@ -61,12 +61,13 @@ module Merge
       # @return [Merge::Accounting::AdvancedMetadata]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        id = struct["id"]
-        display_name = struct["display_name"]
-        description = struct["description"]
-        is_required = struct["is_required"]
-        is_custom = struct["is_custom"]
-        field_choices = struct["field_choices"]
+        parsed_json = JSON.parse(json_object)
+        id = parsed_json["id"]
+        display_name = parsed_json["display_name"]
+        description = parsed_json["description"]
+        is_required = parsed_json["is_required"]
+        is_custom = parsed_json["is_custom"]
+        field_choices = parsed_json["field_choices"]
         new(
           id: id,
           display_name: display_name,

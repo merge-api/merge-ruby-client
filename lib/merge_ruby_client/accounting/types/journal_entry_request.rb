@@ -723,31 +723,31 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
-        payments = parsed_json["payments"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::JournalEntryRequestPaymentsItem.from_json(json_object: v)
+        payments = parsed_json["payments"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::JournalEntryRequestPaymentsItem.from_json(json_object: item)
         end
-        memo = struct["memo"]
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
+        memo = parsed_json["memo"]
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::JournalEntryRequestCompany.from_json(json_object: company)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::JournalEntryRequestTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::JournalEntryRequestTrackingCategoriesItem.from_json(json_object: item)
         end
-        lines = parsed_json["lines"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::JournalLineRequest.from_json(json_object: v)
+        lines = parsed_json["lines"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::JournalLineRequest.from_json(json_object: item)
         end
-        journal_number = struct["journal_number"]
-        posting_status = struct["posting_status"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        journal_number = parsed_json["journal_number"]
+        posting_status = parsed_json["posting_status"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           transaction_date: transaction_date,
           payments: payments,

@@ -50,18 +50,22 @@ module Merge
       # @return [Merge::Filestorage::PaginatedAuditLogEventList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.list
+      #  api.filestorage.audit_trail.list
       def list(cursor: nil, end_date: nil, event_type: nil, page_size: nil, start_date: nil, user_email: nil,
                request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "cursor": cursor,
@@ -71,6 +75,9 @@ module Merge
             "start_date": start_date,
             "user_email": user_email
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/audit-trail"
         end
         Merge::Filestorage::PaginatedAuditLogEventList.from_json(json_object: response.body)
@@ -121,11 +128,11 @@ module Merge
       # @return [Merge::Filestorage::PaginatedAuditLogEventList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.list
+      #  api.filestorage.audit_trail.list
       def list(cursor: nil, end_date: nil, event_type: nil, page_size: nil, start_date: nil, user_email: nil,
                request_options: nil)
         Async do
@@ -133,7 +140,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "cursor": cursor,
@@ -143,6 +154,9 @@ module Merge
               "start_date": start_date,
               "user_email": user_email
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/audit-trail"
           end
           Merge::Filestorage::PaginatedAuditLogEventList.from_json(json_object: response.body)

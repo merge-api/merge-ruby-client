@@ -138,16 +138,16 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        file_url = struct["file_url"]
-        file_thumbnail_url = struct["file_thumbnail_url"]
-        size = struct["size"]
-        mime_type = struct["mime_type"]
-        description = struct["description"]
+        name = parsed_json["name"]
+        file_url = parsed_json["file_url"]
+        file_thumbnail_url = parsed_json["file_thumbnail_url"]
+        size = parsed_json["size"]
+        mime_type = parsed_json["mime_type"]
+        description = parsed_json["description"]
         if parsed_json["folder"].nil?
           folder = nil
         else
@@ -172,9 +172,9 @@ module Merge
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = struct["remote_data"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]
         new(
           id: id,
           remote_id: remote_id,

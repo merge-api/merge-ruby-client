@@ -113,69 +113,69 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        benefit = parsed_json["Benefit"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        benefit = parsed_json["Benefit"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        employer_benefit = parsed_json["EmployerBenefit"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        employer_benefit = parsed_json["EmployerBenefit"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        company = parsed_json["Company"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        company = parsed_json["Company"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        employee_payroll_run = parsed_json["EmployeePayrollRun"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        employee_payroll_run = parsed_json["EmployeePayrollRun"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        employee = parsed_json["Employee"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        employee = parsed_json["Employee"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        employment = parsed_json["Employment"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        employment = parsed_json["Employment"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        location = parsed_json["Location"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        location = parsed_json["Location"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        payroll_run = parsed_json["PayrollRun"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        payroll_run = parsed_json["PayrollRun"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        team = parsed_json["Team"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        team = parsed_json["Team"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        time_off = parsed_json["TimeOff"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        time_off = parsed_json["TimeOff"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        time_off_balance = parsed_json["TimeOffBalance"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        time_off_balance = parsed_json["TimeOffBalance"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        bank_info = parsed_json["BankInfo"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        bank_info = parsed_json["BankInfo"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        pay_group = parsed_json["PayGroup"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        pay_group = parsed_json["PayGroup"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        group = parsed_json["Group"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        group = parsed_json["Group"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        dependent = parsed_json["Dependent"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        dependent = parsed_json["Dependent"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
-        timesheet_entry = parsed_json["TimesheetEntry"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteFieldApi.from_json(json_object: v)
+        timesheet_entry = parsed_json["TimesheetEntry"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteFieldApi.from_json(json_object: item)
         end
         new(
           benefit: benefit,

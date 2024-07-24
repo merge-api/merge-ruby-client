@@ -798,13 +798,13 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        status = struct["status"]
+        status = parsed_json["status"]
         issue_date = (DateTime.parse(parsed_json["issue_date"]) unless parsed_json["issue_date"].nil?)
-        purchase_order_number = struct["purchase_order_number"]
+        purchase_order_number = parsed_json["purchase_order_number"]
         delivery_date = (DateTime.parse(parsed_json["delivery_date"]) unless parsed_json["delivery_date"].nil?)
         if parsed_json["delivery_address"].nil?
           delivery_address = nil
@@ -812,30 +812,30 @@ module Merge
           delivery_address = parsed_json["delivery_address"].to_json
           delivery_address = Merge::Accounting::PurchaseOrderDeliveryAddress.from_json(json_object: delivery_address)
         end
-        customer = struct["customer"]
+        customer = parsed_json["customer"]
         if parsed_json["vendor"].nil?
           vendor = nil
         else
           vendor = parsed_json["vendor"].to_json
           vendor = Merge::Accounting::PurchaseOrderVendor.from_json(json_object: vendor)
         end
-        memo = struct["memo"]
+        memo = parsed_json["memo"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::PurchaseOrderCompany.from_json(json_object: company)
         end
-        total_amount = struct["total_amount"]
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
-        line_items = parsed_json["line_items"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::PurchaseOrderLineItem.from_json(json_object: v)
+        total_amount = parsed_json["total_amount"]
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
+        line_items = parsed_json["line_items"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::PurchaseOrderLineItem.from_json(json_object: item)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::PurchaseOrderTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::PurchaseOrderTrackingCategoriesItem.from_json(json_object: item)
         end
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
@@ -843,17 +843,17 @@ module Merge
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
-        remote_was_deleted = struct["remote_was_deleted"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         if parsed_json["accounting_period"].nil?
           accounting_period = nil
         else
           accounting_period = parsed_json["accounting_period"].to_json
           accounting_period = Merge::Accounting::PurchaseOrderAccountingPeriod.from_json(json_object: accounting_period)
         end
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteData.from_json(json_object: v)
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

@@ -56,17 +56,17 @@ module Merge
           model = parsed_json["model"].to_json
           model = Merge::Filestorage::Folder.from_json(json_object: model)
         end
-        warnings = parsed_json["warnings"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::WarningValidationProblem.from_json(json_object: v)
+        warnings = parsed_json["warnings"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::WarningValidationProblem.from_json(json_object: item)
         end
-        errors = parsed_json["errors"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::ErrorValidationProblem.from_json(json_object: v)
+        errors = parsed_json["errors"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::ErrorValidationProblem.from_json(json_object: item)
         end
-        logs = parsed_json["logs"]&.map do |v|
-          v = v.to_json
-          Merge::Filestorage::DebugModeLog.from_json(json_object: v)
+        logs = parsed_json["logs"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::DebugModeLog.from_json(json_object: item)
         end
         new(
           model: model,

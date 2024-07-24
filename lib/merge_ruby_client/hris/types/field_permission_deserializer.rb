@@ -37,8 +37,9 @@ module Merge
       # @return [Merge::Hris::FieldPermissionDeserializer]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        enabled = struct["enabled"]
-        disabled = struct["disabled"]
+        parsed_json = JSON.parse(json_object)
+        enabled = parsed_json["enabled"]
+        disabled = parsed_json["disabled"]
         new(
           enabled: enabled,
           disabled: disabled,

@@ -137,8 +137,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["employee"].nil?
@@ -153,28 +153,28 @@ module Merge
           payroll_run = parsed_json["payroll_run"].to_json
           payroll_run = Merge::Hris::EmployeePayrollRunPayrollRun.from_json(json_object: payroll_run)
         end
-        gross_pay = struct["gross_pay"]
-        net_pay = struct["net_pay"]
+        gross_pay = parsed_json["gross_pay"]
+        net_pay = parsed_json["net_pay"]
         start_date = (DateTime.parse(parsed_json["start_date"]) unless parsed_json["start_date"].nil?)
         end_date = (DateTime.parse(parsed_json["end_date"]) unless parsed_json["end_date"].nil?)
         check_date = (DateTime.parse(parsed_json["check_date"]) unless parsed_json["check_date"].nil?)
-        earnings = parsed_json["earnings"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::Earning.from_json(json_object: v)
+        earnings = parsed_json["earnings"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::Earning.from_json(json_object: item)
         end
-        deductions = parsed_json["deductions"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::Deduction.from_json(json_object: v)
+        deductions = parsed_json["deductions"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::Deduction.from_json(json_object: item)
         end
-        taxes = parsed_json["taxes"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::Tax.from_json(json_object: v)
+        taxes = parsed_json["taxes"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::Tax.from_json(json_object: item)
         end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

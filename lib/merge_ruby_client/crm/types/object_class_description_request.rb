@@ -36,8 +36,9 @@ module Merge
       # @return [Merge::Crm::ObjectClassDescriptionRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        id = struct["id"]
-        origin_type = struct["origin_type"]
+        parsed_json = JSON.parse(json_object)
+        id = parsed_json["id"]
+        origin_type = parsed_json["origin_type"]
         new(
           id: id,
           origin_type: origin_type,

@@ -151,26 +151,26 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        first_name = struct["first_name"]
-        middle_name = struct["middle_name"]
-        last_name = struct["last_name"]
-        relationship = struct["relationship"]
-        employee = struct["employee"]
+        first_name = parsed_json["first_name"]
+        middle_name = parsed_json["middle_name"]
+        last_name = parsed_json["last_name"]
+        relationship = parsed_json["relationship"]
+        employee = parsed_json["employee"]
         date_of_birth = (DateTime.parse(parsed_json["date_of_birth"]) unless parsed_json["date_of_birth"].nil?)
-        gender = struct["gender"]
-        phone_number = struct["phone_number"]
-        home_location = struct["home_location"]
-        is_student = struct["is_student"]
-        ssn = struct["ssn"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        gender = parsed_json["gender"]
+        phone_number = parsed_json["phone_number"]
+        home_location = parsed_json["home_location"]
+        is_student = parsed_json["is_student"]
+        ssn = parsed_json["ssn"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

@@ -48,18 +48,22 @@ module Merge
       # @return [Merge::Ats::PaginatedApplicationList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.list
+      #  api.ats.applications.list
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
                cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "candidate_id": candidate_id,
@@ -79,6 +83,9 @@ module Merge
             "remote_id": remote_id,
             "source": source
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications"
         end
         Merge::Ats::PaginatedApplicationList.from_json(json_object: response.body)
@@ -106,17 +113,21 @@ module Merge
       # @return [Merge::Ats::ApplicationResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.create(model: {  }, remote_user_id: "remote_user_id")
+      #  api.ats.applications.create(model: {  }, remote_user_id: "remote_user_id")
       def create(model:, remote_user_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -143,22 +154,29 @@ module Merge
       # @return [Merge::Ats::Application]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.retrieve(id: "id")
+      #  api.ats.applications.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/#{id}"
         end
         Merge::Ats::Application.from_json(json_object: response.body)
@@ -175,18 +193,22 @@ module Merge
       # @return [Merge::Ats::ApplicationResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.change_stage_create(id: "id")
+      #  api.ats.applications.change_stage_create(id: "id")
       def change_stage_create(id:, is_debug_mode: nil, run_async: nil, job_interview_stage: nil, remote_user_id: nil,
                               request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -209,21 +231,28 @@ module Merge
       # @return [Merge::Ats::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.meta_post_retrieve
+      #  api.ats.applications.meta_post_retrieve
       def meta_post_retrieve(application_remote_template_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "application_remote_template_id": application_remote_template_id
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/meta/post"
         end
         Merge::Ats::MetaResponse.from_json(json_object: response.body)
@@ -265,11 +294,11 @@ module Merge
       # @return [Merge::Ats::PaginatedApplicationList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.list
+      #  api.ats.applications.list
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
                cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         Async do
@@ -277,7 +306,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "candidate_id": candidate_id,
@@ -297,6 +330,9 @@ module Merge
               "remote_id": remote_id,
               "source": source
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications"
           end
           Merge::Ats::PaginatedApplicationList.from_json(json_object: response.body)
@@ -325,18 +361,22 @@ module Merge
       # @return [Merge::Ats::ApplicationResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.create(model: {  }, remote_user_id: "remote_user_id")
+      #  api.ats.applications.create(model: {  }, remote_user_id: "remote_user_id")
       def create(model:, remote_user_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -364,23 +404,30 @@ module Merge
       # @return [Merge::Ats::Application]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.retrieve(id: "id")
+      #  api.ats.applications.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/#{id}"
           end
           Merge::Ats::Application.from_json(json_object: response.body)
@@ -398,11 +445,11 @@ module Merge
       # @return [Merge::Ats::ApplicationResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.change_stage_create(id: "id")
+      #  api.ats.applications.change_stage_create(id: "id")
       def change_stage_create(id:, is_debug_mode: nil, run_async: nil, job_interview_stage: nil, remote_user_id: nil,
                               request_options: nil)
         Async do
@@ -410,7 +457,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -434,22 +485,29 @@ module Merge
       # @return [Merge::Ats::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.meta_post_retrieve
+      #  api.ats.applications.meta_post_retrieve
       def meta_post_retrieve(application_remote_template_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "application_remote_template_id": application_remote_template_id
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/ats/v1/applications/meta/post"
           end
           Merge::Ats::MetaResponse.from_json(json_object: response.body)

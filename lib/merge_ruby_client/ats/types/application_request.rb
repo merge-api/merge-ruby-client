@@ -122,11 +122,11 @@ module Merge
         end
         applied_at = (DateTime.parse(parsed_json["applied_at"]) unless parsed_json["applied_at"].nil?)
         rejected_at = (DateTime.parse(parsed_json["rejected_at"]) unless parsed_json["rejected_at"].nil?)
-        offers = parsed_json["offers"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::ApplicationRequestOffersItem.from_json(json_object: v)
+        offers = parsed_json["offers"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::ApplicationRequestOffersItem.from_json(json_object: item)
         end
-        source = struct["source"]
+        source = parsed_json["source"]
         if parsed_json["credited_to"].nil?
           credited_to = nil
         else
@@ -145,9 +145,9 @@ module Merge
           reject_reason = parsed_json["reject_reason"].to_json
           reject_reason = Merge::Ats::ApplicationRequestRejectReason.from_json(json_object: reject_reason)
         end
-        remote_template_id = struct["remote_template_id"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        remote_template_id = parsed_json["remote_template_id"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           candidate: candidate,
           job: job,

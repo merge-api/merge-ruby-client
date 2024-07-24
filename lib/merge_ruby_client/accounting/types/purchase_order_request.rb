@@ -744,7 +744,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        status = struct["status"]
+        status = parsed_json["status"]
         issue_date = (DateTime.parse(parsed_json["issue_date"]) unless parsed_json["issue_date"].nil?)
         delivery_date = (DateTime.parse(parsed_json["delivery_date"]) unless parsed_json["delivery_date"].nil?)
         if parsed_json["delivery_address"].nil?
@@ -753,33 +753,33 @@ module Merge
           delivery_address = parsed_json["delivery_address"].to_json
           delivery_address = Merge::Accounting::PurchaseOrderRequestDeliveryAddress.from_json(json_object: delivery_address)
         end
-        customer = struct["customer"]
+        customer = parsed_json["customer"]
         if parsed_json["vendor"].nil?
           vendor = nil
         else
           vendor = parsed_json["vendor"].to_json
           vendor = Merge::Accounting::PurchaseOrderRequestVendor.from_json(json_object: vendor)
         end
-        memo = struct["memo"]
+        memo = parsed_json["memo"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::PurchaseOrderRequestCompany.from_json(json_object: company)
         end
-        total_amount = struct["total_amount"]
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem.from_json(json_object: v)
+        total_amount = parsed_json["total_amount"]
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem.from_json(json_object: item)
         end
-        line_items = parsed_json["line_items"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::PurchaseOrderLineItemRequest.from_json(json_object: v)
+        line_items = parsed_json["line_items"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::PurchaseOrderLineItemRequest.from_json(json_object: item)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           status: status,
           issue_date: issue_date,

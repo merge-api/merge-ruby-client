@@ -125,20 +125,20 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        run_state = struct["run_state"]
-        run_type = struct["run_type"]
+        run_state = parsed_json["run_state"]
+        run_type = parsed_json["run_type"]
         start_date = (DateTime.parse(parsed_json["start_date"]) unless parsed_json["start_date"].nil?)
         end_date = (DateTime.parse(parsed_json["end_date"]) unless parsed_json["end_date"].nil?)
         check_date = (DateTime.parse(parsed_json["check_date"]) unless parsed_json["check_date"].nil?)
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

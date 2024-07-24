@@ -93,17 +93,18 @@ module Merge
       # @return [Merge::Ticketing::AccountDetails]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        id = struct["id"]
-        integration = struct["integration"]
-        integration_slug = struct["integration_slug"]
-        category = struct["category"]
-        end_user_origin_id = struct["end_user_origin_id"]
-        end_user_organization_name = struct["end_user_organization_name"]
-        end_user_email_address = struct["end_user_email_address"]
-        status = struct["status"]
-        webhook_listener_url = struct["webhook_listener_url"]
-        is_duplicate = struct["is_duplicate"]
-        account_type = struct["account_type"]
+        parsed_json = JSON.parse(json_object)
+        id = parsed_json["id"]
+        integration = parsed_json["integration"]
+        integration_slug = parsed_json["integration_slug"]
+        category = parsed_json["category"]
+        end_user_origin_id = parsed_json["end_user_origin_id"]
+        end_user_organization_name = parsed_json["end_user_organization_name"]
+        end_user_email_address = parsed_json["end_user_email_address"]
+        status = parsed_json["status"]
+        webhook_listener_url = parsed_json["webhook_listener_url"]
+        is_duplicate = parsed_json["is_duplicate"]
+        account_type = parsed_json["account_type"]
         new(
           id: id,
           integration: integration,

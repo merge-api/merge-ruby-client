@@ -69,12 +69,12 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        employee = struct["employee"]
-        hours_worked = struct["hours_worked"]
+        employee = parsed_json["employee"]
+        hours_worked = parsed_json["hours_worked"]
         start_time = (DateTime.parse(parsed_json["start_time"]) unless parsed_json["start_time"].nil?)
         end_time = (DateTime.parse(parsed_json["end_time"]) unless parsed_json["end_time"].nil?)
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           employee: employee,
           hours_worked: hours_worked,

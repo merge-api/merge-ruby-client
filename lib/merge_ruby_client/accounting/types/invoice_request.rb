@@ -792,50 +792,50 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        type = struct["type"]
+        type = parsed_json["type"]
         if parsed_json["contact"].nil?
           contact = nil
         else
           contact = parsed_json["contact"].to_json
           contact = Merge::Accounting::InvoiceRequestContact.from_json(json_object: contact)
         end
-        number = struct["number"]
+        number = parsed_json["number"]
         issue_date = (DateTime.parse(parsed_json["issue_date"]) unless parsed_json["issue_date"].nil?)
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
         paid_on_date = (DateTime.parse(parsed_json["paid_on_date"]) unless parsed_json["paid_on_date"].nil?)
-        memo = struct["memo"]
-        status = struct["status"]
+        memo = parsed_json["memo"]
+        status = parsed_json["status"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::InvoiceRequestCompany.from_json(json_object: company)
         end
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
-        total_discount = struct["total_discount"]
-        sub_total = struct["sub_total"]
-        total_tax_amount = struct["total_tax_amount"]
-        total_amount = struct["total_amount"]
-        balance = struct["balance"]
-        payments = parsed_json["payments"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::InvoiceRequestPaymentsItem.from_json(json_object: v)
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
+        total_discount = parsed_json["total_discount"]
+        sub_total = parsed_json["sub_total"]
+        total_tax_amount = parsed_json["total_tax_amount"]
+        total_amount = parsed_json["total_amount"]
+        balance = parsed_json["balance"]
+        payments = parsed_json["payments"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::InvoiceRequestPaymentsItem.from_json(json_object: item)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::InvoiceRequestTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::InvoiceRequestTrackingCategoriesItem.from_json(json_object: item)
         end
-        line_items = parsed_json["line_items"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::InvoiceLineItemRequest.from_json(json_object: v)
+        line_items = parsed_json["line_items"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::InvoiceLineItemRequest.from_json(json_object: item)
         end
-        purchase_orders = parsed_json["purchase_orders"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::InvoiceRequestPurchaseOrdersItem.from_json(json_object: v)
+        purchase_orders = parsed_json["purchase_orders"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::InvoiceRequestPurchaseOrdersItem.from_json(json_object: item)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           type: type,
           contact: contact,

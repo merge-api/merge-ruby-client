@@ -47,18 +47,22 @@ module Merge
       # @return [Merge::Filestorage::PaginatedFolderList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.list
+      #  api.filestorage.folders.list
       def list(created_after: nil, created_before: nil, cursor: nil, drive_id: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, parent_folder_id: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "created_after": created_after,
@@ -75,6 +79,9 @@ module Merge
             "parent_folder_id": parent_folder_id,
             "remote_id": remote_id
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/folders"
         end
         Merge::Filestorage::PaginatedFolderList.from_json(json_object: response.body)
@@ -98,17 +105,21 @@ module Merge
       # @return [Merge::Filestorage::FileStorageFolderResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.create(model: {  })
+      #  api.filestorage.folders.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "is_debug_mode": is_debug_mode,
@@ -131,22 +142,29 @@ module Merge
       # @return [Merge::Filestorage::Folder]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.retrieve(id: "id")
+      #  api.filestorage.folders.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/folders/#{id}"
         end
         Merge::Filestorage::Folder.from_json(json_object: response.body)
@@ -158,17 +176,27 @@ module Merge
       # @return [Merge::Filestorage::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.meta_post_retrieve
+      #  api.filestorage.folders.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/folders/meta/post"
         end
         Merge::Filestorage::MetaResponse.from_json(json_object: response.body)
@@ -209,11 +237,11 @@ module Merge
       # @return [Merge::Filestorage::PaginatedFolderList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.list
+      #  api.filestorage.folders.list
       def list(created_after: nil, created_before: nil, cursor: nil, drive_id: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, parent_folder_id: nil, remote_id: nil, request_options: nil)
         Async do
@@ -221,7 +249,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "created_after": created_after,
@@ -238,6 +270,9 @@ module Merge
               "parent_folder_id": parent_folder_id,
               "remote_id": remote_id
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/folders"
           end
           Merge::Filestorage::PaginatedFolderList.from_json(json_object: response.body)
@@ -262,18 +297,22 @@ module Merge
       # @return [Merge::Filestorage::FileStorageFolderResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.create(model: {  })
+      #  api.filestorage.folders.create(model: {  })
       def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "is_debug_mode": is_debug_mode,
@@ -297,23 +336,30 @@ module Merge
       # @return [Merge::Filestorage::Folder]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.retrieve(id: "id")
+      #  api.filestorage.folders.retrieve(id: "id")
       def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/folders/#{id}"
           end
           Merge::Filestorage::Folder.from_json(json_object: response.body)
@@ -326,18 +372,28 @@ module Merge
       # @return [Merge::Filestorage::MetaResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.meta_post_retrieve
+      #  api.filestorage.folders.meta_post_retrieve
       def meta_post_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/folders/meta/post"
           end
           Merge::Filestorage::MetaResponse.from_json(json_object: response.body)

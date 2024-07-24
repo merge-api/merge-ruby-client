@@ -91,10 +91,10 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        folder_url = struct["folder_url"]
-        size = struct["size"]
-        description = struct["description"]
+        name = parsed_json["name"]
+        folder_url = parsed_json["folder_url"]
+        size = parsed_json["size"]
+        description = parsed_json["description"]
         if parsed_json["parent_folder"].nil?
           parent_folder = nil
         else
@@ -113,8 +113,8 @@ module Merge
           permissions = parsed_json["permissions"].to_json
           permissions = Merge::Filestorage::FolderRequestPermissions.from_json(json_object: permissions)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           name: name,
           folder_url: folder_url,

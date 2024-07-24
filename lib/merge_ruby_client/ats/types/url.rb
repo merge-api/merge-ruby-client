@@ -75,8 +75,8 @@ module Merge
         parsed_json = JSON.parse(json_object)
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        value = struct["value"]
-        url_type = struct["url_type"]
+        value = parsed_json["value"]
+        url_type = parsed_json["url_type"]
         new(
           created_at: created_at,
           modified_at: modified_at,

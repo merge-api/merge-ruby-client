@@ -41,9 +41,10 @@ module Merge
       # @return [Merge::Hris::ExternalTargetFieldApi]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        name = struct["name"]
-        description = struct["description"]
-        is_mapped = struct["is_mapped"]
+        parsed_json = JSON.parse(json_object)
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        is_mapped = parsed_json["is_mapped"]
         new(
           name: name,
           description: description,

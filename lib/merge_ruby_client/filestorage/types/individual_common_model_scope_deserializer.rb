@@ -48,10 +48,10 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        model_name = struct["model_name"]
-        model_permissions = parsed_json["model_permissions"]&.transform_values do |v|
-          v = v.to_json
-          Merge::Filestorage::ModelPermissionDeserializer.from_json(json_object: v)
+        model_name = parsed_json["model_name"]
+        model_permissions = parsed_json["model_permissions"]&.transform_values do |value|
+          value = value.to_json
+          Merge::Filestorage::ModelPermissionDeserializer.from_json(json_object: value)
         end
         if parsed_json["field_permissions"].nil?
           field_permissions = nil

@@ -45,8 +45,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        remote_key_name = struct["remote_key_name"]
-        schema = struct["schema"]
+        remote_key_name = parsed_json["remote_key_name"]
+        schema = parsed_json["schema"]
         if parsed_json["remote_endpoint_info"].nil?
           remote_endpoint_info = nil
         else

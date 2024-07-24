@@ -5,7 +5,7 @@ module Merge
     # - `JSON` - JSON
     #  - `BASE64_GZIP` - BASE64_GZIP
     class ResponseTypeEnum
-      JSON = "JSON"
+      JSON_ = "JSON"
       BASE_64_GZIP = "BASE64_GZIP"
     end
   end

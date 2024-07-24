@@ -58,9 +58,9 @@ module Merge
           source = parsed_json["source"].to_json
           source = Merge::Hris::ValidationProblemSource.from_json(json_object: source)
         end
-        title = struct["title"]
-        detail = struct["detail"]
-        problem_type = struct["problem_type"]
+        title = parsed_json["title"]
+        detail = parsed_json["detail"]
+        problem_type = parsed_json["problem_type"]
         new(
           source: source,
           title: title,

@@ -172,19 +172,19 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        description = struct["description"]
-        code = struct["code"]
-        status = struct["status"]
-        type = struct["type"]
-        job_postings = struct["job_postings"]
-        job_posting_urls = parsed_json["job_posting_urls"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::Url.from_json(json_object: v)
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        code = parsed_json["code"]
+        status = parsed_json["status"]
+        type = parsed_json["type"]
+        job_postings = parsed_json["job_postings"]
+        job_posting_urls = parsed_json["job_posting_urls"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::Url.from_json(json_object: item)
         end
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
@@ -192,28 +192,28 @@ module Merge
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
-        confidential = struct["confidential"]
-        departments = parsed_json["departments"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::JobDepartmentsItem.from_json(json_object: v)
+        confidential = parsed_json["confidential"]
+        departments = parsed_json["departments"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::JobDepartmentsItem.from_json(json_object: item)
         end
-        offices = parsed_json["offices"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::JobOfficesItem.from_json(json_object: v)
+        offices = parsed_json["offices"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::JobOfficesItem.from_json(json_object: item)
         end
-        hiring_managers = parsed_json["hiring_managers"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::JobHiringManagersItem.from_json(json_object: v)
+        hiring_managers = parsed_json["hiring_managers"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::JobHiringManagersItem.from_json(json_object: item)
         end
-        recruiters = parsed_json["recruiters"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::JobRecruitersItem.from_json(json_object: v)
+        recruiters = parsed_json["recruiters"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::JobRecruitersItem.from_json(json_object: item)
         end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

@@ -199,14 +199,14 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        assignees = parsed_json["assignees"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::TicketAssigneesItem.from_json(json_object: v)
+        name = parsed_json["name"]
+        assignees = parsed_json["assignees"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketAssigneesItem.from_json(json_object: item)
         end
         if parsed_json["creator"].nil?
           creator = nil
@@ -215,13 +215,13 @@ module Merge
           creator = Merge::Ticketing::TicketCreator.from_json(json_object: creator)
         end
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
-        status = struct["status"]
-        description = struct["description"]
-        collections = parsed_json["collections"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::TicketCollectionsItem.from_json(json_object: v)
+        status = parsed_json["status"]
+        description = parsed_json["description"]
+        collections = parsed_json["collections"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketCollectionsItem.from_json(json_object: item)
         end
-        ticket_type = struct["ticket_type"]
+        ticket_type = parsed_json["ticket_type"]
         if parsed_json["account"].nil?
           account = nil
         else
@@ -240,11 +240,11 @@ module Merge
           parent_ticket = parsed_json["parent_ticket"].to_json
           parent_ticket = Merge::Ticketing::TicketParentTicket.from_json(json_object: parent_ticket)
         end
-        attachments = parsed_json["attachments"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::TicketAttachmentsItem.from_json(json_object: v)
+        attachments = parsed_json["attachments"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketAttachmentsItem.from_json(json_object: item)
         end
-        tags = struct["tags"]
+        tags = parsed_json["tags"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
@@ -252,17 +252,17 @@ module Merge
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
-        remote_was_deleted = struct["remote_was_deleted"]
-        ticket_url = struct["ticket_url"]
-        priority = struct["priority"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        ticket_url = parsed_json["ticket_url"]
+        priority = parsed_json["priority"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::RemoteData.from_json(json_object: item)
         end
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::RemoteField.from_json(json_object: v)
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::RemoteField.from_json(json_object: item)
         end
         new(
           id: id,

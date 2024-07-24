@@ -70,14 +70,14 @@ module Merge
           source_object_class = parsed_json["source_object_class"].to_json
           source_object_class = Merge::Crm::ObjectClassDescriptionRequest.from_json(json_object: source_object_class)
         end
-        target_object_classes = parsed_json["target_object_classes"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ObjectClassDescriptionRequest.from_json(json_object: v)
+        target_object_classes = parsed_json["target_object_classes"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ObjectClassDescriptionRequest.from_json(json_object: item)
         end
-        remote_key_name = struct["remote_key_name"]
-        display_name = struct["display_name"]
-        cardinality = struct["cardinality"]
-        is_required = struct["is_required"]
+        remote_key_name = parsed_json["remote_key_name"]
+        display_name = parsed_json["display_name"]
+        cardinality = parsed_json["cardinality"]
+        is_required = parsed_json["is_required"]
         new(
           source_object_class: source_object_class,
           target_object_classes: target_object_classes,

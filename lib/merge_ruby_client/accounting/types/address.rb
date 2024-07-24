@@ -594,14 +594,14 @@ module Merge
         parsed_json = JSON.parse(json_object)
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        type = struct["type"]
-        street_1 = struct["street_1"]
-        street_2 = struct["street_2"]
-        city = struct["city"]
-        state = struct["state"]
-        country_subdivision = struct["country_subdivision"]
-        country = struct["country"]
-        zip_code = struct["zip_code"]
+        type = parsed_json["type"]
+        street_1 = parsed_json["street_1"]
+        street_2 = parsed_json["street_2"]
+        city = parsed_json["city"]
+        state = parsed_json["state"]
+        country_subdivision = parsed_json["country_subdivision"]
+        country = parsed_json["country"]
+        zip_code = parsed_json["zip_code"]
         new(
           created_at: created_at,
           modified_at: modified_at,

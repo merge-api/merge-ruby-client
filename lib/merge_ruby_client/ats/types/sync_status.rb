@@ -77,13 +77,13 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        model_name = struct["model_name"]
-        model_id = struct["model_id"]
+        model_name = parsed_json["model_name"]
+        model_id = parsed_json["model_id"]
         last_sync_start = (DateTime.parse(parsed_json["last_sync_start"]) unless parsed_json["last_sync_start"].nil?)
         next_sync_start = (DateTime.parse(parsed_json["next_sync_start"]) unless parsed_json["next_sync_start"].nil?)
-        status = struct["status"]
-        is_initial_sync = struct["is_initial_sync"]
-        selective_sync_configurations_usage = struct["selective_sync_configurations_usage"]
+        status = parsed_json["status"]
+        is_initial_sync = parsed_json["is_initial_sync"]
+        selective_sync_configurations_usage = parsed_json["selective_sync_configurations_usage"]
         new(
           model_name: model_name,
           model_id: model_id,

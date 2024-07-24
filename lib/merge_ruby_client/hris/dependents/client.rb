@@ -37,18 +37,22 @@ module Merge
       # @return [Merge::Hris::PaginatedDependentList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.list
+      #  api.hris.dependents.list
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_sensitive_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "created_after": created_after,
@@ -62,6 +66,9 @@ module Merge
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/dependents"
         end
         Merge::Hris::PaginatedDependentList.from_json(json_object: response.body)
@@ -78,22 +85,29 @@ module Merge
       # @return [Merge::Hris::Dependent]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.retrieve(id: "id")
+      #  api.hris.dependents.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, include_sensitive_fields: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "include_remote_data": include_remote_data,
             "include_sensitive_fields": include_sensitive_fields
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/dependents/#{id}"
         end
         Merge::Hris::Dependent.from_json(json_object: response.body)
@@ -129,11 +143,11 @@ module Merge
       # @return [Merge::Hris::PaginatedDependentList]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.list
+      #  api.hris.dependents.list
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_sensitive_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
@@ -141,7 +155,11 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "created_after": created_after,
@@ -155,6 +173,9 @@ module Merge
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/dependents"
           end
           Merge::Hris::PaginatedDependentList.from_json(json_object: response.body)
@@ -172,23 +193,30 @@ module Merge
       # @return [Merge::Hris::Dependent]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.retrieve(id: "id")
+      #  api.hris.dependents.retrieve(id: "id")
       def retrieve(id:, include_remote_data: nil, include_sensitive_fields: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "include_remote_data": include_remote_data,
               "include_sensitive_fields": include_sensitive_fields
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/dependents/#{id}"
           end
           Merge::Hris::Dependent.from_json(json_object: response.body)

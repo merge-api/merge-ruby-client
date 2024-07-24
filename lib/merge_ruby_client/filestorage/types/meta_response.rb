@@ -58,16 +58,16 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        request_schema = struct["request_schema"]
-        remote_field_classes = struct["remote_field_classes"]
+        request_schema = parsed_json["request_schema"]
+        remote_field_classes = parsed_json["remote_field_classes"]
         if parsed_json["status"].nil?
           status = nil
         else
           status = parsed_json["status"].to_json
           status = Merge::Filestorage::LinkedAccountStatus.from_json(json_object: status)
         end
-        has_conditional_params = struct["has_conditional_params"]
-        has_required_linked_account_params = struct["has_required_linked_account_params"]
+        has_conditional_params = parsed_json["has_conditional_params"]
+        has_required_linked_account_params = parsed_json["has_required_linked_account_params"]
         new(
           request_schema: request_schema,
           remote_field_classes: remote_field_classes,

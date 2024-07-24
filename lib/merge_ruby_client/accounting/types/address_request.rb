@@ -585,15 +585,16 @@ module Merge
       # @return [Merge::Accounting::AddressRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        type = struct["type"]
-        street_1 = struct["street_1"]
-        street_2 = struct["street_2"]
-        city = struct["city"]
-        country_subdivision = struct["country_subdivision"]
-        country = struct["country"]
-        zip_code = struct["zip_code"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        parsed_json = JSON.parse(json_object)
+        type = parsed_json["type"]
+        street_1 = parsed_json["street_1"]
+        street_2 = parsed_json["street_2"]
+        city = parsed_json["city"]
+        country_subdivision = parsed_json["country_subdivision"]
+        country = parsed_json["country"]
+        zip_code = parsed_json["zip_code"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           type: type,
           street_1: street_1,

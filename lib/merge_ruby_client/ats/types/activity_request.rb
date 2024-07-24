@@ -100,13 +100,13 @@ module Merge
           user = parsed_json["user"].to_json
           user = Merge::Ats::ActivityRequestUser.from_json(json_object: user)
         end
-        activity_type = struct["activity_type"]
-        subject = struct["subject"]
-        body = struct["body"]
-        visibility = struct["visibility"]
-        candidate = struct["candidate"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        activity_type = parsed_json["activity_type"]
+        subject = parsed_json["subject"]
+        body = parsed_json["body"]
+        visibility = parsed_json["visibility"]
+        candidate = parsed_json["candidate"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           user: user,
           activity_type: activity_type,

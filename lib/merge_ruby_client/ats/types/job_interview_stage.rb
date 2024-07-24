@@ -99,23 +99,23 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
+        name = parsed_json["name"]
         if parsed_json["job"].nil?
           job = nil
         else
           job = parsed_json["job"].to_json
           job = Merge::Ats::JobInterviewStageJob.from_json(json_object: job)
         end
-        stage_order = struct["stage_order"]
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::RemoteData.from_json(json_object: v)
+        stage_order = parsed_json["stage_order"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

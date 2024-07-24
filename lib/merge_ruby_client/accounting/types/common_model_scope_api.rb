@@ -33,9 +33,9 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        common_models = parsed_json["common_models"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::IndividualCommonModelScopeDeserializer.from_json(json_object: v)
+        common_models = parsed_json["common_models"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::IndividualCommonModelScopeDeserializer.from_json(json_object: item)
         end
         new(common_models: common_models, additional_properties: struct)
       end

@@ -141,13 +141,13 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        name = struct["name"]
-        description = struct["description"]
-        amount = struct["amount"]
+        name = parsed_json["name"]
+        description = parsed_json["description"]
+        amount = parsed_json["amount"]
         if parsed_json["owner"].nil?
           owner = nil
         else
@@ -166,21 +166,21 @@ module Merge
           stage = parsed_json["stage"].to_json
           stage = Merge::Crm::OpportunityStage.from_json(json_object: stage)
         end
-        status = struct["status"]
+        status = parsed_json["status"]
         last_activity_at = (DateTime.parse(parsed_json["last_activity_at"]) unless parsed_json["last_activity_at"].nil?)
         close_date = (DateTime.parse(parsed_json["close_date"]) unless parsed_json["close_date"].nil?)
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
-        remote_was_deleted = struct["remote_was_deleted"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteData.from_json(json_object: item)
         end
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteField.from_json(json_object: v)
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteField.from_json(json_object: item)
         end
         new(
           id: id,

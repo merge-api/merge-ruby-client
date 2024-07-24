@@ -727,8 +727,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["account"].nil?
@@ -737,23 +737,23 @@ module Merge
           account = parsed_json["account"].to_json
           account = Merge::Accounting::JournalLineAccount.from_json(json_object: account)
         end
-        net_amount = struct["net_amount"]
+        net_amount = parsed_json["net_amount"]
         if parsed_json["tracking_category"].nil?
           tracking_category = nil
         else
           tracking_category = parsed_json["tracking_category"].to_json
           tracking_category = Merge::Accounting::JournalLineTrackingCategory.from_json(json_object: tracking_category)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::JournalLineTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::JournalLineTrackingCategoriesItem.from_json(json_object: item)
         end
-        currency = struct["currency"]
-        company = struct["company"]
-        contact = struct["contact"]
-        description = struct["description"]
-        exchange_rate = struct["exchange_rate"]
-        remote_was_deleted = struct["remote_was_deleted"]
+        currency = parsed_json["currency"]
+        company = parsed_json["company"]
+        contact = parsed_json["contact"]
+        description = parsed_json["description"]
+        exchange_rate = parsed_json["exchange_rate"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
           remote_id: remote_id,

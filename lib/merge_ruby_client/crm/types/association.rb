@@ -66,8 +66,8 @@ module Merge
         parsed_json = JSON.parse(json_object)
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        source_object = struct["source_object"]
-        target_object = struct["target_object"]
+        source_object = parsed_json["source_object"]
+        target_object = parsed_json["target_object"]
         if parsed_json["association_type"].nil?
           association_type = nil
         else

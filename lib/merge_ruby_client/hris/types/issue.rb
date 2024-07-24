@@ -78,18 +78,18 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        status = struct["status"]
-        error_description = struct["error_description"]
-        end_user = struct["end_user"]
+        id = parsed_json["id"]
+        status = parsed_json["status"]
+        error_description = parsed_json["error_description"]
+        end_user = parsed_json["end_user"]
         first_incident_time = unless parsed_json["first_incident_time"].nil?
                                 DateTime.parse(parsed_json["first_incident_time"])
                               end
         last_incident_time = unless parsed_json["last_incident_time"].nil?
                                DateTime.parse(parsed_json["last_incident_time"])
                              end
-        is_muted = struct["is_muted"]
-        error_details = struct["error_details"]
+        is_muted = parsed_json["is_muted"]
+        error_details = parsed_json["error_details"]
         new(
           id: id,
           status: status,

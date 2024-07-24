@@ -83,14 +83,14 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        applied_amount = struct["applied_amount"]
+        applied_amount = parsed_json["applied_amount"]
         applied_date = (DateTime.parse(parsed_json["applied_date"]) unless parsed_json["applied_date"].nil?)
-        related_object_id = struct["related_object_id"]
-        related_object_type = struct["related_object_type"]
+        related_object_id = parsed_json["related_object_id"]
+        related_object_type = parsed_json["related_object_type"]
         new(
           id: id,
           remote_id: remote_id,

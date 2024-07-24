@@ -60,10 +60,10 @@ module Merge
           integration = parsed_json["integration"].to_json
           integration = Merge::Crm::AccountIntegration.from_json(json_object: integration)
         end
-        passthrough_available = struct["passthrough_available"]
-        available_model_operations = parsed_json["available_model_operations"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::ModelOperation.from_json(json_object: v)
+        passthrough_available = parsed_json["passthrough_available"]
+        available_model_operations = parsed_json["available_model_operations"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::ModelOperation.from_json(json_object: item)
         end
         new(
           integration: integration,

@@ -31,7 +31,8 @@ module Merge
       # @return [Merge::Crm::ValidationProblemSource]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        pointer = struct["pointer"]
+        parsed_json = JSON.parse(json_object)
+        pointer = parsed_json["pointer"]
         new(pointer: pointer, additional_properties: struct)
       end
 

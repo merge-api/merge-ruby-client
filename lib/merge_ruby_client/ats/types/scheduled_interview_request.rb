@@ -120,16 +120,16 @@ module Merge
           organizer = parsed_json["organizer"].to_json
           organizer = Merge::Ats::ScheduledInterviewRequestOrganizer.from_json(json_object: organizer)
         end
-        interviewers = parsed_json["interviewers"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::ScheduledInterviewRequestInterviewersItem.from_json(json_object: v)
+        interviewers = parsed_json["interviewers"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::ScheduledInterviewRequestInterviewersItem.from_json(json_object: item)
         end
-        location = struct["location"]
+        location = parsed_json["location"]
         start_at = (DateTime.parse(parsed_json["start_at"]) unless parsed_json["start_at"].nil?)
         end_at = (DateTime.parse(parsed_json["end_at"]) unless parsed_json["end_at"].nil?)
-        status = struct["status"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        status = parsed_json["status"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           application: application,
           job_interview_stage: job_interview_stage,

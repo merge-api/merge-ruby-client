@@ -27,17 +27,27 @@ module Merge
       # @return [Merge::Crm::FieldMappingApiInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_retrieve
+      #  api.crm.field_mapping.field_mappings_retrieve
       def field_mappings_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings"
         end
         Merge::Crm::FieldMappingApiInstanceResponse.from_json(json_object: response.body)
@@ -59,11 +69,11 @@ module Merge
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_create(
+      #  api.crm.field_mapping.field_mappings_create(
       #    target_field_name: "example_target_field_name",
       #    target_field_description: "this is a example description of the target field",
       #    remote_field_traversal_path: ["example_remote_field"],
@@ -77,7 +87,14 @@ module Merge
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
           req.body = {
             **(request_options&.additional_body_parameters || {}),
             target_field_name: target_field_name,
@@ -102,17 +119,27 @@ module Merge
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_destroy(field_mapping_id: "field_mapping_id")
+      #  api.crm.field_mapping.field_mappings_destroy(field_mapping_id: "field_mapping_id")
       def field_mappings_destroy(field_mapping_id:, request_options: nil)
         response = @request_client.conn.delete do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings/#{field_mapping_id}"
         end
         Merge::Crm::FieldMappingInstanceResponse.from_json(json_object: response.body)
@@ -131,18 +158,25 @@ module Merge
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_partial_update(field_mapping_id: "field_mapping_id")
+      #  api.crm.field_mapping.field_mappings_partial_update(field_mapping_id: "field_mapping_id")
       def field_mappings_partial_update(field_mapping_id:, remote_field_traversal_path: nil, remote_method: nil,
                                         remote_url_path: nil, request_options: nil)
         response = @request_client.conn.patch do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
           req.body = {
             **(request_options&.additional_body_parameters || {}),
             remote_field_traversal_path: remote_field_traversal_path,
@@ -167,22 +201,29 @@ module Merge
       # @return [Merge::Crm::RemoteFieldApiResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.remote_fields_retrieve
+      #  api.crm.field_mapping.remote_fields_retrieve
       def remote_fields_retrieve(common_models: nil, include_example_values: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "common_models": common_models,
             "include_example_values": include_example_values
           }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/remote-fields"
         end
         Merge::Crm::RemoteFieldApiResponse.from_json(json_object: response.body)
@@ -198,17 +239,27 @@ module Merge
       # @return [Merge::Crm::ExternalTargetFieldApiResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.target_fields_retrieve
+      #  api.crm.field_mapping.target_fields_retrieve
       def target_fields_retrieve(request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
           req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/target-fields"
         end
         Merge::Crm::ExternalTargetFieldApiResponse.from_json(json_object: response.body)
@@ -233,18 +284,28 @@ module Merge
       # @return [Merge::Crm::FieldMappingApiInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_retrieve
+      #  api.crm.field_mapping.field_mappings_retrieve
       def field_mappings_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings"
           end
           Merge::Crm::FieldMappingApiInstanceResponse.from_json(json_object: response.body)
@@ -267,11 +328,11 @@ module Merge
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_create(
+      #  api.crm.field_mapping.field_mappings_create(
       #    target_field_name: "example_target_field_name",
       #    target_field_description: "this is a example description of the target field",
       #    remote_field_traversal_path: ["example_remote_field"],
@@ -286,7 +347,14 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
             req.body = {
               **(request_options&.additional_body_parameters || {}),
               target_field_name: target_field_name,
@@ -312,18 +380,28 @@ module Merge
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_destroy(field_mapping_id: "field_mapping_id")
+      #  api.crm.field_mapping.field_mappings_destroy(field_mapping_id: "field_mapping_id")
       def field_mappings_destroy(field_mapping_id:, request_options: nil)
         Async do
           response = @request_client.conn.delete do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings/#{field_mapping_id}"
           end
           Merge::Crm::FieldMappingInstanceResponse.from_json(json_object: response.body)
@@ -343,11 +421,11 @@ module Merge
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.field_mappings_partial_update(field_mapping_id: "field_mapping_id")
+      #  api.crm.field_mapping.field_mappings_partial_update(field_mapping_id: "field_mapping_id")
       def field_mappings_partial_update(field_mapping_id:, remote_field_traversal_path: nil, remote_method: nil,
                                         remote_url_path: nil, request_options: nil)
         Async do
@@ -355,7 +433,14 @@ module Merge
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
             req.body = {
               **(request_options&.additional_body_parameters || {}),
               remote_field_traversal_path: remote_field_traversal_path,
@@ -381,23 +466,30 @@ module Merge
       # @return [Merge::Crm::RemoteFieldApiResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.remote_fields_retrieve
+      #  api.crm.field_mapping.remote_fields_retrieve
       def remote_fields_retrieve(common_models: nil, include_example_values: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "common_models": common_models,
               "include_example_values": include_example_values
             }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/remote-fields"
           end
           Merge::Crm::RemoteFieldApiResponse.from_json(json_object: response.body)
@@ -414,18 +506,28 @@ module Merge
       # @return [Merge::Crm::ExternalTargetFieldApiResponse]
       # @example
       #  api = Merge::Client.new(
-      #    environment: Environment::PRODUCTION,
       #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.target_fields_retrieve
+      #  api.crm.field_mapping.target_fields_retrieve
       def target_fields_retrieve(request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
             req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
             req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = { **req.headers, **(request_options&.additional_headers || {}) }.compact
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/target-fields"
           end
           Merge::Crm::ExternalTargetFieldApiResponse.from_json(json_object: response.body)

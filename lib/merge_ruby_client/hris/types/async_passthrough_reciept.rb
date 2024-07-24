@@ -31,7 +31,8 @@ module Merge
       # @return [Merge::Hris::AsyncPassthroughReciept]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        async_passthrough_receipt_id = struct["async_passthrough_receipt_id"]
+        parsed_json = JSON.parse(json_object)
+        async_passthrough_receipt_id = parsed_json["async_passthrough_receipt_id"]
         new(async_passthrough_receipt_id: async_passthrough_receipt_id, additional_properties: struct)
       end
 

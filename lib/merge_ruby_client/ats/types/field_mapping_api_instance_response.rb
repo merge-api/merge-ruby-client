@@ -113,69 +113,69 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        activity = parsed_json["Activity"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        activity = parsed_json["Activity"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        application = parsed_json["Application"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        application = parsed_json["Application"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        attachment = parsed_json["Attachment"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        attachment = parsed_json["Attachment"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        candidate = parsed_json["Candidate"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        candidate = parsed_json["Candidate"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        department = parsed_json["Department"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        department = parsed_json["Department"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        eeoc = parsed_json["EEOC"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        eeoc = parsed_json["EEOC"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        scheduled_interview = parsed_json["ScheduledInterview"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        scheduled_interview = parsed_json["ScheduledInterview"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        job = parsed_json["Job"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        job = parsed_json["Job"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        job_posting = parsed_json["JobPosting"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        job_posting = parsed_json["JobPosting"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        job_interview_stage = parsed_json["JobInterviewStage"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        job_interview_stage = parsed_json["JobInterviewStage"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        offer = parsed_json["Offer"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        offer = parsed_json["Offer"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        office = parsed_json["Office"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        office = parsed_json["Office"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        reject_reason = parsed_json["RejectReason"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        reject_reason = parsed_json["RejectReason"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        scorecard = parsed_json["Scorecard"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        scorecard = parsed_json["Scorecard"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        tag = parsed_json["Tag"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        tag = parsed_json["Tag"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
-        remote_user = parsed_json["RemoteUser"]&.map do |v|
-          v = v.to_json
-          Merge::Ats::FieldMappingApiInstance.from_json(json_object: v)
+        remote_user = parsed_json["RemoteUser"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::FieldMappingApiInstance.from_json(json_object: item)
         end
         new(
           activity: activity,

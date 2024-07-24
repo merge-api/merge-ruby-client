@@ -55,10 +55,11 @@ module Merge
       # @return [Merge::Ticketing::ModelOperation]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        model_name = struct["model_name"]
-        available_operations = struct["available_operations"]
-        required_post_parameters = struct["required_post_parameters"]
-        supported_fields = struct["supported_fields"]
+        parsed_json = JSON.parse(json_object)
+        model_name = parsed_json["model_name"]
+        available_operations = parsed_json["available_operations"]
+        required_post_parameters = parsed_json["required_post_parameters"]
+        supported_fields = parsed_json["supported_fields"]
         new(
           model_name: model_name,
           available_operations: available_operations,

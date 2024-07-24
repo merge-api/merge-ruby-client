@@ -100,12 +100,12 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        file_url = struct["file_url"]
-        file_thumbnail_url = struct["file_thumbnail_url"]
-        size = struct["size"]
-        mime_type = struct["mime_type"]
-        description = struct["description"]
+        name = parsed_json["name"]
+        file_url = parsed_json["file_url"]
+        file_thumbnail_url = parsed_json["file_thumbnail_url"]
+        size = parsed_json["size"]
+        mime_type = parsed_json["mime_type"]
+        description = parsed_json["description"]
         if parsed_json["folder"].nil?
           folder = nil
         else
@@ -124,8 +124,8 @@ module Merge
           drive = parsed_json["drive"].to_json
           drive = Merge::Filestorage::FileRequestDrive.from_json(json_object: drive)
         end
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           name: name,
           file_url: file_url,

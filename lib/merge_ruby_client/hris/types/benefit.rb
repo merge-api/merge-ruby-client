@@ -118,8 +118,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         if parsed_json["employee"].nil?
@@ -128,18 +128,18 @@ module Merge
           employee = parsed_json["employee"].to_json
           employee = Merge::Hris::BenefitEmployee.from_json(json_object: employee)
         end
-        provider_name = struct["provider_name"]
-        benefit_plan_type = struct["benefit_plan_type"]
-        employee_contribution = struct["employee_contribution"]
-        company_contribution = struct["company_contribution"]
+        provider_name = parsed_json["provider_name"]
+        benefit_plan_type = parsed_json["benefit_plan_type"]
+        employee_contribution = parsed_json["employee_contribution"]
+        company_contribution = parsed_json["company_contribution"]
         start_date = (DateTime.parse(parsed_json["start_date"]) unless parsed_json["start_date"].nil?)
         end_date = (DateTime.parse(parsed_json["end_date"]) unless parsed_json["end_date"].nil?)
-        remote_was_deleted = struct["remote_was_deleted"]
-        employer_benefit = struct["employer_benefit"]
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Hris::RemoteData.from_json(json_object: v)
+        remote_was_deleted = parsed_json["remote_was_deleted"]
+        employer_benefit = parsed_json["employer_benefit"]
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,

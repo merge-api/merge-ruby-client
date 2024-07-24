@@ -38,8 +38,9 @@ module Merge
       # @return [Merge::Crm::IgnoreCommonModelRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        reason = struct["reason"]
-        message = struct["message"]
+        parsed_json = JSON.parse(json_object)
+        reason = parsed_json["reason"]
+        message = parsed_json["message"]
         new(
           reason: reason,
           message: message,

@@ -137,15 +137,15 @@ module Merge
           approver = parsed_json["approver"].to_json
           approver = Merge::Hris::TimeOffRequestApprover.from_json(json_object: approver)
         end
-        status = struct["status"]
-        employee_note = struct["employee_note"]
-        units = struct["units"]
-        amount = struct["amount"]
-        request_type = struct["request_type"]
+        status = parsed_json["status"]
+        employee_note = parsed_json["employee_note"]
+        units = parsed_json["units"]
+        amount = parsed_json["amount"]
+        request_type = parsed_json["request_type"]
         start_time = (DateTime.parse(parsed_json["start_time"]) unless parsed_json["start_time"].nil?)
         end_time = (DateTime.parse(parsed_json["end_time"]) unless parsed_json["end_time"].nil?)
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           employee: employee,
           approver: approver,

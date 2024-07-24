@@ -77,18 +77,18 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        file_name = struct["file_name"]
+        file_name = parsed_json["file_name"]
         if parsed_json["ticket"].nil?
           ticket = nil
         else
           ticket = parsed_json["ticket"].to_json
           ticket = Merge::Ticketing::AttachmentRequestTicket.from_json(json_object: ticket)
         end
-        file_url = struct["file_url"]
-        content_type = struct["content_type"]
-        uploaded_by = struct["uploaded_by"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
+        file_url = parsed_json["file_url"]
+        content_type = parsed_json["content_type"]
+        uploaded_by = parsed_json["uploaded_by"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
         new(
           file_name: file_name,
           ticket: ticket,

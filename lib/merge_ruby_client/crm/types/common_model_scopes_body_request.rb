@@ -40,9 +40,10 @@ module Merge
       # @return [Merge::Crm::CommonModelScopesBodyRequest]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
-        model_id = struct["model_id"]
-        enabled_actions = struct["enabled_actions"]
-        disabled_fields = struct["disabled_fields"]
+        parsed_json = JSON.parse(json_object)
+        model_id = parsed_json["model_id"]
+        enabled_actions = parsed_json["enabled_actions"]
+        disabled_fields = parsed_json["disabled_fields"]
         new(
           model_id: model_id,
           enabled_actions: enabled_actions,

@@ -151,26 +151,26 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        name = struct["name"]
-        assignees = struct["assignees"]
-        creator = struct["creator"]
+        name = parsed_json["name"]
+        assignees = parsed_json["assignees"]
+        creator = parsed_json["creator"]
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
-        status = struct["status"]
-        description = struct["description"]
-        collections = struct["collections"]
-        ticket_type = struct["ticket_type"]
-        account = struct["account"]
-        contact = struct["contact"]
-        parent_ticket = struct["parent_ticket"]
-        tags = struct["tags"]
+        status = parsed_json["status"]
+        description = parsed_json["description"]
+        collections = parsed_json["collections"]
+        ticket_type = parsed_json["ticket_type"]
+        account = parsed_json["account"]
+        contact = parsed_json["contact"]
+        parent_ticket = parsed_json["parent_ticket"]
+        tags = parsed_json["tags"]
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
-        ticket_url = struct["ticket_url"]
-        priority = struct["priority"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Ticketing::RemoteFieldRequest.from_json(json_object: v)
+        ticket_url = parsed_json["ticket_url"]
+        priority = parsed_json["priority"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           name: name,

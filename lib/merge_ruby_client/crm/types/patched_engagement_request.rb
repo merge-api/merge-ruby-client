@@ -105,20 +105,20 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        owner = struct["owner"]
-        content = struct["content"]
-        subject = struct["subject"]
-        direction = struct["direction"]
-        engagement_type = struct["engagement_type"]
+        owner = parsed_json["owner"]
+        content = parsed_json["content"]
+        subject = parsed_json["subject"]
+        direction = parsed_json["direction"]
+        engagement_type = parsed_json["engagement_type"]
         start_time = (DateTime.parse(parsed_json["start_time"]) unless parsed_json["start_time"].nil?)
         end_time = (DateTime.parse(parsed_json["end_time"]) unless parsed_json["end_time"].nil?)
-        account = struct["account"]
-        contacts = struct["contacts"]
-        integration_params = struct["integration_params"]
-        linked_account_params = struct["linked_account_params"]
-        remote_fields = parsed_json["remote_fields"]&.map do |v|
-          v = v.to_json
-          Merge::Crm::RemoteFieldRequest.from_json(json_object: v)
+        account = parsed_json["account"]
+        contacts = parsed_json["contacts"]
+        integration_params = parsed_json["integration_params"]
+        linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Crm::RemoteFieldRequest.from_json(json_object: item)
         end
         new(
           owner: owner,

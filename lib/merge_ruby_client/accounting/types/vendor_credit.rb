@@ -749,11 +749,11 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        id = struct["id"]
-        remote_id = struct["remote_id"]
+        id = parsed_json["id"]
+        remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        number = struct["number"]
+        number = parsed_json["number"]
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
         if parsed_json["vendor"].nil?
           vendor = nil
@@ -761,34 +761,34 @@ module Merge
           vendor = parsed_json["vendor"].to_json
           vendor = Merge::Accounting::VendorCreditVendor.from_json(json_object: vendor)
         end
-        total_amount = struct["total_amount"]
-        currency = struct["currency"]
-        exchange_rate = struct["exchange_rate"]
+        total_amount = parsed_json["total_amount"]
+        currency = parsed_json["currency"]
+        exchange_rate = parsed_json["exchange_rate"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::VendorCreditCompany.from_json(json_object: company)
         end
-        lines = parsed_json["lines"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::VendorCreditLine.from_json(json_object: v)
+        lines = parsed_json["lines"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::VendorCreditLine.from_json(json_object: item)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::VendorCreditTrackingCategoriesItem.from_json(json_object: v)
+        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::VendorCreditTrackingCategoriesItem.from_json(json_object: item)
         end
-        remote_was_deleted = struct["remote_was_deleted"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         if parsed_json["accounting_period"].nil?
           accounting_period = nil
         else
           accounting_period = parsed_json["accounting_period"].to_json
           accounting_period = Merge::Accounting::VendorCreditAccountingPeriod.from_json(json_object: accounting_period)
         end
-        field_mappings = struct["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |v|
-          v = v.to_json
-          Merge::Accounting::RemoteData.from_json(json_object: v)
+        field_mappings = parsed_json["field_mappings"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteData.from_json(json_object: item)
         end
         new(
           id: id,
