@@ -71,6 +71,7 @@ module Merge
       #  - `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
       #  - `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
       #  - `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
+      #  - `END_USER_CREDENTIALS_ACCESSED` - END_USER_CREDENTIALS_ACCESSED
       attr_reader :event_type
       # @return [String]
       attr_reader :event_description
@@ -141,6 +142,7 @@ module Merge
       #  - `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
       #  - `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
       #  - `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
+      #  - `END_USER_CREDENTIALS_ACCESSED` - END_USER_CREDENTIALS_ACCESSED
       # @param event_description [String]
       # @param created_at [DateTime]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

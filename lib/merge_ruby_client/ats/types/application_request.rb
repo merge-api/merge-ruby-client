@@ -5,6 +5,7 @@ require_relative "application_request_job"
 require "date"
 require_relative "application_request_offers_item"
 require_relative "application_request_credited_to"
+require_relative "application_request_screening_question_answers_item"
 require_relative "application_request_current_stage"
 require_relative "application_request_reject_reason"
 require "ostruct"
@@ -36,6 +37,8 @@ module Merge
       attr_reader :source
       # @return [Merge::Ats::ApplicationRequestCreditedTo] The user credited for this application.
       attr_reader :credited_to
+      # @return [Array<Merge::Ats::ApplicationRequestScreeningQuestionAnswersItem>]
+      attr_reader :screening_question_answers
       # @return [Merge::Ats::ApplicationRequestCurrentStage] The application's current stage.
       attr_reader :current_stage
       # @return [Merge::Ats::ApplicationRequestRejectReason] The application's reason for rejection.
@@ -61,6 +64,7 @@ module Merge
       # @param offers [Array<Merge::Ats::ApplicationRequestOffersItem>]
       # @param source [String] The application's source.
       # @param credited_to [Merge::Ats::ApplicationRequestCreditedTo] The user credited for this application.
+      # @param screening_question_answers [Array<Merge::Ats::ApplicationRequestScreeningQuestionAnswersItem>]
       # @param current_stage [Merge::Ats::ApplicationRequestCurrentStage] The application's current stage.
       # @param reject_reason [Merge::Ats::ApplicationRequestRejectReason] The application's reason for rejection.
       # @param remote_template_id [String]
@@ -69,7 +73,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::ApplicationRequest]
       def initialize(candidate: OMIT, job: OMIT, applied_at: OMIT, rejected_at: OMIT, offers: OMIT, source: OMIT,
-                     credited_to: OMIT, current_stage: OMIT, reject_reason: OMIT, remote_template_id: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     credited_to: OMIT, screening_question_answers: OMIT, current_stage: OMIT, reject_reason: OMIT, remote_template_id: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
         @candidate = candidate if candidate != OMIT
         @job = job if job != OMIT
         @applied_at = applied_at if applied_at != OMIT
@@ -77,6 +81,7 @@ module Merge
         @offers = offers if offers != OMIT
         @source = source if source != OMIT
         @credited_to = credited_to if credited_to != OMIT
+        @screening_question_answers = screening_question_answers if screening_question_answers != OMIT
         @current_stage = current_stage if current_stage != OMIT
         @reject_reason = reject_reason if reject_reason != OMIT
         @remote_template_id = remote_template_id if remote_template_id != OMIT
@@ -91,6 +96,7 @@ module Merge
           "offers": offers,
           "source": source,
           "credited_to": credited_to,
+          "screening_question_answers": screening_question_answers,
           "current_stage": current_stage,
           "reject_reason": reject_reason,
           "remote_template_id": remote_template_id,
@@ -133,6 +139,10 @@ module Merge
           credited_to = parsed_json["credited_to"].to_json
           credited_to = Merge::Ats::ApplicationRequestCreditedTo.from_json(json_object: credited_to)
         end
+        screening_question_answers = parsed_json["screening_question_answers"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::ApplicationRequestScreeningQuestionAnswersItem.from_json(json_object: item)
+        end
         if parsed_json["current_stage"].nil?
           current_stage = nil
         else
@@ -156,6 +166,7 @@ module Merge
           offers: offers,
           source: source,
           credited_to: credited_to,
+          screening_question_answers: screening_question_answers,
           current_stage: current_stage,
           reject_reason: reject_reason,
           remote_template_id: remote_template_id,
@@ -186,6 +197,7 @@ module Merge
         obj.offers&.is_a?(Array) != false || raise("Passed value for field obj.offers is not the expected type, validation failed.")
         obj.source&.is_a?(String) != false || raise("Passed value for field obj.source is not the expected type, validation failed.")
         obj.credited_to.nil? || Merge::Ats::ApplicationRequestCreditedTo.validate_raw(obj: obj.credited_to)
+        obj.screening_question_answers&.is_a?(Array) != false || raise("Passed value for field obj.screening_question_answers is not the expected type, validation failed.")
         obj.current_stage.nil? || Merge::Ats::ApplicationRequestCurrentStage.validate_raw(obj: obj.current_stage)
         obj.reject_reason.nil? || Merge::Ats::ApplicationRequestRejectReason.validate_raw(obj: obj.reject_reason)
         obj.remote_template_id&.is_a?(String) != false || raise("Passed value for field obj.remote_template_id is not the expected type, validation failed.")

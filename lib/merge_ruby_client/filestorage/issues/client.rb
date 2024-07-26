@@ -19,7 +19,7 @@ module Merge
         @request_client = request_client
       end
 
-      # Gets issues.
+      # Gets all issues for Organization.
       #
       # @param account_token [String]
       # @param cursor [String] The pagination cursor value.
@@ -36,6 +36,8 @@ module Merge
       #  datetime.
       # @param last_incident_time_before [DateTime] If provided, will only return issues whose last incident time was before this
       #  datetime.
+      # @param linked_account_id [String] If provided, will only include issues pertaining to the linked account passed
+      #  in.
       # @param page_size [Integer] Number of results to return per page.
       # @param start_date [String] If included, will only include issues whose most recent action occurred after
       #  this time
@@ -52,7 +54,7 @@ module Merge
       #  )
       #  api.filestorage.issues.list
       def list(account_token: nil, cursor: nil, end_date: nil, end_user_organization_name: nil,
-               first_incident_time_after: nil, first_incident_time_before: nil, include_muted: nil, integration_name: nil, last_incident_time_after: nil, last_incident_time_before: nil, page_size: nil, start_date: nil, status: nil, request_options: nil)
+               first_incident_time_after: nil, first_incident_time_before: nil, include_muted: nil, integration_name: nil, last_incident_time_after: nil, last_incident_time_before: nil, linked_account_id: nil, page_size: nil, start_date: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -74,6 +76,7 @@ module Merge
             "integration_name": integration_name,
             "last_incident_time_after": last_incident_time_after,
             "last_incident_time_before": last_incident_time_before,
+            "linked_account_id": linked_account_id,
             "page_size": page_size,
             "start_date": start_date,
             "status": status
@@ -130,7 +133,7 @@ module Merge
         @request_client = request_client
       end
 
-      # Gets issues.
+      # Gets all issues for Organization.
       #
       # @param account_token [String]
       # @param cursor [String] The pagination cursor value.
@@ -147,6 +150,8 @@ module Merge
       #  datetime.
       # @param last_incident_time_before [DateTime] If provided, will only return issues whose last incident time was before this
       #  datetime.
+      # @param linked_account_id [String] If provided, will only include issues pertaining to the linked account passed
+      #  in.
       # @param page_size [Integer] Number of results to return per page.
       # @param start_date [String] If included, will only include issues whose most recent action occurred after
       #  this time
@@ -163,7 +168,7 @@ module Merge
       #  )
       #  api.filestorage.issues.list
       def list(account_token: nil, cursor: nil, end_date: nil, end_user_organization_name: nil,
-               first_incident_time_after: nil, first_incident_time_before: nil, include_muted: nil, integration_name: nil, last_incident_time_after: nil, last_incident_time_before: nil, page_size: nil, start_date: nil, status: nil, request_options: nil)
+               first_incident_time_after: nil, first_incident_time_before: nil, include_muted: nil, integration_name: nil, last_incident_time_after: nil, last_incident_time_before: nil, linked_account_id: nil, page_size: nil, start_date: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -186,6 +191,7 @@ module Merge
               "integration_name": integration_name,
               "last_incident_time_after": last_incident_time_after,
               "last_incident_time_before": last_incident_time_before,
+              "linked_account_id": linked_account_id,
               "page_size": page_size,
               "start_date": start_date,
               "status": status

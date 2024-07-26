@@ -35,6 +35,9 @@ module Merge
       # @param should_create_magic_link_url [Boolean] Whether to generate a Magic Link URL. Defaults to false. For more information on
       #  Magic Link, see
       #  https://merge.dev/blog/integrations-fast-say-hello-to-magic-link.
+      # @param hide_admin_magic_link [Boolean] Whether to generate a Magic Link URL on the Admin Needed screen during the
+      #  linking flow. Defaults to false. For more information on Magic Link, see
+      #  https://merge.dev/blog/integrations-fast-say-hello-to-magic-link.
       # @param common_models [Array<Hash>] An array of objects to specify the models and fields that will be disabled for a
       #  given Linked Account. Each object uses model_id, enabled_actions, and
       #  disabled_fields to specify the model, method, and fields that are scoped for a
@@ -62,7 +65,7 @@ module Merge
       #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -84,6 +87,7 @@ module Merge
             integration: integration,
             link_expiry_mins: link_expiry_mins,
             should_create_magic_link_url: should_create_magic_link_url,
+            hide_admin_magic_link: hide_admin_magic_link,
             common_models: common_models,
             category_common_model_scopes: category_common_model_scopes,
             language: language,
@@ -122,6 +126,9 @@ module Merge
       # @param should_create_magic_link_url [Boolean] Whether to generate a Magic Link URL. Defaults to false. For more information on
       #  Magic Link, see
       #  https://merge.dev/blog/integrations-fast-say-hello-to-magic-link.
+      # @param hide_admin_magic_link [Boolean] Whether to generate a Magic Link URL on the Admin Needed screen during the
+      #  linking flow. Defaults to false. For more information on Magic Link, see
+      #  https://merge.dev/blog/integrations-fast-say-hello-to-magic-link.
       # @param common_models [Array<Hash>] An array of objects to specify the models and fields that will be disabled for a
       #  given Linked Account. Each object uses model_id, enabled_actions, and
       #  disabled_fields to specify the model, method, and fields that are scoped for a
@@ -149,7 +156,7 @@ module Merge
       #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -172,6 +179,7 @@ module Merge
               integration: integration,
               link_expiry_mins: link_expiry_mins,
               should_create_magic_link_url: should_create_magic_link_url,
+              hide_admin_magic_link: hide_admin_magic_link,
               common_models: common_models,
               category_common_model_scopes: category_common_model_scopes,
               language: language,

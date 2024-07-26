@@ -44,6 +44,8 @@ module Merge
       #  returned.
       # @param owner_id [String] If provided, will only return opportunities with this owner.
       # @param page_size [Integer] Number of results to return per page.
+      # @param remote_created_after [DateTime] If provided, will only return opportunities created in the third party platform
+      #  after this datetime.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -65,7 +67,7 @@ module Merge
       #  )
       #  api.crm.opportunities.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_created_after: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -89,6 +91,7 @@ module Merge
             "modified_before": modified_before,
             "owner_id": owner_id,
             "page_size": page_size,
+            "remote_created_after": remote_created_after,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
             "show_enum_origins": show_enum_origins,
@@ -320,6 +323,8 @@ module Merge
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
+      #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
@@ -331,7 +336,7 @@ module Merge
       #  )
       #  api.crm.opportunities.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_remote_fields: nil, page_size: nil, request_options: nil)
+                                    include_remote_fields: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -347,6 +352,7 @@ module Merge
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "include_remote_fields": include_remote_fields,
+            "is_common_model_field": is_common_model_field,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -386,6 +392,8 @@ module Merge
       #  returned.
       # @param owner_id [String] If provided, will only return opportunities with this owner.
       # @param page_size [Integer] Number of results to return per page.
+      # @param remote_created_after [DateTime] If provided, will only return opportunities created in the third party platform
+      #  after this datetime.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -407,7 +415,7 @@ module Merge
       #  )
       #  api.crm.opportunities.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_created_after: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -432,6 +440,7 @@ module Merge
               "modified_before": modified_before,
               "owner_id": owner_id,
               "page_size": page_size,
+              "remote_created_after": remote_created_after,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
               "show_enum_origins": show_enum_origins,
@@ -674,6 +683,8 @@ module Merge
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
+      #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
@@ -685,7 +696,7 @@ module Merge
       #  )
       #  api.crm.opportunities.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_remote_fields: nil, page_size: nil, request_options: nil)
+                                    include_remote_fields: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -702,6 +713,7 @@ module Merge
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "include_remote_fields": include_remote_fields,
+              "is_common_model_field": is_common_model_field,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?

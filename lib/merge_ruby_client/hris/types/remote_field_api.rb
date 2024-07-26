@@ -37,12 +37,12 @@ module Merge
       # @param coverage [Merge::Hris::RemoteFieldApiCoverage]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Hris::RemoteFieldApi]
-      def initialize(schema:, remote_key_name:, remote_endpoint_info:, example_values:, advanced_metadata: OMIT,
+      def initialize(schema:, remote_key_name:, remote_endpoint_info:, example_values: OMIT, advanced_metadata: OMIT,
                      coverage: OMIT, additional_properties: nil)
         @schema = schema
         @remote_key_name = remote_key_name
         @remote_endpoint_info = remote_endpoint_info
-        @example_values = example_values
+        @example_values = example_values if example_values != OMIT
         @advanced_metadata = advanced_metadata if advanced_metadata != OMIT
         @coverage = coverage if coverage != OMIT
         @additional_properties = additional_properties
@@ -114,7 +114,7 @@ module Merge
         obj.schema.is_a?(Hash) != false || raise("Passed value for field obj.schema is not the expected type, validation failed.")
         obj.remote_key_name.is_a?(String) != false || raise("Passed value for field obj.remote_key_name is not the expected type, validation failed.")
         Merge::Hris::RemoteEndpointInfo.validate_raw(obj: obj.remote_endpoint_info)
-        obj.example_values.is_a?(Array) != false || raise("Passed value for field obj.example_values is not the expected type, validation failed.")
+        obj.example_values&.is_a?(Array) != false || raise("Passed value for field obj.example_values is not the expected type, validation failed.")
         obj.advanced_metadata.nil? || Merge::Hris::AdvancedMetadata.validate_raw(obj: obj.advanced_metadata)
         obj.coverage.nil? || Merge::Hris::RemoteFieldApiCoverage.validate_raw(obj: obj.coverage)
       end

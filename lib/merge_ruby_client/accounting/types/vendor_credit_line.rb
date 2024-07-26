@@ -62,15 +62,15 @@ module Merge
       #  platform.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::VendorCreditLine]
-      def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, net_amount: OMIT,
-                     tracking_category: OMIT, tracking_categories: OMIT, description: OMIT, account: OMIT, company: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+      def initialize(tracking_categories:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, net_amount: OMIT,
+                     tracking_category: OMIT, description: OMIT, account: OMIT, company: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @net_amount = net_amount if net_amount != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
-        @tracking_categories = tracking_categories if tracking_categories != OMIT
+        @tracking_categories = tracking_categories
         @description = description if description != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
@@ -156,7 +156,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.net_amount&.is_a?(Float) != false || raise("Passed value for field obj.net_amount is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
-        obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::VendorCreditLineAccount.validate_raw(obj: obj.account)
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")

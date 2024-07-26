@@ -44,7 +44,7 @@ module Merge
       #  - `PUBLIC` - PUBLIC
       #  - `PRIVATE` - PRIVATE
       attr_reader :visibility
-      # @return [String] The activity’s candidate.
+      # @return [String]
       attr_reader :candidate
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
@@ -77,7 +77,7 @@ module Merge
       #  - `ADMIN_ONLY` - ADMIN_ONLY
       #  - `PUBLIC` - PUBLIC
       #  - `PRIVATE` - PRIVATE
-      # @param candidate [String] The activity’s candidate.
+      # @param candidate [String]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
       # @param field_mappings [Hash{String => Object}]

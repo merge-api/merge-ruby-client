@@ -24,6 +24,9 @@ module Merge
       #  - `WORK` - WORK
       #  - `OTHER` - OTHER
       attr_reader :email_address_type
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform.
+      attr_reader :remote_was_deleted
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -39,20 +42,24 @@ module Merge
       #  - `PERSONAL` - PERSONAL
       #  - `WORK` - WORK
       #  - `OTHER` - OTHER
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::EmailAddress]
       def initialize(created_at: OMIT, modified_at: OMIT, value: OMIT, email_address_type: OMIT,
-                     additional_properties: nil)
+                     remote_was_deleted: OMIT, additional_properties: nil)
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @value = value if value != OMIT
         @email_address_type = email_address_type if email_address_type != OMIT
+        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "created_at": created_at,
           "modified_at": modified_at,
           "value": value,
-          "email_address_type": email_address_type
+          "email_address_type": email_address_type,
+          "remote_was_deleted": remote_was_deleted
         }.reject do |_k, v|
           v == OMIT
         end
@@ -69,11 +76,13 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         value = parsed_json["value"]
         email_address_type = parsed_json["email_address_type"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           created_at: created_at,
           modified_at: modified_at,
           value: value,
           email_address_type: email_address_type,
+          remote_was_deleted: remote_was_deleted,
           additional_properties: struct
         )
       end
@@ -96,6 +105,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.value&.is_a?(String) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
         obj.email_address_type&.is_a?(Merge::Ats::EmailAddressTypeEnum) != false || raise("Passed value for field obj.email_address_type is not the expected type, validation failed.")
+        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end
     end
   end

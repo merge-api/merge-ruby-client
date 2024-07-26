@@ -32,7 +32,7 @@ module Merge
       #  - `PUBLIC` - PUBLIC
       #  - `PRIVATE` - PRIVATE
       attr_reader :visibility
-      # @return [String] The activity’s candidate.
+      # @return [String]
       attr_reader :candidate
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -57,7 +57,7 @@ module Merge
       #  - `ADMIN_ONLY` - ADMIN_ONLY
       #  - `PUBLIC` - PUBLIC
       #  - `PRIVATE` - PRIVATE
-      # @param candidate [String] The activity’s candidate.
+      # @param candidate [String]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

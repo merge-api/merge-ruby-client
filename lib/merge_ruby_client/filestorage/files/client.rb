@@ -176,7 +176,7 @@ module Merge
         Merge::Filestorage::File.from_json(json_object: response.body)
       end
 
-      # Returns a `File` object with the given `id`.
+      # Returns the `File` content with the given `id` as a stream of bytes.
       #
       # @param id [String]
       # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
@@ -417,7 +417,7 @@ module Merge
         end
       end
 
-      # Returns a `File` object with the given `id`.
+      # Returns the `File` content with the given `id` as a stream of bytes.
       #
       # @param id [String]
       # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For

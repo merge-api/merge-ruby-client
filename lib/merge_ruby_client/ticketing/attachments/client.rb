@@ -163,7 +163,7 @@ module Merge
         Merge::Ticketing::Attachment.from_json(json_object: response.body)
       end
 
-      # Returns an `Attachment` object with the given `id`.
+      # Returns the `File` content with the given `id` as a stream of bytes.
       #
       # @param id [String]
       # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
@@ -393,7 +393,7 @@ module Merge
         end
       end
 
-      # Returns an `Attachment` object with the given `id`.
+      # Returns the `File` content with the given `id` as a stream of bytes.
       #
       # @param id [String]
       # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For

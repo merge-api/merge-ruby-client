@@ -682,8 +682,8 @@ module Merge
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PurchaseOrderLineItemRequest]
-      def initialize(remote_id: OMIT, description: OMIT, unit_price: OMIT, quantity: OMIT, item: OMIT, account: OMIT,
-                     tracking_category: OMIT, tracking_categories: OMIT, tax_amount: OMIT, total_line_amount: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+      def initialize(tracking_categories:, remote_id: OMIT, description: OMIT, unit_price: OMIT, quantity: OMIT, item: OMIT, account: OMIT,
+                     tracking_category: OMIT, tax_amount: OMIT, total_line_amount: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @description = description if description != OMIT
         @unit_price = unit_price if unit_price != OMIT
@@ -691,7 +691,7 @@ module Merge
         @item = item if item != OMIT
         @account = account if account != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
-        @tracking_categories = tracking_categories if tracking_categories != OMIT
+        @tracking_categories = tracking_categories
         @tax_amount = tax_amount if tax_amount != OMIT
         @total_line_amount = total_line_amount if total_line_amount != OMIT
         @currency = currency if currency != OMIT
@@ -789,7 +789,7 @@ module Merge
         obj.item.nil? || Merge::Accounting::PurchaseOrderLineItemRequestItem.validate_raw(obj: obj.item)
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
-        obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.tax_amount&.is_a?(String) != false || raise("Passed value for field obj.tax_amount is not the expected type, validation failed.")
         obj.total_line_amount&.is_a?(String) != false || raise("Passed value for field obj.total_line_amount is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")

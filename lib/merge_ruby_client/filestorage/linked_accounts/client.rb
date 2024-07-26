@@ -19,8 +19,7 @@ module Merge
 
       # List linked accounts for your organization.
       #
-      # @param category [Merge::Filestorage::LinkedAccounts::LinkedAccountsListRequestCategory] Options: ('hris', 'ats', 'accounting', 'ticketing', 'crm', 'mktg',
-      #  'filestorage')
+      # @param category [Merge::Filestorage::LinkedAccounts::LinkedAccountsListRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `mktg`, `ticketing`
       #  - `hris` - hris
       #  - `ats` - ats
       #  - `accounting` - accounting
@@ -106,8 +105,7 @@ module Merge
 
       # List linked accounts for your organization.
       #
-      # @param category [Merge::Filestorage::LinkedAccounts::LinkedAccountsListRequestCategory] Options: ('hris', 'ats', 'accounting', 'ticketing', 'crm', 'mktg',
-      #  'filestorage')
+      # @param category [Merge::Filestorage::LinkedAccounts::LinkedAccountsListRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `mktg`, `ticketing`
       #  - `hris` - hris
       #  - `ats` - ats
       #  - `accounting` - accounting
