@@ -9,6 +9,11 @@ module Merge
     class AccountIntegration
       # @return [String] Company name.
       attr_reader :name
+      # @return [String] Optional. This shortened name appears in places with limited space, usually in
+      #  conjunction with the platform's logo (e.g., Merge Link menu).<br><br>Example:
+      #  <i>Workforce Now (in lieu of ADP Workforce Now), SuccessFactors (in lieu of SAP
+      #  SuccessFactors)</i>
+      attr_reader :abbreviated_name
       # @return [Array<Merge::Ats::CategoriesEnum>] Category or categories this integration belongs to. Multiple categories should
       #  be comma separated, i.e. [ats, hris].
       attr_reader :categories
@@ -41,6 +46,10 @@ module Merge
       OMIT = Object.new
 
       # @param name [String] Company name.
+      # @param abbreviated_name [String] Optional. This shortened name appears in places with limited space, usually in
+      #  conjunction with the platform's logo (e.g., Merge Link menu).<br><br>Example:
+      #  <i>Workforce Now (in lieu of ADP Workforce Now), SuccessFactors (in lieu of SAP
+      #  SuccessFactors)</i>
       # @param categories [Array<Merge::Ats::CategoriesEnum>] Category or categories this integration belongs to. Multiple categories should
       #  be comma separated, i.e. [ats, hris].
       # @param image [String] Company logo in rectangular shape. <b>Upload an image with a clear
@@ -58,9 +67,10 @@ module Merge
       # @param category_beta_status [Hash{String => Object}] Category or categories this integration is in beta status for.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::AccountIntegration]
-      def initialize(name:, categories: OMIT, image: OMIT, square_image: OMIT, color: OMIT, slug: OMIT,
-                     api_endpoints_to_documentation_urls: OMIT, webhook_setup_guide_url: OMIT, category_beta_status: OMIT, additional_properties: nil)
+      def initialize(name:, abbreviated_name: OMIT, categories: OMIT, image: OMIT, square_image: OMIT, color: OMIT,
+                     slug: OMIT, api_endpoints_to_documentation_urls: OMIT, webhook_setup_guide_url: OMIT, category_beta_status: OMIT, additional_properties: nil)
         @name = name
+        @abbreviated_name = abbreviated_name if abbreviated_name != OMIT
         @categories = categories if categories != OMIT
         @image = image if image != OMIT
         @square_image = square_image if square_image != OMIT
@@ -74,6 +84,7 @@ module Merge
         @additional_properties = additional_properties
         @_field_set = {
           "name": name,
+          "abbreviated_name": abbreviated_name,
           "categories": categories,
           "image": image,
           "square_image": square_image,
@@ -95,6 +106,7 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         name = parsed_json["name"]
+        abbreviated_name = parsed_json["abbreviated_name"]
         categories = parsed_json["categories"]
         image = parsed_json["image"]
         square_image = parsed_json["square_image"]
@@ -105,6 +117,7 @@ module Merge
         category_beta_status = parsed_json["category_beta_status"]
         new(
           name: name,
+          abbreviated_name: abbreviated_name,
           categories: categories,
           image: image,
           square_image: square_image,
@@ -132,6 +145,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.name.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
+        obj.abbreviated_name&.is_a?(String) != false || raise("Passed value for field obj.abbreviated_name is not the expected type, validation failed.")
         obj.categories&.is_a?(Array) != false || raise("Passed value for field obj.categories is not the expected type, validation failed.")
         obj.image&.is_a?(String) != false || raise("Passed value for field obj.image is not the expected type, validation failed.")
         obj.square_image&.is_a?(String) != false || raise("Passed value for field obj.square_image is not the expected type, validation failed.")

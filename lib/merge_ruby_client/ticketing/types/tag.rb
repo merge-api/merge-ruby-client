@@ -19,6 +19,8 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
+      # @return [String]
+      attr_reader :id
       # @return [String] The tag's name.
       attr_reader :name
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -39,6 +41,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
+      # @param id [String]
       # @param name [String] The tag's name.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform.
@@ -46,11 +49,12 @@ module Merge
       # @param remote_data [Array<Merge::Ticketing::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::Tag]
-      def initialize(remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, remote_was_deleted: OMIT,
-                     field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+      def initialize(remote_id: OMIT, created_at: OMIT, modified_at: OMIT, id: OMIT, name: OMIT,
+                     remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
+        @id = id if id != OMIT
         @name = name if name != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
@@ -60,6 +64,7 @@ module Merge
           "remote_id": remote_id,
           "created_at": created_at,
           "modified_at": modified_at,
+          "id": id,
           "name": name,
           "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
@@ -79,6 +84,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
+        id = parsed_json["id"]
         name = parsed_json["name"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -90,6 +96,7 @@ module Merge
           remote_id: remote_id,
           created_at: created_at,
           modified_at: modified_at,
+          id: id,
           name: name,
           remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
@@ -115,6 +122,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
+        obj.id&.is_a?(String) != false || raise("Passed value for field obj.id is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

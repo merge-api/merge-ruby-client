@@ -43,6 +43,9 @@ module Merge
       attr_reader :required
       # @return [Array<Object>]
       attr_reader :options
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform.
+      attr_reader :remote_was_deleted
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -69,10 +72,12 @@ module Merge
       #  - `BOOLEAN` - BOOLEAN
       # @param required [Boolean] Whether or not the screening question is required.
       # @param options [Array<Object>]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::ScreeningQuestion]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, job: OMIT, description: OMIT,
-                     title: OMIT, type: OMIT, required: OMIT, options: OMIT, additional_properties: nil)
+                     title: OMIT, type: OMIT, required: OMIT, options: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -83,6 +88,7 @@ module Merge
         @type = type if type != OMIT
         @required = required if required != OMIT
         @options = options if options != OMIT
+        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -94,7 +100,8 @@ module Merge
           "title": title,
           "type": type,
           "required": required,
-          "options": options
+          "options": options,
+          "remote_was_deleted": remote_was_deleted
         }.reject do |_k, v|
           v == OMIT
         end
@@ -122,6 +129,7 @@ module Merge
         type = parsed_json["type"]
         required = parsed_json["required"]
         options = parsed_json["options"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
           remote_id: remote_id,
@@ -133,6 +141,7 @@ module Merge
           type: type,
           required: required,
           options: options,
+          remote_was_deleted: remote_was_deleted,
           additional_properties: struct
         )
       end
@@ -161,6 +170,7 @@ module Merge
         obj.type&.is_a?(Merge::Ats::ScreeningQuestionTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.required&.is_a?(Boolean) != false || raise("Passed value for field obj.required is not the expected type, validation failed.")
         obj.options&.is_a?(Array) != false || raise("Passed value for field obj.options is not the expected type, validation failed.")
+        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end
     end
   end

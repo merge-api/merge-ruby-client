@@ -39,7 +39,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param order_by [Merge::Hris::Employments::EmploymentsListRequestOrderBy] Overrides the default ordering for this endpoint.
+      # @param order_by [Merge::Hris::Employments::EmploymentsListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  effective_date, -effective_date.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_fields [Merge::Hris::Employments::EmploymentsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
@@ -162,7 +163,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param order_by [Merge::Hris::Employments::EmploymentsListRequestOrderBy] Overrides the default ordering for this endpoint.
+      # @param order_by [Merge::Hris::Employments::EmploymentsListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  effective_date, -effective_date.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_fields [Merge::Hris::Employments::EmploymentsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.

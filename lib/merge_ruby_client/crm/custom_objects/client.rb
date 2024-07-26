@@ -7,6 +7,7 @@ require_relative "../types/custom_object_request"
 require_relative "../types/crm_custom_object_response"
 require_relative "../types/custom_object"
 require_relative "../types/meta_response"
+require_relative "../types/paginated_remote_field_class_list"
 require "async"
 
 module Merge
@@ -188,6 +189,54 @@ module Merge
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/meta/post"
         end
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
+      end
+
+      # Returns a list of `RemoteFieldClass` objects.
+      #
+      # @param cursor [String] The pagination cursor value.
+      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
+      #  is_common_model_field value
+      # @param page_size [Integer] Number of results to return per page.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedRemoteFieldClassList]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.custom_objects.custom_object_classes_custom_objects_remote_field_classes_list
+      def custom_object_classes_custom_objects_remote_field_classes_list(cursor: nil, include_deleted_data: nil,
+                                                                         include_remote_data: nil, include_remote_fields: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "cursor": cursor,
+            "include_deleted_data": include_deleted_data,
+            "include_remote_data": include_remote_data,
+            "include_remote_fields": include_remote_fields,
+            "is_common_model_field": is_common_model_field,
+            "page_size": page_size
+          }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/custom-objects/remote-field-classes"
+        end
+        Merge::Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
     end
 
@@ -375,6 +424,56 @@ module Merge
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/meta/post"
           end
           Merge::Crm::MetaResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns a list of `RemoteFieldClass` objects.
+      #
+      # @param cursor [String] The pagination cursor value.
+      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
+      #  produce these models.
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
+      #  is_common_model_field value
+      # @param page_size [Integer] Number of results to return per page.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Crm::PaginatedRemoteFieldClassList]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.crm.custom_objects.custom_object_classes_custom_objects_remote_field_classes_list
+      def custom_object_classes_custom_objects_remote_field_classes_list(cursor: nil, include_deleted_data: nil,
+                                                                         include_remote_data: nil, include_remote_fields: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "cursor": cursor,
+              "include_deleted_data": include_deleted_data,
+              "include_remote_data": include_remote_data,
+              "include_remote_fields": include_remote_fields,
+              "is_common_model_field": is_common_model_field,
+              "page_size": page_size
+            }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/custom-objects/remote-field-classes"
+          end
+          Merge::Crm::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
         end
       end
     end

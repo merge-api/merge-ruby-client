@@ -9,7 +9,7 @@ module Merge
     class RemoteField
       # @return [Merge::Crm::RemoteFieldRemoteFieldClass]
       attr_reader :remote_field_class
-      # @return [Hash{String => Object}]
+      # @return [Object]
       attr_reader :value
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -20,7 +20,7 @@ module Merge
       OMIT = Object.new
 
       # @param remote_field_class [Merge::Crm::RemoteFieldRemoteFieldClass]
-      # @param value [Hash{String => Object}]
+      # @param value [Object]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::RemoteField]
       def initialize(remote_field_class:, value: OMIT, additional_properties: nil)
@@ -68,7 +68,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         Merge::Crm::RemoteFieldRemoteFieldClass.validate_raw(obj: obj.remote_field_class)
-        obj.value&.is_a?(Hash) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
+        obj.value&.is_a?(Object) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
       end
     end
   end

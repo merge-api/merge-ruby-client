@@ -86,6 +86,8 @@ module Merge
       # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be
       #  separated by commas.
       # @param ticket_type [String] If provided, will only return tickets of this type.
+      # @param ticket_url [String] If provided, will only return tickets where the URL matches or contains the
+      #  substring
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedTicketList]
       # @example
@@ -96,7 +98,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.list
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -137,7 +139,8 @@ module Merge
             "show_enum_origins": show_enum_origins,
             "status": status,
             "tags": tags,
-            "ticket_type": ticket_type
+            "ticket_type": ticket_type,
+            "ticket_url": ticket_url
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -421,6 +424,8 @@ module Merge
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
+      #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
@@ -431,8 +436,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.tickets.remote_field_classes_list
-      def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil, page_size: nil,
-                                    request_options: nil)
+      def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
+                                    is_common_model_field: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -447,6 +452,7 @@ module Merge
             "cursor": cursor,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "is_common_model_field": is_common_model_field,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -521,6 +527,8 @@ module Merge
       # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be
       #  separated by commas.
       # @param ticket_type [String] If provided, will only return tickets of this type.
+      # @param ticket_url [String] If provided, will only return tickets where the URL matches or contains the
+      #  substring
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedTicketList]
       # @example
@@ -531,7 +539,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.list
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -573,7 +581,8 @@ module Merge
               "show_enum_origins": show_enum_origins,
               "status": status,
               "tags": tags,
-              "ticket_type": ticket_type
+              "ticket_type": ticket_type,
+              "ticket_url": ticket_url
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -870,6 +879,8 @@ module Merge
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
+      #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
@@ -880,8 +891,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.tickets.remote_field_classes_list
-      def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil, page_size: nil,
-                                    request_options: nil)
+      def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
+                                    is_common_model_field: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -897,6 +908,7 @@ module Merge
               "cursor": cursor,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "is_common_model_field": is_common_model_field,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?

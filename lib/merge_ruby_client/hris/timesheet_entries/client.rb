@@ -27,9 +27,9 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param employee_id [String] If provided, will only return employee payroll runs for this employee.
-      # @param ended_after [String] If provided, will only return employee payroll runs ended after this datetime.
-      # @param ended_before [String] If provided, will only return employee payroll runs ended before this datetime.
+      # @param employee_id [String] If provided, will only return timesheet entries for this employee.
+      # @param ended_after [String] If provided, will only return timesheet entries ended after this datetime.
+      # @param ended_before [String] If provided, will only return timesheet entries ended before this datetime.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -40,9 +40,8 @@ module Merge
       #  start_time, -start_time.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param started_after [String] If provided, will only return employee payroll runs started after this datetime.
-      # @param started_before [String] If provided, will only return employee payroll runs started before this
-      #  datetime.
+      # @param started_after [String] If provided, will only return timesheet entries started after this datetime.
+      # @param started_before [String] If provided, will only return timesheet entries started before this datetime.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::PaginatedTimesheetEntryList]
       # @example
@@ -214,9 +213,9 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param employee_id [String] If provided, will only return employee payroll runs for this employee.
-      # @param ended_after [String] If provided, will only return employee payroll runs ended after this datetime.
-      # @param ended_before [String] If provided, will only return employee payroll runs ended before this datetime.
+      # @param employee_id [String] If provided, will only return timesheet entries for this employee.
+      # @param ended_after [String] If provided, will only return timesheet entries ended after this datetime.
+      # @param ended_before [String] If provided, will only return timesheet entries ended before this datetime.
       # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -227,9 +226,8 @@ module Merge
       #  start_time, -start_time.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param started_after [String] If provided, will only return employee payroll runs started after this datetime.
-      # @param started_before [String] If provided, will only return employee payroll runs started before this
-      #  datetime.
+      # @param started_after [String] If provided, will only return timesheet entries started after this datetime.
+      # @param started_before [String] If provided, will only return timesheet entries started before this datetime.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::PaginatedTimesheetEntryList]
       # @example

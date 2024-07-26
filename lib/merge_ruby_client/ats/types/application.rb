@@ -5,6 +5,7 @@ require_relative "application_candidate"
 require_relative "application_job"
 require_relative "application_offers_item"
 require_relative "application_credited_to"
+require_relative "application_screening_question_answers_item"
 require_relative "application_current_stage"
 require_relative "application_reject_reason"
 require_relative "remote_data"
@@ -45,6 +46,8 @@ module Merge
       attr_reader :source
       # @return [Merge::Ats::ApplicationCreditedTo] The user credited for this application.
       attr_reader :credited_to
+      # @return [Array<Merge::Ats::ApplicationScreeningQuestionAnswersItem>]
+      attr_reader :screening_question_answers
       # @return [Merge::Ats::ApplicationCurrentStage] The application's current stage.
       attr_reader :current_stage
       # @return [Merge::Ats::ApplicationRejectReason] The application's reason for rejection.
@@ -74,6 +77,7 @@ module Merge
       # @param offers [Array<Merge::Ats::ApplicationOffersItem>]
       # @param source [String] The application's source.
       # @param credited_to [Merge::Ats::ApplicationCreditedTo] The user credited for this application.
+      # @param screening_question_answers [Array<Merge::Ats::ApplicationScreeningQuestionAnswersItem>]
       # @param current_stage [Merge::Ats::ApplicationCurrentStage] The application's current stage.
       # @param reject_reason [Merge::Ats::ApplicationRejectReason] The application's reason for rejection.
       # @param remote_was_deleted [Boolean]
@@ -82,7 +86,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::Application]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, candidate: OMIT, job: OMIT,
-                     applied_at: OMIT, rejected_at: OMIT, offers: OMIT, source: OMIT, credited_to: OMIT, current_stage: OMIT, reject_reason: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     applied_at: OMIT, rejected_at: OMIT, offers: OMIT, source: OMIT, credited_to: OMIT, screening_question_answers: OMIT, current_stage: OMIT, reject_reason: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -94,6 +98,7 @@ module Merge
         @offers = offers if offers != OMIT
         @source = source if source != OMIT
         @credited_to = credited_to if credited_to != OMIT
+        @screening_question_answers = screening_question_answers if screening_question_answers != OMIT
         @current_stage = current_stage if current_stage != OMIT
         @reject_reason = reject_reason if reject_reason != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
@@ -112,6 +117,7 @@ module Merge
           "offers": offers,
           "source": source,
           "credited_to": credited_to,
+          "screening_question_answers": screening_question_answers,
           "current_stage": current_stage,
           "reject_reason": reject_reason,
           "remote_was_deleted": remote_was_deleted,
@@ -158,6 +164,10 @@ module Merge
           credited_to = parsed_json["credited_to"].to_json
           credited_to = Merge::Ats::ApplicationCreditedTo.from_json(json_object: credited_to)
         end
+        screening_question_answers = parsed_json["screening_question_answers"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::ApplicationScreeningQuestionAnswersItem.from_json(json_object: item)
+        end
         if parsed_json["current_stage"].nil?
           current_stage = nil
         else
@@ -188,6 +198,7 @@ module Merge
           offers: offers,
           source: source,
           credited_to: credited_to,
+          screening_question_answers: screening_question_answers,
           current_stage: current_stage,
           reject_reason: reject_reason,
           remote_was_deleted: remote_was_deleted,
@@ -222,6 +233,7 @@ module Merge
         obj.offers&.is_a?(Array) != false || raise("Passed value for field obj.offers is not the expected type, validation failed.")
         obj.source&.is_a?(String) != false || raise("Passed value for field obj.source is not the expected type, validation failed.")
         obj.credited_to.nil? || Merge::Ats::ApplicationCreditedTo.validate_raw(obj: obj.credited_to)
+        obj.screening_question_answers&.is_a?(Array) != false || raise("Passed value for field obj.screening_question_answers is not the expected type, validation failed.")
         obj.current_stage.nil? || Merge::Ats::ApplicationCurrentStage.validate_raw(obj: obj.current_stage)
         obj.reject_reason.nil? || Merge::Ats::ApplicationRejectReason.validate_raw(obj: obj.reject_reason)
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

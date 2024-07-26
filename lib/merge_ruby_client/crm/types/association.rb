@@ -17,9 +17,9 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Hash{String => Object}]
+      # @return [String]
       attr_reader :source_object
-      # @return [Hash{String => Object}]
+      # @return [String]
       attr_reader :target_object
       # @return [Merge::Crm::AssociationAssociationType] The association type the association belongs to.
       attr_reader :association_type
@@ -33,8 +33,8 @@ module Merge
 
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param source_object [Hash{String => Object}]
-      # @param target_object [Hash{String => Object}]
+      # @param source_object [String]
+      # @param target_object [String]
       # @param association_type [Merge::Crm::AssociationAssociationType] The association type the association belongs to.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::Association]
@@ -100,8 +100,8 @@ module Merge
       def self.validate_raw(obj:)
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.source_object&.is_a?(Hash) != false || raise("Passed value for field obj.source_object is not the expected type, validation failed.")
-        obj.target_object&.is_a?(Hash) != false || raise("Passed value for field obj.target_object is not the expected type, validation failed.")
+        obj.source_object&.is_a?(String) != false || raise("Passed value for field obj.source_object is not the expected type, validation failed.")
+        obj.target_object&.is_a?(String) != false || raise("Passed value for field obj.target_object is not the expected type, validation failed.")
         obj.association_type.nil? || Merge::Crm::AssociationAssociationType.validate_raw(obj: obj.association_type)
       end
     end
