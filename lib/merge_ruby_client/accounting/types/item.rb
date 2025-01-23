@@ -5,6 +5,8 @@ require_relative "status_7_d_1_enum"
 require_relative "item_purchase_account"
 require_relative "item_sales_account"
 require_relative "item_company"
+require_relative "item_purchase_tax_rate"
+require_relative "item_sales_tax_rate"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -41,10 +43,16 @@ module Merge
       attr_reader :sales_account
       # @return [Merge::Accounting::ItemCompany] The company the item belongs to.
       attr_reader :company
+      # @return [Merge::Accounting::ItemPurchaseTaxRate] The default purchase tax rate for this item.
+      attr_reader :purchase_tax_rate
+      # @return [Merge::Accounting::ItemSalesTaxRate] The default sales tax rate for this item.
+      attr_reader :sales_tax_rate
       # @return [DateTime] When the third party's item note was updated.
       attr_reader :remote_updated_at
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -71,15 +79,19 @@ module Merge
       # @param purchase_account [Merge::Accounting::ItemPurchaseAccount] References the default account used to record a purchase of the item.
       # @param sales_account [Merge::Accounting::ItemSalesAccount] References the default account used to record a sale.
       # @param company [Merge::Accounting::ItemCompany] The company the item belongs to.
+      # @param purchase_tax_rate [Merge::Accounting::ItemPurchaseTaxRate] The default purchase tax rate for this item.
+      # @param sales_tax_rate [Merge::Accounting::ItemSalesTaxRate] The default sales tax rate for this item.
       # @param remote_updated_at [DateTime] When the third party's item note was updated.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Item]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, status: OMIT,
-                     unit_price: OMIT, purchase_price: OMIT, purchase_account: OMIT, sales_account: OMIT, company: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     unit_price: OMIT, purchase_price: OMIT, purchase_account: OMIT, sales_account: OMIT, company: OMIT, purchase_tax_rate: OMIT, sales_tax_rate: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -91,6 +103,8 @@ module Merge
         @purchase_account = purchase_account if purchase_account != OMIT
         @sales_account = sales_account if sales_account != OMIT
         @company = company if company != OMIT
+        @purchase_tax_rate = purchase_tax_rate if purchase_tax_rate != OMIT
+        @sales_tax_rate = sales_tax_rate if sales_tax_rate != OMIT
         @remote_updated_at = remote_updated_at if remote_updated_at != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
@@ -108,6 +122,8 @@ module Merge
           "purchase_account": purchase_account,
           "sales_account": sales_account,
           "company": company,
+          "purchase_tax_rate": purchase_tax_rate,
+          "sales_tax_rate": sales_tax_rate,
           "remote_updated_at": remote_updated_at,
           "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
@@ -150,6 +166,18 @@ module Merge
           company = parsed_json["company"].to_json
           company = Merge::Accounting::ItemCompany.from_json(json_object: company)
         end
+        if parsed_json["purchase_tax_rate"].nil?
+          purchase_tax_rate = nil
+        else
+          purchase_tax_rate = parsed_json["purchase_tax_rate"].to_json
+          purchase_tax_rate = Merge::Accounting::ItemPurchaseTaxRate.from_json(json_object: purchase_tax_rate)
+        end
+        if parsed_json["sales_tax_rate"].nil?
+          sales_tax_rate = nil
+        else
+          sales_tax_rate = parsed_json["sales_tax_rate"].to_json
+          sales_tax_rate = Merge::Accounting::ItemSalesTaxRate.from_json(json_object: sales_tax_rate)
+        end
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
@@ -171,6 +199,8 @@ module Merge
           purchase_account: purchase_account,
           sales_account: sales_account,
           company: company,
+          purchase_tax_rate: purchase_tax_rate,
+          sales_tax_rate: sales_tax_rate,
           remote_updated_at: remote_updated_at,
           remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
@@ -204,6 +234,8 @@ module Merge
         obj.purchase_account.nil? || Merge::Accounting::ItemPurchaseAccount.validate_raw(obj: obj.purchase_account)
         obj.sales_account.nil? || Merge::Accounting::ItemSalesAccount.validate_raw(obj: obj.sales_account)
         obj.company.nil? || Merge::Accounting::ItemCompany.validate_raw(obj: obj.company)
+        obj.purchase_tax_rate.nil? || Merge::Accounting::ItemPurchaseTaxRate.validate_raw(obj: obj.purchase_tax_rate)
+        obj.sales_tax_rate.nil? || Merge::Accounting::ItemSalesTaxRate.validate_raw(obj: obj.sales_tax_rate)
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

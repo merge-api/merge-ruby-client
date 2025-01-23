@@ -30,9 +30,14 @@ module Merge
       # @param ended_before [DateTime] If provided, will only return employee payroll runs ended before this datetime.
       # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -52,7 +57,7 @@ module Merge
       #  )
       #  api.hris.employee_payroll_runs.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
-               ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, payroll_run_id: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
+               ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, payroll_run_id: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -73,6 +78,7 @@ module Merge
             "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
             "page_size": page_size,
@@ -149,9 +155,14 @@ module Merge
       # @param ended_before [DateTime] If provided, will only return employee payroll runs ended before this datetime.
       # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -171,7 +182,7 @@ module Merge
       #  )
       #  api.hris.employee_payroll_runs.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
-               ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, payroll_run_id: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
+               ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, payroll_run_id: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -193,6 +204,7 @@ module Merge
               "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
               "page_size": page_size,

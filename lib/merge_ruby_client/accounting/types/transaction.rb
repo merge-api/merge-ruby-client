@@ -3,7 +3,7 @@
 require "date"
 require_relative "transaction_account"
 require_relative "transaction_contact"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "transaction_tracking_categories_item"
 require_relative "transaction_line_item"
 require_relative "transaction_accounting_period"
@@ -48,9 +48,12 @@ module Merge
       attr_reader :account
       # @return [Merge::Accounting::TransactionContact] The contact to whom the transaction relates to.
       attr_reader :contact
+      # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
+      attr_reader :inclusive_of_tax
       # @return [String] The total amount being paid after taxes.
       attr_reader :total_amount
-      # @return [Merge::Accounting::CurrencyEnum] The transaction's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The transaction's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -367,7 +370,9 @@ module Merge
       # @return [Array<Merge::Accounting::TransactionLineItem>]
       attr_reader :line_items
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Merge::Accounting::TransactionAccountingPeriod] The accounting period that the Transaction was generated in.
       attr_reader :accounting_period
@@ -393,8 +398,10 @@ module Merge
       # @param transaction_date [DateTime] The date upon which the transaction occurred.
       # @param account [Merge::Accounting::TransactionAccount] The transaction's account.
       # @param contact [Merge::Accounting::TransactionContact] The contact to whom the transaction relates to.
+      # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
       # @param total_amount [String] The total amount being paid after taxes.
-      # @param currency [Merge::Accounting::CurrencyEnum] The transaction's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The transaction's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -706,14 +713,16 @@ module Merge
       # @param tracking_categories [Array<Merge::Accounting::TransactionTrackingCategoriesItem>]
       # @param line_items [Array<Merge::Accounting::TransactionLineItem>]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param accounting_period [Merge::Accounting::TransactionAccountingPeriod] The accounting period that the Transaction was generated in.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Transaction]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, transaction_type: OMIT,
-                     number: OMIT, transaction_date: OMIT, account: OMIT, contact: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, tracking_categories: OMIT, line_items: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     number: OMIT, transaction_date: OMIT, account: OMIT, contact: OMIT, inclusive_of_tax: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, tracking_categories: OMIT, line_items: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -723,6 +732,7 @@ module Merge
         @transaction_date = transaction_date if transaction_date != OMIT
         @account = account if account != OMIT
         @contact = contact if contact != OMIT
+        @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @total_amount = total_amount if total_amount != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
@@ -744,6 +754,7 @@ module Merge
           "transaction_date": transaction_date,
           "account": account,
           "contact": contact,
+          "inclusive_of_tax": inclusive_of_tax,
           "total_amount": total_amount,
           "currency": currency,
           "exchange_rate": exchange_rate,
@@ -785,6 +796,7 @@ module Merge
           contact = parsed_json["contact"].to_json
           contact = Merge::Accounting::TransactionContact.from_json(json_object: contact)
         end
+        inclusive_of_tax = parsed_json["inclusive_of_tax"]
         total_amount = parsed_json["total_amount"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
@@ -819,6 +831,7 @@ module Merge
           transaction_date: transaction_date,
           account: account,
           contact: contact,
+          inclusive_of_tax: inclusive_of_tax,
           total_amount: total_amount,
           currency: currency,
           exchange_rate: exchange_rate,
@@ -856,8 +869,9 @@ module Merge
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::TransactionAccount.validate_raw(obj: obj.account)
         obj.contact.nil? || Merge::Accounting::TransactionContact.validate_raw(obj: obj.contact)
+        obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.total_amount&.is_a?(String) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")

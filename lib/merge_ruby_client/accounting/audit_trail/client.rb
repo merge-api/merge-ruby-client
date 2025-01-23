@@ -38,9 +38,13 @@ module Merge
       #  `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`,
       #  `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`,
       #  `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`,
-      #  `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`, `FORCED_LINKED_ACCOUNT_RESYNC`,
+      #  `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`,
+      #  `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`,
+      #  `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`,
+      #  `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`, `FORCED_LINKED_ACCOUNT_RESYNC`,
       #  `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`, `ENABLED_MERGE_WEBHOOK`,
-      #  `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`
+      #  `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`,
+      #  `END_USER_CREDENTIALS_ACCESSED`
       # @param page_size [Integer] Number of results to return per page.
       # @param start_date [String] If included, will only include audit trail events that occurred after this time
       # @param user_email [String] If provided, this will return events associated with the specified user email.
@@ -116,9 +120,13 @@ module Merge
       #  `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`,
       #  `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`,
       #  `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`,
-      #  `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`, `FORCED_LINKED_ACCOUNT_RESYNC`,
+      #  `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`,
+      #  `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`,
+      #  `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`,
+      #  `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`, `FORCED_LINKED_ACCOUNT_RESYNC`,
       #  `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`, `ENABLED_MERGE_WEBHOOK`,
-      #  `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`
+      #  `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`,
+      #  `END_USER_CREDENTIALS_ACCESSED`
       # @param page_size [Integer] Number of results to return per page.
       # @param start_date [String] If included, will only include audit trail events that occurred after this time
       # @param user_email [String] If provided, this will return events associated with the specified user email.

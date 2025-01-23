@@ -21,7 +21,8 @@ module Merge
     # # The Employee Object
     #  ### Description
     #  The `Employee` object is used to represent any person who has been employed by a
-    #  company.
+    #  company. By default, it returns all employees. To filter for only active
+    #  employees, set the `employment_status` query parameter to `ACTIVE`.
     #  ### Usage Example
     #  Fetch from the `LIST Employee` endpoint and filter by `ID` to show all
     #  employees.

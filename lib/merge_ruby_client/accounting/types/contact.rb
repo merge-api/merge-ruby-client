@@ -5,6 +5,7 @@ require_relative "status_7_d_1_enum"
 require_relative "contact_addresses_item"
 require_relative "accounting_phone_number"
 require_relative "remote_data"
+require_relative "remote_field"
 require "ostruct"
 require "json"
 
@@ -54,12 +55,16 @@ module Merge
       # @return [Array<Merge::Accounting::AccountingPhoneNumber>] `AccountingPhoneNumber` object for the given `Contacts` object.
       attr_reader :phone_numbers
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
       # @return [Array<Merge::Accounting::RemoteData>]
       attr_reader :remote_data
+      # @return [Array<Merge::Accounting::RemoteField>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -86,13 +91,16 @@ module Merge
       # @param addresses [Array<Merge::Accounting::ContactAddressesItem>] `Address` object IDs for the given `Contacts` object.
       # @param phone_numbers [Array<Merge::Accounting::AccountingPhoneNumber>] `AccountingPhoneNumber` object for the given `Contacts` object.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
+      # @param remote_fields [Array<Merge::Accounting::RemoteField>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Contact]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, is_supplier: OMIT,
-                     is_customer: OMIT, email_address: OMIT, tax_number: OMIT, status: OMIT, currency: OMIT, remote_updated_at: OMIT, company: OMIT, addresses: OMIT, phone_numbers: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     is_customer: OMIT, email_address: OMIT, tax_number: OMIT, status: OMIT, currency: OMIT, remote_updated_at: OMIT, company: OMIT, addresses: OMIT, phone_numbers: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -111,6 +119,7 @@ module Merge
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -130,7 +139,8 @@ module Merge
           "phone_numbers": phone_numbers,
           "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
-          "remote_data": remote_data
+          "remote_data": remote_data,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -172,6 +182,10 @@ module Merge
           item = item.to_json
           Merge::Accounting::RemoteData.from_json(json_object: item)
         end
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteField.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,
@@ -191,6 +205,7 @@ module Merge
           remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
           remote_data: remote_data,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -227,6 +242,7 @@ module Merge
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

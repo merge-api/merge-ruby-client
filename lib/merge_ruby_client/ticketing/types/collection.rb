@@ -3,6 +3,7 @@
 require "date"
 require_relative "collection_type_enum"
 require_relative "collection_parent_collection"
+require_relative "collection_teams_item"
 require_relative "access_level_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -12,9 +13,9 @@ module Merge
   module Ticketing
     # # The Collection Object
     #  ### Description
-    #  The `Collection` object is used to represent collections of tickets. Collections
-    #  may include other collections as
-    #  sub collections.
+    #  The `Collection` object is used to represent one or more `Tickets`. There can be
+    #  a hierarchy of `Collections`, in which a sub-collection belongs to a
+    #  parent-collection.
     #  ### Usage Example
     #  TODO
     class Collection
@@ -36,8 +37,12 @@ module Merge
       attr_reader :collection_type
       # @return [Merge::Ticketing::CollectionParentCollection] The parent collection for this collection.
       attr_reader :parent_collection
+      # @return [Array<Merge::Ticketing::CollectionTeamsItem>]
+      attr_reader :teams
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Merge::Ticketing::AccessLevelEnum] The level of access a User has to the Collection and its sub-objects.
       #  - `PRIVATE` - PRIVATE
@@ -66,8 +71,11 @@ module Merge
       #  - `LIST` - LIST
       #  - `PROJECT` - PROJECT
       # @param parent_collection [Merge::Ticketing::CollectionParentCollection] The parent collection for this collection.
+      # @param teams [Array<Merge::Ticketing::CollectionTeamsItem>]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param access_level [Merge::Ticketing::AccessLevelEnum] The level of access a User has to the Collection and its sub-objects.
       #  - `PRIVATE` - PRIVATE
       #  - `COMPANY` - COMPANY
@@ -77,7 +85,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::Collection]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, description: OMIT,
-                     collection_type: OMIT, parent_collection: OMIT, remote_was_deleted: OMIT, access_level: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     collection_type: OMIT, parent_collection: OMIT, teams: OMIT, remote_was_deleted: OMIT, access_level: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -86,6 +94,7 @@ module Merge
         @description = description if description != OMIT
         @collection_type = collection_type if collection_type != OMIT
         @parent_collection = parent_collection if parent_collection != OMIT
+        @teams = teams if teams != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @access_level = access_level if access_level != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
@@ -100,6 +109,7 @@ module Merge
           "description": description,
           "collection_type": collection_type,
           "parent_collection": parent_collection,
+          "teams": teams,
           "remote_was_deleted": remote_was_deleted,
           "access_level": access_level,
           "field_mappings": field_mappings,
@@ -129,6 +139,10 @@ module Merge
           parent_collection = parsed_json["parent_collection"].to_json
           parent_collection = Merge::Ticketing::CollectionParentCollection.from_json(json_object: parent_collection)
         end
+        teams = parsed_json["teams"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::CollectionTeamsItem.from_json(json_object: item)
+        end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         access_level = parsed_json["access_level"]
         field_mappings = parsed_json["field_mappings"]
@@ -145,6 +159,7 @@ module Merge
           description: description,
           collection_type: collection_type,
           parent_collection: parent_collection,
+          teams: teams,
           remote_was_deleted: remote_was_deleted,
           access_level: access_level,
           field_mappings: field_mappings,
@@ -175,6 +190,7 @@ module Merge
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.collection_type&.is_a?(Merge::Ticketing::CollectionTypeEnum) != false || raise("Passed value for field obj.collection_type is not the expected type, validation failed.")
         obj.parent_collection.nil? || Merge::Ticketing::CollectionParentCollection.validate_raw(obj: obj.parent_collection)
+        obj.teams&.is_a?(Array) != false || raise("Passed value for field obj.teams is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.access_level&.is_a?(Merge::Ticketing::AccessLevelEnum) != false || raise("Passed value for field obj.access_level is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

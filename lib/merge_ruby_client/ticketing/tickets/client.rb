@@ -6,7 +6,6 @@ require_relative "types/tickets_list_request_expand"
 require_relative "types/tickets_list_request_priority"
 require_relative "types/tickets_list_request_remote_fields"
 require_relative "types/tickets_list_request_show_enum_origins"
-require_relative "types/tickets_list_request_status"
 require_relative "../types/paginated_ticket_list"
 require_relative "../types/ticket_request"
 require_relative "../types/ticket_response"
@@ -15,8 +14,8 @@ require_relative "types/tickets_retrieve_request_remote_fields"
 require_relative "types/tickets_retrieve_request_show_enum_origins"
 require_relative "../types/ticket"
 require_relative "../types/patched_ticket_request"
-require_relative "types/tickets_collaborators_list_request_expand"
-require_relative "../types/paginated_user_list"
+require_relative "types/tickets_viewers_list_request_expand"
+require_relative "../types/paginated_viewer_list"
 require_relative "../types/meta_response"
 require_relative "../types/paginated_remote_field_class_list"
 require "async"
@@ -50,11 +49,16 @@ module Merge
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
       # @param expand [Merge::Ticketing::Tickets::TicketsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -78,11 +82,7 @@ module Merge
       # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [Merge::Ticketing::Tickets::TicketsListRequestStatus] If provided, will only return tickets of this status.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
-      #  - `IN_PROGRESS` - IN_PROGRESS
-      #  - `ON_HOLD` - ON_HOLD
+      # @param status [String] If provided, will only return tickets of this status.
       # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be
       #  separated by commas.
       # @param ticket_type [String] If provided, will only return tickets of this type.
@@ -98,7 +98,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.list
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -125,6 +125,7 @@ module Merge
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "include_remote_fields": include_remote_fields,
+            "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
             "page_size": page_size,
@@ -157,6 +158,7 @@ module Merge
       # @param model [Hash] Request of type Merge::Ticketing::TicketRequest, as a Hash
       #   * :name (String)
       #   * :assignees (Array<Merge::Ticketing::TicketRequestAssigneesItem>)
+      #   * :assigned_teams (Array<Merge::Ticketing::TicketRequestAssignedTeamsItem>)
       #   * :creator (Hash)
       #   * :due_date (DateTime)
       #   * :status (Merge::Ticketing::TicketStatusEnum)
@@ -168,6 +170,7 @@ module Merge
       #   * :parent_ticket (Hash)
       #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
       #   * :tags (Array<String>)
+      #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
@@ -261,6 +264,7 @@ module Merge
       # @param model [Hash] Request of type Merge::Ticketing::PatchedTicketRequest, as a Hash
       #   * :name (String)
       #   * :assignees (Array<String>)
+      #   * :assigned_teams (Array<String>)
       #   * :creator (String)
       #   * :due_date (DateTime)
       #   * :status (Merge::Ticketing::TicketStatusEnum)
@@ -271,6 +275,7 @@ module Merge
       #   * :contact (String)
       #   * :parent_ticket (String)
       #   * :tags (Array<String>)
+      #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
@@ -307,27 +312,32 @@ module Merge
         Merge::Ticketing::TicketResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `Viewer` objects.
       #
-      # @param parent_id [String]
+      # @param ticket_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Tickets::TicketsCollaboratorsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::TicketsViewersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Ticketing::PaginatedUserList]
+      # @return [Merge::Ticketing::PaginatedViewerList]
       # @example
       #  api = Merge::Client.new(
       #    base_url: "https://api.example.com",
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.collaborators_list(parent_id: "parent_id")
-      def collaborators_list(parent_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
-                             page_size: nil, request_options: nil)
+      #  api.ticketing.tickets.viewers_list(ticket_id: "ticket_id")
+      def viewers_list(ticket_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
+                       include_shell_data: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -343,14 +353,15 @@ module Merge
             "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
           end
-          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{parent_id}/collaborators"
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{ticket_id}/viewers"
         end
-        Merge::Ticketing::PaginatedUserList.from_json(json_object: response.body)
+        Merge::Ticketing::PaginatedViewerList.from_json(json_object: response.body)
       end
 
       # Returns metadata for `Ticket` PATCHs.
@@ -421,9 +432,14 @@ module Merge
       # Returns a list of `RemoteFieldClass` objects.
       #
       # @param cursor [String] The pagination cursor value.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
@@ -437,7 +453,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -452,6 +468,7 @@ module Merge
             "cursor": cursor,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "is_common_model_field": is_common_model_field,
             "page_size": page_size
           }.compact
@@ -491,11 +508,16 @@ module Merge
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
       # @param expand [Merge::Ticketing::Tickets::TicketsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -519,11 +541,7 @@ module Merge
       # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [Merge::Ticketing::Tickets::TicketsListRequestStatus] If provided, will only return tickets of this status.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
-      #  - `IN_PROGRESS` - IN_PROGRESS
-      #  - `ON_HOLD` - ON_HOLD
+      # @param status [String] If provided, will only return tickets of this status.
       # @param tags [String] If provided, will only return tickets matching the tags; multiple tags can be
       #  separated by commas.
       # @param ticket_type [String] If provided, will only return tickets of this type.
@@ -539,7 +557,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.list
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -567,6 +585,7 @@ module Merge
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "include_remote_fields": include_remote_fields,
+              "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
               "page_size": page_size,
@@ -600,6 +619,7 @@ module Merge
       # @param model [Hash] Request of type Merge::Ticketing::TicketRequest, as a Hash
       #   * :name (String)
       #   * :assignees (Array<Merge::Ticketing::TicketRequestAssigneesItem>)
+      #   * :assigned_teams (Array<Merge::Ticketing::TicketRequestAssignedTeamsItem>)
       #   * :creator (Hash)
       #   * :due_date (DateTime)
       #   * :status (Merge::Ticketing::TicketStatusEnum)
@@ -611,6 +631,7 @@ module Merge
       #   * :parent_ticket (Hash)
       #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
       #   * :tags (Array<String>)
+      #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
@@ -708,6 +729,7 @@ module Merge
       # @param model [Hash] Request of type Merge::Ticketing::PatchedTicketRequest, as a Hash
       #   * :name (String)
       #   * :assignees (Array<String>)
+      #   * :assigned_teams (Array<String>)
       #   * :creator (String)
       #   * :due_date (DateTime)
       #   * :status (Merge::Ticketing::TicketStatusEnum)
@@ -718,6 +740,7 @@ module Merge
       #   * :contact (String)
       #   * :parent_ticket (String)
       #   * :tags (Array<String>)
+      #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
@@ -756,27 +779,32 @@ module Merge
         end
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `Viewer` objects.
       #
-      # @param parent_id [String]
+      # @param ticket_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Tickets::TicketsCollaboratorsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::TicketsViewersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Ticketing::PaginatedUserList]
+      # @return [Merge::Ticketing::PaginatedViewerList]
       # @example
       #  api = Merge::Client.new(
       #    base_url: "https://api.example.com",
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.collaborators_list(parent_id: "parent_id")
-      def collaborators_list(parent_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
-                             page_size: nil, request_options: nil)
+      #  api.ticketing.tickets.viewers_list(ticket_id: "ticket_id")
+      def viewers_list(ticket_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
+                       include_shell_data: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -793,14 +821,15 @@ module Merge
               "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
             end
-            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{parent_id}/collaborators"
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/#{ticket_id}/viewers"
           end
-          Merge::Ticketing::PaginatedUserList.from_json(json_object: response.body)
+          Merge::Ticketing::PaginatedViewerList.from_json(json_object: response.body)
         end
       end
 
@@ -876,9 +905,14 @@ module Merge
       # Returns a list of `RemoteFieldClass` objects.
       #
       # @param cursor [String] The pagination cursor value.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
@@ -892,7 +926,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -908,6 +942,7 @@ module Merge
               "cursor": cursor,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "is_common_model_field": is_common_model_field,
               "page_size": page_size
             }.compact

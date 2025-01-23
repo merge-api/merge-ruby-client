@@ -2,6 +2,7 @@
 
 require "date"
 require_relative "ticket_assignees_item"
+require_relative "ticket_assigned_teams_item"
 require_relative "ticket_creator"
 require_relative "ticket_status_enum"
 require_relative "ticket_collections_item"
@@ -19,7 +20,7 @@ module Merge
   module Ticketing
     # # The Ticket Object
     #  ### Description
-    #  The `Ticket` object is used to represent a ticket or a task within a system.
+    #  The `Ticket` object is used to represent a ticket, issue, task or case.
     #  ### Usage Example
     #  TODO
     class Ticket
@@ -33,8 +34,12 @@ module Merge
       attr_reader :modified_at
       # @return [String] The ticket's name.
       attr_reader :name
-      # @return [Array<Merge::Ticketing::TicketAssigneesItem>]
+      # @return [Array<Merge::Ticketing::TicketAssigneesItem>] The individual `Users` who are assigned to this ticket. This does not include
+      #  `Users` who just have view access to this ticket.
       attr_reader :assignees
+      # @return [Array<Merge::Ticketing::TicketAssignedTeamsItem>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
+      #  just have view access to this ticket.
+      attr_reader :assigned_teams
       # @return [Merge::Ticketing::TicketCreator] The user who created this ticket.
       attr_reader :creator
       # @return [DateTime] The ticket's due date.
@@ -48,7 +53,7 @@ module Merge
       # @return [String] The ticket’s description. HTML version of description is mapped if supported by
       #  the third-party platform.
       attr_reader :description
-      # @return [Array<Merge::Ticketing::TicketCollectionsItem>]
+      # @return [Array<Merge::Ticketing::TicketCollectionsItem>] The `Collections` that this `Ticket` is included in.
       attr_reader :collections
       # @return [String] The sub category of the ticket within the 3rd party system. Examples include
       #  incident, task, subtask or to-do.
@@ -63,13 +68,18 @@ module Merge
       attr_reader :attachments
       # @return [Array<String>]
       attr_reader :tags
+      # @return [Array<String>]
+      attr_reader :roles
       # @return [DateTime] When the third party's ticket was created.
       attr_reader :remote_created_at
       # @return [DateTime] When the third party's ticket was updated.
       attr_reader :remote_updated_at
       # @return [DateTime] When the ticket was completed.
       attr_reader :completed_at
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [String] The 3rd party url of the Ticket.
       attr_reader :ticket_url
@@ -98,7 +108,10 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The ticket's name.
-      # @param assignees [Array<Merge::Ticketing::TicketAssigneesItem>]
+      # @param assignees [Array<Merge::Ticketing::TicketAssigneesItem>] The individual `Users` who are assigned to this ticket. This does not include
+      #  `Users` who just have view access to this ticket.
+      # @param assigned_teams [Array<Merge::Ticketing::TicketAssignedTeamsItem>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
+      #  just have view access to this ticket.
       # @param creator [Merge::Ticketing::TicketCreator] The user who created this ticket.
       # @param due_date [DateTime] The ticket's due date.
       # @param status [Merge::Ticketing::TicketStatusEnum] The current status of the ticket.
@@ -108,7 +121,7 @@ module Merge
       #  - `ON_HOLD` - ON_HOLD
       # @param description [String] The ticket’s description. HTML version of description is mapped if supported by
       #  the third-party platform.
-      # @param collections [Array<Merge::Ticketing::TicketCollectionsItem>]
+      # @param collections [Array<Merge::Ticketing::TicketCollectionsItem>] The `Collections` that this `Ticket` is included in.
       # @param ticket_type [String] The sub category of the ticket within the 3rd party system. Examples include
       #  incident, task, subtask or to-do.
       # @param account [Merge::Ticketing::TicketAccount] The account associated with the ticket.
@@ -116,10 +129,14 @@ module Merge
       # @param parent_ticket [Merge::Ticketing::TicketParentTicket] The ticket's parent ticket.
       # @param attachments [Array<Merge::Ticketing::TicketAttachmentsItem>]
       # @param tags [Array<String>]
+      # @param roles [Array<String>]
       # @param remote_created_at [DateTime] When the third party's ticket was created.
       # @param remote_updated_at [DateTime] When the third party's ticket was updated.
       # @param completed_at [DateTime] When the ticket was completed.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param ticket_url [String] The 3rd party url of the Ticket.
       # @param priority [Merge::Ticketing::PriorityEnum] The priority or urgency of the Ticket.
       #  - `URGENT` - URGENT
@@ -132,13 +149,14 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::Ticket]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, assignees: OMIT,
-                     creator: OMIT, due_date: OMIT, status: OMIT, description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, attachments: OMIT, tags: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, completed_at: OMIT, remote_was_deleted: OMIT, ticket_url: OMIT, priority: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     assigned_teams: OMIT, creator: OMIT, due_date: OMIT, status: OMIT, description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, attachments: OMIT, tags: OMIT, roles: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, completed_at: OMIT, remote_was_deleted: OMIT, ticket_url: OMIT, priority: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @name = name if name != OMIT
         @assignees = assignees if assignees != OMIT
+        @assigned_teams = assigned_teams if assigned_teams != OMIT
         @creator = creator if creator != OMIT
         @due_date = due_date if due_date != OMIT
         @status = status if status != OMIT
@@ -150,6 +168,7 @@ module Merge
         @parent_ticket = parent_ticket if parent_ticket != OMIT
         @attachments = attachments if attachments != OMIT
         @tags = tags if tags != OMIT
+        @roles = roles if roles != OMIT
         @remote_created_at = remote_created_at if remote_created_at != OMIT
         @remote_updated_at = remote_updated_at if remote_updated_at != OMIT
         @completed_at = completed_at if completed_at != OMIT
@@ -167,6 +186,7 @@ module Merge
           "modified_at": modified_at,
           "name": name,
           "assignees": assignees,
+          "assigned_teams": assigned_teams,
           "creator": creator,
           "due_date": due_date,
           "status": status,
@@ -178,6 +198,7 @@ module Merge
           "parent_ticket": parent_ticket,
           "attachments": attachments,
           "tags": tags,
+          "roles": roles,
           "remote_created_at": remote_created_at,
           "remote_updated_at": remote_updated_at,
           "completed_at": completed_at,
@@ -207,6 +228,10 @@ module Merge
         assignees = parsed_json["assignees"]&.map do |item|
           item = item.to_json
           Merge::Ticketing::TicketAssigneesItem.from_json(json_object: item)
+        end
+        assigned_teams = parsed_json["assigned_teams"]&.map do |item|
+          item = item.to_json
+          Merge::Ticketing::TicketAssignedTeamsItem.from_json(json_object: item)
         end
         if parsed_json["creator"].nil?
           creator = nil
@@ -245,6 +270,7 @@ module Merge
           Merge::Ticketing::TicketAttachmentsItem.from_json(json_object: item)
         end
         tags = parsed_json["tags"]
+        roles = parsed_json["roles"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
@@ -271,6 +297,7 @@ module Merge
           modified_at: modified_at,
           name: name,
           assignees: assignees,
+          assigned_teams: assigned_teams,
           creator: creator,
           due_date: due_date,
           status: status,
@@ -282,6 +309,7 @@ module Merge
           parent_ticket: parent_ticket,
           attachments: attachments,
           tags: tags,
+          roles: roles,
           remote_created_at: remote_created_at,
           remote_updated_at: remote_updated_at,
           completed_at: completed_at,
@@ -315,6 +343,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.assignees&.is_a?(Array) != false || raise("Passed value for field obj.assignees is not the expected type, validation failed.")
+        obj.assigned_teams&.is_a?(Array) != false || raise("Passed value for field obj.assigned_teams is not the expected type, validation failed.")
         obj.creator.nil? || Merge::Ticketing::TicketCreator.validate_raw(obj: obj.creator)
         obj.due_date&.is_a?(DateTime) != false || raise("Passed value for field obj.due_date is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Ticketing::TicketStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
@@ -326,6 +355,7 @@ module Merge
         obj.parent_ticket.nil? || Merge::Ticketing::TicketParentTicket.validate_raw(obj: obj.parent_ticket)
         obj.attachments&.is_a?(Array) != false || raise("Passed value for field obj.attachments is not the expected type, validation failed.")
         obj.tags&.is_a?(Array) != false || raise("Passed value for field obj.tags is not the expected type, validation failed.")
+        obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")

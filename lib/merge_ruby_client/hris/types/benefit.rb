@@ -38,7 +38,9 @@ module Merge
       # @return [DateTime] The day and time the benefit ended.
       attr_reader :end_date
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [String] The employer benefit plan the employee is enrolled in.
       attr_reader :employer_benefit
@@ -66,7 +68,9 @@ module Merge
       # @param start_date [DateTime] The day and time the benefit started.
       # @param end_date [DateTime] The day and time the benefit ended.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param employer_benefit [String] The employer benefit plan the employee is enrolled in.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Hris::RemoteData>]

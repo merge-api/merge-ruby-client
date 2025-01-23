@@ -48,7 +48,10 @@ module Merge
       attr_reader :remote_updated_at
       # @return [DateTime] When the third party's account was created.
       attr_reader :remote_created_at
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -80,7 +83,10 @@ module Merge
       #  occurs in an account.
       # @param remote_updated_at [DateTime] When the CRM system account data was last modified by a user with a login.
       # @param remote_created_at [DateTime] When the third party's account was created.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Crm::RemoteData>]
       # @param remote_fields [Array<Merge::Crm::RemoteField>]

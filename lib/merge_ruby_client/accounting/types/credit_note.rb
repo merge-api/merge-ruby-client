@@ -6,10 +6,11 @@ require_relative "credit_note_contact"
 require_relative "credit_note_company"
 require_relative "credit_note_line_item"
 require_relative "credit_note_tracking_categories_item"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "credit_note_payments_item"
 require_relative "credit_note_applied_payments_item"
 require_relative "credit_note_accounting_period"
+require_relative "credit_note_apply_line_for_credit_note"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -53,11 +54,14 @@ module Merge
       attr_reader :total_amount
       # @return [Float] The amount of value remaining in the credit note that the customer can use.
       attr_reader :remaining_credit
+      # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
+      attr_reader :inclusive_of_tax
       # @return [Array<Merge::Accounting::CreditNoteLineItem>]
       attr_reader :line_items
       # @return [Array<Merge::Accounting::CreditNoteTrackingCategoriesItem>]
       attr_reader :tracking_categories
-      # @return [Merge::Accounting::CurrencyEnum] The credit note's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The credit note's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -374,11 +378,16 @@ module Merge
       # @return [Array<Merge::Accounting::CreditNoteAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
       attr_reader :applied_payments
-      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
-      attr_reader :remote_was_deleted
       # @return [Merge::Accounting::CreditNoteAccountingPeriod] The accounting period that the CreditNote was generated in.
       attr_reader :accounting_period
+      # @return [Array<Merge::Accounting::CreditNoteApplyLineForCreditNote>] A list of the CreditNote Applied to Lines common models related to a given
+      #  Credit Note
+      attr_reader :applied_to_lines
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
+      attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
       # @return [Array<Merge::Accounting::RemoteData>]
@@ -406,9 +415,11 @@ module Merge
       # @param exchange_rate [String] The credit note's exchange rate.
       # @param total_amount [Float] The credit note's total amount.
       # @param remaining_credit [Float] The amount of value remaining in the credit note that the customer can use.
+      # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
       # @param line_items [Array<Merge::Accounting::CreditNoteLineItem>]
       # @param tracking_categories [Array<Merge::Accounting::CreditNoteTrackingCategoriesItem>]
-      # @param currency [Merge::Accounting::CurrencyEnum] The credit note's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The credit note's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -720,15 +731,19 @@ module Merge
       # @param payments [Array<Merge::Accounting::CreditNotePaymentsItem>] Array of `Payment` object IDs
       # @param applied_payments [Array<Merge::Accounting::CreditNoteAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
-      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
       # @param accounting_period [Merge::Accounting::CreditNoteAccountingPeriod] The accounting period that the CreditNote was generated in.
+      # @param applied_to_lines [Array<Merge::Accounting::CreditNoteApplyLineForCreditNote>] A list of the CreditNote Applied to Lines common models related to a given
+      #  Credit Note
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::CreditNote]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, transaction_date: OMIT,
-                     status: OMIT, number: OMIT, contact: OMIT, company: OMIT, exchange_rate: OMIT, total_amount: OMIT, remaining_credit: OMIT, line_items: OMIT, tracking_categories: OMIT, currency: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, payments: OMIT, applied_payments: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     status: OMIT, number: OMIT, contact: OMIT, company: OMIT, exchange_rate: OMIT, total_amount: OMIT, remaining_credit: OMIT, inclusive_of_tax: OMIT, line_items: OMIT, tracking_categories: OMIT, currency: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, payments: OMIT, applied_payments: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -741,6 +756,7 @@ module Merge
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @total_amount = total_amount if total_amount != OMIT
         @remaining_credit = remaining_credit if remaining_credit != OMIT
+        @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @line_items = line_items if line_items != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @currency = currency if currency != OMIT
@@ -748,8 +764,9 @@ module Merge
         @remote_updated_at = remote_updated_at if remote_updated_at != OMIT
         @payments = payments if payments != OMIT
         @applied_payments = applied_payments if applied_payments != OMIT
-        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @accounting_period = accounting_period if accounting_period != OMIT
+        @applied_to_lines = applied_to_lines if applied_to_lines != OMIT
+        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
         @additional_properties = additional_properties
@@ -766,6 +783,7 @@ module Merge
           "exchange_rate": exchange_rate,
           "total_amount": total_amount,
           "remaining_credit": remaining_credit,
+          "inclusive_of_tax": inclusive_of_tax,
           "line_items": line_items,
           "tracking_categories": tracking_categories,
           "currency": currency,
@@ -773,8 +791,9 @@ module Merge
           "remote_updated_at": remote_updated_at,
           "payments": payments,
           "applied_payments": applied_payments,
-          "remote_was_deleted": remote_was_deleted,
           "accounting_period": accounting_period,
+          "applied_to_lines": applied_to_lines,
+          "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
           "remote_data": remote_data
         }.reject do |_k, v|
@@ -811,6 +830,7 @@ module Merge
         exchange_rate = parsed_json["exchange_rate"]
         total_amount = parsed_json["total_amount"]
         remaining_credit = parsed_json["remaining_credit"]
+        inclusive_of_tax = parsed_json["inclusive_of_tax"]
         line_items = parsed_json["line_items"]&.map do |item|
           item = item.to_json
           Merge::Accounting::CreditNoteLineItem.from_json(json_object: item)
@@ -834,13 +854,17 @@ module Merge
           item = item.to_json
           Merge::Accounting::CreditNoteAppliedPaymentsItem.from_json(json_object: item)
         end
-        remote_was_deleted = parsed_json["remote_was_deleted"]
         if parsed_json["accounting_period"].nil?
           accounting_period = nil
         else
           accounting_period = parsed_json["accounting_period"].to_json
           accounting_period = Merge::Accounting::CreditNoteAccountingPeriod.from_json(json_object: accounting_period)
         end
+        applied_to_lines = parsed_json["applied_to_lines"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::CreditNoteApplyLineForCreditNote.from_json(json_object: item)
+        end
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
           item = item.to_json
@@ -859,6 +883,7 @@ module Merge
           exchange_rate: exchange_rate,
           total_amount: total_amount,
           remaining_credit: remaining_credit,
+          inclusive_of_tax: inclusive_of_tax,
           line_items: line_items,
           tracking_categories: tracking_categories,
           currency: currency,
@@ -866,8 +891,9 @@ module Merge
           remote_updated_at: remote_updated_at,
           payments: payments,
           applied_payments: applied_payments,
-          remote_was_deleted: remote_was_deleted,
           accounting_period: accounting_period,
+          applied_to_lines: applied_to_lines,
+          remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
           remote_data: remote_data,
           additional_properties: struct
@@ -900,15 +926,17 @@ module Merge
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.remaining_credit&.is_a?(Float) != false || raise("Passed value for field obj.remaining_credit is not the expected type, validation failed.")
+        obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.line_items&.is_a?(Array) != false || raise("Passed value for field obj.line_items is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.payments&.is_a?(Array) != false || raise("Passed value for field obj.payments is not the expected type, validation failed.")
         obj.applied_payments&.is_a?(Array) != false || raise("Passed value for field obj.applied_payments is not the expected type, validation failed.")
-        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.accounting_period.nil? || Merge::Accounting::CreditNoteAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")
+        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end

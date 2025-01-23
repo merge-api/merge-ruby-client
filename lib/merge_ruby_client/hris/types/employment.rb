@@ -17,9 +17,11 @@ module Merge
     # # The Employment Object
     #  ### Description
     #  The `Employment` object is used to represent a job position at a company.
-    #  Please note: When there is a change in pay or title, integrations with
-    #  historical data will create new Employment objects while integrations without
-    #  historical data will update existing ones.
+    #  If an integration supports historical tracking of employments, it will be
+    #  reflected in the data. If not, a new `Employment` object will be created
+    #  whenever there is a change in job title or pay. The `effective_date` field
+    #  should be used to order `Employment` objects, with the most recent date
+    #  corresponding to the latest employment record for an employee.
     #  ### Usage Example
     #  Fetch from the `LIST Employments` endpoint and filter by `ID` to show all
     #  employees.
@@ -36,7 +38,7 @@ module Merge
       attr_reader :employee
       # @return [String] The position's title.
       attr_reader :job_title
-      # @return [Float] The position's pay rate in dollars.
+      # @return [Float] The position's pay rate.
       attr_reader :pay_rate
       # @return [Merge::Hris::PayPeriodEnum] The time period this pay rate encompasses.
       #  - `HOUR` - HOUR
@@ -386,7 +388,9 @@ module Merge
       #  - `FREELANCE` - FREELANCE
       attr_reader :employment_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -406,7 +410,7 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param employee [Merge::Hris::EmploymentEmployee] The employee holding this position.
       # @param job_title [String] The position's title.
-      # @param pay_rate [Float] The position's pay rate in dollars.
+      # @param pay_rate [Float] The position's pay rate.
       # @param pay_period [Merge::Hris::PayPeriodEnum] The time period this pay rate encompasses.
       #  - `HOUR` - HOUR
       #  - `DAY` - DAY
@@ -748,7 +752,9 @@ module Merge
       #  - `CONTRACTOR` - CONTRACTOR
       #  - `FREELANCE` - FREELANCE
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Hris::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

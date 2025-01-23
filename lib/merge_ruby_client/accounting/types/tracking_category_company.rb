@@ -5,7 +5,7 @@ require_relative "company_info"
 
 module Merge
   module Accounting
-    # The company the tracking category belongs to.
+    # The company the GeneralLedgerTransaction belongs to.
     class TrackingCategoryCompany
       # Deserialize a JSON object to an instance of TrackingCategoryCompany
       #

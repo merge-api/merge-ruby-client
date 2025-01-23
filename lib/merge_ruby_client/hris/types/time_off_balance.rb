@@ -27,9 +27,11 @@ module Merge
       attr_reader :modified_at
       # @return [Merge::Hris::TimeOffBalanceEmployee] The employee the balance belongs to.
       attr_reader :employee
-      # @return [Float] The current remaining PTO balance, always measured in terms of hours.
+      # @return [Float] The current remaining PTO balance, measured in hours. For integrations that
+      #  return this value in days, Merge multiplies by 8 to calculate hours.
       attr_reader :balance
-      # @return [Float] The amount of PTO used in terms of hours.
+      # @return [Float] The amount of PTO used in terms of hours. For integrations that return this
+      #  value in days, Merge multiplies by 8 to calculate hours.
       attr_reader :used
       # @return [Merge::Hris::PolicyTypeEnum] The policy type of this time off balance.
       #  - `VACATION` - VACATION
@@ -40,7 +42,9 @@ module Merge
       #  - `BEREAVEMENT` - BEREAVEMENT
       attr_reader :policy_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -59,8 +63,10 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param employee [Merge::Hris::TimeOffBalanceEmployee] The employee the balance belongs to.
-      # @param balance [Float] The current remaining PTO balance, always measured in terms of hours.
-      # @param used [Float] The amount of PTO used in terms of hours.
+      # @param balance [Float] The current remaining PTO balance, measured in hours. For integrations that
+      #  return this value in days, Merge multiplies by 8 to calculate hours.
+      # @param used [Float] The amount of PTO used in terms of hours. For integrations that return this
+      #  value in days, Merge multiplies by 8 to calculate hours.
       # @param policy_type [Merge::Hris::PolicyTypeEnum] The policy type of this time off balance.
       #  - `VACATION` - VACATION
       #  - `SICK` - SICK
@@ -69,7 +75,9 @@ module Merge
       #  - `VOLUNTEER` - VOLUNTEER
       #  - `BEREAVEMENT` - BEREAVEMENT
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Hris::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

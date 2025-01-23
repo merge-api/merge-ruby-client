@@ -36,7 +36,10 @@ module Merge
       attr_reader :uploaded_by
       # @return [DateTime] When the third party's attachment was created.
       attr_reader :remote_created_at
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -62,7 +65,10 @@ module Merge
       # @param content_type [String] The attachment's file format.
       # @param uploaded_by [String] The user who uploaded the attachment.
       # @param remote_created_at [DateTime] When the third party's attachment was created.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Ticketing::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

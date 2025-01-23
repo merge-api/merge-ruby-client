@@ -27,15 +27,21 @@ module Merge
 
       # Returns a list of `Account` objects.
       #
+      # @param account_type [String] If provided, will only provide accounts with the passed in enum.
       # @param company_id [String] If provided, will only return accounts for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -54,8 +60,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.accounts.list
-      def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+      def list(account_type: nil, company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -67,6 +73,7 @@ module Merge
           }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
+            "account_type": account_type,
             "company_id": company_id,
             "created_after": created_after,
             "created_before": created_before,
@@ -74,6 +81,7 @@ module Merge
             "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
             "page_size": page_size,
@@ -98,9 +106,10 @@ module Merge
       #   * :description (String)
       #   * :classification (Merge::Accounting::ClassificationEnum)
       #   * :type (String)
+      #   * :account_type (Merge::Accounting::AccountAccountTypeEnum)
       #   * :status (Merge::Accounting::AccountStatusEnum)
       #   * :current_balance (Float)
-      #   * :currency (Merge::Accounting::CurrencyEnum)
+      #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :account_number (String)
       #   * :parent_account (String)
       #   * :company (String)
@@ -227,15 +236,21 @@ module Merge
 
       # Returns a list of `Account` objects.
       #
+      # @param account_type [String] If provided, will only provide accounts with the passed in enum.
       # @param company_id [String] If provided, will only return accounts for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -254,8 +269,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.accounts.list
-      def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+      def list(account_type: nil, company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -268,6 +283,7 @@ module Merge
             }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
+              "account_type": account_type,
               "company_id": company_id,
               "created_after": created_after,
               "created_before": created_before,
@@ -275,6 +291,7 @@ module Merge
               "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
               "page_size": page_size,
@@ -300,9 +317,10 @@ module Merge
       #   * :description (String)
       #   * :classification (Merge::Accounting::ClassificationEnum)
       #   * :type (String)
+      #   * :account_type (Merge::Accounting::AccountAccountTypeEnum)
       #   * :status (Merge::Accounting::AccountStatusEnum)
       #   * :current_balance (Float)
-      #   * :currency (Merge::Accounting::CurrencyEnum)
+      #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :account_number (String)
       #   * :parent_account (String)
       #   * :company (String)

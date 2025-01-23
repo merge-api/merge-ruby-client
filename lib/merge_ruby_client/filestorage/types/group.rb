@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
+require_relative "group_child_groups_item"
+require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -26,12 +28,16 @@ module Merge
       # @return [Array<String>] The users that belong in the group. If null, this typically means it's either a
       #  domain or the third-party platform does not surface this information.
       attr_reader :users
+      # @return [Array<Merge::Filestorage::GroupChildGroupsItem>] Groups that inherit the permissions of the parent group.
+      attr_reader :child_groups
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Merge::Filestorage::RemoteData>]
       attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -48,20 +54,24 @@ module Merge
       # @param name [String] The group's name.
       # @param users [Array<String>] The users that belong in the group. If null, this typically means it's either a
       #  domain or the third-party platform does not surface this information.
+      # @param child_groups [Array<Merge::Filestorage::GroupChildGroupsItem>] Groups that inherit the permissions of the parent group.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Hash{String => Object}>]
+      # @param remote_data [Array<Merge::Filestorage::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::Group]
       def initialize(users:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT,
-                     remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     child_groups: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @name = name if name != OMIT
         @users = users
+        @child_groups = child_groups if child_groups != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
@@ -73,6 +83,7 @@ module Merge
           "modified_at": modified_at,
           "name": name,
           "users": users,
+          "child_groups": child_groups,
           "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
           "remote_data": remote_data
@@ -94,9 +105,16 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         users = parsed_json["users"]
+        child_groups = parsed_json["child_groups"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::GroupChildGroupsItem.from_json(json_object: item)
+        end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::RemoteData.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,
@@ -104,6 +122,7 @@ module Merge
           modified_at: modified_at,
           name: name,
           users: users,
+          child_groups: child_groups,
           remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
           remote_data: remote_data,
@@ -131,6 +150,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.users.is_a?(Array) != false || raise("Passed value for field obj.users is not the expected type, validation failed.")
+        obj.child_groups&.is_a?(Array) != false || raise("Passed value for field obj.child_groups is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")

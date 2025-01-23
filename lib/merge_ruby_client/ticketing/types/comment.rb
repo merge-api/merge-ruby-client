@@ -24,9 +24,13 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ticketing::CommentUser] The author of the Comment, if the author is a User.
+      # @return [Merge::Ticketing::CommentUser] The author of the Comment, if the author is a User. If the third party does not
+      #  support specifying an author, we will append "[Posted on behalf of {name}]" to
+      #  the comment.
       attr_reader :user
-      # @return [Merge::Ticketing::CommentContact] The author of the Comment, if the author is a Contact.
+      # @return [Merge::Ticketing::CommentContact] The author of the Comment, if the author is a Contact.If the third party does
+      #  not support specifying an author, we will append "[Posted on behalf of {name}]"
+      #  to the comment.
       attr_reader :contact
       # @return [String] The comment's text body.
       attr_reader :body
@@ -38,7 +42,10 @@ module Merge
       attr_reader :is_private
       # @return [DateTime] When the third party's comment was created.
       attr_reader :remote_created_at
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -56,14 +63,21 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param user [Merge::Ticketing::CommentUser] The author of the Comment, if the author is a User.
-      # @param contact [Merge::Ticketing::CommentContact] The author of the Comment, if the author is a Contact.
+      # @param user [Merge::Ticketing::CommentUser] The author of the Comment, if the author is a User. If the third party does not
+      #  support specifying an author, we will append "[Posted on behalf of {name}]" to
+      #  the comment.
+      # @param contact [Merge::Ticketing::CommentContact] The author of the Comment, if the author is a Contact.If the third party does
+      #  not support specifying an author, we will append "[Posted on behalf of {name}]"
+      #  to the comment.
       # @param body [String] The comment's text body.
       # @param html_body [String] The comment's text body formatted as html.
       # @param ticket [Merge::Ticketing::CommentTicket] The ticket associated with the comment.
       # @param is_private [Boolean] Whether or not the comment is internal.
       # @param remote_created_at [DateTime] When the third party's comment was created.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Ticketing::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

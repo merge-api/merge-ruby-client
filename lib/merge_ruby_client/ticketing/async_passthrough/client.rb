@@ -3,7 +3,7 @@
 require_relative "../../../requests"
 require_relative "../types/data_passthrough_request"
 require_relative "../types/async_passthrough_reciept"
-require_relative "../types/remote_response"
+require_relative "types/async_passthrough_retrieve_response"
 require "async"
 
 module Merge
@@ -61,7 +61,7 @@ module Merge
       #
       # @param async_passthrough_receipt_id [String]
       # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Ticketing::RemoteResponse]
+      # @return [Merge::Ticketing::RemoteResponse, String]
       # @example
       #  api = Merge::Client.new(
       #    base_url: "https://api.example.com",
@@ -87,7 +87,7 @@ module Merge
           end
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/async-passthrough/#{async_passthrough_receipt_id}"
         end
-        Merge::Ticketing::RemoteResponse.from_json(json_object: response.body)
+        Merge::Ticketing::AsyncPassthrough::AsyncPassthroughRetrieveResponse.from_json(json_object: response.body)
       end
     end
 
@@ -146,7 +146,7 @@ module Merge
       #
       # @param async_passthrough_receipt_id [String]
       # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Ticketing::RemoteResponse]
+      # @return [Merge::Ticketing::RemoteResponse, String]
       # @example
       #  api = Merge::Client.new(
       #    base_url: "https://api.example.com",
@@ -173,7 +173,7 @@ module Merge
             end
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/async-passthrough/#{async_passthrough_receipt_id}"
           end
-          Merge::Ticketing::RemoteResponse.from_json(json_object: response.body)
+          Merge::Ticketing::AsyncPassthrough::AsyncPassthroughRetrieveResponse.from_json(json_object: response.body)
         end
       end
     end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "category_enum"
+require "date"
 require "ostruct"
 require "json"
 
@@ -32,6 +33,8 @@ module Merge
       attr_reader :is_duplicate
       # @return [String]
       attr_reader :account_type
+      # @return [DateTime] The time at which account completes the linking flow.
+      attr_reader :completed_at
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -54,10 +57,11 @@ module Merge
       #  incomplete Production Linked Accounts, and ignored duplicate Production Linked
       #  Account sets.
       # @param account_type [String]
+      # @param completed_at [DateTime] The time at which account completes the linking flow.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Hris::AccountDetails]
       def initialize(id: OMIT, integration: OMIT, integration_slug: OMIT, category: OMIT, end_user_origin_id: OMIT,
-                     end_user_organization_name: OMIT, end_user_email_address: OMIT, status: OMIT, webhook_listener_url: OMIT, is_duplicate: OMIT, account_type: OMIT, additional_properties: nil)
+                     end_user_organization_name: OMIT, end_user_email_address: OMIT, status: OMIT, webhook_listener_url: OMIT, is_duplicate: OMIT, account_type: OMIT, completed_at: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @integration = integration if integration != OMIT
         @integration_slug = integration_slug if integration_slug != OMIT
@@ -69,6 +73,7 @@ module Merge
         @webhook_listener_url = webhook_listener_url if webhook_listener_url != OMIT
         @is_duplicate = is_duplicate if is_duplicate != OMIT
         @account_type = account_type if account_type != OMIT
+        @completed_at = completed_at if completed_at != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -81,7 +86,8 @@ module Merge
           "status": status,
           "webhook_listener_url": webhook_listener_url,
           "is_duplicate": is_duplicate,
-          "account_type": account_type
+          "account_type": account_type,
+          "completed_at": completed_at
         }.reject do |_k, v|
           v == OMIT
         end
@@ -105,6 +111,7 @@ module Merge
         webhook_listener_url = parsed_json["webhook_listener_url"]
         is_duplicate = parsed_json["is_duplicate"]
         account_type = parsed_json["account_type"]
+        completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
         new(
           id: id,
           integration: integration,
@@ -117,6 +124,7 @@ module Merge
           webhook_listener_url: webhook_listener_url,
           is_duplicate: is_duplicate,
           account_type: account_type,
+          completed_at: completed_at,
           additional_properties: struct
         )
       end
@@ -146,6 +154,7 @@ module Merge
         obj.webhook_listener_url&.is_a?(String) != false || raise("Passed value for field obj.webhook_listener_url is not the expected type, validation failed.")
         obj.is_duplicate&.is_a?(Boolean) != false || raise("Passed value for field obj.is_duplicate is not the expected type, validation failed.")
         obj.account_type&.is_a?(String) != false || raise("Passed value for field obj.account_type is not the expected type, validation failed.")
+        obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
       end
     end
   end

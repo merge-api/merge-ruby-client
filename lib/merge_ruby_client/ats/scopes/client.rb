@@ -19,7 +19,7 @@ module Merge
 
       # Get the default permissions for Merge Common Models and fields across all Linked
       #  Accounts of a given category. [Learn
-      #  more](https://help.merge.dev/en/articles/8828211-common-model-and-field-scopes).
+      #  more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes).
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::CommonModelScopeApi]
@@ -53,7 +53,7 @@ module Merge
 
       # Get all available permissions for Merge Common Models and fields for a single
       #  Linked Account. [Learn
-      #  more](https://help.merge.dev/en/articles/8828211-common-model-and-field-scopes).
+      #  more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes).
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::CommonModelScopeApi]
@@ -87,14 +87,14 @@ module Merge
 
       # Update permissions for any Common Model or field for a single Linked Account.
       #  Any Scopes not set in this POST request will inherit the default Scopes. [Learn
-      #  more](https://help.merge.dev/en/articles/8828211-common-model-and-field-scopes)
+      #  more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes)
       #
       # @param common_models [Array<Hash>] The common models you want to update the scopes forRequest of type Array<Merge::Ats::IndividualCommonModelScopeDeserializerRequest>, as a Hash
       #   * :model_name (String)
       #   * :model_permissions (Hash{String => Merge::Ats::ModelPermissionDeserializerRequest})
       #   * :field_permissions (Hash)
-      #     * :enabled (Array<Object>)
-      #     * :disabled (Array<Object>)
+      #     * :enabled_fields (Array<Object>)
+      #     * :disabled_fields (Array<Object>)
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::CommonModelScopeApi]
       # @example
@@ -103,7 +103,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.scopes.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
+      #  api.ats.scopes.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } }, field_permissions: { enabled_fields: ["avatar", "home_location"], disabled_fields: ["work_location"] } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
       def linked_account_scopes_create(common_models:, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -136,7 +136,7 @@ module Merge
 
       # Get the default permissions for Merge Common Models and fields across all Linked
       #  Accounts of a given category. [Learn
-      #  more](https://help.merge.dev/en/articles/8828211-common-model-and-field-scopes).
+      #  more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes).
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::CommonModelScopeApi]
@@ -172,7 +172,7 @@ module Merge
 
       # Get all available permissions for Merge Common Models and fields for a single
       #  Linked Account. [Learn
-      #  more](https://help.merge.dev/en/articles/8828211-common-model-and-field-scopes).
+      #  more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes).
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::CommonModelScopeApi]
@@ -208,14 +208,14 @@ module Merge
 
       # Update permissions for any Common Model or field for a single Linked Account.
       #  Any Scopes not set in this POST request will inherit the default Scopes. [Learn
-      #  more](https://help.merge.dev/en/articles/8828211-common-model-and-field-scopes)
+      #  more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes)
       #
       # @param common_models [Array<Hash>] The common models you want to update the scopes forRequest of type Array<Merge::Ats::IndividualCommonModelScopeDeserializerRequest>, as a Hash
       #   * :model_name (String)
       #   * :model_permissions (Hash{String => Merge::Ats::ModelPermissionDeserializerRequest})
       #   * :field_permissions (Hash)
-      #     * :enabled (Array<Object>)
-      #     * :disabled (Array<Object>)
+      #     * :enabled_fields (Array<Object>)
+      #     * :disabled_fields (Array<Object>)
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::CommonModelScopeApi]
       # @example
@@ -224,7 +224,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.scopes.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
+      #  api.ats.scopes.linked_account_scopes_create(common_models: [{ model_name: "Employee", model_permissions: { "READ": { is_enabled: true }, "WRITE": { is_enabled: false } }, field_permissions: { enabled_fields: ["avatar", "home_location"], disabled_fields: ["work_location"] } }, { model_name: "Benefit", model_permissions: { "WRITE": { is_enabled: false } } }])
       def linked_account_scopes_create(common_models:, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|

@@ -11,14 +11,18 @@ module Merge
   module Ticketing
     # # The Ticket Object
     #  ### Description
-    #  The `Ticket` object is used to represent a ticket or a task within a system.
+    #  The `Ticket` object is used to represent a ticket, issue, task or case.
     #  ### Usage Example
     #  TODO
     class PatchedTicketRequest
       # @return [String] The ticket's name.
       attr_reader :name
-      # @return [Array<String>]
+      # @return [Array<String>] The individual `Users` who are assigned to this ticket. This does not include
+      #  `Users` who just have view access to this ticket.
       attr_reader :assignees
+      # @return [Array<String>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
+      #  just have view access to this ticket.
+      attr_reader :assigned_teams
       # @return [String] The user who created this ticket.
       attr_reader :creator
       # @return [DateTime] The ticket's due date.
@@ -32,7 +36,7 @@ module Merge
       # @return [String] The ticket’s description. HTML version of description is mapped if supported by
       #  the third-party platform.
       attr_reader :description
-      # @return [Array<String>]
+      # @return [Array<String>] The `Collections` that this `Ticket` is included in.
       attr_reader :collections
       # @return [String] The sub category of the ticket within the 3rd party system. Examples include
       #  incident, task, subtask or to-do.
@@ -45,6 +49,8 @@ module Merge
       attr_reader :parent_ticket
       # @return [Array<String>]
       attr_reader :tags
+      # @return [Array<String>]
+      attr_reader :roles
       # @return [DateTime] When the ticket was completed.
       attr_reader :completed_at
       # @return [String] The 3rd party url of the Ticket.
@@ -70,7 +76,10 @@ module Merge
       OMIT = Object.new
 
       # @param name [String] The ticket's name.
-      # @param assignees [Array<String>]
+      # @param assignees [Array<String>] The individual `Users` who are assigned to this ticket. This does not include
+      #  `Users` who just have view access to this ticket.
+      # @param assigned_teams [Array<String>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
+      #  just have view access to this ticket.
       # @param creator [String] The user who created this ticket.
       # @param due_date [DateTime] The ticket's due date.
       # @param status [Merge::Ticketing::TicketStatusEnum] The current status of the ticket.
@@ -80,13 +89,14 @@ module Merge
       #  - `ON_HOLD` - ON_HOLD
       # @param description [String] The ticket’s description. HTML version of description is mapped if supported by
       #  the third-party platform.
-      # @param collections [Array<String>]
+      # @param collections [Array<String>] The `Collections` that this `Ticket` is included in.
       # @param ticket_type [String] The sub category of the ticket within the 3rd party system. Examples include
       #  incident, task, subtask or to-do.
       # @param account [String] The account associated with the ticket.
       # @param contact [String] The contact associated with the ticket.
       # @param parent_ticket [String] The ticket's parent ticket.
       # @param tags [Array<String>]
+      # @param roles [Array<String>]
       # @param completed_at [DateTime] When the ticket was completed.
       # @param ticket_url [String] The 3rd party url of the Ticket.
       # @param priority [Merge::Ticketing::PriorityEnum] The priority or urgency of the Ticket.
@@ -99,10 +109,11 @@ module Merge
       # @param remote_fields [Array<Merge::Ticketing::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::PatchedTicketRequest]
-      def initialize(name: OMIT, assignees: OMIT, creator: OMIT, due_date: OMIT, status: OMIT, description: OMIT,
-                     collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, tags: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+      def initialize(name: OMIT, assignees: OMIT, assigned_teams: OMIT, creator: OMIT, due_date: OMIT, status: OMIT,
+                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, tags: OMIT, roles: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @name = name if name != OMIT
         @assignees = assignees if assignees != OMIT
+        @assigned_teams = assigned_teams if assigned_teams != OMIT
         @creator = creator if creator != OMIT
         @due_date = due_date if due_date != OMIT
         @status = status if status != OMIT
@@ -113,6 +124,7 @@ module Merge
         @contact = contact if contact != OMIT
         @parent_ticket = parent_ticket if parent_ticket != OMIT
         @tags = tags if tags != OMIT
+        @roles = roles if roles != OMIT
         @completed_at = completed_at if completed_at != OMIT
         @ticket_url = ticket_url if ticket_url != OMIT
         @priority = priority if priority != OMIT
@@ -123,6 +135,7 @@ module Merge
         @_field_set = {
           "name": name,
           "assignees": assignees,
+          "assigned_teams": assigned_teams,
           "creator": creator,
           "due_date": due_date,
           "status": status,
@@ -133,6 +146,7 @@ module Merge
           "contact": contact,
           "parent_ticket": parent_ticket,
           "tags": tags,
+          "roles": roles,
           "completed_at": completed_at,
           "ticket_url": ticket_url,
           "priority": priority,
@@ -153,6 +167,7 @@ module Merge
         parsed_json = JSON.parse(json_object)
         name = parsed_json["name"]
         assignees = parsed_json["assignees"]
+        assigned_teams = parsed_json["assigned_teams"]
         creator = parsed_json["creator"]
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
         status = parsed_json["status"]
@@ -163,6 +178,7 @@ module Merge
         contact = parsed_json["contact"]
         parent_ticket = parsed_json["parent_ticket"]
         tags = parsed_json["tags"]
+        roles = parsed_json["roles"]
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
         ticket_url = parsed_json["ticket_url"]
         priority = parsed_json["priority"]
@@ -175,6 +191,7 @@ module Merge
         new(
           name: name,
           assignees: assignees,
+          assigned_teams: assigned_teams,
           creator: creator,
           due_date: due_date,
           status: status,
@@ -185,6 +202,7 @@ module Merge
           contact: contact,
           parent_ticket: parent_ticket,
           tags: tags,
+          roles: roles,
           completed_at: completed_at,
           ticket_url: ticket_url,
           priority: priority,
@@ -211,6 +229,7 @@ module Merge
       def self.validate_raw(obj:)
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.assignees&.is_a?(Array) != false || raise("Passed value for field obj.assignees is not the expected type, validation failed.")
+        obj.assigned_teams&.is_a?(Array) != false || raise("Passed value for field obj.assigned_teams is not the expected type, validation failed.")
         obj.creator&.is_a?(String) != false || raise("Passed value for field obj.creator is not the expected type, validation failed.")
         obj.due_date&.is_a?(DateTime) != false || raise("Passed value for field obj.due_date is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Ticketing::TicketStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
@@ -221,6 +240,7 @@ module Merge
         obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.parent_ticket&.is_a?(String) != false || raise("Passed value for field obj.parent_ticket is not the expected type, validation failed.")
         obj.tags&.is_a?(Array) != false || raise("Passed value for field obj.tags is not the expected type, validation failed.")
+        obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
         obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
         obj.ticket_url&.is_a?(String) != false || raise("Passed value for field obj.ticket_url is not the expected type, validation failed.")
         obj.priority&.is_a?(Merge::Ticketing::PriorityEnum) != false || raise("Passed value for field obj.priority is not the expected type, validation failed.")

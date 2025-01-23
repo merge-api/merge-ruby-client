@@ -52,7 +52,10 @@ module Merge
       attr_reader :current_stage
       # @return [Merge::Ats::ApplicationRejectReason] The application's reason for rejection.
       attr_reader :reject_reason
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -80,7 +83,10 @@ module Merge
       # @param screening_question_answers [Array<Merge::Ats::ApplicationScreeningQuestionAnswersItem>]
       # @param current_stage [Merge::Ats::ApplicationCurrentStage] The application's current stage.
       # @param reject_reason [Merge::Ats::ApplicationRejectReason] The application's reason for rejection.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Ats::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

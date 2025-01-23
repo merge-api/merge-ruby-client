@@ -28,6 +28,11 @@ module Merge
       attr_reader :sub_items
       # @return [String] The company the report item belongs to.
       attr_reader :company
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
+      attr_reader :remote_was_deleted
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -43,10 +48,14 @@ module Merge
       # @param value [Float] The report item's value.
       # @param sub_items [Array<Hash{String => Object}>]
       # @param company [String] The company the report item belongs to.
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::ReportItem]
       def initialize(remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, value: OMIT, sub_items: OMIT,
-                     company: OMIT, additional_properties: nil)
+                     company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
@@ -54,6 +63,7 @@ module Merge
         @value = value if value != OMIT
         @sub_items = sub_items if sub_items != OMIT
         @company = company if company != OMIT
+        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "remote_id": remote_id,
@@ -62,7 +72,8 @@ module Merge
           "name": name,
           "value": value,
           "sub_items": sub_items,
-          "company": company
+          "company": company,
+          "remote_was_deleted": remote_was_deleted
         }.reject do |_k, v|
           v == OMIT
         end
@@ -82,6 +93,7 @@ module Merge
         value = parsed_json["value"]
         sub_items = parsed_json["sub_items"]
         company = parsed_json["company"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           remote_id: remote_id,
           created_at: created_at,
@@ -90,6 +102,7 @@ module Merge
           value: value,
           sub_items: sub_items,
           company: company,
+          remote_was_deleted: remote_was_deleted,
           additional_properties: struct
         )
       end
@@ -115,6 +128,7 @@ module Merge
         obj.value&.is_a?(Float) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
         obj.sub_items&.is_a?(Array) != false || raise("Passed value for field obj.sub_items is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end
     end
   end

@@ -23,6 +23,10 @@ module Merge
       #  between third-party Remote Fields and user defined Merge fields. [Learn
       #  more](https://docs.merge.dev/supplemental-data/field-mappings/overview/).
       #
+      # @param exclude_remote_field_metadata [Boolean] If `true`, remote fields metadata is excluded from each field mapping instance
+      #  (i.e. `remote_fields.remote_key_name` and `remote_fields.schema` will be null).
+      #  This will increase the speed of the request since these fields require some
+      #  calculations.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::FieldMappingApiInstanceResponse]
       # @example
@@ -32,7 +36,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.filestorage.field_mapping.field_mappings_retrieve
-      def field_mappings_retrieve(request_options: nil)
+      def field_mappings_retrieve(exclude_remote_field_metadata: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -42,9 +46,10 @@ module Merge
         **@request_client.get_headers,
         **(request_options&.additional_headers || {})
           }.compact
-          unless request_options.nil? || request_options&.additional_query_parameters.nil?
-            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
-          end
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "exclude_remote_field_metadata": exclude_remote_field_metadata
+          }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
           end
@@ -57,6 +62,10 @@ module Merge
       #  This will cause the next sync for this Linked Account to sync **ALL** data from
       #  start.
       #
+      # @param exclude_remote_field_metadata [Boolean] If `true`, remote fields metadata is excluded from each field mapping instance
+      #  (i.e. `remote_fields.remote_key_name` and `remote_fields.schema` will be null).
+      #  This will increase the speed of the request since these fields require some
+      #  calculations.
       # @param target_field_name [String] The name of the target field you want this remote field to map to.
       # @param target_field_description [String] The description of the target field you want this remote field to map to.
       # @param remote_field_traversal_path [Array<Object>] The field traversal path of the remote field listed when you hit the GET
@@ -82,7 +91,7 @@ module Merge
       #    common_model_name: "ExampleCommonModel"
       #  )
       def field_mappings_create(target_field_name:, target_field_description:, remote_field_traversal_path:,
-                                remote_method:, remote_url_path:, common_model_name:, request_options: nil)
+                                remote_method:, remote_url_path:, common_model_name:, exclude_remote_field_metadata: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -92,9 +101,10 @@ module Merge
         **@request_client.get_headers,
         **(request_options&.additional_headers || {})
           }.compact
-          unless request_options.nil? || request_options&.additional_query_parameters.nil?
-            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
-          end
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "exclude_remote_field_metadata": exclude_remote_field_metadata
+          }.compact
           req.body = {
             **(request_options&.additional_body_parameters || {}),
             target_field_name: target_field_name,
@@ -280,6 +290,10 @@ module Merge
       #  between third-party Remote Fields and user defined Merge fields. [Learn
       #  more](https://docs.merge.dev/supplemental-data/field-mappings/overview/).
       #
+      # @param exclude_remote_field_metadata [Boolean] If `true`, remote fields metadata is excluded from each field mapping instance
+      #  (i.e. `remote_fields.remote_key_name` and `remote_fields.schema` will be null).
+      #  This will increase the speed of the request since these fields require some
+      #  calculations.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::FieldMappingApiInstanceResponse]
       # @example
@@ -289,7 +303,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.filestorage.field_mapping.field_mappings_retrieve
-      def field_mappings_retrieve(request_options: nil)
+      def field_mappings_retrieve(exclude_remote_field_metadata: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -300,9 +314,10 @@ module Merge
           **@request_client.get_headers,
           **(request_options&.additional_headers || {})
             }.compact
-            unless request_options.nil? || request_options&.additional_query_parameters.nil?
-              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
-            end
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "exclude_remote_field_metadata": exclude_remote_field_metadata
+            }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
             end
@@ -316,6 +331,10 @@ module Merge
       #  This will cause the next sync for this Linked Account to sync **ALL** data from
       #  start.
       #
+      # @param exclude_remote_field_metadata [Boolean] If `true`, remote fields metadata is excluded from each field mapping instance
+      #  (i.e. `remote_fields.remote_key_name` and `remote_fields.schema` will be null).
+      #  This will increase the speed of the request since these fields require some
+      #  calculations.
       # @param target_field_name [String] The name of the target field you want this remote field to map to.
       # @param target_field_description [String] The description of the target field you want this remote field to map to.
       # @param remote_field_traversal_path [Array<Object>] The field traversal path of the remote field listed when you hit the GET
@@ -341,7 +360,7 @@ module Merge
       #    common_model_name: "ExampleCommonModel"
       #  )
       def field_mappings_create(target_field_name:, target_field_description:, remote_field_traversal_path:,
-                                remote_method:, remote_url_path:, common_model_name:, request_options: nil)
+                                remote_method:, remote_url_path:, common_model_name:, exclude_remote_field_metadata: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -352,9 +371,10 @@ module Merge
           **@request_client.get_headers,
           **(request_options&.additional_headers || {})
             }.compact
-            unless request_options.nil? || request_options&.additional_query_parameters.nil?
-              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
-            end
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "exclude_remote_field_metadata": exclude_remote_field_metadata
+            }.compact
             req.body = {
               **(request_options&.additional_body_parameters || {}),
               target_field_name: target_field_name,

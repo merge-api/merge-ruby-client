@@ -2,10 +2,11 @@
 
 require "date"
 require_relative "vendor_credit_vendor"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "vendor_credit_company"
 require_relative "vendor_credit_line"
 require_relative "vendor_credit_tracking_categories_item"
+require_relative "vendor_credit_apply_line_for_vendor_credit"
 require_relative "vendor_credit_accounting_period"
 require_relative "remote_data"
 require "ostruct"
@@ -19,8 +20,8 @@ module Merge
     #  indicating a reduction or cancellation of the amount owed to the vendor. It is
     #  most generally used as an adjustment note used to rectify errors, returns, or
     #  overpayments related to a purchasing transaction. A `VendorCredit` can be
-    #  applied to _Accounts Payable_ Invoices to decrease the overall amount of the
-    #  Invoice.
+    #  applied to `Accounts Payable` Invoices to decrease the overall amount of the
+    #  `Invoice`.
     #  ### Usage Example
     #  Fetch from the `GET VendorCredit` endpoint and view a company's vendor credits.
     class VendorCredit
@@ -40,7 +41,7 @@ module Merge
       attr_reader :vendor
       # @return [Float] The vendor credit's total amount.
       attr_reader :total_amount
-      # @return [Merge::Accounting::CurrencyEnum] The vendor credit's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The vendor credit's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -350,14 +351,21 @@ module Merge
       attr_reader :currency
       # @return [String] The vendor credit's exchange rate.
       attr_reader :exchange_rate
+      # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
+      attr_reader :inclusive_of_tax
       # @return [Merge::Accounting::VendorCreditCompany] The company the vendor credit belongs to.
       attr_reader :company
       # @return [Array<Merge::Accounting::VendorCreditLine>]
       attr_reader :lines
       # @return [Array<Merge::Accounting::VendorCreditTrackingCategoriesItem>]
       attr_reader :tracking_categories
+      # @return [Array<Merge::Accounting::VendorCreditApplyLineForVendorCredit>] A list of VendorCredit Applied to Lines objects.
+      attr_reader :applied_to_lines
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Merge::Accounting::VendorCreditAccountingPeriod] The accounting period that the VendorCredit was generated in.
       attr_reader :accounting_period
@@ -381,7 +389,7 @@ module Merge
       # @param transaction_date [DateTime] The vendor credit's transaction date.
       # @param vendor [Merge::Accounting::VendorCreditVendor] The vendor that owes the gift or refund.
       # @param total_amount [Float] The vendor credit's total amount.
-      # @param currency [Merge::Accounting::CurrencyEnum] The vendor credit's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The vendor credit's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -689,18 +697,23 @@ module Merge
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The vendor credit's exchange rate.
+      # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
       # @param company [Merge::Accounting::VendorCreditCompany] The company the vendor credit belongs to.
       # @param lines [Array<Merge::Accounting::VendorCreditLine>]
       # @param tracking_categories [Array<Merge::Accounting::VendorCreditTrackingCategoriesItem>]
+      # @param applied_to_lines [Array<Merge::Accounting::VendorCreditApplyLineForVendorCredit>] A list of VendorCredit Applied to Lines objects.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param accounting_period [Merge::Accounting::VendorCreditAccountingPeriod] The accounting period that the VendorCredit was generated in.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::VendorCredit]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, number: OMIT,
-                     transaction_date: OMIT, vendor: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, lines: OMIT, tracking_categories: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     transaction_date: OMIT, vendor: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, inclusive_of_tax: OMIT, company: OMIT, lines: OMIT, tracking_categories: OMIT, applied_to_lines: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -711,9 +724,11 @@ module Merge
         @total_amount = total_amount if total_amount != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
+        @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @company = company if company != OMIT
         @lines = lines if lines != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
+        @applied_to_lines = applied_to_lines if applied_to_lines != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @accounting_period = accounting_period if accounting_period != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
@@ -730,9 +745,11 @@ module Merge
           "total_amount": total_amount,
           "currency": currency,
           "exchange_rate": exchange_rate,
+          "inclusive_of_tax": inclusive_of_tax,
           "company": company,
           "lines": lines,
           "tracking_categories": tracking_categories,
+          "applied_to_lines": applied_to_lines,
           "remote_was_deleted": remote_was_deleted,
           "accounting_period": accounting_period,
           "field_mappings": field_mappings,
@@ -764,6 +781,7 @@ module Merge
         total_amount = parsed_json["total_amount"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
+        inclusive_of_tax = parsed_json["inclusive_of_tax"]
         if parsed_json["company"].nil?
           company = nil
         else
@@ -777,6 +795,10 @@ module Merge
         tracking_categories = parsed_json["tracking_categories"]&.map do |item|
           item = item.to_json
           Merge::Accounting::VendorCreditTrackingCategoriesItem.from_json(json_object: item)
+        end
+        applied_to_lines = parsed_json["applied_to_lines"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::VendorCreditApplyLineForVendorCredit.from_json(json_object: item)
         end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         if parsed_json["accounting_period"].nil?
@@ -801,9 +823,11 @@ module Merge
           total_amount: total_amount,
           currency: currency,
           exchange_rate: exchange_rate,
+          inclusive_of_tax: inclusive_of_tax,
           company: company,
           lines: lines,
           tracking_categories: tracking_categories,
+          applied_to_lines: applied_to_lines,
           remote_was_deleted: remote_was_deleted,
           accounting_period: accounting_period,
           field_mappings: field_mappings,
@@ -834,11 +858,13 @@ module Merge
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.vendor.nil? || Merge::Accounting::VendorCreditVendor.validate_raw(obj: obj.vendor)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
+        obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::VendorCreditCompany.validate_raw(obj: obj.company)
         obj.lines&.is_a?(Array) != false || raise("Passed value for field obj.lines is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.accounting_period.nil? || Merge::Accounting::VendorCreditAccountingPeriod.validate_raw(obj: obj.accounting_period)
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

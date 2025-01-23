@@ -3,12 +3,13 @@
 require "date"
 require_relative "payment_request_contact"
 require_relative "payment_request_account"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "payment_request_company"
 require_relative "payment_type_enum"
 require_relative "payment_request_tracking_categories_item"
 require_relative "payment_request_accounting_period"
 require_relative "payment_request_applied_to_lines_item"
+require_relative "remote_field_request"
 require "ostruct"
 require "json"
 
@@ -27,7 +28,7 @@ module Merge
       attr_reader :contact
       # @return [Merge::Accounting::PaymentRequestAccount] The supplier’s or customer’s account in which the payment is made.
       attr_reader :account
-      # @return [Merge::Accounting::CurrencyEnum] The payment's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The payment's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -355,6 +356,8 @@ module Merge
       attr_reader :integration_params
       # @return [Hash{String => Object}]
       attr_reader :linked_account_params
+      # @return [Array<Merge::Accounting::RemoteFieldRequest>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -366,7 +369,7 @@ module Merge
       # @param transaction_date [DateTime] The payment's transaction date.
       # @param contact [Merge::Accounting::PaymentRequestContact] The supplier, or customer involved in the payment.
       # @param account [Merge::Accounting::PaymentRequestAccount] The supplier’s or customer’s account in which the payment is made.
-      # @param currency [Merge::Accounting::CurrencyEnum] The payment's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The payment's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -684,10 +687,11 @@ module Merge
       # @param applied_to_lines [Array<Merge::Accounting::PaymentRequestAppliedToLinesItem>] A list of “Payment Applied to Lines” objects.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
+      # @param remote_fields [Array<Merge::Accounting::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PaymentRequest]
       def initialize(transaction_date: OMIT, contact: OMIT, account: OMIT, currency: OMIT, exchange_rate: OMIT,
-                     company: OMIT, total_amount: OMIT, type: OMIT, tracking_categories: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     company: OMIT, total_amount: OMIT, type: OMIT, tracking_categories: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @transaction_date = transaction_date if transaction_date != OMIT
         @contact = contact if contact != OMIT
         @account = account if account != OMIT
@@ -701,6 +705,7 @@ module Merge
         @applied_to_lines = applied_to_lines if applied_to_lines != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "transaction_date": transaction_date,
@@ -715,7 +720,8 @@ module Merge
           "accounting_period": accounting_period,
           "applied_to_lines": applied_to_lines,
           "integration_params": integration_params,
-          "linked_account_params": linked_account_params
+          "linked_account_params": linked_account_params,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -767,6 +773,10 @@ module Merge
         end
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldRequest.from_json(json_object: item)
+        end
         new(
           transaction_date: transaction_date,
           contact: contact,
@@ -781,6 +791,7 @@ module Merge
           applied_to_lines: applied_to_lines,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -802,7 +813,7 @@ module Merge
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.contact.nil? || Merge::Accounting::PaymentRequestContact.validate_raw(obj: obj.contact)
         obj.account.nil? || Merge::Accounting::PaymentRequestAccount.validate_raw(obj: obj.account)
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PaymentRequestCompany.validate_raw(obj: obj.company)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
@@ -812,6 +823,7 @@ module Merge
         obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

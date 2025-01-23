@@ -7,9 +7,9 @@ module Merge
   module Ats
     class FieldPermissionDeserializer
       # @return [Array<Object>]
-      attr_reader :enabled
+      attr_reader :enabled_fields
       # @return [Array<Object>]
-      attr_reader :disabled
+      attr_reader :disabled_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -18,15 +18,15 @@ module Merge
 
       OMIT = Object.new
 
-      # @param enabled [Array<Object>]
-      # @param disabled [Array<Object>]
+      # @param enabled_fields [Array<Object>]
+      # @param disabled_fields [Array<Object>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::FieldPermissionDeserializer]
-      def initialize(enabled: OMIT, disabled: OMIT, additional_properties: nil)
-        @enabled = enabled if enabled != OMIT
-        @disabled = disabled if disabled != OMIT
+      def initialize(enabled_fields: OMIT, disabled_fields: OMIT, additional_properties: nil)
+        @enabled_fields = enabled_fields if enabled_fields != OMIT
+        @disabled_fields = disabled_fields if disabled_fields != OMIT
         @additional_properties = additional_properties
-        @_field_set = { "enabled": enabled, "disabled": disabled }.reject do |_k, v|
+        @_field_set = { "enabled_fields": enabled_fields, "disabled_fields": disabled_fields }.reject do |_k, v|
           v == OMIT
         end
       end
@@ -38,11 +38,11 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        enabled = parsed_json["enabled"]
-        disabled = parsed_json["disabled"]
+        enabled_fields = parsed_json["enabled_fields"]
+        disabled_fields = parsed_json["disabled_fields"]
         new(
-          enabled: enabled,
-          disabled: disabled,
+          enabled_fields: enabled_fields,
+          disabled_fields: disabled_fields,
           additional_properties: struct
         )
       end
@@ -61,8 +61,8 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.enabled&.is_a?(Array) != false || raise("Passed value for field obj.enabled is not the expected type, validation failed.")
-        obj.disabled&.is_a?(Array) != false || raise("Passed value for field obj.disabled is not the expected type, validation failed.")
+        obj.enabled_fields&.is_a?(Array) != false || raise("Passed value for field obj.enabled_fields is not the expected type, validation failed.")
+        obj.disabled_fields&.is_a?(Array) != false || raise("Passed value for field obj.disabled_fields is not the expected type, validation failed.")
       end
     end
   end
