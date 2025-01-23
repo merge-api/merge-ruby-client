@@ -36,7 +36,9 @@ module Merge
       #  - `GROUP` - GROUP
       attr_reader :type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Boolean] Indicates whether the Group refers to a team in the third party platform. Note
       #  that this is an opinionated view based on how Merge observes most organizations
@@ -68,7 +70,9 @@ module Merge
       #  - `BUSINESS_UNIT` - BUSINESS_UNIT
       #  - `GROUP` - GROUP
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param is_commonly_used_as_team [Boolean] Indicates whether the Group refers to a team in the third party platform. Note
       #  that this is an opinionated view based on how Merge observes most organizations
       #  representing teams in each third party platform. If your customer uses a

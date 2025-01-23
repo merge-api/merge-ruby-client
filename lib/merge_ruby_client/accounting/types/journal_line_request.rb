@@ -3,7 +3,8 @@
 require_relative "journal_line_request_account"
 require_relative "journal_line_request_tracking_category"
 require_relative "journal_line_request_tracking_categories_item"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
+require_relative "remote_field_request"
 require "ostruct"
 require "json"
 
@@ -24,9 +25,9 @@ module Merge
       attr_reader :net_amount
       # @return [Merge::Accounting::JournalLineRequestTrackingCategory]
       attr_reader :tracking_category
-      # @return [Array<Merge::Accounting::JournalLineRequestTrackingCategoriesItem>]
+      # @return [Array<Merge::Accounting::JournalLineRequestTrackingCategoriesItem>] The journal line item's associated tracking categories.
       attr_reader :tracking_categories
-      # @return [Merge::Accounting::CurrencyEnum] The journal line item's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The journal line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -337,7 +338,11 @@ module Merge
       # @return [String] The company the journal entry belongs to.
       attr_reader :company
       # @return [String]
+      attr_reader :employee
+      # @return [String]
       attr_reader :contact
+      # @return [String] The tax rate that applies to this line item.
+      attr_reader :tax_rate
       # @return [String] The line's description.
       attr_reader :description
       # @return [String] The journal line item's exchange rate.
@@ -346,6 +351,8 @@ module Merge
       attr_reader :integration_params
       # @return [Hash{String => Object}]
       attr_reader :linked_account_params
+      # @return [Array<Merge::Accounting::RemoteFieldRequest>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -358,8 +365,8 @@ module Merge
       # @param account [Merge::Accounting::JournalLineRequestAccount]
       # @param net_amount [Float] The value of the line item including taxes and other fees.
       # @param tracking_category [Merge::Accounting::JournalLineRequestTrackingCategory]
-      # @param tracking_categories [Array<Merge::Accounting::JournalLineRequestTrackingCategoriesItem>]
-      # @param currency [Merge::Accounting::CurrencyEnum] The journal line item's currency.
+      # @param tracking_categories [Array<Merge::Accounting::JournalLineRequestTrackingCategoriesItem>] The journal line item's associated tracking categories.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The journal line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -667,15 +674,18 @@ module Merge
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param company [String] The company the journal entry belongs to.
+      # @param employee [String]
       # @param contact [String]
+      # @param tax_rate [String] The tax rate that applies to this line item.
       # @param description [String] The line's description.
       # @param exchange_rate [String] The journal line item's exchange rate.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
+      # @param remote_fields [Array<Merge::Accounting::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::JournalLineRequest]
       def initialize(remote_id: OMIT, account: OMIT, net_amount: OMIT, tracking_category: OMIT,
-                     tracking_categories: OMIT, currency: OMIT, company: OMIT, contact: OMIT, description: OMIT, exchange_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     tracking_categories: OMIT, currency: OMIT, company: OMIT, employee: OMIT, contact: OMIT, tax_rate: OMIT, description: OMIT, exchange_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @account = account if account != OMIT
         @net_amount = net_amount if net_amount != OMIT
@@ -683,11 +693,14 @@ module Merge
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @currency = currency if currency != OMIT
         @company = company if company != OMIT
+        @employee = employee if employee != OMIT
         @contact = contact if contact != OMIT
+        @tax_rate = tax_rate if tax_rate != OMIT
         @description = description if description != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "remote_id": remote_id,
@@ -697,11 +710,14 @@ module Merge
           "tracking_categories": tracking_categories,
           "currency": currency,
           "company": company,
+          "employee": employee,
           "contact": contact,
+          "tax_rate": tax_rate,
           "description": description,
           "exchange_rate": exchange_rate,
           "integration_params": integration_params,
-          "linked_account_params": linked_account_params
+          "linked_account_params": linked_account_params,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -734,11 +750,17 @@ module Merge
         end
         currency = parsed_json["currency"]
         company = parsed_json["company"]
+        employee = parsed_json["employee"]
         contact = parsed_json["contact"]
+        tax_rate = parsed_json["tax_rate"]
         description = parsed_json["description"]
         exchange_rate = parsed_json["exchange_rate"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldRequest.from_json(json_object: item)
+        end
         new(
           remote_id: remote_id,
           account: account,
@@ -747,11 +769,14 @@ module Merge
           tracking_categories: tracking_categories,
           currency: currency,
           company: company,
+          employee: employee,
           contact: contact,
+          tax_rate: tax_rate,
           description: description,
           exchange_rate: exchange_rate,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -775,13 +800,16 @@ module Merge
         obj.net_amount&.is_a?(Float) != false || raise("Passed value for field obj.net_amount is not the expected type, validation failed.")
         obj.tracking_category.nil? || Merge::Accounting::JournalLineRequestTrackingCategory.validate_raw(obj: obj.tracking_category)
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

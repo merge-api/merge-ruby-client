@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "timesheet_entry_request_employee"
 require "date"
 require "ostruct"
 require "json"
@@ -13,7 +14,7 @@ module Merge
     #  ### Usage Example
     #  GET and POST Timesheet Entries
     class TimesheetEntryRequest
-      # @return [String] The employee the timesheet entry is for.
+      # @return [Merge::Hris::TimesheetEntryRequestEmployee] The employee the timesheet entry is for.
       attr_reader :employee
       # @return [Float] The number of hours logged by the employee.
       attr_reader :hours_worked
@@ -33,7 +34,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param employee [String] The employee the timesheet entry is for.
+      # @param employee [Merge::Hris::TimesheetEntryRequestEmployee] The employee the timesheet entry is for.
       # @param hours_worked [Float] The number of hours logged by the employee.
       # @param start_time [DateTime] The time at which the employee started work.
       # @param end_time [DateTime] The time at which the employee ended work.
@@ -69,7 +70,12 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        employee = parsed_json["employee"]
+        if parsed_json["employee"].nil?
+          employee = nil
+        else
+          employee = parsed_json["employee"].to_json
+          employee = Merge::Hris::TimesheetEntryRequestEmployee.from_json(json_object: employee)
+        end
         hours_worked = parsed_json["hours_worked"]
         start_time = (DateTime.parse(parsed_json["start_time"]) unless parsed_json["start_time"].nil?)
         end_time = (DateTime.parse(parsed_json["end_time"]) unless parsed_json["end_time"].nil?)
@@ -100,7 +106,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.employee.nil? || Merge::Hris::TimesheetEntryRequestEmployee.validate_raw(obj: obj.employee)
         obj.hours_worked&.is_a?(Float) != false || raise("Passed value for field obj.hours_worked is not the expected type, validation failed.")
         obj.start_time&.is_a?(DateTime) != false || raise("Passed value for field obj.start_time is not the expected type, validation failed.")
         obj.end_time&.is_a?(DateTime) != false || raise("Passed value for field obj.end_time is not the expected type, validation failed.")

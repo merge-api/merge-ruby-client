@@ -2,6 +2,7 @@
 
 require "date"
 require_relative "benefit_plan_type_enum"
+require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -37,11 +38,13 @@ module Merge
       # @return [String] The employer benefit's deduction code.
       attr_reader :deduction_code
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Merge::Hris::RemoteData>]
       attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -65,9 +68,11 @@ module Merge
       # @param description [String] The employer benefit's description.
       # @param deduction_code [String] The employer benefit's deduction code.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Hash{String => Object}>]
+      # @param remote_data [Array<Merge::Hris::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Hris::EmployerBenefit]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, benefit_plan_type: OMIT,
@@ -118,7 +123,10 @@ module Merge
         deduction_code = parsed_json["deduction_code"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Hris::RemoteData.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,

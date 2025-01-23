@@ -7,18 +7,23 @@ require_relative "accounting_periods/client"
 require_relative "accounts/client"
 require_relative "addresses/client"
 require_relative "async_passthrough/client"
+require_relative "async_tasks/client"
 require_relative "attachments/client"
 require_relative "audit_trail/client"
 require_relative "available_actions/client"
 require_relative "balance_sheets/client"
+require_relative "bank_feed_accounts/client"
+require_relative "bank_feed_transactions/client"
 require_relative "cash_flow_statements/client"
 require_relative "company_info/client"
 require_relative "contacts/client"
 require_relative "credit_notes/client"
 require_relative "scopes/client"
 require_relative "delete_account/client"
+require_relative "employees/client"
 require_relative "expenses/client"
 require_relative "field_mapping/client"
+require_relative "general_ledger_transactions/client"
 require_relative "generate_key/client"
 require_relative "income_statements/client"
 require_relative "invoices/client"
@@ -55,6 +60,8 @@ module Merge
       attr_reader :addresses
       # @return [Merge::Accounting::AsyncPassthroughClient]
       attr_reader :async_passthrough
+      # @return [Merge::Accounting::AsyncTasksClient]
+      attr_reader :async_tasks
       # @return [Merge::Accounting::AttachmentsClient]
       attr_reader :attachments
       # @return [Merge::Accounting::AuditTrailClient]
@@ -63,6 +70,10 @@ module Merge
       attr_reader :available_actions
       # @return [Merge::Accounting::BalanceSheetsClient]
       attr_reader :balance_sheets
+      # @return [Merge::Accounting::BankFeedAccountsClient]
+      attr_reader :bank_feed_accounts
+      # @return [Merge::Accounting::BankFeedTransactionsClient]
+      attr_reader :bank_feed_transactions
       # @return [Merge::Accounting::CashFlowStatementsClient]
       attr_reader :cash_flow_statements
       # @return [Merge::Accounting::CompanyInfoClient]
@@ -75,10 +86,14 @@ module Merge
       attr_reader :scopes
       # @return [Merge::Accounting::DeleteAccountClient]
       attr_reader :delete_account
+      # @return [Merge::Accounting::EmployeesClient]
+      attr_reader :employees
       # @return [Merge::Accounting::ExpensesClient]
       attr_reader :expenses
       # @return [Merge::Accounting::FieldMappingClient]
       attr_reader :field_mapping
+      # @return [Merge::Accounting::GeneralLedgerTransactionsClient]
+      attr_reader :general_ledger_transactions
       # @return [Merge::Accounting::GenerateKeyClient]
       attr_reader :generate_key
       # @return [Merge::Accounting::IncomeStatementsClient]
@@ -129,18 +144,23 @@ module Merge
         @accounts = Merge::Accounting::AccountsClient.new(request_client: request_client)
         @addresses = Merge::Accounting::AddressesClient.new(request_client: request_client)
         @async_passthrough = Merge::Accounting::AsyncPassthroughClient.new(request_client: request_client)
+        @async_tasks = Merge::Accounting::AsyncTasksClient.new(request_client: request_client)
         @attachments = Merge::Accounting::AttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Accounting::AuditTrailClient.new(request_client: request_client)
         @available_actions = Merge::Accounting::AvailableActionsClient.new(request_client: request_client)
         @balance_sheets = Merge::Accounting::BalanceSheetsClient.new(request_client: request_client)
+        @bank_feed_accounts = Merge::Accounting::BankFeedAccountsClient.new(request_client: request_client)
+        @bank_feed_transactions = Merge::Accounting::BankFeedTransactionsClient.new(request_client: request_client)
         @cash_flow_statements = Merge::Accounting::CashFlowStatementsClient.new(request_client: request_client)
         @company_info = Merge::Accounting::CompanyInfoClient.new(request_client: request_client)
         @contacts = Merge::Accounting::ContactsClient.new(request_client: request_client)
         @credit_notes = Merge::Accounting::CreditNotesClient.new(request_client: request_client)
         @scopes = Merge::Accounting::ScopesClient.new(request_client: request_client)
         @delete_account = Merge::Accounting::DeleteAccountClient.new(request_client: request_client)
+        @employees = Merge::Accounting::EmployeesClient.new(request_client: request_client)
         @expenses = Merge::Accounting::ExpensesClient.new(request_client: request_client)
         @field_mapping = Merge::Accounting::FieldMappingClient.new(request_client: request_client)
+        @general_ledger_transactions = Merge::Accounting::GeneralLedgerTransactionsClient.new(request_client: request_client)
         @generate_key = Merge::Accounting::GenerateKeyClient.new(request_client: request_client)
         @income_statements = Merge::Accounting::IncomeStatementsClient.new(request_client: request_client)
         @invoices = Merge::Accounting::InvoicesClient.new(request_client: request_client)
@@ -177,6 +197,8 @@ module Merge
       attr_reader :addresses
       # @return [Merge::Accounting::AsyncAsyncPassthroughClient]
       attr_reader :async_passthrough
+      # @return [Merge::Accounting::AsyncAsyncTasksClient]
+      attr_reader :async_tasks
       # @return [Merge::Accounting::AsyncAttachmentsClient]
       attr_reader :attachments
       # @return [Merge::Accounting::AsyncAuditTrailClient]
@@ -185,6 +207,10 @@ module Merge
       attr_reader :available_actions
       # @return [Merge::Accounting::AsyncBalanceSheetsClient]
       attr_reader :balance_sheets
+      # @return [Merge::Accounting::AsyncBankFeedAccountsClient]
+      attr_reader :bank_feed_accounts
+      # @return [Merge::Accounting::AsyncBankFeedTransactionsClient]
+      attr_reader :bank_feed_transactions
       # @return [Merge::Accounting::AsyncCashFlowStatementsClient]
       attr_reader :cash_flow_statements
       # @return [Merge::Accounting::AsyncCompanyInfoClient]
@@ -197,10 +223,14 @@ module Merge
       attr_reader :scopes
       # @return [Merge::Accounting::AsyncDeleteAccountClient]
       attr_reader :delete_account
+      # @return [Merge::Accounting::AsyncEmployeesClient]
+      attr_reader :employees
       # @return [Merge::Accounting::AsyncExpensesClient]
       attr_reader :expenses
       # @return [Merge::Accounting::AsyncFieldMappingClient]
       attr_reader :field_mapping
+      # @return [Merge::Accounting::AsyncGeneralLedgerTransactionsClient]
+      attr_reader :general_ledger_transactions
       # @return [Merge::Accounting::AsyncGenerateKeyClient]
       attr_reader :generate_key
       # @return [Merge::Accounting::AsyncIncomeStatementsClient]
@@ -251,18 +281,23 @@ module Merge
         @accounts = Merge::Accounting::AsyncAccountsClient.new(request_client: request_client)
         @addresses = Merge::Accounting::AsyncAddressesClient.new(request_client: request_client)
         @async_passthrough = Merge::Accounting::AsyncAsyncPassthroughClient.new(request_client: request_client)
+        @async_tasks = Merge::Accounting::AsyncAsyncTasksClient.new(request_client: request_client)
         @attachments = Merge::Accounting::AsyncAttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Accounting::AsyncAuditTrailClient.new(request_client: request_client)
         @available_actions = Merge::Accounting::AsyncAvailableActionsClient.new(request_client: request_client)
         @balance_sheets = Merge::Accounting::AsyncBalanceSheetsClient.new(request_client: request_client)
+        @bank_feed_accounts = Merge::Accounting::AsyncBankFeedAccountsClient.new(request_client: request_client)
+        @bank_feed_transactions = Merge::Accounting::AsyncBankFeedTransactionsClient.new(request_client: request_client)
         @cash_flow_statements = Merge::Accounting::AsyncCashFlowStatementsClient.new(request_client: request_client)
         @company_info = Merge::Accounting::AsyncCompanyInfoClient.new(request_client: request_client)
         @contacts = Merge::Accounting::AsyncContactsClient.new(request_client: request_client)
         @credit_notes = Merge::Accounting::AsyncCreditNotesClient.new(request_client: request_client)
         @scopes = Merge::Accounting::AsyncScopesClient.new(request_client: request_client)
         @delete_account = Merge::Accounting::AsyncDeleteAccountClient.new(request_client: request_client)
+        @employees = Merge::Accounting::AsyncEmployeesClient.new(request_client: request_client)
         @expenses = Merge::Accounting::AsyncExpensesClient.new(request_client: request_client)
         @field_mapping = Merge::Accounting::AsyncFieldMappingClient.new(request_client: request_client)
+        @general_ledger_transactions = Merge::Accounting::AsyncGeneralLedgerTransactionsClient.new(request_client: request_client)
         @generate_key = Merge::Accounting::AsyncGenerateKeyClient.new(request_client: request_client)
         @income_statements = Merge::Accounting::AsyncIncomeStatementsClient.new(request_client: request_client)
         @invoices = Merge::Accounting::AsyncInvoicesClient.new(request_client: request_client)

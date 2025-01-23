@@ -47,7 +47,7 @@ module Merge
       # @param is_test_account [String] If included, will only include test linked accounts. If not included, will only
       #  include non-test linked accounts.
       # @param page_size [Integer] Number of results to return per page.
-      # @param status [String] Filter by status. Options: `COMPLETE`, `INCOMPLETE`, `RELINK_NEEDED`
+      # @param status [String] Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountDetailsAndActionsList]
       # @example
@@ -133,7 +133,7 @@ module Merge
       # @param is_test_account [String] If included, will only include test linked accounts. If not included, will only
       #  include non-test linked accounts.
       # @param page_size [Integer] Number of results to return per page.
-      # @param status [String] Filter by status. Options: `COMPLETE`, `INCOMPLETE`, `RELINK_NEEDED`
+      # @param status [String] Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountDetailsAndActionsList]
       # @example

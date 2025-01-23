@@ -4,7 +4,7 @@ module Merge
   module Accounting
     # - `ACTIVE` - ACTIVE
     #  - `INACTIVE` - INACTIVE
-    class AccountingPeriodStatusEnum
+    class Status895Enum
       ACTIVE = "ACTIVE"
       INACTIVE = "INACTIVE"
     end

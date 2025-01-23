@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
+require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -28,11 +29,13 @@ module Merge
       # @return [String] The drive's url.
       attr_reader :drive_url
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Merge::Filestorage::RemoteData>]
       attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -50,9 +53,11 @@ module Merge
       # @param remote_created_at [DateTime] When the third party's drive was created.
       # @param drive_url [String] The drive's url.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Hash{String => Object}>]
+      # @param remote_data [Array<Merge::Filestorage::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::Drive]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT,
@@ -102,7 +107,10 @@ module Merge
         drive_url = parsed_json["drive_url"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::RemoteData.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,

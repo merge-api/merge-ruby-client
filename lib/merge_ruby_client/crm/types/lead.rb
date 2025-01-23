@@ -57,7 +57,10 @@ module Merge
       attr_reader :converted_contact
       # @return [Merge::Crm::LeadConvertedAccount] The account of the converted lead.
       attr_reader :converted_account
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -91,7 +94,10 @@ module Merge
       # @param converted_date [DateTime] When the lead was converted.
       # @param converted_contact [Merge::Crm::LeadConvertedContact] The contact of the converted lead.
       # @param converted_account [Merge::Crm::LeadConvertedAccount] The account of the converted lead.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Crm::RemoteData>]
       # @param remote_fields [Array<Merge::Crm::RemoteField>]

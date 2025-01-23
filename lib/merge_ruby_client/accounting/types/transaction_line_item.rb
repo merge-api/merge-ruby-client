@@ -2,7 +2,7 @@
 
 require "date"
 require_relative "transaction_line_item_item"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require "ostruct"
 require "json"
 
@@ -36,13 +36,13 @@ module Merge
       attr_reader :account
       # @return [String] The line's associated tracking category.
       attr_reader :tracking_category
-      # @return [Array<String>] The line's associated tracking categories.
+      # @return [Array<String>] The transaction line item's associated tracking categories.
       attr_reader :tracking_categories
       # @return [String] The line item's total.
       attr_reader :total_line_amount
-      # @return [String]
+      # @return [String] The tax rate that applies to this line item.
       attr_reader :tax_rate
-      # @return [Merge::Accounting::CurrencyEnum] The line item's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -355,7 +355,9 @@ module Merge
       # @return [String] The company the line belongs to.
       attr_reader :company
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -375,10 +377,10 @@ module Merge
       # @param item [Merge::Accounting::TransactionLineItemItem]
       # @param account [String] The line item's account.
       # @param tracking_category [String] The line's associated tracking category.
-      # @param tracking_categories [Array<String>] The line's associated tracking categories.
+      # @param tracking_categories [Array<String>] The transaction line item's associated tracking categories.
       # @param total_line_amount [String] The line item's total.
-      # @param tax_rate [String]
-      # @param currency [Merge::Accounting::CurrencyEnum] The line item's currency.
+      # @param tax_rate [String] The tax rate that applies to this line item.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -688,11 +690,13 @@ module Merge
       # @param exchange_rate [String] The line item's exchange rate.
       # @param company [String] The company the line belongs to.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::TransactionLineItem]
-      def initialize(tracking_categories:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, memo: OMIT, unit_price: OMIT,
-                     quantity: OMIT, item: OMIT, account: OMIT, tracking_category: OMIT, total_line_amount: OMIT, tax_rate: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+      def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, memo: OMIT, unit_price: OMIT,
+                     quantity: OMIT, item: OMIT, account: OMIT, tracking_category: OMIT, tracking_categories: OMIT, total_line_amount: OMIT, tax_rate: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -703,7 +707,7 @@ module Merge
         @item = item if item != OMIT
         @account = account if account != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
-        @tracking_categories = tracking_categories
+        @tracking_categories = tracking_categories if tracking_categories != OMIT
         @total_line_amount = total_line_amount if total_line_amount != OMIT
         @tax_rate = tax_rate if tax_rate != OMIT
         @currency = currency if currency != OMIT
@@ -809,10 +813,10 @@ module Merge
         obj.item.nil? || Merge::Accounting::TransactionLineItemItem.validate_raw(obj: obj.item)
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
-        obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.total_line_amount&.is_a?(String) != false || raise("Passed value for field obj.total_line_amount is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

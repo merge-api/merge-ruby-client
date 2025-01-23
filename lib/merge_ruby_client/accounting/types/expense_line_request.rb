@@ -3,9 +3,11 @@
 require_relative "expense_line_request_item"
 require_relative "expense_line_request_tracking_category"
 require_relative "expense_line_request_tracking_categories_item"
-require_relative "currency_enum"
+require_relative "expense_line_request_employee"
+require_relative "transaction_currency_enum"
 require_relative "expense_line_request_account"
 require_relative "expense_line_request_contact"
+require_relative "remote_field_request"
 require "ostruct"
 require "json"
 
@@ -25,11 +27,13 @@ module Merge
       attr_reader :net_amount
       # @return [Merge::Accounting::ExpenseLineRequestTrackingCategory]
       attr_reader :tracking_category
-      # @return [Array<Merge::Accounting::ExpenseLineRequestTrackingCategoriesItem>]
+      # @return [Array<Merge::Accounting::ExpenseLineRequestTrackingCategoriesItem>] The expense line item's associated tracking categories.
       attr_reader :tracking_categories
-      # @return [String] The company the line belongs to.
+      # @return [String] The company the expense belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::CurrencyEnum] The expense line item's currency.
+      # @return [Merge::Accounting::ExpenseLineRequestEmployee] The employee this overall transaction relates to.
+      attr_reader :employee
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The expense line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -345,10 +349,14 @@ module Merge
       attr_reader :description
       # @return [String] The expense line item's exchange rate.
       attr_reader :exchange_rate
+      # @return [String] The tax rate that applies to this line item.
+      attr_reader :tax_rate
       # @return [Hash{String => Object}]
       attr_reader :integration_params
       # @return [Hash{String => Object}]
       attr_reader :linked_account_params
+      # @return [Array<Merge::Accounting::RemoteFieldRequest>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -361,9 +369,10 @@ module Merge
       # @param item [Merge::Accounting::ExpenseLineRequestItem] The line's item.
       # @param net_amount [Float] The line's net amount.
       # @param tracking_category [Merge::Accounting::ExpenseLineRequestTrackingCategory]
-      # @param tracking_categories [Array<Merge::Accounting::ExpenseLineRequestTrackingCategoriesItem>]
-      # @param company [String] The company the line belongs to.
-      # @param currency [Merge::Accounting::CurrencyEnum] The expense line item's currency.
+      # @param tracking_categories [Array<Merge::Accounting::ExpenseLineRequestTrackingCategoriesItem>] The expense line item's associated tracking categories.
+      # @param company [String] The company the expense belongs to.
+      # @param employee [Merge::Accounting::ExpenseLineRequestEmployee] The employee this overall transaction relates to.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The expense line item's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -674,25 +683,30 @@ module Merge
       # @param contact [Merge::Accounting::ExpenseLineRequestContact] The expense's contact.
       # @param description [String] The description of the item that was purchased by the company.
       # @param exchange_rate [String] The expense line item's exchange rate.
+      # @param tax_rate [String] The tax rate that applies to this line item.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
+      # @param remote_fields [Array<Merge::Accounting::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::ExpenseLineRequest]
       def initialize(remote_id: OMIT, item: OMIT, net_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT,
-                     company: OMIT, currency: OMIT, account: OMIT, contact: OMIT, description: OMIT, exchange_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     company: OMIT, employee: OMIT, currency: OMIT, account: OMIT, contact: OMIT, description: OMIT, exchange_rate: OMIT, tax_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @item = item if item != OMIT
         @net_amount = net_amount if net_amount != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @company = company if company != OMIT
+        @employee = employee if employee != OMIT
         @currency = currency if currency != OMIT
         @account = account if account != OMIT
         @contact = contact if contact != OMIT
         @description = description if description != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
+        @tax_rate = tax_rate if tax_rate != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "remote_id": remote_id,
@@ -701,13 +715,16 @@ module Merge
           "tracking_category": tracking_category,
           "tracking_categories": tracking_categories,
           "company": company,
+          "employee": employee,
           "currency": currency,
           "account": account,
           "contact": contact,
           "description": description,
           "exchange_rate": exchange_rate,
+          "tax_rate": tax_rate,
           "integration_params": integration_params,
-          "linked_account_params": linked_account_params
+          "linked_account_params": linked_account_params,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -739,6 +756,12 @@ module Merge
           Merge::Accounting::ExpenseLineRequestTrackingCategoriesItem.from_json(json_object: item)
         end
         company = parsed_json["company"]
+        if parsed_json["employee"].nil?
+          employee = nil
+        else
+          employee = parsed_json["employee"].to_json
+          employee = Merge::Accounting::ExpenseLineRequestEmployee.from_json(json_object: employee)
+        end
         currency = parsed_json["currency"]
         if parsed_json["account"].nil?
           account = nil
@@ -754,8 +777,13 @@ module Merge
         end
         description = parsed_json["description"]
         exchange_rate = parsed_json["exchange_rate"]
+        tax_rate = parsed_json["tax_rate"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldRequest.from_json(json_object: item)
+        end
         new(
           remote_id: remote_id,
           item: item,
@@ -763,13 +791,16 @@ module Merge
           tracking_category: tracking_category,
           tracking_categories: tracking_categories,
           company: company,
+          employee: employee,
           currency: currency,
           account: account,
           contact: contact,
           description: description,
           exchange_rate: exchange_rate,
+          tax_rate: tax_rate,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -794,13 +825,16 @@ module Merge
         obj.tracking_category.nil? || Merge::Accounting::ExpenseLineRequestTrackingCategory.validate_raw(obj: obj.tracking_category)
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.employee.nil? || Merge::Accounting::ExpenseLineRequestEmployee.validate_raw(obj: obj.employee)
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::ExpenseLineRequestAccount.validate_raw(obj: obj.account)
         obj.contact.nil? || Merge::Accounting::ExpenseLineRequestContact.validate_raw(obj: obj.contact)
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
+        obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

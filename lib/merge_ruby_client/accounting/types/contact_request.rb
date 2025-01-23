@@ -3,6 +3,7 @@
 require_relative "status_7_d_1_enum"
 require_relative "contact_request_addresses_item"
 require_relative "accounting_phone_number_request"
+require_relative "remote_field_request"
 require "ostruct"
 require "json"
 
@@ -45,6 +46,8 @@ module Merge
       attr_reader :integration_params
       # @return [Hash{String => Object}]
       attr_reader :linked_account_params
+      # @return [Array<Merge::Accounting::RemoteFieldRequest>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -67,10 +70,11 @@ module Merge
       # @param phone_numbers [Array<Merge::Accounting::AccountingPhoneNumberRequest>] `AccountingPhoneNumber` object for the given `Contacts` object.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
+      # @param remote_fields [Array<Merge::Accounting::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::ContactRequest]
       def initialize(name: OMIT, is_supplier: OMIT, is_customer: OMIT, email_address: OMIT, tax_number: OMIT,
-                     status: OMIT, currency: OMIT, company: OMIT, addresses: OMIT, phone_numbers: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     status: OMIT, currency: OMIT, company: OMIT, addresses: OMIT, phone_numbers: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @name = name if name != OMIT
         @is_supplier = is_supplier if is_supplier != OMIT
         @is_customer = is_customer if is_customer != OMIT
@@ -83,6 +87,7 @@ module Merge
         @phone_numbers = phone_numbers if phone_numbers != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "name": name,
@@ -96,7 +101,8 @@ module Merge
           "addresses": addresses,
           "phone_numbers": phone_numbers,
           "integration_params": integration_params,
-          "linked_account_params": linked_account_params
+          "linked_account_params": linked_account_params,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -127,6 +133,10 @@ module Merge
         end
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldRequest.from_json(json_object: item)
+        end
         new(
           name: name,
           is_supplier: is_supplier,
@@ -140,6 +150,7 @@ module Merge
           phone_numbers: phone_numbers,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -170,6 +181,7 @@ module Merge
         obj.phone_numbers&.is_a?(Array) != false || raise("Passed value for field obj.phone_numbers is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

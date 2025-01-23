@@ -33,9 +33,14 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param expand [Merge::Ats::Applications::ApplicationsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param job_id [String] If provided, will only return applications for this job.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
@@ -54,7 +59,7 @@ module Merge
       #  )
       #  api.ats.applications.list
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
-               cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
+               cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -75,6 +80,7 @@ module Merge
             "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "job_id": job_id,
             "modified_after": modified_after,
             "modified_before": modified_before,
@@ -92,6 +98,12 @@ module Merge
       end
 
       # Creates an `Application` object with the given values.
+      #  For certain integrations, but not all, our API detects duplicate candidates and
+      #  will associate applications with existing records in the third-party. New
+      #  candidates are created and automatically linked to the application.
+      #  See our [Help Center
+      #  tps://help.merge.dev/en/articles/10012366-updates-to-post-applications-oct-2024)
+      #  for detailed support per integration.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -280,9 +292,14 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param expand [Merge::Ats::Applications::ApplicationsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param job_id [String] If provided, will only return applications for this job.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
@@ -301,7 +318,7 @@ module Merge
       #  )
       #  api.ats.applications.list
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
-               cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
+               cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -323,6 +340,7 @@ module Merge
               "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "job_id": job_id,
               "modified_after": modified_after,
               "modified_before": modified_before,
@@ -341,6 +359,12 @@ module Merge
       end
 
       # Creates an `Application` object with the given values.
+      #  For certain integrations, but not all, our API detects duplicate candidates and
+      #  will associate applications with existing records in the third-party. New
+      #  candidates are created and automatically linked to the application.
+      #  See our [Help Center
+      #  tps://help.merge.dev/en/articles/10012366-updates-to-post-applications-oct-2024)
+      #  for detailed support per integration.
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.

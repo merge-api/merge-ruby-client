@@ -19,7 +19,7 @@ module Merge
 
       # Force re-sync of all models. This is available for all organizations via the
       #  dashboard. Force re-sync is also available programmatically via API for monthly,
-      #  quarterly, and highest sync frequency customers on the Launch, Professional, or
+      #  quarterly, and highest sync frequency customers on the Professional or
       #  Enterprise plans. Doing so will consume a sync credit for the relevant linked
       #  account.
       #
@@ -70,7 +70,7 @@ module Merge
 
       # Force re-sync of all models. This is available for all organizations via the
       #  dashboard. Force re-sync is also available programmatically via API for monthly,
-      #  quarterly, and highest sync frequency customers on the Launch, Professional, or
+      #  quarterly, and highest sync frequency customers on the Professional or
       #  Enterprise plans. Doing so will consume a sync credit for the relevant linked
       #  account.
       #

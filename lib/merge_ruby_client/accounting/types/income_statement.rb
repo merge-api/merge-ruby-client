@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "income_statement_company"
 require_relative "report_item"
 require_relative "remote_data"
@@ -30,7 +30,7 @@ module Merge
       attr_reader :modified_at
       # @return [String] The income statement's name.
       attr_reader :name
-      # @return [Merge::Accounting::CurrencyEnum] The income statement's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The income statement's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -359,7 +359,9 @@ module Merge
       # @return [Float] The gross profit minus the total expenses.
       attr_reader :net_income
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -378,7 +380,7 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The income statement's name.
-      # @param currency [Merge::Accounting::CurrencyEnum] The income statement's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The income statement's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -696,7 +698,9 @@ module Merge
       # @param non_operating_expenses [Array<Merge::Accounting::ReportItem>]
       # @param net_income [Float] The gross profit minus the total expenses.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -837,7 +841,7 @@ module Merge
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::IncomeStatementCompany.validate_raw(obj: obj.company)
         obj.start_period&.is_a?(DateTime) != false || raise("Passed value for field obj.start_period is not the expected type, validation failed.")
         obj.end_period&.is_a?(DateTime) != false || raise("Passed value for field obj.end_period is not the expected type, validation failed.")

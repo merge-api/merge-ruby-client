@@ -26,16 +26,18 @@ module Merge
       # @param remote_endpoint_info [Merge::Ticketing::FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::FieldMappingApiInstanceRemoteField]
-      def initialize(remote_key_name:, schema:, remote_endpoint_info:, additional_properties: nil)
-        @remote_key_name = remote_key_name
-        @schema = schema
+      def initialize(remote_endpoint_info:, remote_key_name: OMIT, schema: OMIT, additional_properties: nil)
+        @remote_key_name = remote_key_name if remote_key_name != OMIT
+        @schema = schema if schema != OMIT
         @remote_endpoint_info = remote_endpoint_info
         @additional_properties = additional_properties
         @_field_set = {
           "remote_key_name": remote_key_name,
           "schema": schema,
           "remote_endpoint_info": remote_endpoint_info
-        }
+        }.reject do |_k, v|
+          v == OMIT
+        end
       end
 
       # Deserialize a JSON object to an instance of FieldMappingApiInstanceRemoteField
@@ -75,8 +77,8 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.remote_key_name.is_a?(String) != false || raise("Passed value for field obj.remote_key_name is not the expected type, validation failed.")
-        obj.schema.is_a?(Hash) != false || raise("Passed value for field obj.schema is not the expected type, validation failed.")
+        obj.remote_key_name&.is_a?(String) != false || raise("Passed value for field obj.remote_key_name is not the expected type, validation failed.")
+        obj.schema&.is_a?(Hash) != false || raise("Passed value for field obj.schema is not the expected type, validation failed.")
         Merge::Ticketing::FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo.validate_raw(obj: obj.remote_endpoint_info)
       end
     end

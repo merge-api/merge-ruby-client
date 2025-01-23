@@ -19,9 +19,11 @@ module Merge
     class PermissionRequest
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [Merge::Filestorage::PermissionRequestUser] The user that is granted this permission.
+      # @return [Merge::Filestorage::PermissionRequestUser] The user that is granted this permission. This will only be populated if the
+      #  type is `USER`.
       attr_reader :user
-      # @return [Merge::Filestorage::PermissionRequestGroup] The group that is granted this permission.
+      # @return [Merge::Filestorage::PermissionRequestGroup] The group that is granted this permission. This will only be populated if the
+      #  type is `GROUP`.
       attr_reader :group
       # @return [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
       #  - `USER` - USER
@@ -47,8 +49,10 @@ module Merge
       OMIT = Object.new
 
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param user [Merge::Filestorage::PermissionRequestUser] The user that is granted this permission.
-      # @param group [Merge::Filestorage::PermissionRequestGroup] The group that is granted this permission.
+      # @param user [Merge::Filestorage::PermissionRequestUser] The user that is granted this permission. This will only be populated if the
+      #  type is `USER`.
+      # @param group [Merge::Filestorage::PermissionRequestGroup] The group that is granted this permission. This will only be populated if the
+      #  type is `GROUP`.
       # @param type [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
       #  - `USER` - USER
       #  - `GROUP` - GROUP

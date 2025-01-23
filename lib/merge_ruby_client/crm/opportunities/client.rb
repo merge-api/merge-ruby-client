@@ -34,11 +34,16 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param expand [Merge::Crm::Opportunities::OpportunitiesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -67,7 +72,7 @@ module Merge
       #  )
       #  api.crm.opportunities.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_created_after: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_created_after: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -87,6 +92,7 @@ module Merge
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "include_remote_fields": include_remote_fields,
+            "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
             "owner_id": owner_id,
@@ -318,11 +324,16 @@ module Merge
       # Returns a list of `RemoteFieldClass` objects.
       #
       # @param cursor [String] The pagination cursor value.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
@@ -336,7 +347,7 @@ module Merge
       #  )
       #  api.crm.opportunities.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_remote_fields: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -352,6 +363,7 @@ module Merge
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "include_remote_fields": include_remote_fields,
+            "include_shell_data": include_shell_data,
             "is_common_model_field": is_common_model_field,
             "page_size": page_size
           }.compact
@@ -382,11 +394,16 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param expand [Merge::Crm::Opportunities::OpportunitiesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -415,7 +432,7 @@ module Merge
       #  )
       #  api.crm.opportunities.list
       def list(account_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_created_after: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, owner_id: nil, page_size: nil, remote_created_after: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, stage_id: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -436,6 +453,7 @@ module Merge
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "include_remote_fields": include_remote_fields,
+              "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
               "owner_id": owner_id,
@@ -678,11 +696,16 @@ module Merge
       # Returns a list of `RemoteFieldClass` objects.
       #
       # @param cursor [String] The pagination cursor value.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param page_size [Integer] Number of results to return per page.
@@ -696,7 +719,7 @@ module Merge
       #  )
       #  api.crm.opportunities.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_remote_fields: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -713,6 +736,7 @@ module Merge
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "include_remote_fields": include_remote_fields,
+              "include_shell_data": include_shell_data,
               "is_common_model_field": is_common_model_field,
               "page_size": page_size
             }.compact

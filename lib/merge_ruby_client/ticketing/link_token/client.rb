@@ -3,6 +3,7 @@
 require_relative "../../../requests"
 require_relative "../types/categories_enum"
 require_relative "../types/common_model_scopes_body_request"
+require_relative "../types/language_enum"
 require_relative "../types/link_token"
 require "async"
 
@@ -48,7 +49,12 @@ module Merge
       # @param category_common_model_scopes [Hash{String => Array}] When creating a Link Token, you can set permissions for Common Models that will
       #  apply to the account that is going to be linked. Any model or field not
       #  specified in link token payload will default to existing settings.
-      # @param language [String] The language code for the language to localize Merge Link to.
+      # @param language [Merge::Ticketing::LanguageEnum] The following subset of IETF language tags can be used to configure
+      #  localization.
+      #  * `en` - en
+      #  * `de` - de
+      # @param are_syncs_disabled [Boolean] The boolean that indicates whether initial, periodic, and force syncs will be
+      #  disabled.
       # @param integration_specific_config [Hash{String => Object}] A JSON object containing integration-specific configuration options.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::LinkToken]
@@ -65,7 +71,7 @@ module Merge
       #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, are_syncs_disabled: nil, integration_specific_config: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -91,6 +97,7 @@ module Merge
             common_models: common_models,
             category_common_model_scopes: category_common_model_scopes,
             language: language,
+            are_syncs_disabled: are_syncs_disabled,
             integration_specific_config: integration_specific_config
           }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/link-token"
@@ -139,7 +146,12 @@ module Merge
       # @param category_common_model_scopes [Hash{String => Array}] When creating a Link Token, you can set permissions for Common Models that will
       #  apply to the account that is going to be linked. Any model or field not
       #  specified in link token payload will default to existing settings.
-      # @param language [String] The language code for the language to localize Merge Link to.
+      # @param language [Merge::Ticketing::LanguageEnum] The following subset of IETF language tags can be used to configure
+      #  localization.
+      #  * `en` - en
+      #  * `de` - de
+      # @param are_syncs_disabled [Boolean] The boolean that indicates whether initial, periodic, and force syncs will be
+      #  disabled.
       # @param integration_specific_config [Hash{String => Object}] A JSON object containing integration-specific configuration options.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::LinkToken]
@@ -156,7 +168,7 @@ module Merge
       #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, integration_specific_config: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, are_syncs_disabled: nil, integration_specific_config: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -183,6 +195,7 @@ module Merge
               common_models: common_models,
               category_common_model_scopes: category_common_model_scopes,
               language: language,
+              are_syncs_disabled: are_syncs_disabled,
               integration_specific_config: integration_specific_config
             }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/link-token"

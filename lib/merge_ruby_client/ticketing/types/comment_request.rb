@@ -14,9 +14,13 @@ module Merge
     #  ### Usage Example
     #  TODO
     class CommentRequest
-      # @return [Merge::Ticketing::CommentRequestUser] The author of the Comment, if the author is a User.
+      # @return [Merge::Ticketing::CommentRequestUser] The author of the Comment, if the author is a User. If the third party does not
+      #  support specifying an author, we will append "[Posted on behalf of {name}]" to
+      #  the comment.
       attr_reader :user
-      # @return [Merge::Ticketing::CommentRequestContact] The author of the Comment, if the author is a Contact.
+      # @return [Merge::Ticketing::CommentRequestContact] The author of the Comment, if the author is a Contact.If the third party does
+      #  not support specifying an author, we will append "[Posted on behalf of {name}]"
+      #  to the comment.
       attr_reader :contact
       # @return [String] The comment's text body.
       attr_reader :body
@@ -38,8 +42,12 @@ module Merge
 
       OMIT = Object.new
 
-      # @param user [Merge::Ticketing::CommentRequestUser] The author of the Comment, if the author is a User.
-      # @param contact [Merge::Ticketing::CommentRequestContact] The author of the Comment, if the author is a Contact.
+      # @param user [Merge::Ticketing::CommentRequestUser] The author of the Comment, if the author is a User. If the third party does not
+      #  support specifying an author, we will append "[Posted on behalf of {name}]" to
+      #  the comment.
+      # @param contact [Merge::Ticketing::CommentRequestContact] The author of the Comment, if the author is a Contact.If the third party does
+      #  not support specifying an author, we will append "[Posted on behalf of {name}]"
+      #  to the comment.
       # @param body [String] The comment's text body.
       # @param html_body [String] The comment's text body formatted as html.
       # @param ticket [Merge::Ticketing::CommentRequestTicket] The ticket associated with the comment.

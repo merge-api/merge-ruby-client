@@ -5,7 +5,8 @@ require_relative "group"
 
 module Merge
   module Filestorage
-    # The group that is granted this permission.
+    # The group that is granted this permission. This will only be populated if the
+    #  type is `GROUP`.
     class PermissionRequestGroup
       # Deserialize a JSON object to an instance of PermissionRequestGroup
       #

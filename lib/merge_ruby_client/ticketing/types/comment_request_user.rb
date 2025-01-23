@@ -5,7 +5,9 @@ require_relative "user"
 
 module Merge
   module Ticketing
-    # The author of the Comment, if the author is a User.
+    # The author of the Comment, if the author is a User. If the third party does not
+    #  support specifying an author, we will append "[Posted on behalf of {name}]" to
+    #  the comment.
     class CommentRequestUser
       # Deserialize a JSON object to an instance of CommentRequestUser
       #

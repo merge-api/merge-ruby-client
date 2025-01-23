@@ -5,8 +5,14 @@ require "json"
 
 module Merge
   module Accounting
+    # # The RemoteData Object
+    #  ### Description
+    #  The `RemoteData` object is used to represent the full data pulled from the
+    #  third-party API for an object.
+    #  ### Usage Example
+    #  TODO
     class RemoteData
-      # @return [String]
+      # @return [String] The third-party API path that is being called.
       attr_reader :path
       # @return [Object]
       attr_reader :data
@@ -18,7 +24,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param path [String]
+      # @param path [String] The third-party API path that is being called.
       # @param data [Object]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::RemoteData]

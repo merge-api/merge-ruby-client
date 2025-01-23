@@ -3,6 +3,7 @@
 require_relative "category_enum"
 require_relative "account_details_and_actions_status_enum"
 require_relative "account_details_and_actions_integration"
+require "date"
 require "ostruct"
 require "json"
 
@@ -42,6 +43,8 @@ module Merge
       attr_reader :integration
       # @return [String]
       attr_reader :account_type
+      # @return [DateTime]
+      attr_reader :completed_at
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -65,10 +68,11 @@ module Merge
       #  Account sets.
       # @param integration [Merge::Crm::AccountDetailsAndActionsIntegration]
       # @param account_type [String]
+      # @param completed_at [DateTime]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::AccountDetailsAndActions]
       def initialize(id:, status:, end_user_organization_name:, end_user_email_address:, webhook_listener_url:,
-                     account_type:, category: OMIT, status_detail: OMIT, end_user_origin_id: OMIT, subdomain: OMIT, is_duplicate: OMIT, integration: OMIT, additional_properties: nil)
+                     account_type:, completed_at:, category: OMIT, status_detail: OMIT, end_user_origin_id: OMIT, subdomain: OMIT, is_duplicate: OMIT, integration: OMIT, additional_properties: nil)
         @id = id
         @category = category if category != OMIT
         @status = status
@@ -81,6 +85,7 @@ module Merge
         @is_duplicate = is_duplicate if is_duplicate != OMIT
         @integration = integration if integration != OMIT
         @account_type = account_type
+        @completed_at = completed_at
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -94,7 +99,8 @@ module Merge
           "webhook_listener_url": webhook_listener_url,
           "is_duplicate": is_duplicate,
           "integration": integration,
-          "account_type": account_type
+          "account_type": account_type,
+          "completed_at": completed_at
         }.reject do |_k, v|
           v == OMIT
         end
@@ -124,6 +130,7 @@ module Merge
           integration = Merge::Crm::AccountDetailsAndActionsIntegration.from_json(json_object: integration)
         end
         account_type = parsed_json["account_type"]
+        completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
         new(
           id: id,
           category: category,
@@ -137,6 +144,7 @@ module Merge
           is_duplicate: is_duplicate,
           integration: integration,
           account_type: account_type,
+          completed_at: completed_at,
           additional_properties: struct
         )
       end
@@ -167,6 +175,7 @@ module Merge
         obj.is_duplicate&.is_a?(Boolean) != false || raise("Passed value for field obj.is_duplicate is not the expected type, validation failed.")
         obj.integration.nil? || Merge::Crm::AccountDetailsAndActionsIntegration.validate_raw(obj: obj.integration)
         obj.account_type.is_a?(String) != false || raise("Passed value for field obj.account_type is not the expected type, validation failed.")
+        obj.completed_at.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
       end
     end
   end

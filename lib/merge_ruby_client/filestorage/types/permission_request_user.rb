@@ -5,7 +5,8 @@ require_relative "user"
 
 module Merge
   module Filestorage
-    # The user that is granted this permission.
+    # The user that is granted this permission. This will only be populated if the
+    #  type is `USER`.
     class PermissionRequestUser
       # Deserialize a JSON object to an instance of PermissionRequestUser
       #

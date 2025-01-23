@@ -28,11 +28,18 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param employee_id [String] If provided, will only return timesheet entries for this employee.
-      # @param ended_after [String] If provided, will only return timesheet entries ended after this datetime.
-      # @param ended_before [String] If provided, will only return timesheet entries ended before this datetime.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param ended_after [DateTime] If provided, will only return timesheet entries ended after this datetime.
+      # @param ended_before [DateTime] If provided, will only return timesheet entries ended before this datetime.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -40,8 +47,8 @@ module Merge
       #  start_time, -start_time.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param started_after [String] If provided, will only return timesheet entries started after this datetime.
-      # @param started_before [String] If provided, will only return timesheet entries started before this datetime.
+      # @param started_after [DateTime] If provided, will only return timesheet entries started after this datetime.
+      # @param started_before [DateTime] If provided, will only return timesheet entries started before this datetime.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::PaginatedTimesheetEntryList]
       # @example
@@ -52,7 +59,7 @@ module Merge
       #  )
       #  api.hris.timesheet_entries.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
-               ended_before: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
+               ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -70,8 +77,10 @@ module Merge
             "employee_id": employee_id,
             "ended_after": ended_after,
             "ended_before": ended_before,
+            "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
             "order_by": order_by,
@@ -93,7 +102,7 @@ module Merge
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Hris::TimesheetEntryRequest, as a Hash
-      #   * :employee (String)
+      #   * :employee (Hash)
       #   * :hours_worked (Float)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
@@ -132,6 +141,8 @@ module Merge
       # Returns a `TimesheetEntry` object with the given `id`.
       #
       # @param id [String]
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param request_options [Merge::RequestOptions]
@@ -143,7 +154,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.hris.timesheet_entries.retrieve(id: "id")
-      def retrieve(id:, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -155,6 +166,7 @@ module Merge
           }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
+            "expand": expand,
             "include_remote_data": include_remote_data
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -214,11 +226,18 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param employee_id [String] If provided, will only return timesheet entries for this employee.
-      # @param ended_after [String] If provided, will only return timesheet entries ended after this datetime.
-      # @param ended_before [String] If provided, will only return timesheet entries ended before this datetime.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param ended_after [DateTime] If provided, will only return timesheet entries ended after this datetime.
+      # @param ended_before [DateTime] If provided, will only return timesheet entries ended before this datetime.
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
@@ -226,8 +245,8 @@ module Merge
       #  start_time, -start_time.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param started_after [String] If provided, will only return timesheet entries started after this datetime.
-      # @param started_before [String] If provided, will only return timesheet entries started before this datetime.
+      # @param started_after [DateTime] If provided, will only return timesheet entries started after this datetime.
+      # @param started_before [DateTime] If provided, will only return timesheet entries started before this datetime.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::PaginatedTimesheetEntryList]
       # @example
@@ -238,7 +257,7 @@ module Merge
       #  )
       #  api.hris.timesheet_entries.list
       def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, ended_after: nil,
-               ended_before: nil, include_deleted_data: nil, include_remote_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
+               ended_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_id: nil, started_after: nil, started_before: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -257,8 +276,10 @@ module Merge
               "employee_id": employee_id,
               "ended_after": ended_after,
               "ended_before": ended_before,
+              "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
               "order_by": order_by,
@@ -281,7 +302,7 @@ module Merge
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Hris::TimesheetEntryRequest, as a Hash
-      #   * :employee (String)
+      #   * :employee (Hash)
       #   * :hours_worked (Float)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
@@ -322,6 +343,8 @@ module Merge
       # Returns a `TimesheetEntry` object with the given `id`.
       #
       # @param id [String]
+      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param request_options [Merge::RequestOptions]
@@ -333,7 +356,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.hris.timesheet_entries.retrieve(id: "id")
-      def retrieve(id:, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -346,6 +369,7 @@ module Merge
             }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
+              "expand": expand,
               "include_remote_data": include_remote_data
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?

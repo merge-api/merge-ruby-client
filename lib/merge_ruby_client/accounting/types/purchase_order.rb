@@ -5,11 +5,12 @@ require_relative "purchase_order_status_enum"
 require_relative "purchase_order_delivery_address"
 require_relative "purchase_order_vendor"
 require_relative "purchase_order_company"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "purchase_order_line_item"
 require_relative "purchase_order_tracking_categories_item"
 require_relative "purchase_order_accounting_period"
 require_relative "remote_data"
+require_relative "remote_field"
 require "ostruct"
 require "json"
 
@@ -23,7 +24,7 @@ module Merge
     #  A `PurchaseOrder` is a crucial component of the procurement process, but does
     #  not typically result in any impact on the company’s general ledger. The general
     #  ledger is typically only affected when the `PurchaseOrder` is fulfilled as an
-    #  _Accounts Payable_ Invoice object.
+    #  _Accounts Payable_ `Invoice` object (also known as a Bill).
     #  ### Usage Example
     #  Fetch from the `LIST PurchaseOrders` endpoint and view a company's purchase
     #  orders.
@@ -61,7 +62,7 @@ module Merge
       attr_reader :company
       # @return [Float] The purchase order's total amount.
       attr_reader :total_amount
-      # @return [Merge::Accounting::CurrencyEnum] The purchase order's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -373,21 +374,28 @@ module Merge
       attr_reader :exchange_rate
       # @return [Array<Merge::Accounting::PurchaseOrderLineItem>]
       attr_reader :line_items
+      # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
+      attr_reader :inclusive_of_tax
       # @return [Array<Merge::Accounting::PurchaseOrderTrackingCategoriesItem>]
       attr_reader :tracking_categories
+      # @return [Merge::Accounting::PurchaseOrderAccountingPeriod] The accounting period that the PurchaseOrder was generated in.
+      attr_reader :accounting_period
       # @return [DateTime] When the third party's purchase order note was created.
       attr_reader :remote_created_at
       # @return [DateTime] When the third party's purchase order note was updated.
       attr_reader :remote_updated_at
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
-      # @return [Merge::Accounting::PurchaseOrderAccountingPeriod] The accounting period that the PurchaseOrder was generated in.
-      attr_reader :accounting_period
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
       # @return [Array<Merge::Accounting::RemoteData>]
       attr_reader :remote_data
+      # @return [Array<Merge::Accounting::RemoteField>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -415,7 +423,7 @@ module Merge
       # @param memo [String] A memo attached to the purchase order.
       # @param company [Merge::Accounting::PurchaseOrderCompany] The company the purchase order belongs to.
       # @param total_amount [Float] The purchase order's total amount.
-      # @param currency [Merge::Accounting::CurrencyEnum] The purchase order's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -724,18 +732,23 @@ module Merge
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The purchase order's exchange rate.
       # @param line_items [Array<Merge::Accounting::PurchaseOrderLineItem>]
+      # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
       # @param tracking_categories [Array<Merge::Accounting::PurchaseOrderTrackingCategoriesItem>]
+      # @param accounting_period [Merge::Accounting::PurchaseOrderAccountingPeriod] The accounting period that the PurchaseOrder was generated in.
       # @param remote_created_at [DateTime] When the third party's purchase order note was created.
       # @param remote_updated_at [DateTime] When the third party's purchase order note was updated.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
-      # @param accounting_period [Merge::Accounting::PurchaseOrderAccountingPeriod] The accounting period that the PurchaseOrder was generated in.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
+      # @param remote_fields [Array<Merge::Accounting::RemoteField>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PurchaseOrder]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, status: OMIT, issue_date: OMIT,
-                     purchase_order_number: OMIT, delivery_date: OMIT, delivery_address: OMIT, customer: OMIT, vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, line_items: OMIT, tracking_categories: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     purchase_order_number: OMIT, delivery_date: OMIT, delivery_address: OMIT, customer: OMIT, vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, line_items: OMIT, inclusive_of_tax: OMIT, tracking_categories: OMIT, accounting_period: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -753,13 +766,15 @@ module Merge
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @line_items = line_items if line_items != OMIT
+        @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
+        @accounting_period = accounting_period if accounting_period != OMIT
         @remote_created_at = remote_created_at if remote_created_at != OMIT
         @remote_updated_at = remote_updated_at if remote_updated_at != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
-        @accounting_period = accounting_period if accounting_period != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -779,13 +794,15 @@ module Merge
           "currency": currency,
           "exchange_rate": exchange_rate,
           "line_items": line_items,
+          "inclusive_of_tax": inclusive_of_tax,
           "tracking_categories": tracking_categories,
+          "accounting_period": accounting_period,
           "remote_created_at": remote_created_at,
           "remote_updated_at": remote_updated_at,
           "remote_was_deleted": remote_was_deleted,
-          "accounting_period": accounting_period,
           "field_mappings": field_mappings,
-          "remote_data": remote_data
+          "remote_data": remote_data,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -833,9 +850,16 @@ module Merge
           item = item.to_json
           Merge::Accounting::PurchaseOrderLineItem.from_json(json_object: item)
         end
+        inclusive_of_tax = parsed_json["inclusive_of_tax"]
         tracking_categories = parsed_json["tracking_categories"]&.map do |item|
           item = item.to_json
           Merge::Accounting::PurchaseOrderTrackingCategoriesItem.from_json(json_object: item)
+        end
+        if parsed_json["accounting_period"].nil?
+          accounting_period = nil
+        else
+          accounting_period = parsed_json["accounting_period"].to_json
+          accounting_period = Merge::Accounting::PurchaseOrderAccountingPeriod.from_json(json_object: accounting_period)
         end
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
@@ -844,16 +868,14 @@ module Merge
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
         remote_was_deleted = parsed_json["remote_was_deleted"]
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::PurchaseOrderAccountingPeriod.from_json(json_object: accounting_period)
-        end
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
           item = item.to_json
           Merge::Accounting::RemoteData.from_json(json_object: item)
+        end
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteField.from_json(json_object: item)
         end
         new(
           id: id,
@@ -873,13 +895,15 @@ module Merge
           currency: currency,
           exchange_rate: exchange_rate,
           line_items: line_items,
+          inclusive_of_tax: inclusive_of_tax,
           tracking_categories: tracking_categories,
+          accounting_period: accounting_period,
           remote_created_at: remote_created_at,
           remote_updated_at: remote_updated_at,
           remote_was_deleted: remote_was_deleted,
-          accounting_period: accounting_period,
           field_mappings: field_mappings,
           remote_data: remote_data,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -912,16 +936,18 @@ module Merge
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PurchaseOrderCompany.validate_raw(obj: obj.company)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.line_items&.is_a?(Array) != false || raise("Passed value for field obj.line_items is not the expected type, validation failed.")
+        obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
+        obj.accounting_period.nil? || Merge::Accounting::PurchaseOrderAccountingPeriod.validate_raw(obj: obj.accounting_period)
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::PurchaseOrderAccountingPeriod.validate_raw(obj: obj.accounting_period)
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

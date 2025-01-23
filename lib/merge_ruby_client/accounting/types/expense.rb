@@ -3,12 +3,14 @@
 require "date"
 require_relative "expense_account"
 require_relative "expense_contact"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "expense_company"
+require_relative "expense_employee"
 require_relative "expense_line"
 require_relative "expense_tracking_categories_item"
 require_relative "expense_accounting_period"
 require_relative "remote_data"
+require_relative "remote_field"
 require "ostruct"
 require "json"
 
@@ -49,7 +51,7 @@ module Merge
       attr_reader :sub_total
       # @return [Float] The expense's total tax amount.
       attr_reader :total_tax_amount
-      # @return [Merge::Accounting::CurrencyEnum] The expense's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The expense's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -359,8 +361,13 @@ module Merge
       attr_reader :currency
       # @return [String] The expense's exchange rate.
       attr_reader :exchange_rate
+      # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
+      attr_reader :inclusive_of_tax
       # @return [Merge::Accounting::ExpenseCompany] The company the expense belongs to.
       attr_reader :company
+      # @return [Merge::Accounting::ExpenseEmployee] The employee this overall transaction relates to.
+      attr_reader :employee
       # @return [String] The expense's private note.
       attr_reader :memo
       # @return [Array<Merge::Accounting::ExpenseLine>]
@@ -368,7 +375,9 @@ module Merge
       # @return [Array<Merge::Accounting::ExpenseTrackingCategoriesItem>]
       attr_reader :tracking_categories
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Merge::Accounting::ExpenseAccountingPeriod] The accounting period that the Expense was generated in.
       attr_reader :accounting_period
@@ -376,6 +385,8 @@ module Merge
       attr_reader :field_mappings
       # @return [Array<Merge::Accounting::RemoteData>]
       attr_reader :remote_data
+      # @return [Array<Merge::Accounting::RemoteField>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -395,7 +406,7 @@ module Merge
       # @param total_amount [Float] The expense's total amount.
       # @param sub_total [Float] The expense's total amount before tax.
       # @param total_tax_amount [Float] The expense's total tax amount.
-      # @param currency [Merge::Accounting::CurrencyEnum] The expense's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The expense's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -703,19 +714,25 @@ module Merge
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The expense's exchange rate.
+      # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
       # @param company [Merge::Accounting::ExpenseCompany] The company the expense belongs to.
+      # @param employee [Merge::Accounting::ExpenseEmployee] The employee this overall transaction relates to.
       # @param memo [String] The expense's private note.
       # @param lines [Array<Merge::Accounting::ExpenseLine>]
       # @param tracking_categories [Array<Merge::Accounting::ExpenseTrackingCategoriesItem>]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param accounting_period [Merge::Accounting::ExpenseAccountingPeriod] The accounting period that the Expense was generated in.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
+      # @param remote_fields [Array<Merge::Accounting::RemoteField>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Expense]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, transaction_date: OMIT,
-                     remote_created_at: OMIT, account: OMIT, contact: OMIT, total_amount: OMIT, sub_total: OMIT, total_tax_amount: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, memo: OMIT, lines: OMIT, tracking_categories: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     remote_created_at: OMIT, account: OMIT, contact: OMIT, total_amount: OMIT, sub_total: OMIT, total_tax_amount: OMIT, currency: OMIT, exchange_rate: OMIT, inclusive_of_tax: OMIT, company: OMIT, employee: OMIT, memo: OMIT, lines: OMIT, tracking_categories: OMIT, remote_was_deleted: OMIT, accounting_period: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -729,7 +746,9 @@ module Merge
         @total_tax_amount = total_tax_amount if total_tax_amount != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
+        @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @company = company if company != OMIT
+        @employee = employee if employee != OMIT
         @memo = memo if memo != OMIT
         @lines = lines if lines != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
@@ -737,6 +756,7 @@ module Merge
         @accounting_period = accounting_period if accounting_period != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -752,14 +772,17 @@ module Merge
           "total_tax_amount": total_tax_amount,
           "currency": currency,
           "exchange_rate": exchange_rate,
+          "inclusive_of_tax": inclusive_of_tax,
           "company": company,
+          "employee": employee,
           "memo": memo,
           "lines": lines,
           "tracking_categories": tracking_categories,
           "remote_was_deleted": remote_was_deleted,
           "accounting_period": accounting_period,
           "field_mappings": field_mappings,
-          "remote_data": remote_data
+          "remote_data": remote_data,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -797,11 +820,18 @@ module Merge
         total_tax_amount = parsed_json["total_tax_amount"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
+        inclusive_of_tax = parsed_json["inclusive_of_tax"]
         if parsed_json["company"].nil?
           company = nil
         else
           company = parsed_json["company"].to_json
           company = Merge::Accounting::ExpenseCompany.from_json(json_object: company)
+        end
+        if parsed_json["employee"].nil?
+          employee = nil
+        else
+          employee = parsed_json["employee"].to_json
+          employee = Merge::Accounting::ExpenseEmployee.from_json(json_object: employee)
         end
         memo = parsed_json["memo"]
         lines = parsed_json["lines"]&.map do |item|
@@ -824,6 +854,10 @@ module Merge
           item = item.to_json
           Merge::Accounting::RemoteData.from_json(json_object: item)
         end
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteField.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,
@@ -838,7 +872,9 @@ module Merge
           total_tax_amount: total_tax_amount,
           currency: currency,
           exchange_rate: exchange_rate,
+          inclusive_of_tax: inclusive_of_tax,
           company: company,
+          employee: employee,
           memo: memo,
           lines: lines,
           tracking_categories: tracking_categories,
@@ -846,6 +882,7 @@ module Merge
           accounting_period: accounting_period,
           field_mappings: field_mappings,
           remote_data: remote_data,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -875,9 +912,11 @@ module Merge
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.sub_total&.is_a?(Float) != false || raise("Passed value for field obj.sub_total is not the expected type, validation failed.")
         obj.total_tax_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_tax_amount is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
+        obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::ExpenseCompany.validate_raw(obj: obj.company)
+        obj.employee.nil? || Merge::Accounting::ExpenseEmployee.validate_raw(obj: obj.employee)
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.lines&.is_a?(Array) != false || raise("Passed value for field obj.lines is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
@@ -885,6 +924,7 @@ module Merge
         obj.accounting_period.nil? || Merge::Accounting::ExpenseAccountingPeriod.validate_raw(obj: obj.accounting_period)
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

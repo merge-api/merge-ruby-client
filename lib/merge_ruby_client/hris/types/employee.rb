@@ -22,7 +22,8 @@ module Merge
     # # The Employee Object
     #  ### Description
     #  The `Employee` object is used to represent any person who has been employed by a
-    #  company.
+    #  company. By default, it returns all employees. To filter for only active
+    #  employees, set the `employment_status` query parameter to `ACTIVE`.
     #  ### Usage Example
     #  Fetch from the `LIST Employee` endpoint and filter by `ID` to show all
     #  employees.
@@ -121,7 +122,10 @@ module Merge
       attr_reader :avatar
       # @return [Hash{String => Object}] Custom fields configured for a given model.
       attr_reader :custom_fields
-      # @return [Boolean]
+      # @return [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -196,7 +200,10 @@ module Merge
       # @param termination_date [DateTime] The employee's termination date.
       # @param avatar [String] The URL of the employee's avatar image.
       # @param custom_fields [Hash{String => Object}] Custom fields configured for a given model.
-      # @param remote_was_deleted [Boolean]
+      # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Hris::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

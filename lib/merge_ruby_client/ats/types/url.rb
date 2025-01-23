@@ -30,7 +30,9 @@ module Merge
       #  - `JOB_POSTING` - JOB_POSTING
       attr_reader :url_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -52,7 +54,9 @@ module Merge
       #  - `OTHER` - OTHER
       #  - `JOB_POSTING` - JOB_POSTING
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::Url]
       def initialize(created_at: OMIT, modified_at: OMIT, value: OMIT, url_type: OMIT, remote_was_deleted: OMIT,

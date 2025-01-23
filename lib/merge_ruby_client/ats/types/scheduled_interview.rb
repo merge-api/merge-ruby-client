@@ -53,7 +53,9 @@ module Merge
       #  - `COMPLETE` - COMPLETE
       attr_reader :status
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -85,7 +87,9 @@ module Merge
       #  - `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
       #  - `COMPLETE` - COMPLETE
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Ats::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

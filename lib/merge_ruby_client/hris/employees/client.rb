@@ -48,11 +48,16 @@ module Merge
       # @param groups [String] If provided, will only return employees matching the group ids; multiple groups
       #  can be separated by commas.
       # @param home_location_id [String] If provided, will only return employees for this home location.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_sensitive_fields [Boolean] Whether to include sensitive fields (such as social security numbers) in the
       #  response.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param job_title [String] If provided, will only return employees that have an employment of the specified
       #  job_title.
       # @param last_name [String] If provided, will only return employees with this last name.
@@ -87,7 +92,7 @@ module Merge
       #  )
       #  api.hris.employees.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, display_full_name: nil,
-               employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
+               employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -113,6 +118,7 @@ module Merge
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "include_sensitive_fields": include_sensitive_fields,
+            "include_shell_data": include_shell_data,
             "job_title": job_title,
             "last_name": last_name,
             "manager_id": manager_id,
@@ -350,11 +356,16 @@ module Merge
       # @param groups [String] If provided, will only return employees matching the group ids; multiple groups
       #  can be separated by commas.
       # @param home_location_id [String] If provided, will only return employees for this home location.
-      # @param include_deleted_data [Boolean] Whether to include data that was marked as deleted by third party webhooks.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_sensitive_fields [Boolean] Whether to include sensitive fields (such as social security numbers) in the
       #  response.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param job_title [String] If provided, will only return employees that have an employment of the specified
       #  job_title.
       # @param last_name [String] If provided, will only return employees with this last name.
@@ -389,7 +400,7 @@ module Merge
       #  )
       #  api.hris.employees.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, display_full_name: nil,
-               employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
+               employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -416,6 +427,7 @@ module Merge
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "include_sensitive_fields": include_sensitive_fields,
+              "include_shell_data": include_shell_data,
               "job_title": job_title,
               "last_name": last_name,
               "manager_id": manager_id,

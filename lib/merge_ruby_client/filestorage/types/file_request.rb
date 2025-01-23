@@ -21,7 +21,7 @@ module Merge
       attr_reader :file_url
       # @return [String] The URL that produces a thumbnail preview of the file. Typically an image.
       attr_reader :file_thumbnail_url
-      # @return [Integer] The file's size, in bytes.
+      # @return [Long] The file's size, in bytes.
       attr_reader :size
       # @return [String] The file's mime type.
       attr_reader :mime_type
@@ -50,7 +50,7 @@ module Merge
       # @param name [String] The file's name.
       # @param file_url [String] The URL to access the file.
       # @param file_thumbnail_url [String] The URL that produces a thumbnail preview of the file. Typically an image.
-      # @param size [Integer] The file's size, in bytes.
+      # @param size [Long] The file's size, in bytes.
       # @param mime_type [String] The file's mime type.
       # @param description [String] The file's description.
       # @param folder [Merge::Filestorage::FileRequestFolder] The folder that the file belongs to.
@@ -159,7 +159,7 @@ module Merge
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.file_url&.is_a?(String) != false || raise("Passed value for field obj.file_url is not the expected type, validation failed.")
         obj.file_thumbnail_url&.is_a?(String) != false || raise("Passed value for field obj.file_thumbnail_url is not the expected type, validation failed.")
-        obj.size&.is_a?(Integer) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
+        obj.size&.is_a?(Long) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
         obj.mime_type&.is_a?(String) != false || raise("Passed value for field obj.mime_type is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.folder.nil? || Merge::Filestorage::FileRequestFolder.validate_raw(obj: obj.folder)

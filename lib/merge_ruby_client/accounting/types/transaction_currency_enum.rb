@@ -308,7 +308,7 @@ module Merge
     #  - `ZWD` - Zimbabwean Dollar (1980–2008)
     #  - `ZWR` - Zimbabwean Dollar (2008)
     #  - `ZWL` - Zimbabwean Dollar (2009)
-    class CurrencyEnum
+    class TransactionCurrencyEnum
       XUA = "XUA"
       AFN = "AFN"
       AFA = "AFA"

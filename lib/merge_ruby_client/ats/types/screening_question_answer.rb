@@ -29,7 +29,9 @@ module Merge
       # @return [String] The candidate’s response to the screening question.
       attr_reader :answer
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -48,7 +50,9 @@ module Merge
       #  `screening_question_answers.question` to the `expand` query parameter.
       # @param answer [String] The candidate’s response to the screening question.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::ScreeningQuestionAnswer]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, question: OMIT, answer: OMIT,

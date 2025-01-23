@@ -5,9 +5,10 @@ require "date"
 require_relative "purchase_order_request_delivery_address"
 require_relative "purchase_order_request_vendor"
 require_relative "purchase_order_request_company"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "purchase_order_request_tracking_categories_item"
 require_relative "purchase_order_line_item_request"
+require_relative "remote_field_request"
 require "ostruct"
 require "json"
 
@@ -44,7 +45,7 @@ module Merge
       attr_reader :company
       # @return [Float] The purchase order's total amount.
       attr_reader :total_amount
-      # @return [Merge::Accounting::CurrencyEnum] The purchase order's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -352,6 +353,9 @@ module Merge
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
       attr_reader :currency
+      # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
+      attr_reader :inclusive_of_tax
       # @return [String] The purchase order's exchange rate.
       attr_reader :exchange_rate
       # @return [Array<Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem>]
@@ -362,6 +366,8 @@ module Merge
       attr_reader :integration_params
       # @return [Hash{String => Object}]
       attr_reader :linked_account_params
+      # @return [Array<Merge::Accounting::RemoteFieldRequest>]
+      attr_reader :remote_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -384,7 +390,7 @@ module Merge
       # @param memo [String] A memo attached to the purchase order.
       # @param company [Merge::Accounting::PurchaseOrderRequestCompany] The company the purchase order belongs to.
       # @param total_amount [Float] The purchase order's total amount.
-      # @param currency [Merge::Accounting::CurrencyEnum] The purchase order's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -691,15 +697,18 @@ module Merge
       #  - `ZWD` - Zimbabwean Dollar (1980–2008)
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
+      # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
+      #  `False` if exclusive.
       # @param exchange_rate [String] The purchase order's exchange rate.
       # @param tracking_categories [Array<Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem>]
       # @param line_items [Array<Merge::Accounting::PurchaseOrderLineItemRequest>]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
+      # @param remote_fields [Array<Merge::Accounting::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PurchaseOrderRequest]
       def initialize(status: OMIT, issue_date: OMIT, delivery_date: OMIT, delivery_address: OMIT, customer: OMIT,
-                     vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, tracking_categories: OMIT, line_items: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, inclusive_of_tax: OMIT, exchange_rate: OMIT, tracking_categories: OMIT, line_items: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @status = status if status != OMIT
         @issue_date = issue_date if issue_date != OMIT
         @delivery_date = delivery_date if delivery_date != OMIT
@@ -710,11 +719,13 @@ module Merge
         @company = company if company != OMIT
         @total_amount = total_amount if total_amount != OMIT
         @currency = currency if currency != OMIT
+        @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @line_items = line_items if line_items != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
+        @remote_fields = remote_fields if remote_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "status": status,
@@ -727,11 +738,13 @@ module Merge
           "company": company,
           "total_amount": total_amount,
           "currency": currency,
+          "inclusive_of_tax": inclusive_of_tax,
           "exchange_rate": exchange_rate,
           "tracking_categories": tracking_categories,
           "line_items": line_items,
           "integration_params": integration_params,
-          "linked_account_params": linked_account_params
+          "linked_account_params": linked_account_params,
+          "remote_fields": remote_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -769,6 +782,7 @@ module Merge
         end
         total_amount = parsed_json["total_amount"]
         currency = parsed_json["currency"]
+        inclusive_of_tax = parsed_json["inclusive_of_tax"]
         exchange_rate = parsed_json["exchange_rate"]
         tracking_categories = parsed_json["tracking_categories"]&.map do |item|
           item = item.to_json
@@ -780,6 +794,10 @@ module Merge
         end
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
+        remote_fields = parsed_json["remote_fields"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldRequest.from_json(json_object: item)
+        end
         new(
           status: status,
           issue_date: issue_date,
@@ -791,11 +809,13 @@ module Merge
           company: company,
           total_amount: total_amount,
           currency: currency,
+          inclusive_of_tax: inclusive_of_tax,
           exchange_rate: exchange_rate,
           tracking_categories: tracking_categories,
           line_items: line_items,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
+          remote_fields: remote_fields,
           additional_properties: struct
         )
       end
@@ -823,12 +843,14 @@ module Merge
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PurchaseOrderRequestCompany.validate_raw(obj: obj.company)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.line_items&.is_a?(Array) != false || raise("Passed value for field obj.line_items is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
+        obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")
       end
     end
   end

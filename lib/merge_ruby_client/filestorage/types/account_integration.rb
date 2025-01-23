@@ -17,10 +17,9 @@ module Merge
       # @return [Array<Merge::Filestorage::CategoriesEnum>] Category or categories this integration belongs to. Multiple categories should
       #  be comma separated, i.e. [ats, hris].
       attr_reader :categories
-      # @return [String] Company logo in rectangular shape. <b>Upload an image with a clear
-      #  background.</b>
+      # @return [String] Company logo in rectangular shape.
       attr_reader :image
-      # @return [String] Company logo in square shape. <b>Upload an image with a white background.</b>
+      # @return [String] Company logo in square shape.
       attr_reader :square_image
       # @return [String] The color of this integration used for buttons and text throughout the app and
       #  landing pages. <b>Choose a darker, saturated color.</b>
@@ -52,9 +51,8 @@ module Merge
       #  SuccessFactors)</i>
       # @param categories [Array<Merge::Filestorage::CategoriesEnum>] Category or categories this integration belongs to. Multiple categories should
       #  be comma separated, i.e. [ats, hris].
-      # @param image [String] Company logo in rectangular shape. <b>Upload an image with a clear
-      #  background.</b>
-      # @param square_image [String] Company logo in square shape. <b>Upload an image with a white background.</b>
+      # @param image [String] Company logo in rectangular shape.
+      # @param square_image [String] Company logo in square shape.
       # @param color [String] The color of this integration used for buttons and text throughout the app and
       #  landing pages. <b>Choose a darker, saturated color.</b>
       # @param slug [String]

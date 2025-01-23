@@ -4,6 +4,7 @@ require "date"
 require_relative "folder_parent_folder"
 require_relative "folder_drive"
 require_relative "folder_permissions"
+require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -29,7 +30,7 @@ module Merge
       attr_reader :name
       # @return [String] The URL to access the folder.
       attr_reader :folder_url
-      # @return [Integer] The folder's size, in bytes.
+      # @return [Long] The folder's size, in bytes.
       attr_reader :size
       # @return [String] The folder's description.
       attr_reader :description
@@ -46,11 +47,13 @@ module Merge
       # @return [DateTime] When the third party's folder was updated.
       attr_reader :remote_updated_at
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Merge::Filestorage::RemoteData>]
       attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -66,7 +69,7 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The folder's name.
       # @param folder_url [String] The URL to access the folder.
-      # @param size [Integer] The folder's size, in bytes.
+      # @param size [Long] The folder's size, in bytes.
       # @param description [String] The folder's description.
       # @param parent_folder [Merge::Filestorage::FolderParentFolder] The folder that the folder belongs to.
       # @param drive [Merge::Filestorage::FolderDrive] The drive that the folder belongs to.
@@ -76,9 +79,11 @@ module Merge
       # @param remote_created_at [DateTime] When the third party's folder was created.
       # @param remote_updated_at [DateTime] When the third party's folder was updated.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Hash{String => Object}>]
+      # @param remote_data [Array<Merge::Filestorage::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::Folder]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, folder_url: OMIT,
@@ -163,7 +168,10 @@ module Merge
                             end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::RemoteData.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,
@@ -205,7 +213,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.folder_url&.is_a?(String) != false || raise("Passed value for field obj.folder_url is not the expected type, validation failed.")
-        obj.size&.is_a?(Integer) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
+        obj.size&.is_a?(Long) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.parent_folder.nil? || Merge::Filestorage::FolderParentFolder.validate_raw(obj: obj.parent_folder)
         obj.drive.nil? || Merge::Filestorage::FolderDrive.validate_raw(obj: obj.drive)

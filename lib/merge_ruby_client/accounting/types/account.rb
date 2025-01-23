@@ -2,8 +2,9 @@
 
 require "date"
 require_relative "classification_enum"
+require_relative "account_account_type_enum"
 require_relative "account_status_enum"
-require_relative "currency_enum"
+require_relative "transaction_currency_enum"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -47,6 +48,22 @@ module Merge
       # @return [String] The account's type is a narrower and more specific grouping within the account's
       #  classification.
       attr_reader :type
+      # @return [Merge::Accounting::AccountAccountTypeEnum] Normalized account type- which is a narrower and more specific grouping within
+      #  the account's classification.
+      #  - `BANK` - BANK
+      #  - `CREDIT_CARD` - CREDIT_CARD
+      #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+      #  - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
+      #  - `FIXED_ASSET` - FIXED_ASSET
+      #  - `OTHER_ASSET` - OTHER_ASSET
+      #  - `OTHER_CURRENT_ASSET` - OTHER_CURRENT_ASSET
+      #  - `OTHER_EXPENSE` - OTHER_EXPENSE
+      #  - `OTHER_INCOME` - OTHER_INCOME
+      #  - `COST_OF_GOODS_SOLD` - COST_OF_GOODS_SOLD
+      #  - `OTHER_CURRENT_LIABILITY` - OTHER_CURRENT_LIABILITY
+      #  - `LONG_TERM_LIABILITY` - LONG_TERM_LIABILITY
+      #  - `NON_POSTING` - NON_POSTING
+      attr_reader :account_type
       # @return [Merge::Accounting::AccountStatusEnum] The account's status.
       #  - `ACTIVE` - ACTIVE
       #  - `PENDING` - PENDING
@@ -54,7 +71,7 @@ module Merge
       attr_reader :status
       # @return [Float] The account's current balance.
       attr_reader :current_balance
-      # @return [Merge::Accounting::CurrencyEnum] The account's currency.
+      # @return [Merge::Accounting::TransactionCurrencyEnum] The account's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -369,7 +386,9 @@ module Merge
       # @return [String] The company the account belongs to.
       attr_reader :company
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -397,12 +416,27 @@ module Merge
       #  - `REVENUE` - REVENUE
       # @param type [String] The account's type is a narrower and more specific grouping within the account's
       #  classification.
+      # @param account_type [Merge::Accounting::AccountAccountTypeEnum] Normalized account type- which is a narrower and more specific grouping within
+      #  the account's classification.
+      #  - `BANK` - BANK
+      #  - `CREDIT_CARD` - CREDIT_CARD
+      #  - `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
+      #  - `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
+      #  - `FIXED_ASSET` - FIXED_ASSET
+      #  - `OTHER_ASSET` - OTHER_ASSET
+      #  - `OTHER_CURRENT_ASSET` - OTHER_CURRENT_ASSET
+      #  - `OTHER_EXPENSE` - OTHER_EXPENSE
+      #  - `OTHER_INCOME` - OTHER_INCOME
+      #  - `COST_OF_GOODS_SOLD` - COST_OF_GOODS_SOLD
+      #  - `OTHER_CURRENT_LIABILITY` - OTHER_CURRENT_LIABILITY
+      #  - `LONG_TERM_LIABILITY` - LONG_TERM_LIABILITY
+      #  - `NON_POSTING` - NON_POSTING
       # @param status [Merge::Accounting::AccountStatusEnum] The account's status.
       #  - `ACTIVE` - ACTIVE
       #  - `PENDING` - PENDING
       #  - `INACTIVE` - INACTIVE
       # @param current_balance [Float] The account's current balance.
-      # @param currency [Merge::Accounting::CurrencyEnum] The account's currency.
+      # @param currency [Merge::Accounting::TransactionCurrencyEnum] The account's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
       #  - `AFA` - Afghan Afghani (1927–2002)
@@ -713,13 +747,15 @@ module Merge
       # @param parent_account [String] ID of the parent account.
       # @param company [String] The company the account belongs to.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Account]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, description: OMIT,
-                     classification: OMIT, type: OMIT, status: OMIT, current_balance: OMIT, currency: OMIT, account_number: OMIT, parent_account: OMIT, company: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     classification: OMIT, type: OMIT, account_type: OMIT, status: OMIT, current_balance: OMIT, currency: OMIT, account_number: OMIT, parent_account: OMIT, company: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -728,6 +764,7 @@ module Merge
         @description = description if description != OMIT
         @classification = classification if classification != OMIT
         @type = type if type != OMIT
+        @account_type = account_type if account_type != OMIT
         @status = status if status != OMIT
         @current_balance = current_balance if current_balance != OMIT
         @currency = currency if currency != OMIT
@@ -747,6 +784,7 @@ module Merge
           "description": description,
           "classification": classification,
           "type": type,
+          "account_type": account_type,
           "status": status,
           "current_balance": current_balance,
           "currency": currency,
@@ -776,6 +814,7 @@ module Merge
         description = parsed_json["description"]
         classification = parsed_json["classification"]
         type = parsed_json["type"]
+        account_type = parsed_json["account_type"]
         status = parsed_json["status"]
         current_balance = parsed_json["current_balance"]
         currency = parsed_json["currency"]
@@ -797,6 +836,7 @@ module Merge
           description: description,
           classification: classification,
           type: type,
+          account_type: account_type,
           status: status,
           current_balance: current_balance,
           currency: currency,
@@ -832,9 +872,10 @@ module Merge
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.classification&.is_a?(Merge::Accounting::ClassificationEnum) != false || raise("Passed value for field obj.classification is not the expected type, validation failed.")
         obj.type&.is_a?(String) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
+        obj.account_type&.is_a?(Merge::Accounting::AccountAccountTypeEnum) != false || raise("Passed value for field obj.account_type is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Accounting::AccountStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.current_balance&.is_a?(Float) != false || raise("Passed value for field obj.current_balance is not the expected type, validation failed.")
-        obj.currency&.is_a?(Merge::Accounting::CurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
+        obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.account_number&.is_a?(String) != false || raise("Passed value for field obj.account_number is not the expected type, validation failed.")
         obj.parent_account&.is_a?(String) != false || raise("Passed value for field obj.parent_account is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")

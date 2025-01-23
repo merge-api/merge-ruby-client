@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
-require_relative "payment_line_item"
+require_relative "payment_line_item_request"
 
 module Merge
   module Accounting
@@ -22,8 +22,8 @@ module Merge
           # noop
         end
         begin
-          Merge::Accounting::PaymentLineItem.validate_raw(obj: struct)
-          return Merge::Accounting::PaymentLineItem.from_json(json_object: struct) unless struct.nil?
+          Merge::Accounting::PaymentLineItemRequest.validate_raw(obj: struct)
+          return Merge::Accounting::PaymentLineItemRequest.from_json(json_object: struct) unless struct.nil?
 
           return nil
         rescue StandardError
@@ -45,7 +45,7 @@ module Merge
           # noop
         end
         begin
-          return Merge::Accounting::PaymentLineItem.validate_raw(obj: obj)
+          return Merge::Accounting::PaymentLineItemRequest.validate_raw(obj: obj)
         rescue StandardError
           # noop
         end

@@ -4,7 +4,6 @@ require "date"
 require_relative "status_7_d_1_enum"
 require_relative "category_type_enum"
 require_relative "tracking_category_company"
-require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -38,17 +37,17 @@ module Merge
       #  - `CLASS` - CLASS
       #  - `DEPARTMENT` - DEPARTMENT
       attr_reader :category_type
-      # @return [String] ID of the parent tracking category.
+      # @return [String]
       attr_reader :parent_category
-      # @return [Merge::Accounting::TrackingCategoryCompany] The company the tracking category belongs to.
+      # @return [Merge::Accounting::TrackingCategoryCompany] The company the GeneralLedgerTransaction belongs to.
       attr_reader :company
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Merge::Accounting::RemoteData>]
-      attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -68,16 +67,17 @@ module Merge
       # @param category_type [Merge::Accounting::CategoryTypeEnum] The tracking category’s type.
       #  - `CLASS` - CLASS
       #  - `DEPARTMENT` - DEPARTMENT
-      # @param parent_category [String] ID of the parent tracking category.
-      # @param company [Merge::Accounting::TrackingCategoryCompany] The company the tracking category belongs to.
+      # @param parent_category [String]
+      # @param company [Merge::Accounting::TrackingCategoryCompany] The company the GeneralLedgerTransaction belongs to.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
-      #  platform.
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::TrackingCategory]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, status: OMIT,
-                     category_type: OMIT, parent_category: OMIT, company: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     category_type: OMIT, parent_category: OMIT, company: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -89,7 +89,6 @@ module Merge
         @company = company if company != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
-        @remote_data = remote_data if remote_data != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -102,8 +101,7 @@ module Merge
           "parent_category": parent_category,
           "company": company,
           "remote_was_deleted": remote_was_deleted,
-          "field_mappings": field_mappings,
-          "remote_data": remote_data
+          "field_mappings": field_mappings
         }.reject do |_k, v|
           v == OMIT
         end
@@ -132,10 +130,6 @@ module Merge
         end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::RemoteData.from_json(json_object: item)
-        end
         new(
           id: id,
           remote_id: remote_id,
@@ -148,7 +142,6 @@ module Merge
           company: company,
           remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
-          remote_data: remote_data,
           additional_properties: struct
         )
       end
@@ -178,7 +171,6 @@ module Merge
         obj.company.nil? || Merge::Accounting::TrackingCategoryCompany.validate_raw(obj: obj.company)
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
-        obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end
     end
   end

@@ -20,7 +20,7 @@ module Merge
       attr_reader :name
       # @return [String] The URL to access the folder.
       attr_reader :folder_url
-      # @return [Integer] The folder's size, in bytes.
+      # @return [Long] The folder's size, in bytes.
       attr_reader :size
       # @return [String] The folder's description.
       attr_reader :description
@@ -46,7 +46,7 @@ module Merge
 
       # @param name [String] The folder's name.
       # @param folder_url [String] The URL to access the folder.
-      # @param size [Integer] The folder's size, in bytes.
+      # @param size [Long] The folder's size, in bytes.
       # @param description [String] The folder's description.
       # @param parent_folder [Merge::Filestorage::FolderRequestParentFolder] The folder that the folder belongs to.
       # @param drive [Merge::Filestorage::FolderRequestDrive] The drive that the folder belongs to.
@@ -145,7 +145,7 @@ module Merge
       def self.validate_raw(obj:)
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.folder_url&.is_a?(String) != false || raise("Passed value for field obj.folder_url is not the expected type, validation failed.")
-        obj.size&.is_a?(Integer) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
+        obj.size&.is_a?(Long) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.parent_folder.nil? || Merge::Filestorage::FolderRequestParentFolder.validate_raw(obj: obj.parent_folder)
         obj.drive.nil? || Merge::Filestorage::FolderRequestDrive.validate_raw(obj: obj.drive)
