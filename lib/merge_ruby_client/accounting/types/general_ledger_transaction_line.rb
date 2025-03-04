@@ -6,7 +6,7 @@ require_relative "general_ledger_transaction_line_company"
 require_relative "general_ledger_transaction_line_employee"
 require_relative "general_ledger_transaction_line_contact"
 require_relative "transaction_currency_enum"
-require_relative "tracking_category"
+require_relative "general_ledger_transaction_line_tracking_categories_item"
 require_relative "general_ledger_transaction_line_item"
 require "ostruct"
 require "json"
@@ -657,7 +657,7 @@ module Merge
       attr_reader :exchange_rate
       # @return [String] A description of the line item.
       attr_reader :description
-      # @return [Array<Merge::Accounting::TrackingCategory>]
+      # @return [Array<Merge::Accounting::GeneralLedgerTransactionLineTrackingCategoriesItem>]
       attr_reader :tracking_categories
       # @return [String]
       attr_reader :debit_amount
@@ -1308,7 +1308,7 @@ module Merge
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The exchange rate between the base currency and the transaction currency.
       # @param description [String] A description of the line item.
-      # @param tracking_categories [Array<Merge::Accounting::TrackingCategory>]
+      # @param tracking_categories [Array<Merge::Accounting::GeneralLedgerTransactionLineTrackingCategoriesItem>]
       # @param debit_amount [String]
       # @param credit_amount [String]
       # @param item [Merge::Accounting::GeneralLedgerTransactionLineItem]
@@ -1411,7 +1411,7 @@ module Merge
         description = parsed_json["description"]
         tracking_categories = parsed_json["tracking_categories"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::TrackingCategory.from_json(json_object: item)
+          Merge::Accounting::GeneralLedgerTransactionLineTrackingCategoriesItem.from_json(json_object: item)
         end
         debit_amount = parsed_json["debit_amount"]
         credit_amount = parsed_json["credit_amount"]

@@ -3,6 +3,7 @@
 require "date"
 require_relative "payment_contact"
 require_relative "payment_account"
+require_relative "payment_payment_method"
 require_relative "transaction_currency_enum"
 require_relative "payment_company"
 require_relative "payment_type_enum"
@@ -37,6 +38,8 @@ module Merge
       attr_reader :contact
       # @return [Merge::Accounting::PaymentAccount] The supplier’s or customer’s account in which the payment is made.
       attr_reader :account
+      # @return [Merge::Accounting::PaymentPaymentMethod] The method which this payment was made by.
+      attr_reader :payment_method
       # @return [Merge::Accounting::TransactionCurrencyEnum] The payment's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
@@ -389,6 +392,7 @@ module Merge
       # @param transaction_date [DateTime] The payment's transaction date.
       # @param contact [Merge::Accounting::PaymentContact] The supplier, or customer involved in the payment.
       # @param account [Merge::Accounting::PaymentAccount] The supplier’s or customer’s account in which the payment is made.
+      # @param payment_method [Merge::Accounting::PaymentPaymentMethod] The method which this payment was made by.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The payment's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
@@ -716,7 +720,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Payment]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, transaction_date: OMIT,
-                     contact: OMIT, account: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, total_amount: OMIT, type: OMIT, tracking_categories: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     contact: OMIT, account: OMIT, payment_method: OMIT, currency: OMIT, exchange_rate: OMIT, company: OMIT, total_amount: OMIT, type: OMIT, tracking_categories: OMIT, accounting_period: OMIT, applied_to_lines: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -724,6 +728,7 @@ module Merge
         @transaction_date = transaction_date if transaction_date != OMIT
         @contact = contact if contact != OMIT
         @account = account if account != OMIT
+        @payment_method = payment_method if payment_method != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @company = company if company != OMIT
@@ -746,6 +751,7 @@ module Merge
           "transaction_date": transaction_date,
           "contact": contact,
           "account": account,
+          "payment_method": payment_method,
           "currency": currency,
           "exchange_rate": exchange_rate,
           "company": company,
@@ -787,6 +793,12 @@ module Merge
         else
           account = parsed_json["account"].to_json
           account = Merge::Accounting::PaymentAccount.from_json(json_object: account)
+        end
+        if parsed_json["payment_method"].nil?
+          payment_method = nil
+        else
+          payment_method = parsed_json["payment_method"].to_json
+          payment_method = Merge::Accounting::PaymentPaymentMethod.from_json(json_object: payment_method)
         end
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
@@ -833,6 +845,7 @@ module Merge
           transaction_date: transaction_date,
           contact: contact,
           account: account,
+          payment_method: payment_method,
           currency: currency,
           exchange_rate: exchange_rate,
           company: company,
@@ -871,6 +884,7 @@ module Merge
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.contact.nil? || Merge::Accounting::PaymentContact.validate_raw(obj: obj.contact)
         obj.account.nil? || Merge::Accounting::PaymentAccount.validate_raw(obj: obj.account)
+        obj.payment_method.nil? || Merge::Accounting::PaymentPaymentMethod.validate_raw(obj: obj.payment_method)
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PaymentCompany.validate_raw(obj: obj.company)

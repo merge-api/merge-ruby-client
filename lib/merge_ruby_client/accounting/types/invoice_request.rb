@@ -7,6 +7,7 @@ require_relative "invoice_request_employee"
 require_relative "invoice_status_enum"
 require_relative "invoice_request_company"
 require_relative "transaction_currency_enum"
+require_relative "invoice_request_payment_term"
 require_relative "invoice_request_payments_item"
 require_relative "invoice_request_tracking_categories_item"
 require_relative "invoice_line_item_request"
@@ -370,6 +371,8 @@ module Merge
       attr_reader :total_discount
       # @return [Float] The total amount being paid before taxes.
       attr_reader :sub_total
+      # @return [Merge::Accounting::InvoiceRequestPaymentTerm] The payment term that applies to this transaction.
+      attr_reader :payment_term
       # @return [Float] The total amount being paid in taxes.
       attr_reader :total_tax_amount
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
@@ -731,6 +734,7 @@ module Merge
       # @param exchange_rate [String] The invoice's exchange rate.
       # @param total_discount [Float] The total discounts applied to the total cost.
       # @param sub_total [Float] The total amount being paid before taxes.
+      # @param payment_term [Merge::Accounting::InvoiceRequestPaymentTerm] The payment term that applies to this transaction.
       # @param total_tax_amount [Float] The total amount being paid in taxes.
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
@@ -746,7 +750,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::InvoiceRequest]
       def initialize(type: OMIT, contact: OMIT, number: OMIT, issue_date: OMIT, due_date: OMIT, paid_on_date: OMIT,
-                     employee: OMIT, memo: OMIT, status: OMIT, company: OMIT, currency: OMIT, exchange_rate: OMIT, total_discount: OMIT, sub_total: OMIT, total_tax_amount: OMIT, inclusive_of_tax: OMIT, total_amount: OMIT, balance: OMIT, payments: OMIT, tracking_categories: OMIT, line_items: OMIT, purchase_orders: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     employee: OMIT, memo: OMIT, status: OMIT, company: OMIT, currency: OMIT, exchange_rate: OMIT, total_discount: OMIT, sub_total: OMIT, payment_term: OMIT, total_tax_amount: OMIT, inclusive_of_tax: OMIT, total_amount: OMIT, balance: OMIT, payments: OMIT, tracking_categories: OMIT, line_items: OMIT, purchase_orders: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @type = type if type != OMIT
         @contact = contact if contact != OMIT
         @number = number if number != OMIT
@@ -761,6 +765,7 @@ module Merge
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @total_discount = total_discount if total_discount != OMIT
         @sub_total = sub_total if sub_total != OMIT
+        @payment_term = payment_term if payment_term != OMIT
         @total_tax_amount = total_tax_amount if total_tax_amount != OMIT
         @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @total_amount = total_amount if total_amount != OMIT
@@ -788,6 +793,7 @@ module Merge
           "exchange_rate": exchange_rate,
           "total_discount": total_discount,
           "sub_total": sub_total,
+          "payment_term": payment_term,
           "total_tax_amount": total_tax_amount,
           "inclusive_of_tax": inclusive_of_tax,
           "total_amount": total_amount,
@@ -840,6 +846,12 @@ module Merge
         exchange_rate = parsed_json["exchange_rate"]
         total_discount = parsed_json["total_discount"]
         sub_total = parsed_json["sub_total"]
+        if parsed_json["payment_term"].nil?
+          payment_term = nil
+        else
+          payment_term = parsed_json["payment_term"].to_json
+          payment_term = Merge::Accounting::InvoiceRequestPaymentTerm.from_json(json_object: payment_term)
+        end
         total_tax_amount = parsed_json["total_tax_amount"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
         total_amount = parsed_json["total_amount"]
@@ -881,6 +893,7 @@ module Merge
           exchange_rate: exchange_rate,
           total_discount: total_discount,
           sub_total: sub_total,
+          payment_term: payment_term,
           total_tax_amount: total_tax_amount,
           inclusive_of_tax: inclusive_of_tax,
           total_amount: total_amount,
@@ -924,6 +937,7 @@ module Merge
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.total_discount&.is_a?(Float) != false || raise("Passed value for field obj.total_discount is not the expected type, validation failed.")
         obj.sub_total&.is_a?(Float) != false || raise("Passed value for field obj.sub_total is not the expected type, validation failed.")
+        obj.payment_term.nil? || Merge::Accounting::InvoiceRequestPaymentTerm.validate_raw(obj: obj.payment_term)
         obj.total_tax_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_tax_amount is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")

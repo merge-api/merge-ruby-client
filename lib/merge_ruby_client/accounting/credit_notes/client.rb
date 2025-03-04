@@ -161,6 +161,8 @@ module Merge
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
@@ -174,8 +176,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.credit_notes.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
-                   request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_shell_data: nil, remote_fields: nil,
+                   show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -189,6 +191,7 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
             "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data,
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
@@ -381,6 +384,8 @@ module Merge
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
@@ -394,8 +399,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.credit_notes.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, remote_fields: nil, show_enum_origins: nil,
-                   request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_shell_data: nil, remote_fields: nil,
+                   show_enum_origins: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -410,6 +415,7 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
               "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data,
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact

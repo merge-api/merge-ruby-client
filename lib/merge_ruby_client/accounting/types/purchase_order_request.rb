@@ -5,6 +5,7 @@ require "date"
 require_relative "purchase_order_request_delivery_address"
 require_relative "purchase_order_request_vendor"
 require_relative "purchase_order_request_company"
+require_relative "purchase_order_request_payment_term"
 require_relative "transaction_currency_enum"
 require_relative "purchase_order_request_tracking_categories_item"
 require_relative "purchase_order_line_item_request"
@@ -45,6 +46,8 @@ module Merge
       attr_reader :company
       # @return [Float] The purchase order's total amount.
       attr_reader :total_amount
+      # @return [Merge::Accounting::PurchaseOrderRequestPaymentTerm] The payment term that applies to this transaction.
+      attr_reader :payment_term
       # @return [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
@@ -390,6 +393,7 @@ module Merge
       # @param memo [String] A memo attached to the purchase order.
       # @param company [Merge::Accounting::PurchaseOrderRequestCompany] The company the purchase order belongs to.
       # @param total_amount [Float] The purchase order's total amount.
+      # @param payment_term [Merge::Accounting::PurchaseOrderRequestPaymentTerm] The payment term that applies to this transaction.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  - `XUA` - ADB Unit of Account
       #  - `AFN` - Afghan Afghani
@@ -708,7 +712,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PurchaseOrderRequest]
       def initialize(status: OMIT, issue_date: OMIT, delivery_date: OMIT, delivery_address: OMIT, customer: OMIT,
-                     vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, inclusive_of_tax: OMIT, exchange_rate: OMIT, tracking_categories: OMIT, line_items: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, payment_term: OMIT, currency: OMIT, inclusive_of_tax: OMIT, exchange_rate: OMIT, tracking_categories: OMIT, line_items: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @status = status if status != OMIT
         @issue_date = issue_date if issue_date != OMIT
         @delivery_date = delivery_date if delivery_date != OMIT
@@ -718,6 +722,7 @@ module Merge
         @memo = memo if memo != OMIT
         @company = company if company != OMIT
         @total_amount = total_amount if total_amount != OMIT
+        @payment_term = payment_term if payment_term != OMIT
         @currency = currency if currency != OMIT
         @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
@@ -737,6 +742,7 @@ module Merge
           "memo": memo,
           "company": company,
           "total_amount": total_amount,
+          "payment_term": payment_term,
           "currency": currency,
           "inclusive_of_tax": inclusive_of_tax,
           "exchange_rate": exchange_rate,
@@ -781,6 +787,12 @@ module Merge
           company = Merge::Accounting::PurchaseOrderRequestCompany.from_json(json_object: company)
         end
         total_amount = parsed_json["total_amount"]
+        if parsed_json["payment_term"].nil?
+          payment_term = nil
+        else
+          payment_term = parsed_json["payment_term"].to_json
+          payment_term = Merge::Accounting::PurchaseOrderRequestPaymentTerm.from_json(json_object: payment_term)
+        end
         currency = parsed_json["currency"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
         exchange_rate = parsed_json["exchange_rate"]
@@ -808,6 +820,7 @@ module Merge
           memo: memo,
           company: company,
           total_amount: total_amount,
+          payment_term: payment_term,
           currency: currency,
           inclusive_of_tax: inclusive_of_tax,
           exchange_rate: exchange_rate,
@@ -843,6 +856,7 @@ module Merge
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::PurchaseOrderRequestCompany.validate_raw(obj: obj.company)
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
+        obj.payment_term.nil? || Merge::Accounting::PurchaseOrderRequestPaymentTerm.validate_raw(obj: obj.payment_term)
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")

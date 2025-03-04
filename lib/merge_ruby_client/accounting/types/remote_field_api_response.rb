@@ -51,6 +51,10 @@ module Merge
       attr_reader :bank_feed_account
       # @return [Array<Merge::Accounting::RemoteFieldApi>]
       attr_reader :employee
+      # @return [Array<Merge::Accounting::RemoteFieldApi>]
+      attr_reader :payment_method
+      # @return [Array<Merge::Accounting::RemoteFieldApi>]
+      attr_reader :payment_term
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -81,10 +85,12 @@ module Merge
       # @param general_ledger_transaction [Array<Merge::Accounting::RemoteFieldApi>]
       # @param bank_feed_account [Array<Merge::Accounting::RemoteFieldApi>]
       # @param employee [Array<Merge::Accounting::RemoteFieldApi>]
+      # @param payment_method [Array<Merge::Accounting::RemoteFieldApi>]
+      # @param payment_term [Array<Merge::Accounting::RemoteFieldApi>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::RemoteFieldApiResponse]
       def initialize(account: OMIT, accounting_attachment: OMIT, balance_sheet: OMIT, cash_flow_statement: OMIT,
-                     company_info: OMIT, contact: OMIT, income_statement: OMIT, credit_note: OMIT, item: OMIT, purchase_order: OMIT, tracking_category: OMIT, journal_entry: OMIT, tax_rate: OMIT, invoice: OMIT, payment: OMIT, expense: OMIT, vendor_credit: OMIT, transaction: OMIT, accounting_period: OMIT, general_ledger_transaction: OMIT, bank_feed_account: OMIT, employee: OMIT, additional_properties: nil)
+                     company_info: OMIT, contact: OMIT, income_statement: OMIT, credit_note: OMIT, item: OMIT, purchase_order: OMIT, tracking_category: OMIT, journal_entry: OMIT, tax_rate: OMIT, invoice: OMIT, payment: OMIT, expense: OMIT, vendor_credit: OMIT, transaction: OMIT, accounting_period: OMIT, general_ledger_transaction: OMIT, bank_feed_account: OMIT, employee: OMIT, payment_method: OMIT, payment_term: OMIT, additional_properties: nil)
         @account = account if account != OMIT
         @accounting_attachment = accounting_attachment if accounting_attachment != OMIT
         @balance_sheet = balance_sheet if balance_sheet != OMIT
@@ -107,6 +113,8 @@ module Merge
         @general_ledger_transaction = general_ledger_transaction if general_ledger_transaction != OMIT
         @bank_feed_account = bank_feed_account if bank_feed_account != OMIT
         @employee = employee if employee != OMIT
+        @payment_method = payment_method if payment_method != OMIT
+        @payment_term = payment_term if payment_term != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "Account": account,
@@ -130,7 +138,9 @@ module Merge
           "AccountingPeriod": accounting_period,
           "GeneralLedgerTransaction": general_ledger_transaction,
           "BankFeedAccount": bank_feed_account,
-          "Employee": employee
+          "Employee": employee,
+          "PaymentMethod": payment_method,
+          "PaymentTerm": payment_term
         }.reject do |_k, v|
           v == OMIT
         end
@@ -231,6 +241,14 @@ module Merge
           item = item.to_json
           Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
         end
+        payment_method = parsed_json["PaymentMethod"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
+        end
+        payment_term = parsed_json["PaymentTerm"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteFieldApi.from_json(json_object: item)
+        end
         new(
           account: account,
           accounting_attachment: accounting_attachment,
@@ -254,6 +272,8 @@ module Merge
           general_ledger_transaction: general_ledger_transaction,
           bank_feed_account: bank_feed_account,
           employee: employee,
+          payment_method: payment_method,
+          payment_term: payment_term,
           additional_properties: struct
         )
       end
@@ -294,6 +314,8 @@ module Merge
         obj.general_ledger_transaction&.is_a?(Array) != false || raise("Passed value for field obj.general_ledger_transaction is not the expected type, validation failed.")
         obj.bank_feed_account&.is_a?(Array) != false || raise("Passed value for field obj.bank_feed_account is not the expected type, validation failed.")
         obj.employee&.is_a?(Array) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.payment_method&.is_a?(Array) != false || raise("Passed value for field obj.payment_method is not the expected type, validation failed.")
+        obj.payment_term&.is_a?(Array) != false || raise("Passed value for field obj.payment_term is not the expected type, validation failed.")
       end
     end
   end

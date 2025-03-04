@@ -6,6 +6,7 @@ require_relative "invoice_contact"
 require_relative "invoice_company"
 require_relative "invoice_employee"
 require_relative "transaction_currency_enum"
+require_relative "invoice_payment_term"
 require_relative "invoice_status_enum"
 require_relative "invoice_tracking_categories_item"
 require_relative "invoice_accounting_period"
@@ -371,6 +372,8 @@ module Merge
       attr_reader :currency
       # @return [String] The invoice's exchange rate.
       attr_reader :exchange_rate
+      # @return [Merge::Accounting::InvoicePaymentTerm] The payment term that applies to this transaction.
+      attr_reader :payment_term
       # @return [Float] The total discounts applied to the total cost.
       attr_reader :total_discount
       # @return [Float] The total amount being paid before taxes.
@@ -755,6 +758,7 @@ module Merge
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The invoice's exchange rate.
+      # @param payment_term [Merge::Accounting::InvoicePaymentTerm] The payment term that applies to this transaction.
       # @param total_discount [Float] The total discounts applied to the total cost.
       # @param sub_total [Float] The total amount being paid before taxes.
       # @param status [Merge::Accounting::InvoiceStatusEnum] The status of the invoice.
@@ -789,7 +793,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Invoice]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, type: OMIT, contact: OMIT,
-                     number: OMIT, issue_date: OMIT, due_date: OMIT, paid_on_date: OMIT, memo: OMIT, company: OMIT, employee: OMIT, currency: OMIT, exchange_rate: OMIT, total_discount: OMIT, sub_total: OMIT, status: OMIT, total_tax_amount: OMIT, total_amount: OMIT, balance: OMIT, remote_updated_at: OMIT, tracking_categories: OMIT, accounting_period: OMIT, purchase_orders: OMIT, payments: OMIT, applied_payments: OMIT, line_items: OMIT, applied_credit_notes: OMIT, applied_vendor_credits: OMIT, inclusive_of_tax: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     number: OMIT, issue_date: OMIT, due_date: OMIT, paid_on_date: OMIT, memo: OMIT, company: OMIT, employee: OMIT, currency: OMIT, exchange_rate: OMIT, payment_term: OMIT, total_discount: OMIT, sub_total: OMIT, status: OMIT, total_tax_amount: OMIT, total_amount: OMIT, balance: OMIT, remote_updated_at: OMIT, tracking_categories: OMIT, accounting_period: OMIT, purchase_orders: OMIT, payments: OMIT, applied_payments: OMIT, line_items: OMIT, applied_credit_notes: OMIT, applied_vendor_credits: OMIT, inclusive_of_tax: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -805,6 +809,7 @@ module Merge
         @employee = employee if employee != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
+        @payment_term = payment_term if payment_term != OMIT
         @total_discount = total_discount if total_discount != OMIT
         @sub_total = sub_total if sub_total != OMIT
         @status = status if status != OMIT
@@ -842,6 +847,7 @@ module Merge
           "employee": employee,
           "currency": currency,
           "exchange_rate": exchange_rate,
+          "payment_term": payment_term,
           "total_discount": total_discount,
           "sub_total": sub_total,
           "status": status,
@@ -904,6 +910,12 @@ module Merge
         end
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
+        if parsed_json["payment_term"].nil?
+          payment_term = nil
+        else
+          payment_term = parsed_json["payment_term"].to_json
+          payment_term = Merge::Accounting::InvoicePaymentTerm.from_json(json_object: payment_term)
+        end
         total_discount = parsed_json["total_discount"]
         sub_total = parsed_json["sub_total"]
         status = parsed_json["status"]
@@ -974,6 +986,7 @@ module Merge
           employee: employee,
           currency: currency,
           exchange_rate: exchange_rate,
+          payment_term: payment_term,
           total_discount: total_discount,
           sub_total: sub_total,
           status: status,
@@ -1027,6 +1040,7 @@ module Merge
         obj.employee.nil? || Merge::Accounting::InvoiceEmployee.validate_raw(obj: obj.employee)
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
+        obj.payment_term.nil? || Merge::Accounting::InvoicePaymentTerm.validate_raw(obj: obj.payment_term)
         obj.total_discount&.is_a?(Float) != false || raise("Passed value for field obj.total_discount is not the expected type, validation failed.")
         obj.sub_total&.is_a?(Float) != false || raise("Passed value for field obj.sub_total is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Accounting::InvoiceStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")

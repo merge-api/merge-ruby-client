@@ -8,7 +8,7 @@ module Merge
     #  - `DISABLED` - DISABLED
     #  - `PAUSED` - PAUSED
     #  - `PARTIALLY_SYNCED` - PARTIALLY_SYNCED
-    class SyncStatusStatusEnum
+    class LastSyncResultEnum
       SYNCING = "SYNCING"
       DONE = "DONE"
       FAILED = "FAILED"

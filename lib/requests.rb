@@ -48,7 +48,7 @@ module Merge
 
     # @return [Hash{String => String}]
     def get_headers
-      headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge_ruby_client", "X-Fern-SDK-Version": "1.0.0" }
+      headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge_ruby_client", "X-Fern-SDK-Version": "1.0.1" }
       headers["Authorization"] = ((@api_key.is_a? Method) ? @api_key.call : @api_key) unless @api_key.nil?
       headers
     end
@@ -96,7 +96,7 @@ module Merge
 
     # @return [Hash{String => String}]
     def get_headers
-      headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge_ruby_client", "X-Fern-SDK-Version": "1.0.0" }
+      headers = { "X-Fern-Language": "Ruby", "X-Fern-SDK-Name": "merge_ruby_client", "X-Fern-SDK-Version": "1.0.1" }
       headers["Authorization"] = ((@api_key.is_a? Method) ? @api_key.call : @api_key) unless @api_key.nil?
       headers
     end

@@ -131,6 +131,8 @@ module Merge
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::CustomObject]
       # @example
@@ -141,7 +143,7 @@ module Merge
       #  )
       #  api.crm.custom_objects.custom_object_classes_custom_objects_retrieve(custom_object_class_id: "custom_object_class_id", id: "id")
       def custom_object_classes_custom_objects_retrieve(custom_object_class_id:, id:, include_remote_data: nil,
-                                                        include_remote_fields: nil, request_options: nil)
+                                                        include_remote_fields: nil, include_shell_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -154,7 +156,8 @@ module Merge
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "include_remote_data": include_remote_data,
-            "include_remote_fields": include_remote_fields
+            "include_remote_fields": include_remote_fields,
+            "include_shell_data": include_shell_data
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -375,6 +378,8 @@ module Merge
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::CustomObject]
       # @example
@@ -385,7 +390,7 @@ module Merge
       #  )
       #  api.crm.custom_objects.custom_object_classes_custom_objects_retrieve(custom_object_class_id: "custom_object_class_id", id: "id")
       def custom_object_classes_custom_objects_retrieve(custom_object_class_id:, id:, include_remote_data: nil,
-                                                        include_remote_fields: nil, request_options: nil)
+                                                        include_remote_fields: nil, include_shell_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -399,7 +404,8 @@ module Merge
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "include_remote_data": include_remote_data,
-              "include_remote_fields": include_remote_fields
+              "include_remote_fields": include_remote_fields,
+              "include_shell_data": include_shell_data
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact

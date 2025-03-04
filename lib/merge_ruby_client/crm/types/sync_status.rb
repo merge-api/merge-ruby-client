@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "sync_status_status_enum"
+require_relative "last_sync_result_enum"
+require_relative "status_fd_5_enum"
 require_relative "selective_sync_configurations_usage_enum"
 require "ostruct"
 require "json"
@@ -22,7 +23,11 @@ module Merge
       attr_reader :last_sync_start
       # @return [DateTime]
       attr_reader :next_sync_start
-      # @return [Merge::Crm::SyncStatusStatusEnum]
+      # @return [Merge::Crm::LastSyncResultEnum]
+      attr_reader :last_sync_result
+      # @return [DateTime]
+      attr_reader :last_sync_finished
+      # @return [Merge::Crm::StatusFd5Enum]
       attr_reader :status
       # @return [Boolean]
       attr_reader :is_initial_sync
@@ -40,17 +45,21 @@ module Merge
       # @param model_id [String]
       # @param last_sync_start [DateTime]
       # @param next_sync_start [DateTime]
-      # @param status [Merge::Crm::SyncStatusStatusEnum]
+      # @param last_sync_result [Merge::Crm::LastSyncResultEnum]
+      # @param last_sync_finished [DateTime]
+      # @param status [Merge::Crm::StatusFd5Enum]
       # @param is_initial_sync [Boolean]
       # @param selective_sync_configurations_usage [Merge::Crm::SelectiveSyncConfigurationsUsageEnum]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::SyncStatus]
-      def initialize(model_name:, model_id:, status:, is_initial_sync:, last_sync_start: OMIT, next_sync_start: OMIT,
-                     selective_sync_configurations_usage: OMIT, additional_properties: nil)
+      def initialize(model_name:, model_id:, status:, is_initial_sync:, last_sync_start: OMIT, next_sync_start: OMIT, last_sync_result: OMIT,
+                     last_sync_finished: OMIT, selective_sync_configurations_usage: OMIT, additional_properties: nil)
         @model_name = model_name
         @model_id = model_id
         @last_sync_start = last_sync_start if last_sync_start != OMIT
         @next_sync_start = next_sync_start if next_sync_start != OMIT
+        @last_sync_result = last_sync_result if last_sync_result != OMIT
+        @last_sync_finished = last_sync_finished if last_sync_finished != OMIT
         @status = status
         @is_initial_sync = is_initial_sync
         if selective_sync_configurations_usage != OMIT
@@ -62,6 +71,8 @@ module Merge
           "model_id": model_id,
           "last_sync_start": last_sync_start,
           "next_sync_start": next_sync_start,
+          "last_sync_result": last_sync_result,
+          "last_sync_finished": last_sync_finished,
           "status": status,
           "is_initial_sync": is_initial_sync,
           "selective_sync_configurations_usage": selective_sync_configurations_usage
@@ -81,6 +92,10 @@ module Merge
         model_id = parsed_json["model_id"]
         last_sync_start = (DateTime.parse(parsed_json["last_sync_start"]) unless parsed_json["last_sync_start"].nil?)
         next_sync_start = (DateTime.parse(parsed_json["next_sync_start"]) unless parsed_json["next_sync_start"].nil?)
+        last_sync_result = parsed_json["last_sync_result"]
+        last_sync_finished = unless parsed_json["last_sync_finished"].nil?
+                               DateTime.parse(parsed_json["last_sync_finished"])
+                             end
         status = parsed_json["status"]
         is_initial_sync = parsed_json["is_initial_sync"]
         selective_sync_configurations_usage = parsed_json["selective_sync_configurations_usage"]
@@ -89,6 +104,8 @@ module Merge
           model_id: model_id,
           last_sync_start: last_sync_start,
           next_sync_start: next_sync_start,
+          last_sync_result: last_sync_result,
+          last_sync_finished: last_sync_finished,
           status: status,
           is_initial_sync: is_initial_sync,
           selective_sync_configurations_usage: selective_sync_configurations_usage,
@@ -114,7 +131,9 @@ module Merge
         obj.model_id.is_a?(String) != false || raise("Passed value for field obj.model_id is not the expected type, validation failed.")
         obj.last_sync_start&.is_a?(DateTime) != false || raise("Passed value for field obj.last_sync_start is not the expected type, validation failed.")
         obj.next_sync_start&.is_a?(DateTime) != false || raise("Passed value for field obj.next_sync_start is not the expected type, validation failed.")
-        obj.status.is_a?(Merge::Crm::SyncStatusStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
+        obj.last_sync_result&.is_a?(Merge::Crm::LastSyncResultEnum) != false || raise("Passed value for field obj.last_sync_result is not the expected type, validation failed.")
+        obj.last_sync_finished&.is_a?(DateTime) != false || raise("Passed value for field obj.last_sync_finished is not the expected type, validation failed.")
+        obj.status.is_a?(Merge::Crm::StatusFd5Enum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.is_initial_sync.is_a?(Boolean) != false || raise("Passed value for field obj.is_initial_sync is not the expected type, validation failed.")
         obj.selective_sync_configurations_usage&.is_a?(Merge::Crm::SelectiveSyncConfigurationsUsageEnum) != false || raise("Passed value for field obj.selective_sync_configurations_usage is not the expected type, validation failed.")
       end

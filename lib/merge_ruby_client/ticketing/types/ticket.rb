@@ -35,10 +35,14 @@ module Merge
       # @return [String] The ticket's name.
       attr_reader :name
       # @return [Array<Merge::Ticketing::TicketAssigneesItem>] The individual `Users` who are assigned to this ticket. This does not include
-      #  `Users` who just have view access to this ticket.
+      #  `Users` who just have view access to this ticket. To fetch all `Users` and
+      #  `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       attr_reader :assignees
       # @return [Array<Merge::Ticketing::TicketAssignedTeamsItem>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
-      #  just have view access to this ticket.
+      #  just have view access to this ticket. To fetch all `Users` and `Teams` that can
+      #  access this ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       attr_reader :assigned_teams
       # @return [Merge::Ticketing::TicketCreator] The user who created this ticket.
       attr_reader :creator
@@ -109,9 +113,13 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The ticket's name.
       # @param assignees [Array<Merge::Ticketing::TicketAssigneesItem>] The individual `Users` who are assigned to this ticket. This does not include
-      #  `Users` who just have view access to this ticket.
+      #  `Users` who just have view access to this ticket. To fetch all `Users` and
+      #  `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       # @param assigned_teams [Array<Merge::Ticketing::TicketAssignedTeamsItem>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
-      #  just have view access to this ticket.
+      #  just have view access to this ticket. To fetch all `Users` and `Teams` that can
+      #  access this ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       # @param creator [Merge::Ticketing::TicketCreator] The user who created this ticket.
       # @param due_date [DateTime] The ticket's due date.
       # @param status [Merge::Ticketing::TicketStatusEnum] The current status of the ticket.

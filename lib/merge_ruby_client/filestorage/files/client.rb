@@ -8,6 +8,8 @@ require_relative "../types/file_request"
 require_relative "../types/file_storage_file_response"
 require_relative "types/files_retrieve_request_expand"
 require_relative "../types/file"
+require_relative "../types/download_request_meta"
+require_relative "../types/paginated_download_request_meta_list"
 require_relative "../types/meta_response"
 require "async"
 
@@ -150,6 +152,8 @@ module Merge
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::File]
       # @example
@@ -159,7 +163,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.filestorage.files.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_shell_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -172,7 +176,8 @@ module Merge
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
-            "include_remote_data": include_remote_data
+            "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -185,6 +190,8 @@ module Merge
       # Returns the `File` content with the given `id` as a stream of bytes.
       #
       # @param id [String]
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
       #  information on supported export formats, please refer to our <a
       #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
@@ -201,8 +208,12 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.files.download_retrieve(id: "string", mime_type: "string")
-      def download_retrieve(id:, mime_type: nil, request_options: nil, &on_data)
+      #  api.filestorage.files.download_retrieve(
+      #    id: "string",
+      #    include_shell_data: true,
+      #    mime_type: "string"
+      #  )
+      def download_retrieve(id:, include_shell_data: nil, mime_type: nil, request_options: nil, &on_data)
         @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -213,12 +224,100 @@ module Merge
         **(request_options&.additional_headers || {})
           }.compact
           req.options.on_data = on_data
-          req.params = { **(request_options&.additional_query_parameters || {}), "mime_type": mime_type }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "include_shell_data": include_shell_data,
+            "mime_type": mime_type
+          }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
           end
           req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/files/#{id}/download"
         end
+      end
+
+      # Returns metadata to construct an authenticated file download request for a
+      #  singular file, allowing you to download file directly from the third-party.
+      #
+      # @param id [String]
+      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
+      #  information on supported export formats, please refer to our <a
+      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
+      #  target='_blank'>export format help center article</a>.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Filestorage::DownloadRequestMeta]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.files.download_request_meta_retrieve(id: "id")
+      def download_request_meta_retrieve(id:, mime_type: nil, request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = { **(request_options&.additional_query_parameters || {}), "mime_type": mime_type }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/files/#{id}/download/request-meta"
+        end
+        Merge::Filestorage::DownloadRequestMeta.from_json(json_object: response.body)
+      end
+
+      # Returns metadata to construct authenticated file download requests, allowing you
+      #  to download files directly from the third-party.
+      #
+      # @param cursor [String] The pagination cursor value.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
+      # @param mime_type [String] If provided, specifies the export format of the files to be downloaded. For
+      #  information on supported export formats, please refer to our <a
+      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
+      #  target='_blank'>export format help center article</a>.
+      # @param page_size [Integer] Number of results to return per page.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Filestorage::PaginatedDownloadRequestMetaList]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.files.download_request_meta_list
+      def download_request_meta_list(cursor: nil, include_deleted_data: nil, mime_type: nil, page_size: nil,
+                                     request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "cursor": cursor,
+            "include_deleted_data": include_deleted_data,
+            "mime_type": mime_type,
+            "page_size": page_size
+          }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/files/download/request-meta"
+        end
+        Merge::Filestorage::PaginatedDownloadRequestMetaList.from_json(json_object: response.body)
       end
 
       # Returns metadata for `FileStorageFile` POSTs.
@@ -395,6 +494,8 @@ module Merge
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::File]
       # @example
@@ -404,7 +505,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.filestorage.files.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_shell_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -418,7 +519,8 @@ module Merge
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
-              "include_remote_data": include_remote_data
+              "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -432,6 +534,8 @@ module Merge
       # Returns the `File` content with the given `id` as a stream of bytes.
       #
       # @param id [String]
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
       #  information on supported export formats, please refer to our <a
       #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
@@ -448,8 +552,12 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.files.download_retrieve(id: "string", mime_type: "string")
-      def download_retrieve(id:, mime_type: nil, request_options: nil, &on_data)
+      #  api.filestorage.files.download_retrieve(
+      #    id: "string",
+      #    include_shell_data: true,
+      #    mime_type: "string"
+      #  )
+      def download_retrieve(id:, include_shell_data: nil, mime_type: nil, request_options: nil, &on_data)
         Async do
           @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -461,12 +569,104 @@ module Merge
           **(request_options&.additional_headers || {})
             }.compact
             req.options.on_data = on_data
-            req.params = { **(request_options&.additional_query_parameters || {}), "mime_type": mime_type }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "include_shell_data": include_shell_data,
+              "mime_type": mime_type
+            }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
             end
             req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/files/#{id}/download"
           end
+        end
+      end
+
+      # Returns metadata to construct an authenticated file download request for a
+      #  singular file, allowing you to download file directly from the third-party.
+      #
+      # @param id [String]
+      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
+      #  information on supported export formats, please refer to our <a
+      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
+      #  target='_blank'>export format help center article</a>.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Filestorage::DownloadRequestMeta]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.files.download_request_meta_retrieve(id: "id")
+      def download_request_meta_retrieve(id:, mime_type: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = { **(request_options&.additional_query_parameters || {}), "mime_type": mime_type }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/files/#{id}/download/request-meta"
+          end
+          Merge::Filestorage::DownloadRequestMeta.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata to construct authenticated file download requests, allowing you
+      #  to download files directly from the third-party.
+      #
+      # @param cursor [String] The pagination cursor value.
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
+      # @param mime_type [String] If provided, specifies the export format of the files to be downloaded. For
+      #  information on supported export formats, please refer to our <a
+      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
+      #  target='_blank'>export format help center article</a>.
+      # @param page_size [Integer] Number of results to return per page.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Filestorage::PaginatedDownloadRequestMetaList]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.filestorage.files.download_request_meta_list
+      def download_request_meta_list(cursor: nil, include_deleted_data: nil, mime_type: nil, page_size: nil,
+                                     request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "cursor": cursor,
+              "include_deleted_data": include_deleted_data,
+              "mime_type": mime_type,
+              "page_size": page_size
+            }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/filestorage/v1/files/download/request-meta"
+          end
+          Merge::Filestorage::PaginatedDownloadRequestMetaList.from_json(json_object: response.body)
         end
       end
 

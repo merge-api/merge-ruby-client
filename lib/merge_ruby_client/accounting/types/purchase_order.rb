@@ -6,6 +6,7 @@ require_relative "purchase_order_delivery_address"
 require_relative "purchase_order_vendor"
 require_relative "purchase_order_company"
 require_relative "transaction_currency_enum"
+require_relative "purchase_order_payment_term"
 require_relative "purchase_order_line_item"
 require_relative "purchase_order_tracking_categories_item"
 require_relative "purchase_order_accounting_period"
@@ -372,6 +373,8 @@ module Merge
       attr_reader :currency
       # @return [String] The purchase order's exchange rate.
       attr_reader :exchange_rate
+      # @return [Merge::Accounting::PurchaseOrderPaymentTerm] The payment term that applies to this transaction.
+      attr_reader :payment_term
       # @return [Array<Merge::Accounting::PurchaseOrderLineItem>]
       attr_reader :line_items
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
@@ -731,6 +734,7 @@ module Merge
       #  - `ZWR` - Zimbabwean Dollar (2008)
       #  - `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The purchase order's exchange rate.
+      # @param payment_term [Merge::Accounting::PurchaseOrderPaymentTerm] The payment term that applies to this transaction.
       # @param line_items [Array<Merge::Accounting::PurchaseOrderLineItem>]
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
@@ -748,7 +752,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PurchaseOrder]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, status: OMIT, issue_date: OMIT,
-                     purchase_order_number: OMIT, delivery_date: OMIT, delivery_address: OMIT, customer: OMIT, vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, line_items: OMIT, inclusive_of_tax: OMIT, tracking_categories: OMIT, accounting_period: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     purchase_order_number: OMIT, delivery_date: OMIT, delivery_address: OMIT, customer: OMIT, vendor: OMIT, memo: OMIT, company: OMIT, total_amount: OMIT, currency: OMIT, exchange_rate: OMIT, payment_term: OMIT, line_items: OMIT, inclusive_of_tax: OMIT, tracking_categories: OMIT, accounting_period: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -765,6 +769,7 @@ module Merge
         @total_amount = total_amount if total_amount != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
+        @payment_term = payment_term if payment_term != OMIT
         @line_items = line_items if line_items != OMIT
         @inclusive_of_tax = inclusive_of_tax if inclusive_of_tax != OMIT
         @tracking_categories = tracking_categories if tracking_categories != OMIT
@@ -793,6 +798,7 @@ module Merge
           "total_amount": total_amount,
           "currency": currency,
           "exchange_rate": exchange_rate,
+          "payment_term": payment_term,
           "line_items": line_items,
           "inclusive_of_tax": inclusive_of_tax,
           "tracking_categories": tracking_categories,
@@ -846,6 +852,12 @@ module Merge
         total_amount = parsed_json["total_amount"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
+        if parsed_json["payment_term"].nil?
+          payment_term = nil
+        else
+          payment_term = parsed_json["payment_term"].to_json
+          payment_term = Merge::Accounting::PurchaseOrderPaymentTerm.from_json(json_object: payment_term)
+        end
         line_items = parsed_json["line_items"]&.map do |item|
           item = item.to_json
           Merge::Accounting::PurchaseOrderLineItem.from_json(json_object: item)
@@ -894,6 +906,7 @@ module Merge
           total_amount: total_amount,
           currency: currency,
           exchange_rate: exchange_rate,
+          payment_term: payment_term,
           line_items: line_items,
           inclusive_of_tax: inclusive_of_tax,
           tracking_categories: tracking_categories,
@@ -938,6 +951,7 @@ module Merge
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
+        obj.payment_term.nil? || Merge::Accounting::PurchaseOrderPaymentTerm.validate_raw(obj: obj.payment_term)
         obj.line_items&.is_a?(Array) != false || raise("Passed value for field obj.line_items is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")

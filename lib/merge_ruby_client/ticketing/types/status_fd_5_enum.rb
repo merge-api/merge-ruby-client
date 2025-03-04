@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Merge
-  module Crm
+  module Ticketing
     # - `SYNCING` - SYNCING
     #  - `DONE` - DONE
     #  - `FAILED` - FAILED
     #  - `DISABLED` - DISABLED
     #  - `PAUSED` - PAUSED
     #  - `PARTIALLY_SYNCED` - PARTIALLY_SYNCED
-    class SyncStatusStatusEnum
+    class StatusFd5Enum
       SYNCING = "SYNCING"
       DONE = "DONE"
       FAILED = "FAILED"
