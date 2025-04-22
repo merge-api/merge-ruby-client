@@ -2,11 +2,11 @@
 
 module Merge
   module Hris
-    # - `FULL_TIME` - FULL_TIME
-    #  - `PART_TIME` - PART_TIME
-    #  - `INTERN` - INTERN
-    #  - `CONTRACTOR` - CONTRACTOR
-    #  - `FREELANCE` - FREELANCE
+    # * `FULL_TIME` - FULL_TIME
+    #  * `PART_TIME` - PART_TIME
+    #  * `INTERN` - INTERN
+    #  * `CONTRACTOR` - CONTRACTOR
+    #  * `FREELANCE` - FREELANCE
     class EmploymentTypeEnum
       FULL_TIME = "FULL_TIME"
       PART_TIME = "PART_TIME"

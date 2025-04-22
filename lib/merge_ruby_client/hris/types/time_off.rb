@@ -32,27 +32,27 @@ module Merge
       # @return [Merge::Hris::TimeOffApprover] The Merge ID of the employee with the ability to approve the time off request.
       attr_reader :approver
       # @return [Merge::Hris::TimeOffStatusEnum] The status of this time off request.
-      #  - `REQUESTED` - REQUESTED
-      #  - `APPROVED` - APPROVED
-      #  - `DECLINED` - DECLINED
-      #  - `CANCELLED` - CANCELLED
-      #  - `DELETED` - DELETED
+      #  * `REQUESTED` - REQUESTED
+      #  * `APPROVED` - APPROVED
+      #  * `DECLINED` - DECLINED
+      #  * `CANCELLED` - CANCELLED
+      #  * `DELETED` - DELETED
       attr_reader :status
       # @return [String] The employee note for this time off request.
       attr_reader :employee_note
       # @return [Merge::Hris::UnitsEnum] The measurement that the third-party integration uses to count time requested.
-      #  - `HOURS` - HOURS
-      #  - `DAYS` - DAYS
+      #  * `HOURS` - HOURS
+      #  * `DAYS` - DAYS
       attr_reader :units
       # @return [Float] The time off quantity measured by the prescribed “units”.
       attr_reader :amount
       # @return [Merge::Hris::RequestTypeEnum] The type of time off request.
-      #  - `VACATION` - VACATION
-      #  - `SICK` - SICK
-      #  - `PERSONAL` - PERSONAL
-      #  - `JURY_DUTY` - JURY_DUTY
-      #  - `VOLUNTEER` - VOLUNTEER
-      #  - `BEREAVEMENT` - BEREAVEMENT
+      #  * `VACATION` - VACATION
+      #  * `SICK` - SICK
+      #  * `PERSONAL` - PERSONAL
+      #  * `JURY_DUTY` - JURY_DUTY
+      #  * `VOLUNTEER` - VOLUNTEER
+      #  * `BEREAVEMENT` - BEREAVEMENT
       attr_reader :request_type
       # @return [DateTime] The day and time of the start of the time requested off.
       attr_reader :start_time
@@ -82,23 +82,23 @@ module Merge
       # @param employee [Merge::Hris::TimeOffEmployee] The employee requesting time off.
       # @param approver [Merge::Hris::TimeOffApprover] The Merge ID of the employee with the ability to approve the time off request.
       # @param status [Merge::Hris::TimeOffStatusEnum] The status of this time off request.
-      #  - `REQUESTED` - REQUESTED
-      #  - `APPROVED` - APPROVED
-      #  - `DECLINED` - DECLINED
-      #  - `CANCELLED` - CANCELLED
-      #  - `DELETED` - DELETED
+      #  * `REQUESTED` - REQUESTED
+      #  * `APPROVED` - APPROVED
+      #  * `DECLINED` - DECLINED
+      #  * `CANCELLED` - CANCELLED
+      #  * `DELETED` - DELETED
       # @param employee_note [String] The employee note for this time off request.
       # @param units [Merge::Hris::UnitsEnum] The measurement that the third-party integration uses to count time requested.
-      #  - `HOURS` - HOURS
-      #  - `DAYS` - DAYS
+      #  * `HOURS` - HOURS
+      #  * `DAYS` - DAYS
       # @param amount [Float] The time off quantity measured by the prescribed “units”.
       # @param request_type [Merge::Hris::RequestTypeEnum] The type of time off request.
-      #  - `VACATION` - VACATION
-      #  - `SICK` - SICK
-      #  - `PERSONAL` - PERSONAL
-      #  - `JURY_DUTY` - JURY_DUTY
-      #  - `VOLUNTEER` - VOLUNTEER
-      #  - `BEREAVEMENT` - BEREAVEMENT
+      #  * `VACATION` - VACATION
+      #  * `SICK` - SICK
+      #  * `PERSONAL` - PERSONAL
+      #  * `JURY_DUTY` - JURY_DUTY
+      #  * `VOLUNTEER` - VOLUNTEER
+      #  * `BEREAVEMENT` - BEREAVEMENT
       # @param start_time [DateTime] The day and time of the start of the time requested off.
       # @param end_time [DateTime] The day and time of the end of the time requested off.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party

@@ -33,10 +33,10 @@ module Merge
       #  type is `GROUP`.
       attr_reader :group
       # @return [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
-      #  - `USER` - USER
-      #  - `GROUP` - GROUP
-      #  - `COMPANY` - COMPANY
-      #  - `ANYONE` - ANYONE
+      #  * `USER` - USER
+      #  * `GROUP` - GROUP
+      #  * `COMPANY` - COMPANY
+      #  * `ANYONE` - ANYONE
       attr_reader :type
       # @return [Array<Merge::Filestorage::RolesEnum>] The permissions that the user or group has for the File or Folder. It is
       #  possible for a user or group to have multiple roles, such as viewing &
@@ -60,10 +60,10 @@ module Merge
       # @param group [Merge::Filestorage::PermissionGroup] The group that is granted this permission. This will only be populated if the
       #  type is `GROUP`.
       # @param type [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
-      #  - `USER` - USER
-      #  - `GROUP` - GROUP
-      #  - `COMPANY` - COMPANY
-      #  - `ANYONE` - ANYONE
+      #  * `USER` - USER
+      #  * `GROUP` - GROUP
+      #  * `COMPANY` - COMPANY
+      #  * `ANYONE` - ANYONE
       # @param roles [Array<Merge::Filestorage::RolesEnum>] The permissions that the user or group has for the File or Folder. It is
       #  possible for a user or group to have multiple roles, such as viewing &
       #  uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where

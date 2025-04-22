@@ -18,20 +18,24 @@ module Merge
       # @return [String] The ticket's name.
       attr_reader :name
       # @return [Array<String>] The individual `Users` who are assigned to this ticket. This does not include
-      #  `Users` who just have view access to this ticket.
+      #  `Users` who just have view access to this ticket. To fetch all `Users` and
+      #  `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       attr_reader :assignees
       # @return [Array<String>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
-      #  just have view access to this ticket.
+      #  just have view access to this ticket. To fetch all `Users` and `Teams` that can
+      #  access this ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       attr_reader :assigned_teams
       # @return [String] The user who created this ticket.
       attr_reader :creator
       # @return [DateTime] The ticket's due date.
       attr_reader :due_date
       # @return [Merge::Ticketing::TicketStatusEnum] The current status of the ticket.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
-      #  - `IN_PROGRESS` - IN_PROGRESS
-      #  - `ON_HOLD` - ON_HOLD
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
+      #  * `IN_PROGRESS` - IN_PROGRESS
+      #  * `ON_HOLD` - ON_HOLD
       attr_reader :status
       # @return [String] The ticket’s description. HTML version of description is mapped if supported by
       #  the third-party platform.
@@ -56,10 +60,10 @@ module Merge
       # @return [String] The 3rd party url of the Ticket.
       attr_reader :ticket_url
       # @return [Merge::Ticketing::PriorityEnum] The priority or urgency of the Ticket.
-      #  - `URGENT` - URGENT
-      #  - `HIGH` - HIGH
-      #  - `NORMAL` - NORMAL
-      #  - `LOW` - LOW
+      #  * `URGENT` - URGENT
+      #  * `HIGH` - HIGH
+      #  * `NORMAL` - NORMAL
+      #  * `LOW` - LOW
       attr_reader :priority
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -77,16 +81,20 @@ module Merge
 
       # @param name [String] The ticket's name.
       # @param assignees [Array<String>] The individual `Users` who are assigned to this ticket. This does not include
-      #  `Users` who just have view access to this ticket.
+      #  `Users` who just have view access to this ticket. To fetch all `Users` and
+      #  `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       # @param assigned_teams [Array<String>] The `Teams` that are assigned to this ticket. This does not include `Teams` who
-      #  just have view access to this ticket.
+      #  just have view access to this ticket. To fetch all `Users` and `Teams` that can
+      #  access this ticket, use the `GET /tickets/{ticket_id}/viewers`
+      #  [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
       # @param creator [String] The user who created this ticket.
       # @param due_date [DateTime] The ticket's due date.
       # @param status [Merge::Ticketing::TicketStatusEnum] The current status of the ticket.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
-      #  - `IN_PROGRESS` - IN_PROGRESS
-      #  - `ON_HOLD` - ON_HOLD
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
+      #  * `IN_PROGRESS` - IN_PROGRESS
+      #  * `ON_HOLD` - ON_HOLD
       # @param description [String] The ticket’s description. HTML version of description is mapped if supported by
       #  the third-party platform.
       # @param collections [Array<String>] The `Collections` that this `Ticket` is included in.
@@ -100,10 +108,10 @@ module Merge
       # @param completed_at [DateTime] When the ticket was completed.
       # @param ticket_url [String] The 3rd party url of the Ticket.
       # @param priority [Merge::Ticketing::PriorityEnum] The priority or urgency of the Ticket.
-      #  - `URGENT` - URGENT
-      #  - `HIGH` - HIGH
-      #  - `NORMAL` - NORMAL
-      #  - `LOW` - LOW
+      #  * `URGENT` - URGENT
+      #  * `HIGH` - HIGH
+      #  * `NORMAL` - NORMAL
+      #  * `LOW` - LOW
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param remote_fields [Array<Merge::Ticketing::RemoteFieldRequest>]

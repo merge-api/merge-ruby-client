@@ -30,12 +30,12 @@ module Merge
       # @return [String] The tracking category's name.
       attr_reader :name
       # @return [Merge::Accounting::Status7D1Enum] The tracking category's status.
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       attr_reader :status
       # @return [Merge::Accounting::CategoryTypeEnum] The tracking category’s type.
-      #  - `CLASS` - CLASS
-      #  - `DEPARTMENT` - DEPARTMENT
+      #  * `CLASS` - CLASS
+      #  * `DEPARTMENT` - DEPARTMENT
       attr_reader :category_type
       # @return [String]
       attr_reader :parent_category
@@ -62,11 +62,11 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The tracking category's name.
       # @param status [Merge::Accounting::Status7D1Enum] The tracking category's status.
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       # @param category_type [Merge::Accounting::CategoryTypeEnum] The tracking category’s type.
-      #  - `CLASS` - CLASS
-      #  - `DEPARTMENT` - DEPARTMENT
+      #  * `CLASS` - CLASS
+      #  * `DEPARTMENT` - DEPARTMENT
       # @param parent_category [String]
       # @param company [Merge::Accounting::TrackingCategoryCompany] The company the GeneralLedgerTransaction belongs to.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party

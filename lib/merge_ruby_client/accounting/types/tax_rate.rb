@@ -37,8 +37,8 @@ module Merge
       attr_reader :description
       # @return [Merge::Accounting::Status7D1Enum] The tax rate’s status - `ACTIVE` if an active tax rate, `ARCHIVED` if not
       #  active.
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       attr_reader :status
       # @return [String] The country the tax rate is associated with.
       attr_reader :country
@@ -77,8 +77,8 @@ module Merge
       # @param description [String] The tax rate's description.
       # @param status [Merge::Accounting::Status7D1Enum] The tax rate’s status - `ACTIVE` if an active tax rate, `ARCHIVED` if not
       #  active.
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       # @param country [String] The country the tax rate is associated with.
       # @param total_tax_rate [Float] The tax’s total tax rate - sum of the tax components (not compounded).
       # @param effective_tax_rate [Float] The tax rate’s effective tax rate - total amount of tax with compounding.

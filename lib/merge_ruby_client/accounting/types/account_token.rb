@@ -11,6 +11,8 @@ module Merge
       attr_reader :account_token
       # @return [Merge::Accounting::AccountIntegration]
       attr_reader :integration
+      # @return [String]
+      attr_reader :id
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -21,13 +23,15 @@ module Merge
 
       # @param account_token [String]
       # @param integration [Merge::Accounting::AccountIntegration]
+      # @param id [String]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::AccountToken]
-      def initialize(account_token:, integration:, additional_properties: nil)
+      def initialize(account_token:, integration:, id:, additional_properties: nil)
         @account_token = account_token
         @integration = integration
+        @id = id
         @additional_properties = additional_properties
-        @_field_set = { "account_token": account_token, "integration": integration }
+        @_field_set = { "account_token": account_token, "integration": integration, "id": id }
       end
 
       # Deserialize a JSON object to an instance of AccountToken
@@ -44,9 +48,11 @@ module Merge
           integration = parsed_json["integration"].to_json
           integration = Merge::Accounting::AccountIntegration.from_json(json_object: integration)
         end
+        id = parsed_json["id"]
         new(
           account_token: account_token,
           integration: integration,
+          id: id,
           additional_properties: struct
         )
       end
@@ -67,6 +73,7 @@ module Merge
       def self.validate_raw(obj:)
         obj.account_token.is_a?(String) != false || raise("Passed value for field obj.account_token is not the expected type, validation failed.")
         Merge::Accounting::AccountIntegration.validate_raw(obj: obj.integration)
+        obj.id.is_a?(String) != false || raise("Passed value for field obj.id is not the expected type, validation failed.")
       end
     end
   end

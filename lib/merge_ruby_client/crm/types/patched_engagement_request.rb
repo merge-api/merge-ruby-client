@@ -22,8 +22,8 @@ module Merge
       # @return [String] The engagement's subject.
       attr_reader :subject
       # @return [Merge::Crm::DirectionEnum] The engagement's direction.
-      #  - `INBOUND` - INBOUND
-      #  - `OUTBOUND` - OUTBOUND
+      #  * `INBOUND` - INBOUND
+      #  * `OUTBOUND` - OUTBOUND
       attr_reader :direction
       # @return [String] The engagement type of the engagement.
       attr_reader :engagement_type
@@ -53,8 +53,8 @@ module Merge
       # @param content [String] The engagement's content.
       # @param subject [String] The engagement's subject.
       # @param direction [Merge::Crm::DirectionEnum] The engagement's direction.
-      #  - `INBOUND` - INBOUND
-      #  - `OUTBOUND` - OUTBOUND
+      #  * `INBOUND` - INBOUND
+      #  * `OUTBOUND` - OUTBOUND
       # @param engagement_type [String] The engagement type of the engagement.
       # @param start_time [DateTime] The time at which the engagement started.
       # @param end_time [DateTime] The time at which the engagement ended.

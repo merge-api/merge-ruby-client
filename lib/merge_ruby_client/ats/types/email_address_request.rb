@@ -15,9 +15,9 @@ module Merge
       # @return [String] The email address.
       attr_reader :value
       # @return [Merge::Ats::EmailAddressTypeEnum] The type of email address.
-      #  - `PERSONAL` - PERSONAL
-      #  - `WORK` - WORK
-      #  - `OTHER` - OTHER
+      #  * `PERSONAL` - PERSONAL
+      #  * `WORK` - WORK
+      #  * `OTHER` - OTHER
       attr_reader :email_address_type
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -33,9 +33,9 @@ module Merge
 
       # @param value [String] The email address.
       # @param email_address_type [Merge::Ats::EmailAddressTypeEnum] The type of email address.
-      #  - `PERSONAL` - PERSONAL
-      #  - `WORK` - WORK
-      #  - `OTHER` - OTHER
+      #  * `PERSONAL` - PERSONAL
+      #  * `WORK` - WORK
+      #  * `OTHER` - OTHER
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

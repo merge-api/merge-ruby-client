@@ -42,8 +42,8 @@ module Merge
       # @param start_date [String] If included, will only include issues whose most recent action occurred after
       #  this time
       # @param status [Merge::Hris::Issues::IssuesListRequestStatus] Status of the issue. Options: ('ONGOING', 'RESOLVED')
-      #  - `ONGOING` - ONGOING
-      #  - `RESOLVED` - RESOLVED
+      #  * `ONGOING` - ONGOING
+      #  * `RESOLVED` - RESOLVED
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::PaginatedIssueList]
       # @example
@@ -156,8 +156,8 @@ module Merge
       # @param start_date [String] If included, will only include issues whose most recent action occurred after
       #  this time
       # @param status [Merge::Hris::Issues::IssuesListRequestStatus] Status of the issue. Options: ('ONGOING', 'RESOLVED')
-      #  - `ONGOING` - ONGOING
-      #  - `RESOLVED` - RESOLVED
+      #  * `ONGOING` - ONGOING
+      #  * `RESOLVED` - RESOLVED
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::PaginatedIssueList]
       # @example

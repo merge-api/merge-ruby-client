@@ -34,11 +34,11 @@ module Merge
       # @return [Merge::Ats::JobPostingJob] ID of `Job` object for this `JobPosting`.
       attr_reader :job
       # @return [Merge::Ats::JobPostingStatusEnum] The job posting's status.
-      #  - `PUBLISHED` - PUBLISHED
-      #  - `CLOSED` - CLOSED
-      #  - `DRAFT` - DRAFT
-      #  - `INTERNAL` - INTERNAL
-      #  - `PENDING` - PENDING
+      #  * `PUBLISHED` - PUBLISHED
+      #  * `CLOSED` - CLOSED
+      #  * `DRAFT` - DRAFT
+      #  * `INTERNAL` - INTERNAL
+      #  * `PENDING` - PENDING
       attr_reader :status
       # @return [String] The job posting’s content.
       attr_reader :content
@@ -74,11 +74,11 @@ module Merge
       #  given job.
       # @param job [Merge::Ats::JobPostingJob] ID of `Job` object for this `JobPosting`.
       # @param status [Merge::Ats::JobPostingStatusEnum] The job posting's status.
-      #  - `PUBLISHED` - PUBLISHED
-      #  - `CLOSED` - CLOSED
-      #  - `DRAFT` - DRAFT
-      #  - `INTERNAL` - INTERNAL
-      #  - `PENDING` - PENDING
+      #  * `PUBLISHED` - PUBLISHED
+      #  * `CLOSED` - CLOSED
+      #  * `DRAFT` - DRAFT
+      #  * `INTERNAL` - INTERNAL
+      #  * `PENDING` - PENDING
       # @param content [String] The job posting’s content.
       # @param remote_created_at [DateTime] When the third party's job posting was created.
       # @param remote_updated_at [DateTime] When the third party's job posting was updated.

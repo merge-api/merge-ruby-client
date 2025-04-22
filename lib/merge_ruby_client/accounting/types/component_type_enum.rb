@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `SALES` - SALES
-    #  - `PURCHASE` - PURCHASE
+    # * `SALES` - SALES
+    #  * `PURCHASE` - PURCHASE
     class ComponentTypeEnum
       SALES = "SALES"
       PURCHASE = "PURCHASE"

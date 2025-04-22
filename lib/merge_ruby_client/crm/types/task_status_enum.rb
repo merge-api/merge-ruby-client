@@ -2,8 +2,8 @@
 
 module Merge
   module Crm
-    # - `OPEN` - OPEN
-    #  - `CLOSED` - CLOSED
+    # * `OPEN` - OPEN
+    #  * `CLOSED` - CLOSED
     class TaskStatusEnum
       OPEN = "OPEN"
       CLOSED = "CLOSED"

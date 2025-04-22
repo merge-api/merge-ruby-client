@@ -30,10 +30,10 @@ module Merge
       # @return [String]
       attr_reader :candidate
       # @return [Merge::Ats::AttachmentTypeEnum] The attachment's type.
-      #  - `RESUME` - RESUME
-      #  - `COVER_LETTER` - COVER_LETTER
-      #  - `OFFER_LETTER` - OFFER_LETTER
-      #  - `OTHER` - OTHER
+      #  * `RESUME` - RESUME
+      #  * `COVER_LETTER` - COVER_LETTER
+      #  * `OFFER_LETTER` - OFFER_LETTER
+      #  * `OTHER` - OTHER
       attr_reader :attachment_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -60,10 +60,10 @@ module Merge
       # @param file_url [String] The attachment's url.
       # @param candidate [String]
       # @param attachment_type [Merge::Ats::AttachmentTypeEnum] The attachment's type.
-      #  - `RESUME` - RESUME
-      #  - `COVER_LETTER` - COVER_LETTER
-      #  - `OFFER_LETTER` - OFFER_LETTER
-      #  - `OTHER` - OTHER
+      #  * `RESUME` - RESUME
+      #  * `COVER_LETTER` - COVER_LETTER
+      #  * `OFFER_LETTER` - OFFER_LETTER
+      #  * `OTHER` - OTHER
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

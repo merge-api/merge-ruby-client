@@ -32,20 +32,20 @@ module Merge
       # @return [String] The dependents's last name.
       attr_reader :last_name
       # @return [Merge::Hris::RelationshipEnum] The dependent's relationship to the employee.
-      #  - `CHILD` - CHILD
-      #  - `SPOUSE` - SPOUSE
-      #  - `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
+      #  * `CHILD` - CHILD
+      #  * `SPOUSE` - SPOUSE
+      #  * `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
       attr_reader :relationship
       # @return [String] The employee this person is a dependent of.
       attr_reader :employee
       # @return [DateTime] The dependent's date of birth.
       attr_reader :date_of_birth
       # @return [Merge::Hris::GenderEnum] The dependent's gender.
-      #  - `MALE` - MALE
-      #  - `FEMALE` - FEMALE
-      #  - `NON-BINARY` - NON-BINARY
-      #  - `OTHER` - OTHER
-      #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+      #  * `MALE` - MALE
+      #  * `FEMALE` - FEMALE
+      #  * `NON-BINARY` - NON-BINARY
+      #  * `OTHER` - OTHER
+      #  * `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
       attr_reader :gender
       # @return [String] The dependent's phone number.
       attr_reader :phone_number
@@ -80,17 +80,17 @@ module Merge
       # @param middle_name [String] The dependents's middle name.
       # @param last_name [String] The dependents's last name.
       # @param relationship [Merge::Hris::RelationshipEnum] The dependent's relationship to the employee.
-      #  - `CHILD` - CHILD
-      #  - `SPOUSE` - SPOUSE
-      #  - `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
+      #  * `CHILD` - CHILD
+      #  * `SPOUSE` - SPOUSE
+      #  * `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
       # @param employee [String] The employee this person is a dependent of.
       # @param date_of_birth [DateTime] The dependent's date of birth.
       # @param gender [Merge::Hris::GenderEnum] The dependent's gender.
-      #  - `MALE` - MALE
-      #  - `FEMALE` - FEMALE
-      #  - `NON-BINARY` - NON-BINARY
-      #  - `OTHER` - OTHER
-      #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+      #  * `MALE` - MALE
+      #  * `FEMALE` - FEMALE
+      #  * `NON-BINARY` - NON-BINARY
+      #  * `OTHER` - OTHER
+      #  * `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
       # @param phone_number [String] The dependent's phone number.
       # @param home_location [String] The dependents's home address.
       # @param is_student [Boolean] Whether or not the dependent is a student

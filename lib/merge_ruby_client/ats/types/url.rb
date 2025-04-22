@@ -21,13 +21,13 @@ module Merge
       # @return [String] The site's url.
       attr_reader :value
       # @return [Merge::Ats::UrlTypeEnum] The type of site.
-      #  - `PERSONAL` - PERSONAL
-      #  - `COMPANY` - COMPANY
-      #  - `PORTFOLIO` - PORTFOLIO
-      #  - `BLOG` - BLOG
-      #  - `SOCIAL_MEDIA` - SOCIAL_MEDIA
-      #  - `OTHER` - OTHER
-      #  - `JOB_POSTING` - JOB_POSTING
+      #  * `PERSONAL` - PERSONAL
+      #  * `COMPANY` - COMPANY
+      #  * `PORTFOLIO` - PORTFOLIO
+      #  * `BLOG` - BLOG
+      #  * `SOCIAL_MEDIA` - SOCIAL_MEDIA
+      #  * `OTHER` - OTHER
+      #  * `JOB_POSTING` - JOB_POSTING
       attr_reader :url_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -46,13 +46,13 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param value [String] The site's url.
       # @param url_type [Merge::Ats::UrlTypeEnum] The type of site.
-      #  - `PERSONAL` - PERSONAL
-      #  - `COMPANY` - COMPANY
-      #  - `PORTFOLIO` - PORTFOLIO
-      #  - `BLOG` - BLOG
-      #  - `SOCIAL_MEDIA` - SOCIAL_MEDIA
-      #  - `OTHER` - OTHER
-      #  - `JOB_POSTING` - JOB_POSTING
+      #  * `PERSONAL` - PERSONAL
+      #  * `COMPANY` - COMPANY
+      #  * `PORTFOLIO` - PORTFOLIO
+      #  * `BLOG` - BLOG
+      #  * `SOCIAL_MEDIA` - SOCIAL_MEDIA
+      #  * `OTHER` - OTHER
+      #  * `JOB_POSTING` - JOB_POSTING
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

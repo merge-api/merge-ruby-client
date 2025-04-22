@@ -2,8 +2,8 @@
 
 module Merge
   module Crm
-    # - `IN_NEXT_SYNC` - IN_NEXT_SYNC
-    #  - `IN_LAST_SYNC` - IN_LAST_SYNC
+    # * `IN_NEXT_SYNC` - IN_NEXT_SYNC
+    #  * `IN_LAST_SYNC` - IN_LAST_SYNC
     class SelectiveSyncConfigurationsUsageEnum
       IN_NEXT_SYNC = "IN_NEXT_SYNC"
       IN_LAST_SYNC = "IN_LAST_SYNC"

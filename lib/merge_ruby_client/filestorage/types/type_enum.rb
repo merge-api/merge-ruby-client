@@ -2,10 +2,10 @@
 
 module Merge
   module Filestorage
-    # - `USER` - USER
-    #  - `GROUP` - GROUP
-    #  - `COMPANY` - COMPANY
-    #  - `ANYONE` - ANYONE
+    # * `USER` - USER
+    #  * `GROUP` - GROUP
+    #  * `COMPANY` - COMPANY
+    #  * `ANYONE` - ANYONE
     class TypeEnum
       USER = "USER"
       GROUP = "GROUP"

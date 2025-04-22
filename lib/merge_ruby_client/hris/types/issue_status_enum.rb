@@ -2,8 +2,8 @@
 
 module Merge
   module Hris
-    # - `ONGOING` - ONGOING
-    #  - `RESOLVED` - RESOLVED
+    # * `ONGOING` - ONGOING
+    #  * `RESOLVED` - RESOLVED
     class IssueStatusEnum
       ONGOING = "ONGOING"
       RESOLVED = "RESOLVED"

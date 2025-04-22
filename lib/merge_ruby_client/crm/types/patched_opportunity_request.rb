@@ -28,9 +28,9 @@ module Merge
       # @return [String] The stage of the opportunity.
       attr_reader :stage
       # @return [Merge::Crm::OpportunityStatusEnum] The opportunity's status.
-      #  - `OPEN` - OPEN
-      #  - `WON` - WON
-      #  - `LOST` - LOST
+      #  * `OPEN` - OPEN
+      #  * `WON` - WON
+      #  * `LOST` - LOST
       attr_reader :status
       # @return [DateTime] When the opportunity's last activity occurred.
       attr_reader :last_activity_at
@@ -57,9 +57,9 @@ module Merge
       # @param account [String] The account of the opportunity.
       # @param stage [String] The stage of the opportunity.
       # @param status [Merge::Crm::OpportunityStatusEnum] The opportunity's status.
-      #  - `OPEN` - OPEN
-      #  - `WON` - WON
-      #  - `LOST` - LOST
+      #  * `OPEN` - OPEN
+      #  * `WON` - WON
+      #  * `LOST` - LOST
       # @param last_activity_at [DateTime] When the opportunity's last activity occurred.
       # @param close_date [DateTime] When the opportunity was closed.
       # @param integration_params [Hash{String => Object}]

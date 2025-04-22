@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `BANK` - BANK
-    #  - `CREDIT_CARD` - CREDIT_CARD
+    # * `BANK` - BANK
+    #  * `CREDIT_CARD` - CREDIT_CARD
     class BankFeedAccountAccountTypeEnum
       BANK = "BANK"
       CREDIT_CARD = "CREDIT_CARD"

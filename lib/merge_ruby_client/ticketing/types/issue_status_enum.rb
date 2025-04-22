@@ -2,8 +2,8 @@
 
 module Merge
   module Ticketing
-    # - `ONGOING` - ONGOING
-    #  - `RESOLVED` - RESOLVED
+    # * `ONGOING` - ONGOING
+    #  * `RESOLVED` - RESOLVED
     class IssueStatusEnum
       ONGOING = "ONGOING"
       RESOLVED = "RESOLVED"

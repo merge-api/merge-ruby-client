@@ -2,8 +2,8 @@
 
 module Merge
   module Crm
-    # - `BILLING` - BILLING
-    #  - `SHIPPING` - SHIPPING
+    # * `BILLING` - BILLING
+    #  * `SHIPPING` - SHIPPING
     class AddressTypeEnum
       BILLING = "BILLING"
       SHIPPING = "SHIPPING"

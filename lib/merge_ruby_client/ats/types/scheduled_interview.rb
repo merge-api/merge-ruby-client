@@ -48,9 +48,9 @@ module Merge
       # @return [DateTime] When the third party's interview was updated.
       attr_reader :remote_updated_at
       # @return [Merge::Ats::ScheduledInterviewStatusEnum] The interview's status.
-      #  - `SCHEDULED` - SCHEDULED
-      #  - `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
-      #  - `COMPLETE` - COMPLETE
+      #  * `SCHEDULED` - SCHEDULED
+      #  * `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
+      #  * `COMPLETE` - COMPLETE
       attr_reader :status
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -83,9 +83,9 @@ module Merge
       # @param remote_created_at [DateTime] When the third party's interview was created.
       # @param remote_updated_at [DateTime] When the third party's interview was updated.
       # @param status [Merge::Ats::ScheduledInterviewStatusEnum] The interview's status.
-      #  - `SCHEDULED` - SCHEDULED
-      #  - `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
-      #  - `COMPLETE` - COMPLETE
+      #  * `SCHEDULED` - SCHEDULED
+      #  * `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
+      #  * `COMPLETE` - COMPLETE
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

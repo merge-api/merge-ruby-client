@@ -20,11 +20,11 @@ module Merge
       # @return [String] The phone number.
       attr_reader :value
       # @return [Merge::Ats::PhoneNumberTypeEnum] The type of phone number.
-      #  - `HOME` - HOME
-      #  - `WORK` - WORK
-      #  - `MOBILE` - MOBILE
-      #  - `SKYPE` - SKYPE
-      #  - `OTHER` - OTHER
+      #  * `HOME` - HOME
+      #  * `WORK` - WORK
+      #  * `MOBILE` - MOBILE
+      #  * `SKYPE` - SKYPE
+      #  * `OTHER` - OTHER
       attr_reader :phone_number_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -43,11 +43,11 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param value [String] The phone number.
       # @param phone_number_type [Merge::Ats::PhoneNumberTypeEnum] The type of phone number.
-      #  - `HOME` - HOME
-      #  - `WORK` - WORK
-      #  - `MOBILE` - MOBILE
-      #  - `SKYPE` - SKYPE
-      #  - `OTHER` - OTHER
+      #  * `HOME` - HOME
+      #  * `WORK` - WORK
+      #  * `MOBILE` - MOBILE
+      #  * `SKYPE` - SKYPE
+      #  * `OTHER` - OTHER
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

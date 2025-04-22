@@ -2,9 +2,9 @@
 
 module Merge
   module Crm
-    # - `OPEN` - OPEN
-    #  - `WON` - WON
-    #  - `LOST` - LOST
+    # * `OPEN` - OPEN
+    #  * `WON` - WON
+    #  * `LOST` - LOST
     class OpportunityStatusEnum
       OPEN = "OPEN"
       WON = "WON"

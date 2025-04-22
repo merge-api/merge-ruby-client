@@ -38,11 +38,11 @@ module Merge
       # @return [DateTime] When the scorecard was submitted.
       attr_reader :submitted_at
       # @return [Merge::Ats::OverallRecommendationEnum] The inteviewer's recommendation.
-      #  - `DEFINITELY_NO` - DEFINITELY_NO
-      #  - `NO` - NO
-      #  - `YES` - YES
-      #  - `STRONG_YES` - STRONG_YES
-      #  - `NO_DECISION` - NO_DECISION
+      #  * `DEFINITELY_NO` - DEFINITELY_NO
+      #  * `NO` - NO
+      #  * `YES` - YES
+      #  * `STRONG_YES` - STRONG_YES
+      #  * `NO_DECISION` - NO_DECISION
       attr_reader :overall_recommendation
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -71,11 +71,11 @@ module Merge
       # @param remote_created_at [DateTime] When the third party's scorecard was created.
       # @param submitted_at [DateTime] When the scorecard was submitted.
       # @param overall_recommendation [Merge::Ats::OverallRecommendationEnum] The inteviewer's recommendation.
-      #  - `DEFINITELY_NO` - DEFINITELY_NO
-      #  - `NO` - NO
-      #  - `YES` - YES
-      #  - `STRONG_YES` - STRONG_YES
-      #  - `NO_DECISION` - NO_DECISION
+      #  * `DEFINITELY_NO` - DEFINITELY_NO
+      #  * `NO` - NO
+      #  * `YES` - YES
+      #  * `STRONG_YES` - STRONG_YES
+      #  * `NO_DECISION` - NO_DECISION
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

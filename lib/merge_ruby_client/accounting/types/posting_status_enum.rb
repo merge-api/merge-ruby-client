@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `UNPOSTED` - UNPOSTED
-    #  - `POSTED` - POSTED
+    # * `UNPOSTED` - UNPOSTED
+    #  * `POSTED` - POSTED
     class PostingStatusEnum
       UNPOSTED = "UNPOSTED"
       POSTED = "POSTED"

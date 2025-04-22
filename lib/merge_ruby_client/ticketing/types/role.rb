@@ -30,9 +30,9 @@ module Merge
       #  include: `VIEW`, `CREATE`, `EDIT`, `DELETE`, `CLOSE`, and `ASSIGN`.
       attr_reader :ticket_actions
       # @return [Merge::Ticketing::TicketAccessEnum] The level of Ticket access that a User with this Role can perform.
-      #  - `ALL` - ALL
-      #  - `ASSIGNED_ONLY` - ASSIGNED_ONLY
-      #  - `TEAM_ONLY` - TEAM_ONLY
+      #  * `ALL` - ALL
+      #  * `ASSIGNED_ONLY` - ASSIGNED_ONLY
+      #  * `TEAM_ONLY` - TEAM_ONLY
       attr_reader :ticket_access
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -59,9 +59,9 @@ module Merge
       # @param ticket_actions [Array<Merge::Ticketing::TicketActionsEnum>] The set of actions that a User with this Role can perform. Possible enum values
       #  include: `VIEW`, `CREATE`, `EDIT`, `DELETE`, `CLOSE`, and `ASSIGN`.
       # @param ticket_access [Merge::Ticketing::TicketAccessEnum] The level of Ticket access that a User with this Role can perform.
-      #  - `ALL` - ALL
-      #  - `ASSIGNED_ONLY` - ASSIGNED_ONLY
-      #  - `TEAM_ONLY` - TEAM_ONLY
+      #  * `ALL` - ALL
+      #  * `ASSIGNED_ONLY` - ASSIGNED_ONLY
+      #  * `TEAM_ONLY` - TEAM_ONLY
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

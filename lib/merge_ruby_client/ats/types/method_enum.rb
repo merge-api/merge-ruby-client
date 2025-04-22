@@ -2,13 +2,13 @@
 
 module Merge
   module Ats
-    # - `GET` - GET
-    #  - `OPTIONS` - OPTIONS
-    #  - `HEAD` - HEAD
-    #  - `POST` - POST
-    #  - `PUT` - PUT
-    #  - `PATCH` - PATCH
-    #  - `DELETE` - DELETE
+    # * `GET` - GET
+    #  * `OPTIONS` - OPTIONS
+    #  * `HEAD` - HEAD
+    #  * `POST` - POST
+    #  * `PUT` - PUT
+    #  * `PATCH` - PATCH
+    #  * `DELETE` - DELETE
     class MethodEnum
       GET = "GET"
       OPTIONS = "OPTIONS"

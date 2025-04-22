@@ -2,10 +2,10 @@
 
 module Merge
   module Hris
-    # - `EXEMPT` - EXEMPT
-    #  - `SALARIED_NONEXEMPT` - SALARIED_NONEXEMPT
-    #  - `NONEXEMPT` - NONEXEMPT
-    #  - `OWNER` - OWNER
+    # * `EXEMPT` - EXEMPT
+    #  * `SALARIED_NONEXEMPT` - SALARIED_NONEXEMPT
+    #  * `NONEXEMPT` - NONEXEMPT
+    #  * `OWNER` - OWNER
     class FlsaStatusEnum
       EXEMPT = "EXEMPT"
       SALARIED_NONEXEMPT = "SALARIED_NONEXEMPT"

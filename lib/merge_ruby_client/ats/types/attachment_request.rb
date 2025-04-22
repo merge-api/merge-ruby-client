@@ -20,10 +20,10 @@ module Merge
       # @return [String]
       attr_reader :candidate
       # @return [Merge::Ats::AttachmentTypeEnum] The attachment's type.
-      #  - `RESUME` - RESUME
-      #  - `COVER_LETTER` - COVER_LETTER
-      #  - `OFFER_LETTER` - OFFER_LETTER
-      #  - `OTHER` - OTHER
+      #  * `RESUME` - RESUME
+      #  * `COVER_LETTER` - COVER_LETTER
+      #  * `OFFER_LETTER` - OFFER_LETTER
+      #  * `OTHER` - OTHER
       attr_reader :attachment_type
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -41,10 +41,10 @@ module Merge
       # @param file_url [String] The attachment's url.
       # @param candidate [String]
       # @param attachment_type [Merge::Ats::AttachmentTypeEnum] The attachment's type.
-      #  - `RESUME` - RESUME
-      #  - `COVER_LETTER` - COVER_LETTER
-      #  - `OFFER_LETTER` - OFFER_LETTER
-      #  - `OTHER` - OTHER
+      #  * `RESUME` - RESUME
+      #  * `COVER_LETTER` - COVER_LETTER
+      #  * `OFFER_LETTER` - OFFER_LETTER
+      #  * `OTHER` - OTHER
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require_relative "company_info"
 
 module Merge
   module Accounting
@@ -21,8 +22,8 @@ module Merge
           # noop
         end
         begin
-          struct.is_a?(Object) != false || raise("Passed value for field struct is not the expected type, validation failed.")
-          return struct unless struct.nil?
+          Merge::Accounting::CompanyInfo.validate_raw(obj: struct)
+          return Merge::Accounting::CompanyInfo.from_json(json_object: struct) unless struct.nil?
 
           return nil
         rescue StandardError
@@ -44,7 +45,7 @@ module Merge
           # noop
         end
         begin
-          return obj.is_a?(Object) != false || raise("Passed value for field obj is not the expected type, validation failed.")
+          return Merge::Accounting::CompanyInfo.validate_raw(obj: obj)
         rescue StandardError
           # noop
         end

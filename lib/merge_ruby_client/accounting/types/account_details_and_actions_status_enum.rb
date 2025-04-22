@@ -2,10 +2,10 @@
 
 module Merge
   module Accounting
-    # - `COMPLETE` - COMPLETE
-    #  - `INCOMPLETE` - INCOMPLETE
-    #  - `RELINK_NEEDED` - RELINK_NEEDED
-    #  - `IDLE` - IDLE
+    # * `COMPLETE` - COMPLETE
+    #  * `INCOMPLETE` - INCOMPLETE
+    #  * `RELINK_NEEDED` - RELINK_NEEDED
+    #  * `IDLE` - IDLE
     class AccountDetailsAndActionsStatusEnum
       COMPLETE = "COMPLETE"
       INCOMPLETE = "INCOMPLETE"

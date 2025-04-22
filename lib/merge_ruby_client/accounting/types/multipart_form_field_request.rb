@@ -18,9 +18,9 @@ module Merge
       # @return [String] The data for the form field.
       attr_reader :data
       # @return [Merge::Accounting::EncodingEnum] The encoding of the value of `data`. Defaults to `RAW` if not defined.
-      #  - `RAW` - RAW
-      #  - `BASE64` - BASE64
-      #  - `GZIP_BASE64` - GZIP_BASE64
+      #  * `RAW` - RAW
+      #  * `BASE64` - BASE64
+      #  * `GZIP_BASE64` - GZIP_BASE64
       attr_reader :encoding
       # @return [String] The file name of the form field, if the field is for a file.
       attr_reader :file_name
@@ -37,9 +37,9 @@ module Merge
       # @param name [String] The name of the form field
       # @param data [String] The data for the form field.
       # @param encoding [Merge::Accounting::EncodingEnum] The encoding of the value of `data`. Defaults to `RAW` if not defined.
-      #  - `RAW` - RAW
-      #  - `BASE64` - BASE64
-      #  - `GZIP_BASE64` - GZIP_BASE64
+      #  * `RAW` - RAW
+      #  * `BASE64` - BASE64
+      #  * `GZIP_BASE64` - GZIP_BASE64
       # @param file_name [String] The file name of the form field, if the field is for a file.
       # @param content_type [String] The MIME type of the file, if the field is for a file.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

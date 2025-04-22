@@ -26,18 +26,18 @@ module Merge
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Merge::Hris::RunStateEnum] The state of the payroll run
-      #  - `PAID` - PAID
-      #  - `DRAFT` - DRAFT
-      #  - `APPROVED` - APPROVED
-      #  - `FAILED` - FAILED
-      #  - `CLOSED` - CLOSED
+      #  * `PAID` - PAID
+      #  * `DRAFT` - DRAFT
+      #  * `APPROVED` - APPROVED
+      #  * `FAILED` - FAILED
+      #  * `CLOSED` - CLOSED
       attr_reader :run_state
       # @return [Merge::Hris::RunTypeEnum] The type of the payroll run
-      #  - `REGULAR` - REGULAR
-      #  - `OFF_CYCLE` - OFF_CYCLE
-      #  - `CORRECTION` - CORRECTION
-      #  - `TERMINATION` - TERMINATION
-      #  - `SIGN_ON_BONUS` - SIGN_ON_BONUS
+      #  * `REGULAR` - REGULAR
+      #  * `OFF_CYCLE` - OFF_CYCLE
+      #  * `CORRECTION` - CORRECTION
+      #  * `TERMINATION` - TERMINATION
+      #  * `SIGN_ON_BONUS` - SIGN_ON_BONUS
       attr_reader :run_type
       # @return [DateTime] The day and time the payroll run started.
       attr_reader :start_date
@@ -67,17 +67,17 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param run_state [Merge::Hris::RunStateEnum] The state of the payroll run
-      #  - `PAID` - PAID
-      #  - `DRAFT` - DRAFT
-      #  - `APPROVED` - APPROVED
-      #  - `FAILED` - FAILED
-      #  - `CLOSED` - CLOSED
+      #  * `PAID` - PAID
+      #  * `DRAFT` - DRAFT
+      #  * `APPROVED` - APPROVED
+      #  * `FAILED` - FAILED
+      #  * `CLOSED` - CLOSED
       # @param run_type [Merge::Hris::RunTypeEnum] The type of the payroll run
-      #  - `REGULAR` - REGULAR
-      #  - `OFF_CYCLE` - OFF_CYCLE
-      #  - `CORRECTION` - CORRECTION
-      #  - `TERMINATION` - TERMINATION
-      #  - `SIGN_ON_BONUS` - SIGN_ON_BONUS
+      #  * `REGULAR` - REGULAR
+      #  * `OFF_CYCLE` - OFF_CYCLE
+      #  * `CORRECTION` - CORRECTION
+      #  * `TERMINATION` - TERMINATION
+      #  * `SIGN_ON_BONUS` - SIGN_ON_BONUS
       # @param start_date [DateTime] The day and time the payroll run started.
       # @param end_date [DateTime] The day and time the payroll run ended.
       # @param check_date [DateTime] The day and time the payroll run was checked.

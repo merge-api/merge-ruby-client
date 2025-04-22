@@ -16,13 +16,13 @@ module Merge
       # @return [String] The site's url.
       attr_reader :value
       # @return [Merge::Ats::UrlTypeEnum] The type of site.
-      #  - `PERSONAL` - PERSONAL
-      #  - `COMPANY` - COMPANY
-      #  - `PORTFOLIO` - PORTFOLIO
-      #  - `BLOG` - BLOG
-      #  - `SOCIAL_MEDIA` - SOCIAL_MEDIA
-      #  - `OTHER` - OTHER
-      #  - `JOB_POSTING` - JOB_POSTING
+      #  * `PERSONAL` - PERSONAL
+      #  * `COMPANY` - COMPANY
+      #  * `PORTFOLIO` - PORTFOLIO
+      #  * `BLOG` - BLOG
+      #  * `SOCIAL_MEDIA` - SOCIAL_MEDIA
+      #  * `OTHER` - OTHER
+      #  * `JOB_POSTING` - JOB_POSTING
       attr_reader :url_type
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -38,13 +38,13 @@ module Merge
 
       # @param value [String] The site's url.
       # @param url_type [Merge::Ats::UrlTypeEnum] The type of site.
-      #  - `PERSONAL` - PERSONAL
-      #  - `COMPANY` - COMPANY
-      #  - `PORTFOLIO` - PORTFOLIO
-      #  - `BLOG` - BLOG
-      #  - `SOCIAL_MEDIA` - SOCIAL_MEDIA
-      #  - `OTHER` - OTHER
-      #  - `JOB_POSTING` - JOB_POSTING
+      #  * `PERSONAL` - PERSONAL
+      #  * `COMPANY` - COMPANY
+      #  * `PORTFOLIO` - PORTFOLIO
+      #  * `BLOG` - BLOG
+      #  * `SOCIAL_MEDIA` - SOCIAL_MEDIA
+      #  * `OTHER` - OTHER
+      #  * `JOB_POSTING` - JOB_POSTING
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

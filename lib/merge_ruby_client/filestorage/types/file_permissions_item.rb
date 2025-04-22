@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
-require_relative "permission_request"
+require_relative "permission"
 
 module Merge
   module Filestorage
@@ -21,8 +21,8 @@ module Merge
           # noop
         end
         begin
-          Merge::Filestorage::PermissionRequest.validate_raw(obj: struct)
-          return Merge::Filestorage::PermissionRequest.from_json(json_object: struct) unless struct.nil?
+          Merge::Filestorage::Permission.validate_raw(obj: struct)
+          return Merge::Filestorage::Permission.from_json(json_object: struct) unless struct.nil?
 
           return nil
         rescue StandardError
@@ -44,7 +44,7 @@ module Merge
           # noop
         end
         begin
-          return Merge::Filestorage::PermissionRequest.validate_raw(obj: obj)
+          return Merge::Filestorage::Permission.validate_raw(obj: obj)
         rescue StandardError
           # noop
         end

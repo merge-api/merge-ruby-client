@@ -15,11 +15,11 @@ module Merge
       # @return [String] The phone number.
       attr_reader :value
       # @return [Merge::Ats::PhoneNumberTypeEnum] The type of phone number.
-      #  - `HOME` - HOME
-      #  - `WORK` - WORK
-      #  - `MOBILE` - MOBILE
-      #  - `SKYPE` - SKYPE
-      #  - `OTHER` - OTHER
+      #  * `HOME` - HOME
+      #  * `WORK` - WORK
+      #  * `MOBILE` - MOBILE
+      #  * `SKYPE` - SKYPE
+      #  * `OTHER` - OTHER
       attr_reader :phone_number_type
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -35,11 +35,11 @@ module Merge
 
       # @param value [String] The phone number.
       # @param phone_number_type [Merge::Ats::PhoneNumberTypeEnum] The type of phone number.
-      #  - `HOME` - HOME
-      #  - `WORK` - WORK
-      #  - `MOBILE` - MOBILE
-      #  - `SKYPE` - SKYPE
-      #  - `OTHER` - OTHER
+      #  * `HOME` - HOME
+      #  * `WORK` - WORK
+      #  * `MOBILE` - MOBILE
+      #  * `SKYPE` - SKYPE
+      #  * `OTHER` - OTHER
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

@@ -2,15 +2,15 @@
 
 module Merge
   module Ats
-    # - `DRAFT` - DRAFT
-    #  - `APPROVAL-SENT` - APPROVAL-SENT
-    #  - `APPROVED` - APPROVED
-    #  - `SENT` - SENT
-    #  - `SENT-MANUALLY` - SENT-MANUALLY
-    #  - `OPENED` - OPENED
-    #  - `DENIED` - DENIED
-    #  - `SIGNED` - SIGNED
-    #  - `DEPRECATED` - DEPRECATED
+    # * `DRAFT` - DRAFT
+    #  * `APPROVAL-SENT` - APPROVAL-SENT
+    #  * `APPROVED` - APPROVED
+    #  * `SENT` - SENT
+    #  * `SENT-MANUALLY` - SENT-MANUALLY
+    #  * `OPENED` - OPENED
+    #  * `DENIED` - DENIED
+    #  * `SIGNED` - SIGNED
+    #  * `DEPRECATED` - DEPRECATED
     class OfferStatusEnum
       DRAFT = "DRAFT"
       APPROVAL_SENT = "APPROVAL-SENT"

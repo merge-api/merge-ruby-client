@@ -37,13 +37,13 @@ module Merge
       # @return [String] The third party remote ID of the underlying transaction.
       attr_reader :underlying_transaction_remote_id
       # @return [Merge::Accounting::UnderlyingTransactionTypeEnum] The type of the underlying transaction.
-      #  - `INVOICE` - INVOICE
-      #  - `EXPENSE` - EXPENSE
-      #  - `TRANSACTION` - TRANSACTION
-      #  - `JOURNAL_ENTRY` - JOURNAL_ENTRY
-      #  - `PAYMENT` - PAYMENT
-      #  - `VENDOR_CREDIT` - VENDOR_CREDIT
-      #  - `CREDIT_NOTE` - CREDIT_NOTE
+      #  * `INVOICE` - INVOICE
+      #  * `EXPENSE` - EXPENSE
+      #  * `TRANSACTION` - TRANSACTION
+      #  * `JOURNAL_ENTRY` - JOURNAL_ENTRY
+      #  * `PAYMENT` - PAYMENT
+      #  * `VENDOR_CREDIT` - VENDOR_CREDIT
+      #  * `CREDIT_NOTE` - CREDIT_NOTE
       attr_reader :underlying_transaction_type
       # @return [Merge::Accounting::GeneralLedgerTransactionAccountingPeriod] The accounting period that the GeneralLedgerTransaction was generated in.
       attr_reader :accounting_period
@@ -82,13 +82,13 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param underlying_transaction_remote_id [String] The third party remote ID of the underlying transaction.
       # @param underlying_transaction_type [Merge::Accounting::UnderlyingTransactionTypeEnum] The type of the underlying transaction.
-      #  - `INVOICE` - INVOICE
-      #  - `EXPENSE` - EXPENSE
-      #  - `TRANSACTION` - TRANSACTION
-      #  - `JOURNAL_ENTRY` - JOURNAL_ENTRY
-      #  - `PAYMENT` - PAYMENT
-      #  - `VENDOR_CREDIT` - VENDOR_CREDIT
-      #  - `CREDIT_NOTE` - CREDIT_NOTE
+      #  * `INVOICE` - INVOICE
+      #  * `EXPENSE` - EXPENSE
+      #  * `TRANSACTION` - TRANSACTION
+      #  * `JOURNAL_ENTRY` - JOURNAL_ENTRY
+      #  * `PAYMENT` - PAYMENT
+      #  * `VENDOR_CREDIT` - VENDOR_CREDIT
+      #  * `CREDIT_NOTE` - CREDIT_NOTE
       # @param accounting_period [Merge::Accounting::GeneralLedgerTransactionAccountingPeriod] The accounting period that the GeneralLedgerTransaction was generated in.
       # @param company [Merge::Accounting::GeneralLedgerTransactionCompany] The company the GeneralLedgerTransaction belongs to.
       # @param remote_updated_at [DateTime] When the third party's GeneralLedgerTransaction entry was updated.

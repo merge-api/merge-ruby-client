@@ -30,8 +30,8 @@ module Merge
       # @return [String] The item's name.
       attr_reader :name
       # @return [Merge::Accounting::Status7D1Enum] The item's status.
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       attr_reader :status
       # @return [Float] The item's unit price.
       attr_reader :unit_price
@@ -72,8 +72,8 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The item's name.
       # @param status [Merge::Accounting::Status7D1Enum] The item's status.
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       # @param unit_price [Float] The item's unit price.
       # @param purchase_price [Float] The price at which the item is purchased from a vendor.
       # @param purchase_account [Merge::Accounting::ItemPurchaseAccount] References the default account used to record a purchase of the item.

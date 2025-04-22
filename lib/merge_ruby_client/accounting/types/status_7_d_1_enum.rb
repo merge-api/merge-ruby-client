@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `ACTIVE` - ACTIVE
-    #  - `ARCHIVED` - ARCHIVED
+    # * `ACTIVE` - ACTIVE
+    #  * `ARCHIVED` - ARCHIVED
     class Status7D1Enum
       ACTIVE = "ACTIVE"
       ARCHIVED = "ARCHIVED"

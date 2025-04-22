@@ -25,9 +25,9 @@ module Merge
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Merge::Crm::ActivityTypeEnum] The engagement type's activity type.
-      #  - `CALL` - CALL
-      #  - `MEETING` - MEETING
-      #  - `EMAIL` - EMAIL
+      #  * `CALL` - CALL
+      #  * `MEETING` - MEETING
+      #  * `EMAIL` - EMAIL
       attr_reader :activity_type
       # @return [String] The engagement type's name.
       attr_reader :name
@@ -46,9 +46,9 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param activity_type [Merge::Crm::ActivityTypeEnum] The engagement type's activity type.
-      #  - `CALL` - CALL
-      #  - `MEETING` - MEETING
-      #  - `EMAIL` - EMAIL
+      #  * `CALL` - CALL
+      #  * `MEETING` - MEETING
+      #  * `EMAIL` - EMAIL
       # @param name [String] The engagement type's name.
       # @param remote_fields [Array<Merge::Crm::RemoteField>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

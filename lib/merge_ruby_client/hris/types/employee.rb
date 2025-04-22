@@ -74,29 +74,29 @@ module Merge
       # @return [String] The employee's social security number.
       attr_reader :ssn
       # @return [Merge::Hris::GenderEnum] The employee's gender.
-      #  - `MALE` - MALE
-      #  - `FEMALE` - FEMALE
-      #  - `NON-BINARY` - NON-BINARY
-      #  - `OTHER` - OTHER
-      #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+      #  * `MALE` - MALE
+      #  * `FEMALE` - FEMALE
+      #  * `NON-BINARY` - NON-BINARY
+      #  * `OTHER` - OTHER
+      #  * `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
       attr_reader :gender
       # @return [Merge::Hris::EthnicityEnum] The employee's ethnicity.
-      #  - `AMERICAN_INDIAN_OR_ALASKA_NATIVE` - AMERICAN_INDIAN_OR_ALASKA_NATIVE
-      #  - `ASIAN_OR_INDIAN_SUBCONTINENT` - ASIAN_OR_INDIAN_SUBCONTINENT
-      #  - `BLACK_OR_AFRICAN_AMERICAN` - BLACK_OR_AFRICAN_AMERICAN
-      #  - `HISPANIC_OR_LATINO` - HISPANIC_OR_LATINO
-      #  - `NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER` -
+      #  * `AMERICAN_INDIAN_OR_ALASKA_NATIVE` - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+      #  * `ASIAN_OR_INDIAN_SUBCONTINENT` - ASIAN_OR_INDIAN_SUBCONTINENT
+      #  * `BLACK_OR_AFRICAN_AMERICAN` - BLACK_OR_AFRICAN_AMERICAN
+      #  * `HISPANIC_OR_LATINO` - HISPANIC_OR_LATINO
+      #  * `NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER` -
       #  NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
-      #  - `TWO_OR_MORE_RACES` - TWO_OR_MORE_RACES
-      #  - `WHITE` - WHITE
-      #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+      #  * `TWO_OR_MORE_RACES` - TWO_OR_MORE_RACES
+      #  * `WHITE` - WHITE
+      #  * `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
       attr_reader :ethnicity
       # @return [Merge::Hris::MaritalStatusEnum] The employee's filing status as related to marital status.
-      #  - `SINGLE` - SINGLE
-      #  - `MARRIED_FILING_JOINTLY` - MARRIED_FILING_JOINTLY
-      #  - `MARRIED_FILING_SEPARATELY` - MARRIED_FILING_SEPARATELY
-      #  - `HEAD_OF_HOUSEHOLD` - HEAD_OF_HOUSEHOLD
-      #  - `QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD` -
+      #  * `SINGLE` - SINGLE
+      #  * `MARRIED_FILING_JOINTLY` - MARRIED_FILING_JOINTLY
+      #  * `MARRIED_FILING_SEPARATELY` - MARRIED_FILING_SEPARATELY
+      #  * `HEAD_OF_HOUSEHOLD` - HEAD_OF_HOUSEHOLD
+      #  * `QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD` -
       #  QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
       attr_reader :marital_status
       # @return [DateTime] The employee's date of birth.
@@ -112,9 +112,9 @@ module Merge
       # @return [DateTime] When the third party's employee was created.
       attr_reader :remote_created_at
       # @return [Merge::Hris::EmploymentStatusEnum] The employment status of the employee.
-      #  - `ACTIVE` - ACTIVE
-      #  - `PENDING` - PENDING
-      #  - `INACTIVE` - INACTIVE
+      #  * `ACTIVE` - ACTIVE
+      #  * `PENDING` - PENDING
+      #  * `INACTIVE` - INACTIVE
       attr_reader :employment_status
       # @return [DateTime] The employee's termination date.
       attr_reader :termination_date
@@ -163,27 +163,27 @@ module Merge
       # @param pay_group [Merge::Hris::EmployeePayGroup] The employee's pay group
       # @param ssn [String] The employee's social security number.
       # @param gender [Merge::Hris::GenderEnum] The employee's gender.
-      #  - `MALE` - MALE
-      #  - `FEMALE` - FEMALE
-      #  - `NON-BINARY` - NON-BINARY
-      #  - `OTHER` - OTHER
-      #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+      #  * `MALE` - MALE
+      #  * `FEMALE` - FEMALE
+      #  * `NON-BINARY` - NON-BINARY
+      #  * `OTHER` - OTHER
+      #  * `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
       # @param ethnicity [Merge::Hris::EthnicityEnum] The employee's ethnicity.
-      #  - `AMERICAN_INDIAN_OR_ALASKA_NATIVE` - AMERICAN_INDIAN_OR_ALASKA_NATIVE
-      #  - `ASIAN_OR_INDIAN_SUBCONTINENT` - ASIAN_OR_INDIAN_SUBCONTINENT
-      #  - `BLACK_OR_AFRICAN_AMERICAN` - BLACK_OR_AFRICAN_AMERICAN
-      #  - `HISPANIC_OR_LATINO` - HISPANIC_OR_LATINO
-      #  - `NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER` -
+      #  * `AMERICAN_INDIAN_OR_ALASKA_NATIVE` - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+      #  * `ASIAN_OR_INDIAN_SUBCONTINENT` - ASIAN_OR_INDIAN_SUBCONTINENT
+      #  * `BLACK_OR_AFRICAN_AMERICAN` - BLACK_OR_AFRICAN_AMERICAN
+      #  * `HISPANIC_OR_LATINO` - HISPANIC_OR_LATINO
+      #  * `NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER` -
       #  NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
-      #  - `TWO_OR_MORE_RACES` - TWO_OR_MORE_RACES
-      #  - `WHITE` - WHITE
-      #  - `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
+      #  * `TWO_OR_MORE_RACES` - TWO_OR_MORE_RACES
+      #  * `WHITE` - WHITE
+      #  * `PREFER_NOT_TO_DISCLOSE` - PREFER_NOT_TO_DISCLOSE
       # @param marital_status [Merge::Hris::MaritalStatusEnum] The employee's filing status as related to marital status.
-      #  - `SINGLE` - SINGLE
-      #  - `MARRIED_FILING_JOINTLY` - MARRIED_FILING_JOINTLY
-      #  - `MARRIED_FILING_SEPARATELY` - MARRIED_FILING_SEPARATELY
-      #  - `HEAD_OF_HOUSEHOLD` - HEAD_OF_HOUSEHOLD
-      #  - `QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD` -
+      #  * `SINGLE` - SINGLE
+      #  * `MARRIED_FILING_JOINTLY` - MARRIED_FILING_JOINTLY
+      #  * `MARRIED_FILING_SEPARATELY` - MARRIED_FILING_SEPARATELY
+      #  * `HEAD_OF_HOUSEHOLD` - HEAD_OF_HOUSEHOLD
+      #  * `QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD` -
       #  QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
       # @param date_of_birth [DateTime] The employee's date of birth.
       # @param hire_date [DateTime] The date that the employee was hired, usually the day that an offer letter is
@@ -194,9 +194,9 @@ module Merge
       #  recent start date will be returned.
       # @param remote_created_at [DateTime] When the third party's employee was created.
       # @param employment_status [Merge::Hris::EmploymentStatusEnum] The employment status of the employee.
-      #  - `ACTIVE` - ACTIVE
-      #  - `PENDING` - PENDING
-      #  - `INACTIVE` - INACTIVE
+      #  * `ACTIVE` - ACTIVE
+      #  * `PENDING` - PENDING
+      #  * `INACTIVE` - INACTIVE
       # @param termination_date [DateTime] The employee's termination date.
       # @param avatar [String] The URL of the employee's avatar image.
       # @param custom_fields [Hash{String => Object}] Custom fields configured for a given model.

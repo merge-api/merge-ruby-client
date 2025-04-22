@@ -2,8 +2,8 @@
 
 module Merge
   module Hris
-    # - `JSON` - JSON
-    #  - `BASE64_GZIP` - BASE64_GZIP
+    # * `JSON` - JSON
+    #  * `BASE64_GZIP` - BASE64_GZIP
     class ResponseTypeEnum
       JSON_ = "JSON"
       BASE_64_GZIP = "BASE64_GZIP"

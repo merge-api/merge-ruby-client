@@ -3,23 +3,23 @@
 require_relative "environment"
 require_relative "types_export"
 require_relative "requests"
-require_relative "merge_ruby_client/ats/client"
 require_relative "merge_ruby_client/crm/client"
-require_relative "merge_ruby_client/filestorage/client"
+require_relative "merge_ruby_client/ats/client"
 require_relative "merge_ruby_client/hris/client"
+require_relative "merge_ruby_client/filestorage/client"
 require_relative "merge_ruby_client/ticketing/client"
 require_relative "merge_ruby_client/accounting/client"
 
 module Merge
   class Client
-    # @return [Merge::Ats::Client]
-    attr_reader :ats
     # @return [Merge::Crm::Client]
     attr_reader :crm
-    # @return [Merge::Filestorage::Client]
-    attr_reader :filestorage
+    # @return [Merge::Ats::Client]
+    attr_reader :ats
     # @return [Merge::Hris::Client]
     attr_reader :hris
+    # @return [Merge::Filestorage::Client]
+    attr_reader :filestorage
     # @return [Merge::Ticketing::Client]
     attr_reader :ticketing
     # @return [Merge::Accounting::Client]
@@ -42,24 +42,24 @@ module Merge
         api_key: api_key,
         account_token: account_token
       )
-      @ats = Merge::Ats::Client.new(request_client: @request_client)
       @crm = Merge::Crm::Client.new(request_client: @request_client)
-      @filestorage = Merge::Filestorage::Client.new(request_client: @request_client)
+      @ats = Merge::Ats::Client.new(request_client: @request_client)
       @hris = Merge::Hris::Client.new(request_client: @request_client)
+      @filestorage = Merge::Filestorage::Client.new(request_client: @request_client)
       @ticketing = Merge::Ticketing::Client.new(request_client: @request_client)
       @accounting = Merge::Accounting::Client.new(request_client: @request_client)
     end
   end
 
   class AsyncClient
-    # @return [Merge::Ats::AsyncClient]
-    attr_reader :ats
     # @return [Merge::Crm::AsyncClient]
     attr_reader :crm
-    # @return [Merge::Filestorage::AsyncClient]
-    attr_reader :filestorage
+    # @return [Merge::Ats::AsyncClient]
+    attr_reader :ats
     # @return [Merge::Hris::AsyncClient]
     attr_reader :hris
+    # @return [Merge::Filestorage::AsyncClient]
+    attr_reader :filestorage
     # @return [Merge::Ticketing::AsyncClient]
     attr_reader :ticketing
     # @return [Merge::Accounting::AsyncClient]
@@ -82,10 +82,10 @@ module Merge
         api_key: api_key,
         account_token: account_token
       )
-      @ats = Merge::Ats::AsyncClient.new(request_client: @async_request_client)
       @crm = Merge::Crm::AsyncClient.new(request_client: @async_request_client)
-      @filestorage = Merge::Filestorage::AsyncClient.new(request_client: @async_request_client)
+      @ats = Merge::Ats::AsyncClient.new(request_client: @async_request_client)
       @hris = Merge::Hris::AsyncClient.new(request_client: @async_request_client)
+      @filestorage = Merge::Filestorage::AsyncClient.new(request_client: @async_request_client)
       @ticketing = Merge::Ticketing::AsyncClient.new(request_client: @async_request_client)
       @accounting = Merge::Accounting::AsyncClient.new(request_client: @async_request_client)
     end

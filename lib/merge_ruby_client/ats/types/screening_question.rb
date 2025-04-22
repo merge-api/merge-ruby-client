@@ -30,14 +30,14 @@ module Merge
       # @return [String] The title of the screening question
       attr_reader :title
       # @return [Merge::Ats::ScreeningQuestionTypeEnum] The data type for the screening question.
-      #  - `DATE` - DATE
-      #  - `FILE` - FILE
-      #  - `SINGLE_SELECT` - SINGLE_SELECT
-      #  - `MULTI_SELECT` - MULTI_SELECT
-      #  - `SINGLE_LINE_TEXT` - SINGLE_LINE_TEXT
-      #  - `MULTI_LINE_TEXT` - MULTI_LINE_TEXT
-      #  - `NUMERIC` - NUMERIC
-      #  - `BOOLEAN` - BOOLEAN
+      #  * `DATE` - DATE
+      #  * `FILE` - FILE
+      #  * `SINGLE_SELECT` - SINGLE_SELECT
+      #  * `MULTI_SELECT` - MULTI_SELECT
+      #  * `SINGLE_LINE_TEXT` - SINGLE_LINE_TEXT
+      #  * `MULTI_LINE_TEXT` - MULTI_LINE_TEXT
+      #  * `NUMERIC` - NUMERIC
+      #  * `BOOLEAN` - BOOLEAN
       attr_reader :type
       # @return [Boolean] Whether or not the screening question is required.
       attr_reader :required
@@ -64,14 +64,14 @@ module Merge
       # @param description [String] The description of the screening question
       # @param title [String] The title of the screening question
       # @param type [Merge::Ats::ScreeningQuestionTypeEnum] The data type for the screening question.
-      #  - `DATE` - DATE
-      #  - `FILE` - FILE
-      #  - `SINGLE_SELECT` - SINGLE_SELECT
-      #  - `MULTI_SELECT` - MULTI_SELECT
-      #  - `SINGLE_LINE_TEXT` - SINGLE_LINE_TEXT
-      #  - `MULTI_LINE_TEXT` - MULTI_LINE_TEXT
-      #  - `NUMERIC` - NUMERIC
-      #  - `BOOLEAN` - BOOLEAN
+      #  * `DATE` - DATE
+      #  * `FILE` - FILE
+      #  * `SINGLE_SELECT` - SINGLE_SELECT
+      #  * `MULTI_SELECT` - MULTI_SELECT
+      #  * `SINGLE_LINE_TEXT` - SINGLE_LINE_TEXT
+      #  * `MULTI_LINE_TEXT` - MULTI_LINE_TEXT
+      #  * `NUMERIC` - NUMERIC
+      #  * `BOOLEAN` - BOOLEAN
       # @param required [Boolean] Whether or not the screening question is required.
       # @param options [Array<Object>]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party

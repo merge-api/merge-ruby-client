@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `en` - en
-    #  - `de` - de
+    # * `en` - en
+    #  * `de` - de
     class LanguageEnum
       EN = "en"
       DE = "de"
