@@ -42,6 +42,7 @@ module Merge
       #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
+      # @param team [String] If provided, will only return users matching in this team.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedUserList]
       # @example
@@ -52,7 +53,7 @@ module Merge
       #  )
       #  api.ticketing.users.list
       def list(created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, team: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -75,7 +76,8 @@ module Merge
             "modified_after": modified_after,
             "modified_before": modified_before,
             "page_size": page_size,
-            "remote_id": remote_id
+            "remote_id": remote_id,
+            "team": team
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -92,6 +94,8 @@ module Merge
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::User]
       # @example
@@ -101,7 +105,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.users.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_shell_data: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -114,7 +118,8 @@ module Merge
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
-            "include_remote_data": include_remote_data
+            "include_remote_data": include_remote_data,
+            "include_shell_data": include_shell_data
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -157,6 +162,7 @@ module Merge
       #  returned.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
+      # @param team [String] If provided, will only return users matching in this team.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedUserList]
       # @example
@@ -167,7 +173,7 @@ module Merge
       #  )
       #  api.ticketing.users.list
       def list(created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, team: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -191,7 +197,8 @@ module Merge
               "modified_after": modified_after,
               "modified_before": modified_before,
               "page_size": page_size,
-              "remote_id": remote_id
+              "remote_id": remote_id,
+              "team": team
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -209,6 +216,8 @@ module Merge
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::User]
       # @example
@@ -218,7 +227,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.users.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_shell_data: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -232,7 +241,8 @@ module Merge
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
-              "include_remote_data": include_remote_data
+              "include_remote_data": include_remote_data,
+              "include_shell_data": include_shell_data
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact

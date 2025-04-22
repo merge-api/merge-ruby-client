@@ -2,8 +2,8 @@
 
 module Merge
   module Ticketing
-    # - `en` - en
-    #  - `de` - de
+    # * `en` - en
+    #  * `de` - de
     class LanguageEnum
       EN = "en"
       DE = "de"

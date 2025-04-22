@@ -2,8 +2,8 @@
 
 module Merge
   module Ticketing
-    # - `LIST` - LIST
-    #  - `PROJECT` - PROJECT
+    # * `LIST` - LIST
+    #  * `PROJECT` - PROJECT
     class CollectionTypeEnum
       LIST = "LIST"
       PROJECT = "PROJECT"

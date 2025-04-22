@@ -2,9 +2,9 @@
 
 module Merge
   module Ats
-    # - `POSTING` - POSTING
-    #  - `REQUISITION` - REQUISITION
-    #  - `PROFILE` - PROFILE
+    # * `POSTING` - POSTING
+    #  * `REQUISITION` - REQUISITION
+    #  * `PROFILE` - PROFILE
     class JobTypeEnum
       POSTING = "POSTING"
       REQUISITION = "REQUISITION"

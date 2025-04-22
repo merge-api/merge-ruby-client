@@ -2,8 +2,8 @@
 
 module Merge
   module Ats
-    # - `en` - en
-    #  - `de` - de
+    # * `en` - en
+    #  * `de` - de
     class LanguageEnum
       EN = "en"
       DE = "de"

@@ -2,8 +2,8 @@
 
 module Merge
   module Filestorage
-    # - `ONGOING` - ONGOING
-    #  - `RESOLVED` - RESOLVED
+    # * `ONGOING` - ONGOING
+    #  * `RESOLVED` - RESOLVED
     class IssueStatusEnum
       ONGOING = "ONGOING"
       RESOLVED = "RESOLVED"

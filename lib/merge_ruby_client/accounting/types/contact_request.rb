@@ -15,8 +15,8 @@ module Merge
     #  are sold to or purchased from. The `Contact` model contains both Customers, in
     #  which products and services are sold to, and Vendors (or Suppliers), in which
     #  products and services are purchased from.
-    #  - A `Contact` is a Vendor/Supplier if the `is_supplier` property is true.
-    #  - A `Contact` is a customer if the `is_customer` property is true.
+    #  * A `Contact` is a Vendor/Supplier if the `is_supplier` property is true.
+    #  * A `Contact` is a customer if the `is_customer` property is true.
     #  ### Usage Example
     #  Fetch from the `LIST Contacts` endpoint and view a company's contacts.
     class ContactRequest
@@ -31,8 +31,8 @@ module Merge
       # @return [String] The contact's tax number.
       attr_reader :tax_number
       # @return [Merge::Accounting::Status7D1Enum] The contact's status
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       attr_reader :status
       # @return [String] The currency the contact's transactions are in.
       attr_reader :currency
@@ -62,8 +62,8 @@ module Merge
       # @param email_address [String] The contact's email address.
       # @param tax_number [String] The contact's tax number.
       # @param status [Merge::Accounting::Status7D1Enum] The contact's status
-      #  - `ACTIVE` - ACTIVE
-      #  - `ARCHIVED` - ARCHIVED
+      #  * `ACTIVE` - ACTIVE
+      #  * `ARCHIVED` - ARCHIVED
       # @param currency [String] The currency the contact's transactions are in.
       # @param company [String] The company the contact belongs to.
       # @param addresses [Array<Merge::Accounting::ContactRequestAddressesItem>] `Address` object IDs for the given `Contacts` object.

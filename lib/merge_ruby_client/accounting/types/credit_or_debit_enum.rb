@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `CREDIT` - CREDIT
-    #  - `DEBIT` - DEBIT
+    # * `CREDIT` - CREDIT
+    #  * `DEBIT` - DEBIT
     class CreditOrDebitEnum
       CREDIT = "CREDIT"
       DEBIT = "DEBIT"

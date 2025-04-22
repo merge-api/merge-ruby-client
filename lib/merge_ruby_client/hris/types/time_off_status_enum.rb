@@ -2,11 +2,11 @@
 
 module Merge
   module Hris
-    # - `REQUESTED` - REQUESTED
-    #  - `APPROVED` - APPROVED
-    #  - `DECLINED` - DECLINED
-    #  - `CANCELLED` - CANCELLED
-    #  - `DELETED` - DELETED
+    # * `REQUESTED` - REQUESTED
+    #  * `APPROVED` - APPROVED
+    #  * `DECLINED` - DECLINED
+    #  * `CANCELLED` - CANCELLED
+    #  * `DELETED` - DELETED
     class TimeOffStatusEnum
       REQUESTED = "REQUESTED"
       APPROVED = "APPROVED"

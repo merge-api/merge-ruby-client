@@ -33,6 +33,8 @@ require_relative "journal_entries/client"
 require_relative "link_token/client"
 require_relative "linked_accounts/client"
 require_relative "passthrough/client"
+require_relative "payment_methods/client"
+require_relative "payment_terms/client"
 require_relative "payments/client"
 require_relative "phone_numbers/client"
 require_relative "purchase_orders/client"
@@ -112,6 +114,10 @@ module Merge
       attr_reader :linked_accounts
       # @return [Merge::Accounting::PassthroughClient]
       attr_reader :passthrough
+      # @return [Merge::Accounting::PaymentMethodsClient]
+      attr_reader :payment_methods
+      # @return [Merge::Accounting::PaymentTermsClient]
+      attr_reader :payment_terms
       # @return [Merge::Accounting::PaymentsClient]
       attr_reader :payments
       # @return [Merge::Accounting::PhoneNumbersClient]
@@ -170,6 +176,8 @@ module Merge
         @link_token = Merge::Accounting::LinkTokenClient.new(request_client: request_client)
         @linked_accounts = Merge::Accounting::LinkedAccountsClient.new(request_client: request_client)
         @passthrough = Merge::Accounting::PassthroughClient.new(request_client: request_client)
+        @payment_methods = Merge::Accounting::PaymentMethodsClient.new(request_client: request_client)
+        @payment_terms = Merge::Accounting::PaymentTermsClient.new(request_client: request_client)
         @payments = Merge::Accounting::PaymentsClient.new(request_client: request_client)
         @phone_numbers = Merge::Accounting::PhoneNumbersClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::PurchaseOrdersClient.new(request_client: request_client)
@@ -249,6 +257,10 @@ module Merge
       attr_reader :linked_accounts
       # @return [Merge::Accounting::AsyncPassthroughClient]
       attr_reader :passthrough
+      # @return [Merge::Accounting::AsyncPaymentMethodsClient]
+      attr_reader :payment_methods
+      # @return [Merge::Accounting::AsyncPaymentTermsClient]
+      attr_reader :payment_terms
       # @return [Merge::Accounting::AsyncPaymentsClient]
       attr_reader :payments
       # @return [Merge::Accounting::AsyncPhoneNumbersClient]
@@ -307,6 +319,8 @@ module Merge
         @link_token = Merge::Accounting::AsyncLinkTokenClient.new(request_client: request_client)
         @linked_accounts = Merge::Accounting::AsyncLinkedAccountsClient.new(request_client: request_client)
         @passthrough = Merge::Accounting::AsyncPassthroughClient.new(request_client: request_client)
+        @payment_methods = Merge::Accounting::AsyncPaymentMethodsClient.new(request_client: request_client)
+        @payment_terms = Merge::Accounting::AsyncPaymentTermsClient.new(request_client: request_client)
         @payments = Merge::Accounting::AsyncPaymentsClient.new(request_client: request_client)
         @phone_numbers = Merge::Accounting::AsyncPhoneNumbersClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::AsyncPurchaseOrdersClient.new(request_client: request_client)

@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 require "json"
-require_relative "team"
+require_relative "payment_term"
 
 module Merge
-  module Ticketing
-    class CollectionTeamsItem
-      # Deserialize a JSON object to an instance of CollectionTeamsItem
+  module Accounting
+    # The payment term that applies to this transaction.
+    class InvoicePaymentTerm
+      # Deserialize a JSON object to an instance of InvoicePaymentTerm
       #
       # @param json_object [String]
-      # @return [Merge::Ticketing::CollectionTeamsItem]
+      # @return [Merge::Accounting::InvoicePaymentTerm]
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         begin
@@ -21,8 +22,8 @@ module Merge
           # noop
         end
         begin
-          Merge::Ticketing::Team.validate_raw(obj: struct)
-          return Merge::Ticketing::Team.from_json(json_object: struct) unless struct.nil?
+          Merge::Accounting::PaymentTerm.validate_raw(obj: struct)
+          return Merge::Accounting::PaymentTerm.from_json(json_object: struct) unless struct.nil?
 
           return nil
         rescue StandardError
@@ -44,7 +45,7 @@ module Merge
           # noop
         end
         begin
-          return Merge::Ticketing::Team.validate_raw(obj: obj)
+          return Merge::Accounting::PaymentTerm.validate_raw(obj: obj)
         rescue StandardError
           # noop
         end

@@ -20,13 +20,13 @@ module Merge
       # List linked accounts for your organization.
       #
       # @param category [Merge::Ats::LinkedAccounts::LinkedAccountsListRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `mktg`, `ticketing`
-      #  - `hris` - hris
-      #  - `ats` - ats
-      #  - `accounting` - accounting
-      #  - `ticketing` - ticketing
-      #  - `crm` - crm
-      #  - `mktg` - mktg
-      #  - `filestorage` - filestorage
+      #  * `hris` - hris
+      #  * `ats` - ats
+      #  * `accounting` - accounting
+      #  * `ticketing` - ticketing
+      #  * `crm` - crm
+      #  * `mktg` - mktg
+      #  * `filestorage` - filestorage
       # @param cursor [String] The pagination cursor value.
       # @param end_user_email_address [String] If provided, will only return linked accounts associated with the given email
       #  address.
@@ -106,13 +106,13 @@ module Merge
       # List linked accounts for your organization.
       #
       # @param category [Merge::Ats::LinkedAccounts::LinkedAccountsListRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `mktg`, `ticketing`
-      #  - `hris` - hris
-      #  - `ats` - ats
-      #  - `accounting` - accounting
-      #  - `ticketing` - ticketing
-      #  - `crm` - crm
-      #  - `mktg` - mktg
-      #  - `filestorage` - filestorage
+      #  * `hris` - hris
+      #  * `ats` - ats
+      #  * `accounting` - accounting
+      #  * `ticketing` - ticketing
+      #  * `crm` - crm
+      #  * `mktg` - mktg
+      #  * `filestorage` - filestorage
       # @param cursor [String] The pagination cursor value.
       # @param end_user_email_address [String] If provided, will only return linked accounts associated with the given email
       #  address.

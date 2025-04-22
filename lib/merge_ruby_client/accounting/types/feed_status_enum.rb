@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `ACTIVE` - ACTIVE
-    #  - `INACTIVE` - INACTIVE
+    # * `ACTIVE` - ACTIVE
+    #  * `INACTIVE` - INACTIVE
     class FeedStatusEnum
       ACTIVE = "ACTIVE"
       INACTIVE = "INACTIVE"

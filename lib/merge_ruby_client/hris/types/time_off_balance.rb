@@ -34,12 +34,12 @@ module Merge
       #  value in days, Merge multiplies by 8 to calculate hours.
       attr_reader :used
       # @return [Merge::Hris::PolicyTypeEnum] The policy type of this time off balance.
-      #  - `VACATION` - VACATION
-      #  - `SICK` - SICK
-      #  - `PERSONAL` - PERSONAL
-      #  - `JURY_DUTY` - JURY_DUTY
-      #  - `VOLUNTEER` - VOLUNTEER
-      #  - `BEREAVEMENT` - BEREAVEMENT
+      #  * `VACATION` - VACATION
+      #  * `SICK` - SICK
+      #  * `PERSONAL` - PERSONAL
+      #  * `JURY_DUTY` - JURY_DUTY
+      #  * `VOLUNTEER` - VOLUNTEER
+      #  * `BEREAVEMENT` - BEREAVEMENT
       attr_reader :policy_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -68,12 +68,12 @@ module Merge
       # @param used [Float] The amount of PTO used in terms of hours. For integrations that return this
       #  value in days, Merge multiplies by 8 to calculate hours.
       # @param policy_type [Merge::Hris::PolicyTypeEnum] The policy type of this time off balance.
-      #  - `VACATION` - VACATION
-      #  - `SICK` - SICK
-      #  - `PERSONAL` - PERSONAL
-      #  - `JURY_DUTY` - JURY_DUTY
-      #  - `VOLUNTEER` - VOLUNTEER
-      #  - `BEREAVEMENT` - BEREAVEMENT
+      #  * `VACATION` - VACATION
+      #  * `SICK` - SICK
+      #  * `PERSONAL` - PERSONAL
+      #  * `JURY_DUTY` - JURY_DUTY
+      #  * `VOLUNTEER` - VOLUNTEER
+      #  * `BEREAVEMENT` - BEREAVEMENT
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

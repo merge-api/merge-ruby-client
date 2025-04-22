@@ -11,8 +11,8 @@ module Merge
       # @return [String]
       attr_reader :id
       # @return [Merge::Crm::IssueStatusEnum] Status of the issue. Options: ('ONGOING', 'RESOLVED')
-      #  - `ONGOING` - ONGOING
-      #  - `RESOLVED` - RESOLVED
+      #  * `ONGOING` - ONGOING
+      #  * `RESOLVED` - RESOLVED
       attr_reader :status
       # @return [String]
       attr_reader :error_description
@@ -36,8 +36,8 @@ module Merge
 
       # @param id [String]
       # @param status [Merge::Crm::IssueStatusEnum] Status of the issue. Options: ('ONGOING', 'RESOLVED')
-      #  - `ONGOING` - ONGOING
-      #  - `RESOLVED` - RESOLVED
+      #  * `ONGOING` - ONGOING
+      #  * `RESOLVED` - RESOLVED
       # @param error_description [String]
       # @param end_user [Hash{String => Object}]
       # @param first_incident_time [DateTime]

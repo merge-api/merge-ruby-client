@@ -160,6 +160,8 @@ module Merge
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::Lead]
       # @example
@@ -169,7 +171,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.crm.leads.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil,
+                   request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -183,7 +186,8 @@ module Merge
             **(request_options&.additional_query_parameters || {}),
             "expand": expand,
             "include_remote_data": include_remote_data,
-            "include_remote_fields": include_remote_fields
+            "include_remote_fields": include_remote_fields,
+            "include_shell_data": include_shell_data
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -430,6 +434,8 @@ module Merge
       #  produce these models.
       # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
       #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::Lead]
       # @example
@@ -439,7 +445,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.crm.leads.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil,
+                   request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -454,7 +461,8 @@ module Merge
               **(request_options&.additional_query_parameters || {}),
               "expand": expand,
               "include_remote_data": include_remote_data,
-              "include_remote_fields": include_remote_fields
+              "include_remote_fields": include_remote_fields,
+              "include_shell_data": include_shell_data
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact

@@ -2,9 +2,9 @@
 
 module Merge
   module Hris
-    # - `CHILD` - CHILD
-    #  - `SPOUSE` - SPOUSE
-    #  - `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
+    # * `CHILD` - CHILD
+    #  * `SPOUSE` - SPOUSE
+    #  * `DOMESTIC_PARTNER` - DOMESTIC_PARTNER
     class RelationshipEnum
       CHILD = "CHILD"
       SPOUSE = "SPOUSE"

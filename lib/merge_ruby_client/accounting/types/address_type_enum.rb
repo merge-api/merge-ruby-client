@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `BILLING` - BILLING
-    #  - `SHIPPING` - SHIPPING
+    # * `BILLING` - BILLING
+    #  * `SHIPPING` - SHIPPING
     class AddressTypeEnum
       BILLING = "BILLING"
       SHIPPING = "SHIPPING"

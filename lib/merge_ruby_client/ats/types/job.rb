@@ -37,16 +37,16 @@ module Merge
       #  particular job that is displayed on the ATS.
       attr_reader :code
       # @return [Merge::Ats::JobStatusEnum] The job's status.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
-      #  - `DRAFT` - DRAFT
-      #  - `ARCHIVED` - ARCHIVED
-      #  - `PENDING` - PENDING
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
+      #  * `DRAFT` - DRAFT
+      #  * `ARCHIVED` - ARCHIVED
+      #  * `PENDING` - PENDING
       attr_reader :status
       # @return [Merge::Ats::JobTypeEnum] The job's type.
-      #  - `POSTING` - POSTING
-      #  - `REQUISITION` - REQUISITION
-      #  - `PROFILE` - PROFILE
+      #  * `POSTING` - POSTING
+      #  * `REQUISITION` - REQUISITION
+      #  * `PROFILE` - PROFILE
       attr_reader :type
       # @return [Array<String>] IDs of `JobPosting` objects that serve as job postings for this `Job`.
       attr_reader :job_postings
@@ -92,15 +92,15 @@ module Merge
       # @param code [String] The job's code. Typically an additional identifier used to reference the
       #  particular job that is displayed on the ATS.
       # @param status [Merge::Ats::JobStatusEnum] The job's status.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
-      #  - `DRAFT` - DRAFT
-      #  - `ARCHIVED` - ARCHIVED
-      #  - `PENDING` - PENDING
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
+      #  * `DRAFT` - DRAFT
+      #  * `ARCHIVED` - ARCHIVED
+      #  * `PENDING` - PENDING
       # @param type [Merge::Ats::JobTypeEnum] The job's type.
-      #  - `POSTING` - POSTING
-      #  - `REQUISITION` - REQUISITION
-      #  - `PROFILE` - PROFILE
+      #  * `POSTING` - POSTING
+      #  * `REQUISITION` - REQUISITION
+      #  * `PROFILE` - PROFILE
       # @param job_postings [Array<String>] IDs of `JobPosting` objects that serve as job postings for this `Job`.
       # @param job_posting_urls [Array<Merge::Ats::Url>]
       # @param remote_created_at [DateTime] When the third party's job was created.

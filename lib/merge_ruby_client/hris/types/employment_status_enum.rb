@@ -2,9 +2,9 @@
 
 module Merge
   module Hris
-    # - `ACTIVE` - ACTIVE
-    #  - `PENDING` - PENDING
-    #  - `INACTIVE` - INACTIVE
+    # * `ACTIVE` - ACTIVE
+    #  * `PENDING` - PENDING
+    #  * `INACTIVE` - INACTIVE
     class EmploymentStatusEnum
       ACTIVE = "ACTIVE"
       PENDING = "PENDING"

@@ -2,11 +2,11 @@
 
 module Merge
   module Accounting
-    # - `ASSET` - ASSET
-    #  - `EQUITY` - EQUITY
-    #  - `EXPENSE` - EXPENSE
-    #  - `LIABILITY` - LIABILITY
-    #  - `REVENUE` - REVENUE
+    # * `ASSET` - ASSET
+    #  * `EQUITY` - EQUITY
+    #  * `EXPENSE` - EXPENSE
+    #  * `LIABILITY` - LIABILITY
+    #  * `REVENUE` - REVENUE
     class ClassificationEnum
       ASSET = "ASSET"
       EQUITY = "EQUITY"

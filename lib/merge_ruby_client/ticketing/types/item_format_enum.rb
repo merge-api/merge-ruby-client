@@ -2,12 +2,12 @@
 
 module Merge
   module Ticketing
-    # - `string` - uuid
-    #  - `number` - url
-    #  - `date` - email
-    #  - `datetime` - phone
-    #  - `bool` - currency
-    #  - `list` - decimal
+    # * `string` - uuid
+    #  * `number` - url
+    #  * `date` - email
+    #  * `datetime` - phone
+    #  * `bool` - currency
+    #  * `list` - decimal
     class ItemFormatEnum
       STRING = "string"
       NUMBER = "number"

@@ -37,9 +37,9 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param display_full_name [String] If provided, will only return employees with this display name.
       # @param employment_status [Merge::Hris::Employees::EmployeesListRequestEmploymentStatus] If provided, will only return employees with this employment status.
-      #  - `ACTIVE` - ACTIVE
-      #  - `PENDING` - PENDING
-      #  - `INACTIVE` - INACTIVE
+      #  * `ACTIVE` - ACTIVE
+      #  * `PENDING` - PENDING
+      #  * `INACTIVE` - INACTIVE
       # @param employment_type [String] If provided, will only return employees that have an employment of the specified
       #  employment_type.
       # @param expand [Merge::Hris::Employees::EmployeesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -219,6 +219,8 @@ module Merge
       #  produce these models.
       # @param include_sensitive_fields [Boolean] Whether to include sensitive fields (such as social security numbers) in the
       #  response.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param remote_fields [Merge::Hris::Employees::EmployeesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param show_enum_origins [Merge::Hris::Employees::EmployeesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
@@ -232,8 +234,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.hris.employees.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, include_sensitive_fields: nil, remote_fields: nil,
-                   show_enum_origins: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil,
+                   remote_fields: nil, show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -248,6 +250,7 @@ module Merge
             "expand": expand,
             "include_remote_data": include_remote_data,
             "include_sensitive_fields": include_sensitive_fields,
+            "include_shell_data": include_shell_data,
             "remote_fields": remote_fields,
             "show_enum_origins": show_enum_origins
           }.compact
@@ -345,9 +348,9 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param display_full_name [String] If provided, will only return employees with this display name.
       # @param employment_status [Merge::Hris::Employees::EmployeesListRequestEmploymentStatus] If provided, will only return employees with this employment status.
-      #  - `ACTIVE` - ACTIVE
-      #  - `PENDING` - PENDING
-      #  - `INACTIVE` - INACTIVE
+      #  * `ACTIVE` - ACTIVE
+      #  * `PENDING` - PENDING
+      #  * `INACTIVE` - INACTIVE
       # @param employment_type [String] If provided, will only return employees that have an employment of the specified
       #  employment_type.
       # @param expand [Merge::Hris::Employees::EmployeesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -531,6 +534,8 @@ module Merge
       #  produce these models.
       # @param include_sensitive_fields [Boolean] Whether to include sensitive fields (such as social security numbers) in the
       #  response.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
       # @param remote_fields [Merge::Hris::Employees::EmployeesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param show_enum_origins [Merge::Hris::Employees::EmployeesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
@@ -544,8 +549,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.hris.employees.retrieve(id: "id")
-      def retrieve(id:, expand: nil, include_remote_data: nil, include_sensitive_fields: nil, remote_fields: nil,
-                   show_enum_origins: nil, request_options: nil)
+      def retrieve(id:, expand: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil,
+                   remote_fields: nil, show_enum_origins: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -561,6 +566,7 @@ module Merge
               "expand": expand,
               "include_remote_data": include_remote_data,
               "include_sensitive_fields": include_sensitive_fields,
+              "include_shell_data": include_shell_data,
               "remote_fields": remote_fields,
               "show_enum_origins": show_enum_origins
             }.compact

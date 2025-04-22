@@ -29,8 +29,8 @@ module Merge
       # @return [DateTime] When the task is due.
       attr_reader :due_date
       # @return [Merge::Crm::TaskStatusEnum] The task's status.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
       attr_reader :status
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -54,8 +54,8 @@ module Merge
       # @param completed_date [DateTime] When the task is completed.
       # @param due_date [DateTime] When the task is due.
       # @param status [Merge::Crm::TaskStatusEnum] The task's status.
-      #  - `OPEN` - OPEN
-      #  - `CLOSED` - CLOSED
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param remote_fields [Array<Merge::Crm::RemoteFieldRequest>]

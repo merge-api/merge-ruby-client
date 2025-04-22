@@ -31,8 +31,8 @@ module Merge
       attr_reader :is_compound
       # @return [Merge::Accounting::ComponentTypeEnum] Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if
       #  the tax component corresponds to a sales tax.
-      #  - `SALES` - SALES
-      #  - `PURCHASE` - PURCHASE
+      #  * `SALES` - SALES
+      #  * `PURCHASE` - PURCHASE
       attr_reader :component_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -56,8 +56,8 @@ module Merge
       # @param is_compound [Boolean] Returns True if the tax component is compound, False if not.
       # @param component_type [Merge::Accounting::ComponentTypeEnum] Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if
       #  the tax component corresponds to a sales tax.
-      #  - `SALES` - SALES
-      #  - `PURCHASE` - PURCHASE
+      #  * `SALES` - SALES
+      #  * `PURCHASE` - PURCHASE
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

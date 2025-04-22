@@ -2,8 +2,8 @@
 
 module Merge
   module Hris
-    # - `SAVINGS` - SAVINGS
-    #  - `CHECKING` - CHECKING
+    # * `SAVINGS` - SAVINGS
+    #  * `CHECKING` - CHECKING
     class AccountTypeEnum
       SAVINGS = "SAVINGS"
       CHECKING = "CHECKING"

@@ -34,8 +34,8 @@ module Merge
       # @return [String] The bank name.
       attr_reader :bank_name
       # @return [Merge::Hris::AccountTypeEnum] The bank account type
-      #  - `SAVINGS` - SAVINGS
-      #  - `CHECKING` - CHECKING
+      #  * `SAVINGS` - SAVINGS
+      #  * `CHECKING` - CHECKING
       attr_reader :account_type
       # @return [DateTime] When the matching bank object was created in the third party system.
       attr_reader :remote_created_at
@@ -65,8 +65,8 @@ module Merge
       # @param routing_number [String] The routing number.
       # @param bank_name [String] The bank name.
       # @param account_type [Merge::Hris::AccountTypeEnum] The bank account type
-      #  - `SAVINGS` - SAVINGS
-      #  - `CHECKING` - CHECKING
+      #  * `SAVINGS` - SAVINGS
+      #  * `CHECKING` - CHECKING
       # @param remote_created_at [DateTime] When the matching bank object was created in the third party system.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion

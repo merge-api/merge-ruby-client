@@ -2,12 +2,12 @@
 
 module Merge
   module Crm
-    # - `string` - string
-    #  - `number` - number
-    #  - `date` - date
-    #  - `datetime` - datetime
-    #  - `bool` - bool
-    #  - `list` - list
+    # * `string` - string
+    #  * `number` - number
+    #  * `date` - date
+    #  * `datetime` - datetime
+    #  * `bool` - bool
+    #  * `list` - list
     class FieldFormatEnum
       STRING = "string"
       NUMBER = "number"

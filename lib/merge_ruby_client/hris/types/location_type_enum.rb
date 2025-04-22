@@ -2,8 +2,8 @@
 
 module Merge
   module Hris
-    # - `HOME` - HOME
-    #  - `WORK` - WORK
+    # * `HOME` - HOME
+    #  * `WORK` - WORK
     class LocationTypeEnum
       HOME = "HOME"
       WORK = "WORK"

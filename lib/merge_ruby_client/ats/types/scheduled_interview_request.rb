@@ -35,9 +35,9 @@ module Merge
       # @return [DateTime] When the interview was ended.
       attr_reader :end_at
       # @return [Merge::Ats::ScheduledInterviewStatusEnum] The interview's status.
-      #  - `SCHEDULED` - SCHEDULED
-      #  - `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
-      #  - `COMPLETE` - COMPLETE
+      #  * `SCHEDULED` - SCHEDULED
+      #  * `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
+      #  * `COMPLETE` - COMPLETE
       attr_reader :status
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -59,9 +59,9 @@ module Merge
       # @param start_at [DateTime] When the interview was started.
       # @param end_at [DateTime] When the interview was ended.
       # @param status [Merge::Ats::ScheduledInterviewStatusEnum] The interview's status.
-      #  - `SCHEDULED` - SCHEDULED
-      #  - `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
-      #  - `COMPLETE` - COMPLETE
+      #  * `SCHEDULED` - SCHEDULED
+      #  * `AWAITING_FEEDBACK` - AWAITING_FEEDBACK
+      #  * `COMPLETE` - COMPLETE
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition

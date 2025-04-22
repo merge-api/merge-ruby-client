@@ -38,15 +38,15 @@ module Merge
       # @return [DateTime] The employment start date on the offer.
       attr_reader :start_date
       # @return [Merge::Ats::OfferStatusEnum] The offer's status.
-      #  - `DRAFT` - DRAFT
-      #  - `APPROVAL-SENT` - APPROVAL-SENT
-      #  - `APPROVED` - APPROVED
-      #  - `SENT` - SENT
-      #  - `SENT-MANUALLY` - SENT-MANUALLY
-      #  - `OPENED` - OPENED
-      #  - `DENIED` - DENIED
-      #  - `SIGNED` - SIGNED
-      #  - `DEPRECATED` - DEPRECATED
+      #  * `DRAFT` - DRAFT
+      #  * `APPROVAL-SENT` - APPROVAL-SENT
+      #  * `APPROVED` - APPROVED
+      #  * `SENT` - SENT
+      #  * `SENT-MANUALLY` - SENT-MANUALLY
+      #  * `OPENED` - OPENED
+      #  * `DENIED` - DENIED
+      #  * `SIGNED` - SIGNED
+      #  * `DEPRECATED` - DEPRECATED
       attr_reader :status
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -76,15 +76,15 @@ module Merge
       # @param sent_at [DateTime] When the offer was sent.
       # @param start_date [DateTime] The employment start date on the offer.
       # @param status [Merge::Ats::OfferStatusEnum] The offer's status.
-      #  - `DRAFT` - DRAFT
-      #  - `APPROVAL-SENT` - APPROVAL-SENT
-      #  - `APPROVED` - APPROVED
-      #  - `SENT` - SENT
-      #  - `SENT-MANUALLY` - SENT-MANUALLY
-      #  - `OPENED` - OPENED
-      #  - `DENIED` - DENIED
-      #  - `SIGNED` - SIGNED
-      #  - `DEPRECATED` - DEPRECATED
+      #  * `DRAFT` - DRAFT
+      #  * `APPROVAL-SENT` - APPROVAL-SENT
+      #  * `APPROVED` - APPROVED
+      #  * `SENT` - SENT
+      #  * `SENT-MANUALLY` - SENT-MANUALLY
+      #  * `OPENED` - OPENED
+      #  * `DENIED` - DENIED
+      #  * `SIGNED` - SIGNED
+      #  * `DEPRECATED` - DEPRECATED
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

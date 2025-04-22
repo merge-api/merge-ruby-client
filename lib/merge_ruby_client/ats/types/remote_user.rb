@@ -34,11 +34,11 @@ module Merge
       # @return [DateTime] When the third party's user was created.
       attr_reader :remote_created_at
       # @return [Merge::Ats::AccessRoleEnum] The user's role.
-      #  - `SUPER_ADMIN` - SUPER_ADMIN
-      #  - `ADMIN` - ADMIN
-      #  - `TEAM_MEMBER` - TEAM_MEMBER
-      #  - `LIMITED_TEAM_MEMBER` - LIMITED_TEAM_MEMBER
-      #  - `INTERVIEWER` - INTERVIEWER
+      #  * `SUPER_ADMIN` - SUPER_ADMIN
+      #  * `ADMIN` - ADMIN
+      #  * `TEAM_MEMBER` - TEAM_MEMBER
+      #  * `LIMITED_TEAM_MEMBER` - LIMITED_TEAM_MEMBER
+      #  * `INTERVIEWER` - INTERVIEWER
       attr_reader :access_role
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -67,11 +67,11 @@ module Merge
       # @param disabled [Boolean] Whether the user's account had been disabled.
       # @param remote_created_at [DateTime] When the third party's user was created.
       # @param access_role [Merge::Ats::AccessRoleEnum] The user's role.
-      #  - `SUPER_ADMIN` - SUPER_ADMIN
-      #  - `ADMIN` - ADMIN
-      #  - `TEAM_MEMBER` - TEAM_MEMBER
-      #  - `LIMITED_TEAM_MEMBER` - LIMITED_TEAM_MEMBER
-      #  - `INTERVIEWER` - INTERVIEWER
+      #  * `SUPER_ADMIN` - SUPER_ADMIN
+      #  * `ADMIN` - ADMIN
+      #  * `TEAM_MEMBER` - TEAM_MEMBER
+      #  * `LIMITED_TEAM_MEMBER` - LIMITED_TEAM_MEMBER
+      #  * `INTERVIEWER` - INTERVIEWER
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

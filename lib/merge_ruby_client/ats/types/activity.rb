@@ -31,18 +31,18 @@ module Merge
       # @return [DateTime] When the third party's activity was created.
       attr_reader :remote_created_at
       # @return [Merge::Ats::ActivityTypeEnum] The activity's type.
-      #  - `NOTE` - NOTE
-      #  - `EMAIL` - EMAIL
-      #  - `OTHER` - OTHER
+      #  * `NOTE` - NOTE
+      #  * `EMAIL` - EMAIL
+      #  * `OTHER` - OTHER
       attr_reader :activity_type
       # @return [String] The activity's subject.
       attr_reader :subject
       # @return [String] The activity's body.
       attr_reader :body
       # @return [Merge::Ats::VisibilityEnum] The activity's visibility.
-      #  - `ADMIN_ONLY` - ADMIN_ONLY
-      #  - `PUBLIC` - PUBLIC
-      #  - `PRIVATE` - PRIVATE
+      #  * `ADMIN_ONLY` - ADMIN_ONLY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
       attr_reader :visibility
       # @return [String]
       attr_reader :candidate
@@ -70,15 +70,15 @@ module Merge
       # @param user [Merge::Ats::ActivityUser] The user that performed the action.
       # @param remote_created_at [DateTime] When the third party's activity was created.
       # @param activity_type [Merge::Ats::ActivityTypeEnum] The activity's type.
-      #  - `NOTE` - NOTE
-      #  - `EMAIL` - EMAIL
-      #  - `OTHER` - OTHER
+      #  * `NOTE` - NOTE
+      #  * `EMAIL` - EMAIL
+      #  * `OTHER` - OTHER
       # @param subject [String] The activity's subject.
       # @param body [String] The activity's body.
       # @param visibility [Merge::Ats::VisibilityEnum] The activity's visibility.
-      #  - `ADMIN_ONLY` - ADMIN_ONLY
-      #  - `PUBLIC` - PUBLIC
-      #  - `PRIVATE` - PRIVATE
+      #  * `ADMIN_ONLY` - ADMIN_ONLY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
       # @param candidate [String]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion

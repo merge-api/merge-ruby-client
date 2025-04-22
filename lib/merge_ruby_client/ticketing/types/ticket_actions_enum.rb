@@ -2,12 +2,12 @@
 
 module Merge
   module Ticketing
-    # - `VIEW` - VIEW
-    #  - `CREATE` - CREATE
-    #  - `EDIT` - EDIT
-    #  - `DELETE` - DELETE
-    #  - `CLOSE` - CLOSE
-    #  - `ASSIGN` - ASSIGN
+    # * `VIEW` - VIEW
+    #  * `CREATE` - CREATE
+    #  * `EDIT` - EDIT
+    #  * `DELETE` - DELETE
+    #  * `CLOSE` - CLOSE
+    #  * `ASSIGN` - ASSIGN
     class TicketActionsEnum
       VIEW = "VIEW"
       CREATE = "CREATE"

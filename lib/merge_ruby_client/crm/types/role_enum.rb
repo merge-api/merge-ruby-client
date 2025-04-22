@@ -2,12 +2,12 @@
 
 module Merge
   module Crm
-    # - `ADMIN` - ADMIN
-    #  - `DEVELOPER` - DEVELOPER
-    #  - `MEMBER` - MEMBER
-    #  - `API` - API
-    #  - `SYSTEM` - SYSTEM
-    #  - `MERGE_TEAM` - MERGE_TEAM
+    # * `ADMIN` - ADMIN
+    #  * `DEVELOPER` - DEVELOPER
+    #  * `MEMBER` - MEMBER
+    #  * `API` - API
+    #  * `SYSTEM` - SYSTEM
+    #  * `MERGE_TEAM` - MERGE_TEAM
     class RoleEnum
       ADMIN = "ADMIN"
       DEVELOPER = "DEVELOPER"

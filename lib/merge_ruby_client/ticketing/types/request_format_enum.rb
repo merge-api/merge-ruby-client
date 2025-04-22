@@ -2,9 +2,9 @@
 
 module Merge
   module Ticketing
-    # - `JSON` - JSON
-    #  - `XML` - XML
-    #  - `MULTIPART` - MULTIPART
+    # * `JSON` - JSON
+    #  * `XML` - XML
+    #  * `MULTIPART` - MULTIPART
     class RequestFormatEnum
       JSON_ = "JSON"
       XML = "XML"

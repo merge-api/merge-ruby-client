@@ -2,9 +2,9 @@
 
 module Merge
   module Ats
-    # - `PERSONAL` - PERSONAL
-    #  - `WORK` - WORK
-    #  - `OTHER` - OTHER
+    # * `PERSONAL` - PERSONAL
+    #  * `WORK` - WORK
+    #  * `OTHER` - OTHER
     class EmailAddressTypeEnum
       PERSONAL = "PERSONAL"
       WORK = "WORK"

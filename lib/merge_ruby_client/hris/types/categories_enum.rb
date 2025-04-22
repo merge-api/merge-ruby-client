@@ -2,13 +2,13 @@
 
 module Merge
   module Hris
-    # - `hris` - hris
-    #  - `ats` - ats
-    #  - `accounting` - accounting
-    #  - `ticketing` - ticketing
-    #  - `crm` - crm
-    #  - `mktg` - mktg
-    #  - `filestorage` - filestorage
+    # * `hris` - hris
+    #  * `ats` - ats
+    #  * `accounting` - accounting
+    #  * `ticketing` - ticketing
+    #  * `crm` - crm
+    #  * `mktg` - mktg
+    #  * `filestorage` - filestorage
     class CategoriesEnum
       HRIS = "hris"
       ATS = "ats"

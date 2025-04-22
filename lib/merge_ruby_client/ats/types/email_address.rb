@@ -20,9 +20,9 @@ module Merge
       # @return [String] The email address.
       attr_reader :value
       # @return [Merge::Ats::EmailAddressTypeEnum] The type of email address.
-      #  - `PERSONAL` - PERSONAL
-      #  - `WORK` - WORK
-      #  - `OTHER` - OTHER
+      #  * `PERSONAL` - PERSONAL
+      #  * `WORK` - WORK
+      #  * `OTHER` - OTHER
       attr_reader :email_address_type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -41,9 +41,9 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param value [String] The email address.
       # @param email_address_type [Merge::Ats::EmailAddressTypeEnum] The type of email address.
-      #  - `PERSONAL` - PERSONAL
-      #  - `WORK` - WORK
-      #  - `OTHER` - OTHER
+      #  * `PERSONAL` - PERSONAL
+      #  * `WORK` - WORK
+      #  * `OTHER` - OTHER
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

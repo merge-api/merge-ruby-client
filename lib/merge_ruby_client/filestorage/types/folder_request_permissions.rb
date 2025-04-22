@@ -36,9 +36,9 @@ module Merge
           return nil if struct.nil?
 
           return struct&.map do |item|
-                   item = item.to_json
-                   Merge::Filestorage::FolderRequestPermissionsItem.from_json(json_object: item)
-                 end
+            item = item.to_json
+            Merge::Filestorage::FolderRequestPermissionsItem.from_json(json_object: item)
+          end
         rescue StandardError
           # noop
         end

@@ -33,8 +33,8 @@ module Merge
       #  the transaction was paid.
       attr_reader :payee
       # @return [Merge::Accounting::CreditOrDebitEnum] If the transaction is of type debit or credit.
-      #  - `CREDIT` - CREDIT
-      #  - `DEBIT` - DEBIT
+      #  * `CREDIT` - CREDIT
+      #  * `DEBIT` - DEBIT
       attr_reader :credit_or_debit
       # @return [String] The customer’s identifier for the transaction.
       attr_reader :source_transaction_id
@@ -59,8 +59,8 @@ module Merge
       # @param payee [String] The person or merchant who initiated the transaction, or alternatively, to whom
       #  the transaction was paid.
       # @param credit_or_debit [Merge::Accounting::CreditOrDebitEnum] If the transaction is of type debit or credit.
-      #  - `CREDIT` - CREDIT
-      #  - `DEBIT` - DEBIT
+      #  * `CREDIT` - CREDIT
+      #  * `DEBIT` - DEBIT
       # @param source_transaction_id [String] The customer’s identifier for the transaction.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]

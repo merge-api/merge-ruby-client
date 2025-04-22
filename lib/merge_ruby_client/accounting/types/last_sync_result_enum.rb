@@ -2,13 +2,13 @@
 
 module Merge
   module Accounting
-    # - `SYNCING` - SYNCING
-    #  - `DONE` - DONE
-    #  - `FAILED` - FAILED
-    #  - `DISABLED` - DISABLED
-    #  - `PAUSED` - PAUSED
-    #  - `PARTIALLY_SYNCED` - PARTIALLY_SYNCED
-    class SyncStatusStatusEnum
+    # * `SYNCING` - SYNCING
+    #  * `DONE` - DONE
+    #  * `FAILED` - FAILED
+    #  * `DISABLED` - DISABLED
+    #  * `PAUSED` - PAUSED
+    #  * `PARTIALLY_SYNCED` - PARTIALLY_SYNCED
+    class LastSyncResultEnum
       SYNCING = "SYNCING"
       DONE = "DONE"
       FAILED = "FAILED"

@@ -25,11 +25,11 @@ module Merge
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
       # @return [Merge::Hris::BenefitPlanTypeEnum] The type of benefit plan.
-      #  - `MEDICAL` - MEDICAL
-      #  - `HEALTH_SAVINGS` - HEALTH_SAVINGS
-      #  - `INSURANCE` - INSURANCE
-      #  - `RETIREMENT` - RETIREMENT
-      #  - `OTHER` - OTHER
+      #  * `MEDICAL` - MEDICAL
+      #  * `HEALTH_SAVINGS` - HEALTH_SAVINGS
+      #  * `INSURANCE` - INSURANCE
+      #  * `RETIREMENT` - RETIREMENT
+      #  * `OTHER` - OTHER
       attr_reader :benefit_plan_type
       # @return [String] The employer benefit's name - typically the carrier or network name.
       attr_reader :name
@@ -59,11 +59,11 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param benefit_plan_type [Merge::Hris::BenefitPlanTypeEnum] The type of benefit plan.
-      #  - `MEDICAL` - MEDICAL
-      #  - `HEALTH_SAVINGS` - HEALTH_SAVINGS
-      #  - `INSURANCE` - INSURANCE
-      #  - `RETIREMENT` - RETIREMENT
-      #  - `OTHER` - OTHER
+      #  * `MEDICAL` - MEDICAL
+      #  * `HEALTH_SAVINGS` - HEALTH_SAVINGS
+      #  * `INSURANCE` - INSURANCE
+      #  * `RETIREMENT` - RETIREMENT
+      #  * `OTHER` - OTHER
       # @param name [String] The employer benefit's name - typically the carrier or network name.
       # @param description [String] The employer benefit's description.
       # @param deduction_code [String] The employer benefit's deduction code.

@@ -2,8 +2,8 @@
 
 module Merge
   module Crm
-    # - `INBOUND` - INBOUND
-    #  - `OUTBOUND` - OUTBOUND
+    # * `INBOUND` - INBOUND
+    #  * `OUTBOUND` - OUTBOUND
     class DirectionEnum
       INBOUND = "INBOUND"
       OUTBOUND = "OUTBOUND"

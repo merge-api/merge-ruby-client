@@ -13,8 +13,8 @@ module Merge
     #  ### Description
     #  An `Employee` is an individual who works for the company of the linked account.
     #  The `Employee` model contains both contractors and full time employees.
-    #  - An `Employee` is a contractor if `is_contractor` property is `True`
-    #  - An `Employee` is a full time employee if `is_contractor` property is `False`
+    #  * An `Employee` is a contractor if `is_contractor` property is `True`
+    #  * An `Employee` is a full time employee if `is_contractor` property is `False`
     #  ### Usage Example
     #  Fetch from the `LIST Employees` endpoint and view a company's employees.
     class Employee
@@ -39,8 +39,8 @@ module Merge
       # @return [Merge::Accounting::EmployeeCompany] The subsidiary that the employee belongs to.
       attr_reader :company
       # @return [Merge::Accounting::Status895Enum] The employee's status in the accounting system.
-      #  - `ACTIVE` - ACTIVE
-      #  - `INACTIVE` - INACTIVE
+      #  * `ACTIVE` - ACTIVE
+      #  * `INACTIVE` - INACTIVE
       attr_reader :status
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -70,8 +70,8 @@ module Merge
       # @param email_address [String] The employee's email address.
       # @param company [Merge::Accounting::EmployeeCompany] The subsidiary that the employee belongs to.
       # @param status [Merge::Accounting::Status895Enum] The employee's status in the accounting system.
-      #  - `ACTIVE` - ACTIVE
-      #  - `INACTIVE` - INACTIVE
+      #  * `ACTIVE` - ACTIVE
+      #  * `INACTIVE` - INACTIVE
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

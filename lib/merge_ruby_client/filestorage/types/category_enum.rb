@@ -2,13 +2,13 @@
 
 module Merge
   module Filestorage
-    # - `hris` - hris
-    #  - `ats` - ats
-    #  - `accounting` - accounting
-    #  - `ticketing` - ticketing
-    #  - `crm` - crm
-    #  - `mktg` - mktg
-    #  - `filestorage` - filestorage
+    # * `hris` - hris
+    #  * `ats` - ats
+    #  * `accounting` - accounting
+    #  * `ticketing` - ticketing
+    #  * `crm` - crm
+    #  * `mktg` - mktg
+    #  * `filestorage` - filestorage
     class CategoryEnum
       HRIS = "hris"
       ATS = "ats"

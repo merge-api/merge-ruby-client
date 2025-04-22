@@ -28,10 +28,10 @@ module Merge
       # @return [Float] The amount earned.
       attr_reader :amount
       # @return [Merge::Hris::EarningTypeEnum] The type of earning.
-      #  - `SALARY` - SALARY
-      #  - `REIMBURSEMENT` - REIMBURSEMENT
-      #  - `OVERTIME` - OVERTIME
-      #  - `BONUS` - BONUS
+      #  * `SALARY` - SALARY
+      #  * `REIMBURSEMENT` - REIMBURSEMENT
+      #  * `OVERTIME` - OVERTIME
+      #  * `BONUS` - BONUS
       attr_reader :type
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -57,10 +57,10 @@ module Merge
       # @param employee_payroll_run [String]
       # @param amount [Float] The amount earned.
       # @param type [Merge::Hris::EarningTypeEnum] The type of earning.
-      #  - `SALARY` - SALARY
-      #  - `REIMBURSEMENT` - REIMBURSEMENT
-      #  - `OVERTIME` - OVERTIME
-      #  - `BONUS` - BONUS
+      #  * `SALARY` - SALARY
+      #  * `REIMBURSEMENT` - REIMBURSEMENT
+      #  * `OVERTIME` - OVERTIME
+      #  * `BONUS` - BONUS
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn

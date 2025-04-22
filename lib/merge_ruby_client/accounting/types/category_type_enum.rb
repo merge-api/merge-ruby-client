@@ -2,8 +2,8 @@
 
 module Merge
   module Accounting
-    # - `CLASS` - CLASS
-    #  - `DEPARTMENT` - DEPARTMENT
+    # * `CLASS` - CLASS
+    #  * `DEPARTMENT` - DEPARTMENT
     class CategoryTypeEnum
       CLASS = "CLASS"
       DEPARTMENT = "DEPARTMENT"

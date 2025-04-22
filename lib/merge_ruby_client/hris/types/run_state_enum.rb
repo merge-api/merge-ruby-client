@@ -2,11 +2,11 @@
 
 module Merge
   module Hris
-    # - `PAID` - PAID
-    #  - `DRAFT` - DRAFT
-    #  - `APPROVED` - APPROVED
-    #  - `FAILED` - FAILED
-    #  - `CLOSED` - CLOSED
+    # * `PAID` - PAID
+    #  * `DRAFT` - DRAFT
+    #  * `APPROVED` - APPROVED
+    #  * `FAILED` - FAILED
+    #  * `CLOSED` - CLOSED
     class RunStateEnum
       PAID = "PAID"
       DRAFT = "DRAFT"

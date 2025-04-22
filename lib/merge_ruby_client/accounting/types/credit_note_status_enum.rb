@@ -2,9 +2,9 @@
 
 module Merge
   module Accounting
-    # - `SUBMITTED` - SUBMITTED
-    #  - `AUTHORIZED` - AUTHORIZED
-    #  - `PAID` - PAID
+    # * `SUBMITTED` - SUBMITTED
+    #  * `AUTHORIZED` - AUTHORIZED
+    #  * `PAID` - PAID
     class CreditNoteStatusEnum
       SUBMITTED = "SUBMITTED"
       AUTHORIZED = "AUTHORIZED"

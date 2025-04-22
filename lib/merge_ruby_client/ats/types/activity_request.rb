@@ -19,18 +19,18 @@ module Merge
       # @return [Merge::Ats::ActivityRequestUser] The user that performed the action.
       attr_reader :user
       # @return [Merge::Ats::ActivityTypeEnum] The activity's type.
-      #  - `NOTE` - NOTE
-      #  - `EMAIL` - EMAIL
-      #  - `OTHER` - OTHER
+      #  * `NOTE` - NOTE
+      #  * `EMAIL` - EMAIL
+      #  * `OTHER` - OTHER
       attr_reader :activity_type
       # @return [String] The activity's subject.
       attr_reader :subject
       # @return [String] The activity's body.
       attr_reader :body
       # @return [Merge::Ats::VisibilityEnum] The activity's visibility.
-      #  - `ADMIN_ONLY` - ADMIN_ONLY
-      #  - `PUBLIC` - PUBLIC
-      #  - `PRIVATE` - PRIVATE
+      #  * `ADMIN_ONLY` - ADMIN_ONLY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
       attr_reader :visibility
       # @return [String]
       attr_reader :candidate
@@ -48,15 +48,15 @@ module Merge
 
       # @param user [Merge::Ats::ActivityRequestUser] The user that performed the action.
       # @param activity_type [Merge::Ats::ActivityTypeEnum] The activity's type.
-      #  - `NOTE` - NOTE
-      #  - `EMAIL` - EMAIL
-      #  - `OTHER` - OTHER
+      #  * `NOTE` - NOTE
+      #  * `EMAIL` - EMAIL
+      #  * `OTHER` - OTHER
       # @param subject [String] The activity's subject.
       # @param body [String] The activity's body.
       # @param visibility [Merge::Ats::VisibilityEnum] The activity's visibility.
-      #  - `ADMIN_ONLY` - ADMIN_ONLY
-      #  - `PUBLIC` - PUBLIC
-      #  - `PRIVATE` - PRIVATE
+      #  * `ADMIN_ONLY` - ADMIN_ONLY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
       # @param candidate [String]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
