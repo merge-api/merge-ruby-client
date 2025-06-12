@@ -2,6 +2,8 @@
 
 require "date"
 require_relative "vendor_credit_line_account"
+require_relative "vendor_credit_line_project"
+require_relative "vendor_credit_line_contact"
 require "ostruct"
 require "json"
 
@@ -34,6 +36,10 @@ module Merge
       attr_reader :account
       # @return [String] The company the line belongs to.
       attr_reader :company
+      # @return [Merge::Accounting::VendorCreditLineProject]
+      attr_reader :project
+      # @return [Merge::Accounting::VendorCreditLineContact]
+      attr_reader :contact
       # @return [String] The tax rate that applies to this line item.
       attr_reader :tax_rate
       # @return [String] The vendor credit line item's exchange rate.
@@ -61,6 +67,8 @@ module Merge
       # @param description [String] The line's description.
       # @param account [Merge::Accounting::VendorCreditLineAccount] The line's account.
       # @param company [String] The company the line belongs to.
+      # @param project [Merge::Accounting::VendorCreditLineProject]
+      # @param contact [Merge::Accounting::VendorCreditLineContact]
       # @param tax_rate [String] The tax rate that applies to this line item.
       # @param exchange_rate [String] The vendor credit line item's exchange rate.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -70,7 +78,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::VendorCreditLine]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, net_amount: OMIT,
-                     tracking_category: OMIT, tracking_categories: OMIT, description: OMIT, account: OMIT, company: OMIT, tax_rate: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+                     tracking_category: OMIT, tracking_categories: OMIT, description: OMIT, account: OMIT, company: OMIT, project: OMIT, contact: OMIT, tax_rate: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -81,6 +89,8 @@ module Merge
         @description = description if description != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
+        @project = project if project != OMIT
+        @contact = contact if contact != OMIT
         @tax_rate = tax_rate if tax_rate != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
@@ -96,6 +106,8 @@ module Merge
           "description": description,
           "account": account,
           "company": company,
+          "project": project,
+          "contact": contact,
           "tax_rate": tax_rate,
           "exchange_rate": exchange_rate,
           "remote_was_deleted": remote_was_deleted
@@ -126,6 +138,18 @@ module Merge
           account = Merge::Accounting::VendorCreditLineAccount.from_json(json_object: account)
         end
         company = parsed_json["company"]
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::VendorCreditLineProject.from_json(json_object: project)
+        end
+        if parsed_json["contact"].nil?
+          contact = nil
+        else
+          contact = parsed_json["contact"].to_json
+          contact = Merge::Accounting::VendorCreditLineContact.from_json(json_object: contact)
+        end
         tax_rate = parsed_json["tax_rate"]
         exchange_rate = parsed_json["exchange_rate"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
@@ -140,6 +164,8 @@ module Merge
           description: description,
           account: account,
           company: company,
+          project: project,
+          contact: contact,
           tax_rate: tax_rate,
           exchange_rate: exchange_rate,
           remote_was_deleted: remote_was_deleted,
@@ -171,6 +197,8 @@ module Merge
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::VendorCreditLineAccount.validate_raw(obj: obj.account)
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.project.nil? || Merge::Accounting::VendorCreditLineProject.validate_raw(obj: obj.project)
+        obj.contact.nil? || Merge::Accounting::VendorCreditLineContact.validate_raw(obj: obj.contact)
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

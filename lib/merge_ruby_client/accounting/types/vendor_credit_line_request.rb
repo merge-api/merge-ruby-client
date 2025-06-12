@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "vendor_credit_line_request_account"
+require_relative "vendor_credit_line_request_project"
+require_relative "vendor_credit_line_request_contact"
 require "ostruct"
 require "json"
 
@@ -27,6 +29,10 @@ module Merge
       attr_reader :account
       # @return [String] The company the line belongs to.
       attr_reader :company
+      # @return [Merge::Accounting::VendorCreditLineRequestProject]
+      attr_reader :project
+      # @return [Merge::Accounting::VendorCreditLineRequestContact]
+      attr_reader :contact
       # @return [String] The tax rate that applies to this line item.
       attr_reader :tax_rate
       # @return [String] The vendor credit line item's exchange rate.
@@ -50,6 +56,8 @@ module Merge
       # @param description [String] The line's description.
       # @param account [Merge::Accounting::VendorCreditLineRequestAccount] The line's account.
       # @param company [String] The company the line belongs to.
+      # @param project [Merge::Accounting::VendorCreditLineRequestProject]
+      # @param contact [Merge::Accounting::VendorCreditLineRequestContact]
       # @param tax_rate [String] The tax rate that applies to this line item.
       # @param exchange_rate [String] The vendor credit line item's exchange rate.
       # @param integration_params [Hash{String => Object}]
@@ -57,7 +65,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::VendorCreditLineRequest]
       def initialize(remote_id: OMIT, net_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT,
-                     description: OMIT, account: OMIT, company: OMIT, tax_rate: OMIT, exchange_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     description: OMIT, account: OMIT, company: OMIT, project: OMIT, contact: OMIT, tax_rate: OMIT, exchange_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @net_amount = net_amount if net_amount != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
@@ -65,6 +73,8 @@ module Merge
         @description = description if description != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
+        @project = project if project != OMIT
+        @contact = contact if contact != OMIT
         @tax_rate = tax_rate if tax_rate != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @integration_params = integration_params if integration_params != OMIT
@@ -78,6 +88,8 @@ module Merge
           "description": description,
           "account": account,
           "company": company,
+          "project": project,
+          "contact": contact,
           "tax_rate": tax_rate,
           "exchange_rate": exchange_rate,
           "integration_params": integration_params,
@@ -106,6 +118,18 @@ module Merge
           account = Merge::Accounting::VendorCreditLineRequestAccount.from_json(json_object: account)
         end
         company = parsed_json["company"]
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::VendorCreditLineRequestProject.from_json(json_object: project)
+        end
+        if parsed_json["contact"].nil?
+          contact = nil
+        else
+          contact = parsed_json["contact"].to_json
+          contact = Merge::Accounting::VendorCreditLineRequestContact.from_json(json_object: contact)
+        end
         tax_rate = parsed_json["tax_rate"]
         exchange_rate = parsed_json["exchange_rate"]
         integration_params = parsed_json["integration_params"]
@@ -118,6 +142,8 @@ module Merge
           description: description,
           account: account,
           company: company,
+          project: project,
+          contact: contact,
           tax_rate: tax_rate,
           exchange_rate: exchange_rate,
           integration_params: integration_params,
@@ -147,6 +173,8 @@ module Merge
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::VendorCreditLineRequestAccount.validate_raw(obj: obj.account)
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.project.nil? || Merge::Accounting::VendorCreditLineRequestProject.validate_raw(obj: obj.project)
+        obj.contact.nil? || Merge::Accounting::VendorCreditLineRequestContact.validate_raw(obj: obj.contact)
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")

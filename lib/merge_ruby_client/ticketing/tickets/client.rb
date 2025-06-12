@@ -169,6 +169,7 @@ module Merge
       #   * :contact (Hash)
       #   * :parent_ticket (Hash)
       #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
+      #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
@@ -277,6 +278,7 @@ module Merge
       #   * :account (String)
       #   * :contact (String)
       #   * :parent_ticket (String)
+      #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
@@ -404,6 +406,8 @@ module Merge
 
       # Returns metadata for `Ticket` POSTs.
       #
+      # @param collection_id [String] If provided, will only return tickets for this collection.
+      # @param ticket_type [String] If provided, will only return tickets for this ticket type.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::MetaResponse]
       # @example
@@ -413,7 +417,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.tickets.meta_post_retrieve
-      def meta_post_retrieve(request_options: nil)
+      def meta_post_retrieve(collection_id: nil, ticket_type: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -423,9 +427,11 @@ module Merge
         **@request_client.get_headers,
         **(request_options&.additional_headers || {})
           }.compact
-          unless request_options.nil? || request_options&.additional_query_parameters.nil?
-            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
-          end
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "collection_id": collection_id,
+            "ticket_type": ticket_type
+          }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
           end
@@ -448,6 +454,7 @@ module Merge
       #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
+      # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
@@ -459,7 +466,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, ids: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -477,6 +484,7 @@ module Merge
             "include_remote_data": include_remote_data,
             "include_shell_data": include_shell_data,
             "is_common_model_field": is_common_model_field,
+            "is_custom": is_custom,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -637,6 +645,7 @@ module Merge
       #   * :contact (Hash)
       #   * :parent_ticket (Hash)
       #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
+      #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
@@ -749,6 +758,7 @@ module Merge
       #   * :account (String)
       #   * :contact (String)
       #   * :parent_ticket (String)
+      #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
       #   * :completed_at (DateTime)
@@ -882,6 +892,8 @@ module Merge
 
       # Returns metadata for `Ticket` POSTs.
       #
+      # @param collection_id [String] If provided, will only return tickets for this collection.
+      # @param ticket_type [String] If provided, will only return tickets for this ticket type.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::MetaResponse]
       # @example
@@ -891,7 +903,7 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.tickets.meta_post_retrieve
-      def meta_post_retrieve(request_options: nil)
+      def meta_post_retrieve(collection_id: nil, ticket_type: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -902,9 +914,11 @@ module Merge
           **@request_client.get_headers,
           **(request_options&.additional_headers || {})
             }.compact
-            unless request_options.nil? || request_options&.additional_query_parameters.nil?
-              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
-            end
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "collection_id": collection_id,
+              "ticket_type": ticket_type
+            }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
             end
@@ -928,6 +942,7 @@ module Merge
       #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
+      # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
@@ -939,7 +954,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, ids: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -958,6 +973,7 @@ module Merge
               "include_remote_data": include_remote_data,
               "include_shell_data": include_shell_data,
               "is_common_model_field": is_common_model_field,
+              "is_custom": is_custom,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?

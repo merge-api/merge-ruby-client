@@ -10,6 +10,7 @@ require_relative "ticket_request_account"
 require_relative "ticket_request_contact"
 require_relative "ticket_request_parent_ticket"
 require_relative "ticket_request_attachments_item"
+require_relative "ticket_access_level_enum"
 require_relative "priority_enum"
 require_relative "remote_field_request"
 require "ostruct"
@@ -61,6 +62,13 @@ module Merge
       attr_reader :parent_ticket
       # @return [Array<Merge::Ticketing::TicketRequestAttachmentsItem>]
       attr_reader :attachments
+      # @return [Merge::Ticketing::TicketAccessLevelEnum] The description of who is able to access a given ticket, or where access is
+      #  inherited from.
+      #  * `COMPANY` - COMPANY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
+      #  * `COLLECTION` - COLLECTION
+      attr_reader :access_level
       # @return [Array<String>]
       attr_reader :tags
       # @return [Array<String>]
@@ -114,6 +122,12 @@ module Merge
       # @param contact [Merge::Ticketing::TicketRequestContact] The contact associated with the ticket.
       # @param parent_ticket [Merge::Ticketing::TicketRequestParentTicket] The ticket's parent ticket.
       # @param attachments [Array<Merge::Ticketing::TicketRequestAttachmentsItem>]
+      # @param access_level [Merge::Ticketing::TicketAccessLevelEnum] The description of who is able to access a given ticket, or where access is
+      #  inherited from.
+      #  * `COMPANY` - COMPANY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
+      #  * `COLLECTION` - COLLECTION
       # @param tags [Array<String>]
       # @param roles [Array<String>]
       # @param completed_at [DateTime] When the ticket was completed.
@@ -129,7 +143,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::TicketRequest]
       def initialize(name: OMIT, assignees: OMIT, assigned_teams: OMIT, creator: OMIT, due_date: OMIT, status: OMIT,
-                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, attachments: OMIT, tags: OMIT, roles: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, attachments: OMIT, access_level: OMIT, tags: OMIT, roles: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @name = name if name != OMIT
         @assignees = assignees if assignees != OMIT
         @assigned_teams = assigned_teams if assigned_teams != OMIT
@@ -143,6 +157,7 @@ module Merge
         @contact = contact if contact != OMIT
         @parent_ticket = parent_ticket if parent_ticket != OMIT
         @attachments = attachments if attachments != OMIT
+        @access_level = access_level if access_level != OMIT
         @tags = tags if tags != OMIT
         @roles = roles if roles != OMIT
         @completed_at = completed_at if completed_at != OMIT
@@ -166,6 +181,7 @@ module Merge
           "contact": contact,
           "parent_ticket": parent_ticket,
           "attachments": attachments,
+          "access_level": access_level,
           "tags": tags,
           "roles": roles,
           "completed_at": completed_at,
@@ -231,6 +247,7 @@ module Merge
           item = item.to_json
           Merge::Ticketing::TicketRequestAttachmentsItem.from_json(json_object: item)
         end
+        access_level = parsed_json["access_level"]
         tags = parsed_json["tags"]
         roles = parsed_json["roles"]
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
@@ -256,6 +273,7 @@ module Merge
           contact: contact,
           parent_ticket: parent_ticket,
           attachments: attachments,
+          access_level: access_level,
           tags: tags,
           roles: roles,
           completed_at: completed_at,
@@ -295,6 +313,7 @@ module Merge
         obj.contact.nil? || Merge::Ticketing::TicketRequestContact.validate_raw(obj: obj.contact)
         obj.parent_ticket.nil? || Merge::Ticketing::TicketRequestParentTicket.validate_raw(obj: obj.parent_ticket)
         obj.attachments&.is_a?(Array) != false || raise("Passed value for field obj.attachments is not the expected type, validation failed.")
+        obj.access_level&.is_a?(Merge::Ticketing::TicketAccessLevelEnum) != false || raise("Passed value for field obj.access_level is not the expected type, validation failed.")
         obj.tags&.is_a?(Array) != false || raise("Passed value for field obj.tags is not the expected type, validation failed.")
         obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
         obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")

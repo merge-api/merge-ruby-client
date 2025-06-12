@@ -20,6 +20,7 @@ module Merge
 
       # Returns a list of `TrackingCategory` objects.
       #
+      # @param category_type [String] If provided, will only return tracking categories with this type.
       # @param company_id [String] If provided, will only return tracking categories for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -37,13 +38,14 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param name [String] If provided, will only return TrackingCategories with this name.
+      # @param name [String] If provided, will only return tracking categories with this name.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] If provided, will only return tracking categories with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedTrackingCategoryList]
       # @example
@@ -53,8 +55,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.tracking_categories.list
-      def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+      def list(category_type: nil, company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -66,6 +68,7 @@ module Merge
           }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
+            "category_type": category_type,
             "company_id": company_id,
             "created_after": created_after,
             "created_before": created_before,
@@ -80,7 +83,8 @@ module Merge
             "page_size": page_size,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
-            "show_enum_origins": show_enum_origins
+            "show_enum_origins": show_enum_origins,
+            "status": status
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -152,6 +156,7 @@ module Merge
 
       # Returns a list of `TrackingCategory` objects.
       #
+      # @param category_type [String] If provided, will only return tracking categories with this type.
       # @param company_id [String] If provided, will only return tracking categories for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -169,13 +174,14 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param name [String] If provided, will only return TrackingCategories with this name.
+      # @param name [String] If provided, will only return tracking categories with this name.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] If provided, will only return tracking categories with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedTrackingCategoryList]
       # @example
@@ -185,8 +191,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.tracking_categories.list
-      def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+      def list(category_type: nil, company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -199,6 +205,7 @@ module Merge
             }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
+              "category_type": category_type,
               "company_id": company_id,
               "created_after": created_after,
               "created_before": created_before,
@@ -213,7 +220,8 @@ module Merge
               "page_size": page_size,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
-              "show_enum_origins": show_enum_origins
+              "show_enum_origins": show_enum_origins,
+              "status": status
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact

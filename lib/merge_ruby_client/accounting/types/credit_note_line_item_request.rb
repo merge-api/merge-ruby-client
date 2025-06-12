@@ -2,6 +2,8 @@
 
 require_relative "credit_note_line_item_request_item"
 require_relative "credit_note_line_item_request_company"
+require_relative "credit_note_line_item_request_contact"
+require_relative "credit_note_line_item_request_project"
 require "ostruct"
 require "json"
 
@@ -39,6 +41,10 @@ module Merge
       attr_reader :account
       # @return [Merge::Accounting::CreditNoteLineItemRequestCompany] The company the credit note belongs to.
       attr_reader :company
+      # @return [Merge::Accounting::CreditNoteLineItemRequestContact] The credit note's contact.
+      attr_reader :contact
+      # @return [Merge::Accounting::CreditNoteLineItemRequestProject]
+      attr_reader :project
       # @return [Hash{String => Object}]
       attr_reader :integration_params
       # @return [Hash{String => Object}]
@@ -64,12 +70,14 @@ module Merge
       # @param tracking_categories [Array<String>] The credit note line item's associated tracking categories.
       # @param account [String] The credit note line item's account.
       # @param company [Merge::Accounting::CreditNoteLineItemRequestCompany] The company the credit note belongs to.
+      # @param contact [Merge::Accounting::CreditNoteLineItemRequestContact] The credit note's contact.
+      # @param project [Merge::Accounting::CreditNoteLineItemRequestProject]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::CreditNoteLineItemRequest]
       def initialize(remote_id: OMIT, item: OMIT, name: OMIT, description: OMIT, quantity: OMIT, memo: OMIT,
-                     unit_price: OMIT, tax_rate: OMIT, total_line_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT, account: OMIT, company: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
+                     unit_price: OMIT, tax_rate: OMIT, total_line_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT, account: OMIT, company: OMIT, contact: OMIT, project: OMIT, integration_params: OMIT, linked_account_params: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @item = item if item != OMIT
         @name = name if name != OMIT
@@ -83,6 +91,8 @@ module Merge
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
+        @contact = contact if contact != OMIT
+        @project = project if project != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
         @additional_properties = additional_properties
@@ -100,6 +110,8 @@ module Merge
           "tracking_categories": tracking_categories,
           "account": account,
           "company": company,
+          "contact": contact,
+          "project": project,
           "integration_params": integration_params,
           "linked_account_params": linked_account_params
         }.reject do |_k, v|
@@ -137,6 +149,18 @@ module Merge
           company = parsed_json["company"].to_json
           company = Merge::Accounting::CreditNoteLineItemRequestCompany.from_json(json_object: company)
         end
+        if parsed_json["contact"].nil?
+          contact = nil
+        else
+          contact = parsed_json["contact"].to_json
+          contact = Merge::Accounting::CreditNoteLineItemRequestContact.from_json(json_object: contact)
+        end
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::CreditNoteLineItemRequestProject.from_json(json_object: project)
+        end
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         new(
@@ -153,6 +177,8 @@ module Merge
           tracking_categories: tracking_categories,
           account: account,
           company: company,
+          contact: contact,
+          project: project,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
           additional_properties: struct
@@ -186,6 +212,8 @@ module Merge
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::CreditNoteLineItemRequestCompany.validate_raw(obj: obj.company)
+        obj.contact.nil? || Merge::Accounting::CreditNoteLineItemRequestContact.validate_raw(obj: obj.contact)
+        obj.project.nil? || Merge::Accounting::CreditNoteLineItemRequestProject.validate_raw(obj: obj.project)
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
       end

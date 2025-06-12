@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "date"
+require_relative "collection_access_level_enum"
 require_relative "collection_type_enum"
 require_relative "collection_parent_collection"
-require_relative "access_level_enum"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -30,6 +30,12 @@ module Merge
       attr_reader :name
       # @return [String] The collection's description.
       attr_reader :description
+      # @return [Merge::Ticketing::CollectionAccessLevelEnum] The level of access a User has to the Collection and its sub-objects.
+      #  * `PRIVATE` - PRIVATE
+      #  * `COMPANY` - COMPANY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PARENT_COLLECTION` - PARENT_COLLECTION
+      attr_reader :access_level
       # @return [Merge::Ticketing::CollectionTypeEnum] The collection's type.
       #  * `LIST` - LIST
       #  * `PROJECT` - PROJECT
@@ -41,11 +47,6 @@ module Merge
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
-      # @return [Merge::Ticketing::AccessLevelEnum] The level of access a User has to the Collection and its sub-objects.
-      #  * `PRIVATE` - PRIVATE
-      #  * `COMPANY` - COMPANY
-      #  * `PUBLIC` - PUBLIC
-      attr_reader :access_level
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
       # @return [Array<Merge::Ticketing::RemoteData>]
@@ -64,6 +65,11 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The collection's name.
       # @param description [String] The collection's description.
+      # @param access_level [Merge::Ticketing::CollectionAccessLevelEnum] The level of access a User has to the Collection and its sub-objects.
+      #  * `PRIVATE` - PRIVATE
+      #  * `COMPANY` - COMPANY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PARENT_COLLECTION` - PARENT_COLLECTION
       # @param collection_type [Merge::Ticketing::CollectionTypeEnum] The collection's type.
       #  * `LIST` - LIST
       #  * `PROJECT` - PROJECT
@@ -72,26 +78,22 @@ module Merge
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
-      # @param access_level [Merge::Ticketing::AccessLevelEnum] The level of access a User has to the Collection and its sub-objects.
-      #  * `PRIVATE` - PRIVATE
-      #  * `COMPANY` - COMPANY
-      #  * `PUBLIC` - PUBLIC
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Ticketing::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::Collection]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, description: OMIT,
-                     collection_type: OMIT, parent_collection: OMIT, remote_was_deleted: OMIT, access_level: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     access_level: OMIT, collection_type: OMIT, parent_collection: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @name = name if name != OMIT
         @description = description if description != OMIT
+        @access_level = access_level if access_level != OMIT
         @collection_type = collection_type if collection_type != OMIT
         @parent_collection = parent_collection if parent_collection != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
-        @access_level = access_level if access_level != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
         @additional_properties = additional_properties
@@ -102,10 +104,10 @@ module Merge
           "modified_at": modified_at,
           "name": name,
           "description": description,
+          "access_level": access_level,
           "collection_type": collection_type,
           "parent_collection": parent_collection,
           "remote_was_deleted": remote_was_deleted,
-          "access_level": access_level,
           "field_mappings": field_mappings,
           "remote_data": remote_data
         }.reject do |_k, v|
@@ -126,6 +128,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         description = parsed_json["description"]
+        access_level = parsed_json["access_level"]
         collection_type = parsed_json["collection_type"]
         if parsed_json["parent_collection"].nil?
           parent_collection = nil
@@ -134,7 +137,6 @@ module Merge
           parent_collection = Merge::Ticketing::CollectionParentCollection.from_json(json_object: parent_collection)
         end
         remote_was_deleted = parsed_json["remote_was_deleted"]
-        access_level = parsed_json["access_level"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
           item = item.to_json
@@ -147,10 +149,10 @@ module Merge
           modified_at: modified_at,
           name: name,
           description: description,
+          access_level: access_level,
           collection_type: collection_type,
           parent_collection: parent_collection,
           remote_was_deleted: remote_was_deleted,
-          access_level: access_level,
           field_mappings: field_mappings,
           remote_data: remote_data,
           additional_properties: struct
@@ -177,10 +179,10 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
+        obj.access_level&.is_a?(Merge::Ticketing::CollectionAccessLevelEnum) != false || raise("Passed value for field obj.access_level is not the expected type, validation failed.")
         obj.collection_type&.is_a?(Merge::Ticketing::CollectionTypeEnum) != false || raise("Passed value for field obj.collection_type is not the expected type, validation failed.")
         obj.parent_collection.nil? || Merge::Ticketing::CollectionParentCollection.validate_raw(obj: obj.parent_collection)
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
-        obj.access_level&.is_a?(Merge::Ticketing::AccessLevelEnum) != false || raise("Passed value for field obj.access_level is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end
