@@ -7,6 +7,7 @@ require_relative "expense_line_request_employee"
 require_relative "transaction_currency_enum"
 require_relative "expense_line_request_account"
 require_relative "expense_line_request_contact"
+require_relative "expense_line_request_project"
 require_relative "remote_field_request"
 require "ostruct"
 require "json"
@@ -345,6 +346,8 @@ module Merge
       attr_reader :account
       # @return [Merge::Accounting::ExpenseLineRequestContact] The expense's contact.
       attr_reader :contact
+      # @return [Merge::Accounting::ExpenseLineRequestProject]
+      attr_reader :project
       # @return [String] The description of the item that was purchased by the company.
       attr_reader :description
       # @return [String] The expense line item's exchange rate.
@@ -681,6 +684,7 @@ module Merge
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param account [Merge::Accounting::ExpenseLineRequestAccount] The expense's payment account.
       # @param contact [Merge::Accounting::ExpenseLineRequestContact] The expense's contact.
+      # @param project [Merge::Accounting::ExpenseLineRequestProject]
       # @param description [String] The description of the item that was purchased by the company.
       # @param exchange_rate [String] The expense line item's exchange rate.
       # @param tax_rate [String] The tax rate that applies to this line item.
@@ -690,7 +694,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::ExpenseLineRequest]
       def initialize(remote_id: OMIT, item: OMIT, net_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT,
-                     company: OMIT, employee: OMIT, currency: OMIT, account: OMIT, contact: OMIT, description: OMIT, exchange_rate: OMIT, tax_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     company: OMIT, employee: OMIT, currency: OMIT, account: OMIT, contact: OMIT, project: OMIT, description: OMIT, exchange_rate: OMIT, tax_rate: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @remote_id = remote_id if remote_id != OMIT
         @item = item if item != OMIT
         @net_amount = net_amount if net_amount != OMIT
@@ -701,6 +705,7 @@ module Merge
         @currency = currency if currency != OMIT
         @account = account if account != OMIT
         @contact = contact if contact != OMIT
+        @project = project if project != OMIT
         @description = description if description != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @tax_rate = tax_rate if tax_rate != OMIT
@@ -719,6 +724,7 @@ module Merge
           "currency": currency,
           "account": account,
           "contact": contact,
+          "project": project,
           "description": description,
           "exchange_rate": exchange_rate,
           "tax_rate": tax_rate,
@@ -775,6 +781,12 @@ module Merge
           contact = parsed_json["contact"].to_json
           contact = Merge::Accounting::ExpenseLineRequestContact.from_json(json_object: contact)
         end
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::ExpenseLineRequestProject.from_json(json_object: project)
+        end
         description = parsed_json["description"]
         exchange_rate = parsed_json["exchange_rate"]
         tax_rate = parsed_json["tax_rate"]
@@ -795,6 +807,7 @@ module Merge
           currency: currency,
           account: account,
           contact: contact,
+          project: project,
           description: description,
           exchange_rate: exchange_rate,
           tax_rate: tax_rate,
@@ -829,6 +842,7 @@ module Merge
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.account.nil? || Merge::Accounting::ExpenseLineRequestAccount.validate_raw(obj: obj.account)
         obj.contact.nil? || Merge::Accounting::ExpenseLineRequestContact.validate_raw(obj: obj.contact)
+        obj.project.nil? || Merge::Accounting::ExpenseLineRequestProject.validate_raw(obj: obj.project)
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")

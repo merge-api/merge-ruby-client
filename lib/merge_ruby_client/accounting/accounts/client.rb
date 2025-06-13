@@ -27,7 +27,8 @@ module Merge
 
       # Returns a list of `Account` objects.
       #
-      # @param account_type [String] If provided, will only provide accounts with the passed in enum.
+      # @param account_type [String] If provided, will only return accounts with the passed in enum.
+      # @param classification [String] If provided, will only return accounts with this classification.
       # @param company_id [String] If provided, will only return accounts for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -52,6 +53,7 @@ module Merge
       # @param show_enum_origins [Merge::Accounting::Accounts::AccountsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] If provided, will only return accounts with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountList]
       # @example
@@ -61,8 +63,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.accounts.list
-      def list(account_type: nil, company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+      def list(account_type: nil, classification: nil, company_id: nil, created_after: nil, created_before: nil,
+               cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -75,6 +77,7 @@ module Merge
           req.params = {
             **(request_options&.additional_query_parameters || {}),
             "account_type": account_type,
+            "classification": classification,
             "company_id": company_id,
             "created_after": created_after,
             "created_before": created_before,
@@ -89,7 +92,8 @@ module Merge
             "page_size": page_size,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
-            "show_enum_origins": show_enum_origins
+            "show_enum_origins": show_enum_origins,
+            "status": status
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -241,7 +245,8 @@ module Merge
 
       # Returns a list of `Account` objects.
       #
-      # @param account_type [String] If provided, will only provide accounts with the passed in enum.
+      # @param account_type [String] If provided, will only return accounts with the passed in enum.
+      # @param classification [String] If provided, will only return accounts with this classification.
       # @param company_id [String] If provided, will only return accounts for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -266,6 +271,7 @@ module Merge
       # @param show_enum_origins [Merge::Accounting::Accounts::AccountsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] If provided, will only return accounts with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountList]
       # @example
@@ -275,8 +281,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.accounting.accounts.list
-      def list(account_type: nil, company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+      def list(account_type: nil, classification: nil, company_id: nil, created_after: nil, created_before: nil,
+               cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -290,6 +296,7 @@ module Merge
             req.params = {
               **(request_options&.additional_query_parameters || {}),
               "account_type": account_type,
+              "classification": classification,
               "company_id": company_id,
               "created_after": created_after,
               "created_before": created_before,
@@ -304,7 +311,8 @@ module Merge
               "page_size": page_size,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
-              "show_enum_origins": show_enum_origins
+              "show_enum_origins": show_enum_origins,
+              "status": status
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact

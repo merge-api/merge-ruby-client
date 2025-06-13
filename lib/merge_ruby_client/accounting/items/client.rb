@@ -4,8 +4,12 @@ require_relative "../../../requests"
 require "date"
 require_relative "types/items_list_request_expand"
 require_relative "../types/paginated_item_list"
+require_relative "../types/item_request_request"
+require_relative "../types/item_response"
 require_relative "types/items_retrieve_request_expand"
 require_relative "../types/item"
+require_relative "../types/patched_item_request_request"
+require_relative "../types/meta_response"
 require "async"
 
 module Merge
@@ -90,6 +94,53 @@ module Merge
         Merge::Accounting::PaginatedItemList.from_json(json_object: response.body)
       end
 
+      # Creates an `Item` object with the given values.
+      #
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::ItemRequestRequest, as a Hash
+      #   * :name (String)
+      #   * :status (Merge::Accounting::Status7D1Enum)
+      #   * :type (Merge::Accounting::Type2BbEnum)
+      #   * :unit_price (Float)
+      #   * :purchase_price (Float)
+      #   * :purchase_account (Hash)
+      #   * :sales_account (Hash)
+      #   * :company (Hash)
+      #   * :purchase_tax_rate (Hash)
+      #   * :sales_tax_rate (Hash)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ItemResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.create(model: {  })
+      def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        response = @request_client.conn.post do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "is_debug_mode": is_debug_mode,
+            "run_async": run_async
+          }.compact
+          req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items"
+        end
+        Merge::Accounting::ItemResponse.from_json(json_object: response.body)
+      end
+
       # Returns an `Item` object with the given `id`.
       #
       # @param id [String]
@@ -137,6 +188,119 @@ module Merge
           req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/#{id}"
         end
         Merge::Accounting::Item.from_json(json_object: response.body)
+      end
+
+      # Updates an `Item` object with the given `id`.
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::PatchedItemRequestRequest, as a Hash
+      #   * :name (String)
+      #   * :status (Merge::Accounting::Status7D1Enum)
+      #   * :type (Merge::Accounting::Type2BbEnum)
+      #   * :unit_price (Float)
+      #   * :purchase_price (Float)
+      #   * :purchase_account (String)
+      #   * :sales_account (String)
+      #   * :company (String)
+      #   * :purchase_tax_rate (String)
+      #   * :sales_tax_rate (String)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ItemResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.partial_update(id: "id", model: {  })
+      def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        response = @request_client.conn.patch do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "is_debug_mode": is_debug_mode,
+            "run_async": run_async
+          }.compact
+          req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/#{id}"
+        end
+        Merge::Accounting::ItemResponse.from_json(json_object: response.body)
+      end
+
+      # Returns metadata for `Item` PATCHs.
+      #
+      # @param id [String]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.meta_patch_retrieve(id: "id")
+      def meta_patch_retrieve(id:, request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/meta/patch/#{id}"
+        end
+        Merge::Accounting::MetaResponse.from_json(json_object: response.body)
+      end
+
+      # Returns metadata for `Item` POSTs.
+      #
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.meta_post_retrieve
+      def meta_post_retrieve(request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/meta/post"
+        end
+        Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
     end
 
@@ -222,6 +386,55 @@ module Merge
         end
       end
 
+      # Creates an `Item` object with the given values.
+      #
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::ItemRequestRequest, as a Hash
+      #   * :name (String)
+      #   * :status (Merge::Accounting::Status7D1Enum)
+      #   * :type (Merge::Accounting::Type2BbEnum)
+      #   * :unit_price (Float)
+      #   * :purchase_price (Float)
+      #   * :purchase_account (Hash)
+      #   * :sales_account (Hash)
+      #   * :company (Hash)
+      #   * :purchase_tax_rate (Hash)
+      #   * :sales_tax_rate (Hash)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ItemResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.create(model: {  })
+      def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.post do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "is_debug_mode": is_debug_mode,
+              "run_async": run_async
+            }.compact
+            req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items"
+          end
+          Merge::Accounting::ItemResponse.from_json(json_object: response.body)
+        end
+      end
+
       # Returns an `Item` object with the given `id`.
       #
       # @param id [String]
@@ -270,6 +483,125 @@ module Merge
             req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/#{id}"
           end
           Merge::Accounting::Item.from_json(json_object: response.body)
+        end
+      end
+
+      # Updates an `Item` object with the given `id`.
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::PatchedItemRequestRequest, as a Hash
+      #   * :name (String)
+      #   * :status (Merge::Accounting::Status7D1Enum)
+      #   * :type (Merge::Accounting::Type2BbEnum)
+      #   * :unit_price (Float)
+      #   * :purchase_price (Float)
+      #   * :purchase_account (String)
+      #   * :sales_account (String)
+      #   * :company (String)
+      #   * :purchase_tax_rate (String)
+      #   * :sales_tax_rate (String)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ItemResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.partial_update(id: "id", model: {  })
+      def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.patch do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "is_debug_mode": is_debug_mode,
+              "run_async": run_async
+            }.compact
+            req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/#{id}"
+          end
+          Merge::Accounting::ItemResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata for `Item` PATCHs.
+      #
+      # @param id [String]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.meta_patch_retrieve(id: "id")
+      def meta_patch_retrieve(id:, request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/meta/patch/#{id}"
+          end
+          Merge::Accounting::MetaResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata for `Item` POSTs.
+      #
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.items.meta_post_retrieve
+      def meta_post_retrieve(request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/items/meta/post"
+          end
+          Merge::Accounting::MetaResponse.from_json(json_object: response.body)
         end
       end
     end

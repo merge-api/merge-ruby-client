@@ -354,6 +354,7 @@ module Merge
       #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
+      # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
@@ -365,7 +366,7 @@ module Merge
       #  )
       #  api.crm.contacts.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -383,6 +384,7 @@ module Merge
             "include_remote_fields": include_remote_fields,
             "include_shell_data": include_shell_data,
             "is_common_model_field": is_common_model_field,
+            "is_custom": is_custom,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -746,6 +748,7 @@ module Merge
       #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
+      # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
@@ -757,7 +760,7 @@ module Merge
       #  )
       #  api.crm.contacts.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -776,6 +779,7 @@ module Merge
               "include_remote_fields": include_remote_fields,
               "include_shell_data": include_shell_data,
               "is_common_model_field": is_common_model_field,
+              "is_custom": is_custom,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?

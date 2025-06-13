@@ -3,12 +3,14 @@
 require_relative "../../../requests"
 require "date"
 require_relative "types/files_list_request_expand"
+require_relative "types/files_list_request_order_by"
 require_relative "../types/paginated_file_list"
 require_relative "../types/file_request"
 require_relative "../types/file_storage_file_response"
 require_relative "types/files_retrieve_request_expand"
 require_relative "../types/file"
 require_relative "../types/download_request_meta"
+require_relative "types/files_download_request_meta_list_request_order_by"
 require_relative "../types/paginated_download_request_meta_list"
 require_relative "../types/meta_response"
 require "async"
@@ -51,6 +53,8 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return files with this name. This performs an exact
       #  match.
+      # @param order_by [Merge::Filestorage::Files::FilesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  created_at, -created_at, modified_at, -modified_at.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
@@ -63,7 +67,7 @@ module Merge
       #  )
       #  api.filestorage.files.list
       def list(created_after: nil, created_before: nil, cursor: nil, drive_id: nil, expand: nil, folder_id: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, order_by: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -88,6 +92,7 @@ module Merge
             "modified_after": modified_after,
             "modified_before": modified_before,
             "name": name,
+            "order_by": order_by,
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
@@ -111,6 +116,7 @@ module Merge
       #   * :mime_type (String)
       #   * :description (String)
       #   * :folder (Hash)
+      #   * :checksum (Hash{String => Object})
       #   * :permissions (Hash)
       #   * :drive (Hash)
       #   * :integration_params (Hash{String => Object})
@@ -264,15 +270,23 @@ module Merge
       # Returns metadata to construct authenticated file download requests, allowing you
       #  to download files directly from the third-party.
       #
+      # @param created_after [String] If provided, will only return objects created after this datetime.
+      # @param created_before [String] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
-      # @param mime_type [String] If provided, specifies the export format of the files to be downloaded. For
-      #  information on supported export formats, please refer to our <a
+      # @param mime_types [String] A comma-separated list of preferred MIME types in order of priority. If
+      #  supported by the third-party provider, the file(s) will be returned in the first
+      #  supported MIME type from the list. The default MIME type is PDF. To see
+      #  supported MIME types by file type, refer to our <a
       #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
       #  target='_blank'>export format help center article</a>.
+      # @param modified_after [String] If provided, will only return objects modified after this datetime.
+      # @param modified_before [String] If provided, will only return objects modified before this datetime.
+      # @param order_by [Merge::Filestorage::Files::FilesDownloadRequestMetaListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  created_at, -created_at, modified_at, -modified_at.
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedDownloadRequestMetaList]
@@ -283,8 +297,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.filestorage.files.download_request_meta_list
-      def download_request_meta_list(cursor: nil, include_deleted_data: nil, mime_type: nil, page_size: nil,
-                                     request_options: nil)
+      def download_request_meta_list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
+                                     mime_types: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -296,9 +310,14 @@ module Merge
           }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
+            "created_after": created_after,
+            "created_before": created_before,
             "cursor": cursor,
             "include_deleted_data": include_deleted_data,
-            "mime_type": mime_type,
+            "mime_types": mime_types,
+            "modified_after": modified_after,
+            "modified_before": modified_before,
+            "order_by": order_by,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -378,6 +397,8 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return files with this name. This performs an exact
       #  match.
+      # @param order_by [Merge::Filestorage::Files::FilesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  created_at, -created_at, modified_at, -modified_at.
       # @param page_size [Integer] Number of results to return per page.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
@@ -390,7 +411,7 @@ module Merge
       #  )
       #  api.filestorage.files.list
       def list(created_after: nil, created_before: nil, cursor: nil, drive_id: nil, expand: nil, folder_id: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, order_by: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -416,6 +437,7 @@ module Merge
               "modified_after": modified_after,
               "modified_before": modified_before,
               "name": name,
+              "order_by": order_by,
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
@@ -440,6 +462,7 @@ module Merge
       #   * :mime_type (String)
       #   * :description (String)
       #   * :folder (Hash)
+      #   * :checksum (Hash{String => Object})
       #   * :permissions (Hash)
       #   * :drive (Hash)
       #   * :integration_params (Hash{String => Object})
@@ -601,15 +624,23 @@ module Merge
       # Returns metadata to construct authenticated file download requests, allowing you
       #  to download files directly from the third-party.
       #
+      # @param created_after [String] If provided, will only return objects created after this datetime.
+      # @param created_before [String] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
-      # @param mime_type [String] If provided, specifies the export format of the files to be downloaded. For
-      #  information on supported export formats, please refer to our <a
+      # @param mime_types [String] A comma-separated list of preferred MIME types in order of priority. If
+      #  supported by the third-party provider, the file(s) will be returned in the first
+      #  supported MIME type from the list. The default MIME type is PDF. To see
+      #  supported MIME types by file type, refer to our <a
       #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
       #  target='_blank'>export format help center article</a>.
+      # @param modified_after [String] If provided, will only return objects modified after this datetime.
+      # @param modified_before [String] If provided, will only return objects modified before this datetime.
+      # @param order_by [Merge::Filestorage::Files::FilesDownloadRequestMetaListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      #  created_at, -created_at, modified_at, -modified_at.
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedDownloadRequestMetaList]
@@ -620,8 +651,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.filestorage.files.download_request_meta_list
-      def download_request_meta_list(cursor: nil, include_deleted_data: nil, mime_type: nil, page_size: nil,
-                                     request_options: nil)
+      def download_request_meta_list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
+                                     mime_types: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -634,9 +665,14 @@ module Merge
             }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
+              "created_after": created_after,
+              "created_before": created_before,
               "cursor": cursor,
               "include_deleted_data": include_deleted_data,
-              "mime_type": mime_type,
+              "mime_types": mime_types,
+              "modified_after": modified_after,
+              "modified_before": modified_before,
+              "order_by": order_by,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
