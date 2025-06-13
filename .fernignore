@@ -2,4 +2,4 @@
 README.md
 test/
 
-.github/workflows/ci.yml
+.github/workflows/publish.yml
