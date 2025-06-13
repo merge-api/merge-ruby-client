@@ -3,6 +3,8 @@
 require "date"
 require_relative "credit_note_line_item_item"
 require_relative "credit_note_line_item_company"
+require_relative "credit_note_line_item_contact"
+require_relative "credit_note_line_item_project"
 require "ostruct"
 require "json"
 
@@ -46,6 +48,10 @@ module Merge
       attr_reader :account
       # @return [Merge::Accounting::CreditNoteLineItemCompany] The company the credit note belongs to.
       attr_reader :company
+      # @return [Merge::Accounting::CreditNoteLineItemContact] The credit note's contact.
+      attr_reader :contact
+      # @return [Merge::Accounting::CreditNoteLineItemProject]
+      attr_reader :project
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -75,6 +81,8 @@ module Merge
       # @param tracking_categories [Array<String>] The credit note line item's associated tracking categories.
       # @param account [String] The credit note line item's account.
       # @param company [Merge::Accounting::CreditNoteLineItemCompany] The company the credit note belongs to.
+      # @param contact [Merge::Accounting::CreditNoteLineItemContact] The credit note's contact.
+      # @param project [Merge::Accounting::CreditNoteLineItemProject]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -82,7 +90,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::CreditNoteLineItem]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, item: OMIT, name: OMIT,
-                     description: OMIT, quantity: OMIT, memo: OMIT, unit_price: OMIT, tax_rate: OMIT, total_line_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT, account: OMIT, company: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
+                     description: OMIT, quantity: OMIT, memo: OMIT, unit_price: OMIT, tax_rate: OMIT, total_line_amount: OMIT, tracking_category: OMIT, tracking_categories: OMIT, account: OMIT, company: OMIT, contact: OMIT, project: OMIT, remote_was_deleted: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -99,6 +107,8 @@ module Merge
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @account = account if account != OMIT
         @company = company if company != OMIT
+        @contact = contact if contact != OMIT
+        @project = project if project != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @additional_properties = additional_properties
         @_field_set = {
@@ -118,6 +128,8 @@ module Merge
           "tracking_categories": tracking_categories,
           "account": account,
           "company": company,
+          "contact": contact,
+          "project": project,
           "remote_was_deleted": remote_was_deleted
         }.reject do |_k, v|
           v == OMIT
@@ -157,6 +169,18 @@ module Merge
           company = parsed_json["company"].to_json
           company = Merge::Accounting::CreditNoteLineItemCompany.from_json(json_object: company)
         end
+        if parsed_json["contact"].nil?
+          contact = nil
+        else
+          contact = parsed_json["contact"].to_json
+          contact = Merge::Accounting::CreditNoteLineItemContact.from_json(json_object: contact)
+        end
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::CreditNoteLineItemProject.from_json(json_object: project)
+        end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
@@ -175,6 +199,8 @@ module Merge
           tracking_categories: tracking_categories,
           account: account,
           company: company,
+          contact: contact,
+          project: project,
           remote_was_deleted: remote_was_deleted,
           additional_properties: struct
         )
@@ -210,6 +236,8 @@ module Merge
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.company.nil? || Merge::Accounting::CreditNoteLineItemCompany.validate_raw(obj: obj.company)
+        obj.contact.nil? || Merge::Accounting::CreditNoteLineItemContact.validate_raw(obj: obj.contact)
+        obj.project.nil? || Merge::Accounting::CreditNoteLineItemProject.validate_raw(obj: obj.project)
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end
     end

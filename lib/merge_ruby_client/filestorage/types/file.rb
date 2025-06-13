@@ -39,6 +39,10 @@ module Merge
       attr_reader :description
       # @return [Merge::Filestorage::FileFolder] The folder that the file belongs to.
       attr_reader :folder
+      # @return [Hash{String => Object}] This field stores file checksum data. 'type' indicates the algorithm (e.g.
+      #  crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash
+      #  used to verify file integrity and detect alterations.
+      attr_reader :checksum
       # @return [Merge::Filestorage::FilePermissions] The Permission object is used to represent a user's or group's access to a File
       #  or Folder. Permissions are unexpanded by default. Use the query param
       #  `expand=permissions` to see more details under `GET /files`.
@@ -77,6 +81,9 @@ module Merge
       # @param mime_type [String] The file's mime type.
       # @param description [String] The file's description.
       # @param folder [Merge::Filestorage::FileFolder] The folder that the file belongs to.
+      # @param checksum [Hash{String => Object}] This field stores file checksum data. 'type' indicates the algorithm (e.g.
+      #  crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash
+      #  used to verify file integrity and detect alterations.
       # @param permissions [Merge::Filestorage::FilePermissions] The Permission object is used to represent a user's or group's access to a File
       #  or Folder. Permissions are unexpanded by default. Use the query param
       #  `expand=permissions` to see more details under `GET /files`.
@@ -92,7 +99,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::File]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, file_url: OMIT,
-                     file_thumbnail_url: OMIT, size: OMIT, mime_type: OMIT, description: OMIT, folder: OMIT, permissions: OMIT, drive: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     file_thumbnail_url: OMIT, size: OMIT, mime_type: OMIT, description: OMIT, folder: OMIT, checksum: OMIT, permissions: OMIT, drive: OMIT, remote_created_at: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -104,6 +111,7 @@ module Merge
         @mime_type = mime_type if mime_type != OMIT
         @description = description if description != OMIT
         @folder = folder if folder != OMIT
+        @checksum = checksum if checksum != OMIT
         @permissions = permissions if permissions != OMIT
         @drive = drive if drive != OMIT
         @remote_created_at = remote_created_at if remote_created_at != OMIT
@@ -124,6 +132,7 @@ module Merge
           "mime_type": mime_type,
           "description": description,
           "folder": folder,
+          "checksum": checksum,
           "permissions": permissions,
           "drive": drive,
           "remote_created_at": remote_created_at,
@@ -159,6 +168,7 @@ module Merge
           folder = parsed_json["folder"].to_json
           folder = Merge::Filestorage::FileFolder.from_json(json_object: folder)
         end
+        checksum = parsed_json["checksum"]
         if parsed_json["permissions"].nil?
           permissions = nil
         else
@@ -195,6 +205,7 @@ module Merge
           mime_type: mime_type,
           description: description,
           folder: folder,
+          checksum: checksum,
           permissions: permissions,
           drive: drive,
           remote_created_at: remote_created_at,
@@ -231,6 +242,7 @@ module Merge
         obj.mime_type&.is_a?(String) != false || raise("Passed value for field obj.mime_type is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.folder.nil? || Merge::Filestorage::FileFolder.validate_raw(obj: obj.folder)
+        obj.checksum&.is_a?(Hash) != false || raise("Passed value for field obj.checksum is not the expected type, validation failed.")
         obj.permissions.nil? || Merge::Filestorage::FilePermissions.validate_raw(obj: obj.permissions)
         obj.drive.nil? || Merge::Filestorage::FileDrive.validate_raw(obj: obj.drive)
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")

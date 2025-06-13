@@ -55,6 +55,7 @@ module Merge
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] If provided, will only return Contacts that match this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedContactList]
       # @example
@@ -65,7 +66,7 @@ module Merge
       #  )
       #  api.accounting.contacts.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, is_customer: nil, is_supplier: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, is_customer: nil, is_supplier: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -95,7 +96,8 @@ module Merge
             "page_size": page_size,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
-            "show_enum_origins": show_enum_origins
+            "show_enum_origins": show_enum_origins,
+            "status": status
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -250,6 +252,7 @@ module Merge
       #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
+      # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
@@ -261,7 +264,7 @@ module Merge
       #  )
       #  api.accounting.contacts.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -278,6 +281,7 @@ module Merge
             "include_remote_data": include_remote_data,
             "include_shell_data": include_shell_data,
             "is_common_model_field": is_common_model_field,
+            "is_custom": is_custom,
             "page_size": page_size
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -330,6 +334,7 @@ module Merge
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] If provided, will only return Contacts that match this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedContactList]
       # @example
@@ -340,7 +345,7 @@ module Merge
       #  )
       #  api.accounting.contacts.list
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, is_customer: nil, is_supplier: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, is_customer: nil, is_supplier: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -371,7 +376,8 @@ module Merge
               "page_size": page_size,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
-              "show_enum_origins": show_enum_origins
+              "show_enum_origins": show_enum_origins,
+              "status": status
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -533,6 +539,7 @@ module Merge
       #  contain some metadata but all other fields are null).
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
+      # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
       # @param page_size [Integer] Number of results to return per page.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
@@ -544,7 +551,7 @@ module Merge
       #  )
       #  api.accounting.contacts.remote_field_classes_list
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
-                                    include_shell_data: nil, is_common_model_field: nil, page_size: nil, request_options: nil)
+                                    include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -562,6 +569,7 @@ module Merge
               "include_remote_data": include_remote_data,
               "include_shell_data": include_shell_data,
               "is_common_model_field": is_common_model_field,
+              "is_custom": is_custom,
               "page_size": page_size
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?

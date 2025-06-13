@@ -2,6 +2,8 @@
 
 require "date"
 require_relative "invoice_line_item_employee"
+require_relative "invoice_line_item_project"
+require_relative "invoice_line_item_contact"
 require_relative "transaction_currency_enum"
 require_relative "invoice_line_item_item"
 require_relative "invoice_line_item_account"
@@ -38,6 +40,10 @@ module Merge
       attr_reader :total_amount
       # @return [Merge::Accounting::InvoiceLineItemEmployee] The employee this overall transaction relates to.
       attr_reader :employee
+      # @return [Merge::Accounting::InvoiceLineItemProject]
+      attr_reader :project
+      # @return [Merge::Accounting::InvoiceLineItemContact] The invoice's contact.
+      attr_reader :contact
       # @return [Merge::Accounting::TransactionCurrencyEnum] The line item's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -386,6 +392,8 @@ module Merge
       # @param quantity [Float] The line item's quantity.
       # @param total_amount [Float] The line item's total amount.
       # @param employee [Merge::Accounting::InvoiceLineItemEmployee] The employee this overall transaction relates to.
+      # @param project [Merge::Accounting::InvoiceLineItemProject]
+      # @param contact [Merge::Accounting::InvoiceLineItemContact] The invoice's contact.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The line item's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -709,7 +717,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::InvoiceLineItem]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, description: OMIT,
-                     unit_price: OMIT, quantity: OMIT, total_amount: OMIT, employee: OMIT, currency: OMIT, exchange_rate: OMIT, item: OMIT, account: OMIT, tax_rate: OMIT, tracking_category: OMIT, tracking_categories: OMIT, company: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     unit_price: OMIT, quantity: OMIT, total_amount: OMIT, employee: OMIT, project: OMIT, contact: OMIT, currency: OMIT, exchange_rate: OMIT, item: OMIT, account: OMIT, tax_rate: OMIT, tracking_category: OMIT, tracking_categories: OMIT, company: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -719,6 +727,8 @@ module Merge
         @quantity = quantity if quantity != OMIT
         @total_amount = total_amount if total_amount != OMIT
         @employee = employee if employee != OMIT
+        @project = project if project != OMIT
+        @contact = contact if contact != OMIT
         @currency = currency if currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
         @item = item if item != OMIT
@@ -741,6 +751,8 @@ module Merge
           "quantity": quantity,
           "total_amount": total_amount,
           "employee": employee,
+          "project": project,
+          "contact": contact,
           "currency": currency,
           "exchange_rate": exchange_rate,
           "item": item,
@@ -777,6 +789,18 @@ module Merge
         else
           employee = parsed_json["employee"].to_json
           employee = Merge::Accounting::InvoiceLineItemEmployee.from_json(json_object: employee)
+        end
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::InvoiceLineItemProject.from_json(json_object: project)
+        end
+        if parsed_json["contact"].nil?
+          contact = nil
+        else
+          contact = parsed_json["contact"].to_json
+          contact = Merge::Accounting::InvoiceLineItemContact.from_json(json_object: contact)
         end
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
@@ -820,6 +844,8 @@ module Merge
           quantity: quantity,
           total_amount: total_amount,
           employee: employee,
+          project: project,
+          contact: contact,
           currency: currency,
           exchange_rate: exchange_rate,
           item: item,
@@ -858,6 +884,8 @@ module Merge
         obj.quantity&.is_a?(Float) != false || raise("Passed value for field obj.quantity is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.employee.nil? || Merge::Accounting::InvoiceLineItemEmployee.validate_raw(obj: obj.employee)
+        obj.project.nil? || Merge::Accounting::InvoiceLineItemProject.validate_raw(obj: obj.project)
+        obj.contact.nil? || Merge::Accounting::InvoiceLineItemContact.validate_raw(obj: obj.contact)
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.item.nil? || Merge::Accounting::InvoiceLineItemItem.validate_raw(obj: obj.item)

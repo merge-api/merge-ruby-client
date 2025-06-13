@@ -37,6 +37,7 @@ require_relative "payment_methods/client"
 require_relative "payment_terms/client"
 require_relative "payments/client"
 require_relative "phone_numbers/client"
+require_relative "projects/client"
 require_relative "purchase_orders/client"
 require_relative "regenerate_key/client"
 require_relative "sync_status/client"
@@ -122,6 +123,8 @@ module Merge
       attr_reader :payments
       # @return [Merge::Accounting::PhoneNumbersClient]
       attr_reader :phone_numbers
+      # @return [Merge::Accounting::ProjectsClient]
+      attr_reader :projects
       # @return [Merge::Accounting::PurchaseOrdersClient]
       attr_reader :purchase_orders
       # @return [Merge::Accounting::RegenerateKeyClient]
@@ -180,6 +183,7 @@ module Merge
         @payment_terms = Merge::Accounting::PaymentTermsClient.new(request_client: request_client)
         @payments = Merge::Accounting::PaymentsClient.new(request_client: request_client)
         @phone_numbers = Merge::Accounting::PhoneNumbersClient.new(request_client: request_client)
+        @projects = Merge::Accounting::ProjectsClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::PurchaseOrdersClient.new(request_client: request_client)
         @regenerate_key = Merge::Accounting::RegenerateKeyClient.new(request_client: request_client)
         @sync_status = Merge::Accounting::SyncStatusClient.new(request_client: request_client)
@@ -265,6 +269,8 @@ module Merge
       attr_reader :payments
       # @return [Merge::Accounting::AsyncPhoneNumbersClient]
       attr_reader :phone_numbers
+      # @return [Merge::Accounting::AsyncProjectsClient]
+      attr_reader :projects
       # @return [Merge::Accounting::AsyncPurchaseOrdersClient]
       attr_reader :purchase_orders
       # @return [Merge::Accounting::AsyncRegenerateKeyClient]
@@ -323,6 +329,7 @@ module Merge
         @payment_terms = Merge::Accounting::AsyncPaymentTermsClient.new(request_client: request_client)
         @payments = Merge::Accounting::AsyncPaymentsClient.new(request_client: request_client)
         @phone_numbers = Merge::Accounting::AsyncPhoneNumbersClient.new(request_client: request_client)
+        @projects = Merge::Accounting::AsyncProjectsClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::AsyncPurchaseOrdersClient.new(request_client: request_client)
         @regenerate_key = Merge::Accounting::AsyncRegenerateKeyClient.new(request_client: request_client)
         @sync_status = Merge::Accounting::AsyncSyncStatusClient.new(request_client: request_client)
