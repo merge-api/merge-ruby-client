@@ -5,6 +5,7 @@ require_relative "general_ledger_transaction_line_account"
 require_relative "general_ledger_transaction_line_company"
 require_relative "general_ledger_transaction_line_employee"
 require_relative "general_ledger_transaction_line_contact"
+require_relative "general_ledger_transaction_line_project"
 require_relative "transaction_currency_enum"
 require_relative "general_ledger_transaction_line_tracking_categories_item"
 require_relative "general_ledger_transaction_line_item"
@@ -37,6 +38,8 @@ module Merge
       attr_reader :employee
       # @return [Merge::Accounting::GeneralLedgerTransactionLineContact]
       attr_reader :contact
+      # @return [Merge::Accounting::GeneralLedgerTransactionLineProject]
+      attr_reader :project
       # @return [Merge::Accounting::TransactionCurrencyEnum] The base currency of the transaction
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -692,6 +695,7 @@ module Merge
       # @param company [Merge::Accounting::GeneralLedgerTransactionLineCompany] The company the GeneralLedgerTransaction belongs to.
       # @param employee [Merge::Accounting::GeneralLedgerTransactionLineEmployee]
       # @param contact [Merge::Accounting::GeneralLedgerTransactionLineContact]
+      # @param project [Merge::Accounting::GeneralLedgerTransactionLineProject]
       # @param base_currency [Merge::Accounting::TransactionCurrencyEnum] The base currency of the transaction
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -1322,7 +1326,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::GeneralLedgerTransactionLine]
       def initialize(debit_amount:, credit_amount:, foreign_debit_amount:, foreign_credit_amount:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, account: OMIT, company: OMIT,
-                     employee: OMIT, contact: OMIT, base_currency: OMIT, transaction_currency: OMIT, exchange_rate: OMIT, description: OMIT, tracking_categories: OMIT, item: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, additional_properties: nil)
+                     employee: OMIT, contact: OMIT, project: OMIT, base_currency: OMIT, transaction_currency: OMIT, exchange_rate: OMIT, description: OMIT, tracking_categories: OMIT, item: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -1331,6 +1335,7 @@ module Merge
         @company = company if company != OMIT
         @employee = employee if employee != OMIT
         @contact = contact if contact != OMIT
+        @project = project if project != OMIT
         @base_currency = base_currency if base_currency != OMIT
         @transaction_currency = transaction_currency if transaction_currency != OMIT
         @exchange_rate = exchange_rate if exchange_rate != OMIT
@@ -1353,6 +1358,7 @@ module Merge
           "company": company,
           "employee": employee,
           "contact": contact,
+          "project": project,
           "base_currency": base_currency,
           "transaction_currency": transaction_currency,
           "exchange_rate": exchange_rate,
@@ -1405,6 +1411,12 @@ module Merge
           contact = parsed_json["contact"].to_json
           contact = Merge::Accounting::GeneralLedgerTransactionLineContact.from_json(json_object: contact)
         end
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::GeneralLedgerTransactionLineProject.from_json(json_object: project)
+        end
         base_currency = parsed_json["base_currency"]
         transaction_currency = parsed_json["transaction_currency"]
         exchange_rate = parsed_json["exchange_rate"]
@@ -1434,6 +1446,7 @@ module Merge
           company: company,
           employee: employee,
           contact: contact,
+          project: project,
           base_currency: base_currency,
           transaction_currency: transaction_currency,
           exchange_rate: exchange_rate,
@@ -1472,6 +1485,7 @@ module Merge
         obj.company.nil? || Merge::Accounting::GeneralLedgerTransactionLineCompany.validate_raw(obj: obj.company)
         obj.employee.nil? || Merge::Accounting::GeneralLedgerTransactionLineEmployee.validate_raw(obj: obj.employee)
         obj.contact.nil? || Merge::Accounting::GeneralLedgerTransactionLineContact.validate_raw(obj: obj.contact)
+        obj.project.nil? || Merge::Accounting::GeneralLedgerTransactionLineProject.validate_raw(obj: obj.project)
         obj.base_currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.base_currency is not the expected type, validation failed.")
         obj.transaction_currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.transaction_currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")

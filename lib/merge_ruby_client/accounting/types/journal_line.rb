@@ -5,6 +5,7 @@ require_relative "journal_line_account"
 require_relative "journal_line_tracking_category"
 require_relative "journal_line_tracking_categories_item"
 require_relative "transaction_currency_enum"
+require_relative "journal_line_project"
 require_relative "remote_field"
 require "ostruct"
 require "json"
@@ -346,6 +347,8 @@ module Merge
       attr_reader :company
       # @return [String]
       attr_reader :employee
+      # @return [Merge::Accounting::JournalLineProject]
+      attr_reader :project
       # @return [String]
       attr_reader :contact
       # @return [String] The tax rate that applies to this line item.
@@ -686,6 +689,7 @@ module Merge
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param company [String] The company the journal entry belongs to.
       # @param employee [String]
+      # @param project [Merge::Accounting::JournalLineProject]
       # @param contact [String]
       # @param tax_rate [String] The tax rate that applies to this line item.
       # @param description [String] The line's description.
@@ -698,7 +702,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::JournalLine]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, account: OMIT, net_amount: OMIT,
-                     tracking_category: OMIT, tracking_categories: OMIT, currency: OMIT, company: OMIT, employee: OMIT, contact: OMIT, tax_rate: OMIT, description: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     tracking_category: OMIT, tracking_categories: OMIT, currency: OMIT, company: OMIT, employee: OMIT, project: OMIT, contact: OMIT, tax_rate: OMIT, description: OMIT, exchange_rate: OMIT, remote_was_deleted: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -710,6 +714,7 @@ module Merge
         @currency = currency if currency != OMIT
         @company = company if company != OMIT
         @employee = employee if employee != OMIT
+        @project = project if project != OMIT
         @contact = contact if contact != OMIT
         @tax_rate = tax_rate if tax_rate != OMIT
         @description = description if description != OMIT
@@ -729,6 +734,7 @@ module Merge
           "currency": currency,
           "company": company,
           "employee": employee,
+          "project": project,
           "contact": contact,
           "tax_rate": tax_rate,
           "description": description,
@@ -771,6 +777,12 @@ module Merge
         currency = parsed_json["currency"]
         company = parsed_json["company"]
         employee = parsed_json["employee"]
+        if parsed_json["project"].nil?
+          project = nil
+        else
+          project = parsed_json["project"].to_json
+          project = Merge::Accounting::JournalLineProject.from_json(json_object: project)
+        end
         contact = parsed_json["contact"]
         tax_rate = parsed_json["tax_rate"]
         description = parsed_json["description"]
@@ -792,6 +804,7 @@ module Merge
           currency: currency,
           company: company,
           employee: employee,
+          project: project,
           contact: contact,
           tax_rate: tax_rate,
           description: description,
@@ -827,6 +840,7 @@ module Merge
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.project.nil? || Merge::Accounting::JournalLineProject.validate_raw(obj: obj.project)
         obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")

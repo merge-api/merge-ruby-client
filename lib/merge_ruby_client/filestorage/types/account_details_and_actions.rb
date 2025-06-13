@@ -45,6 +45,8 @@ module Merge
       attr_reader :account_type
       # @return [DateTime]
       attr_reader :completed_at
+      # @return [Hash{String => Object}]
+      attr_reader :integration_specific_fields
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -69,10 +71,11 @@ module Merge
       # @param integration [Merge::Filestorage::AccountDetailsAndActionsIntegration]
       # @param account_type [String]
       # @param completed_at [DateTime]
+      # @param integration_specific_fields [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::AccountDetailsAndActions]
       def initialize(id:, status:, end_user_organization_name:, end_user_email_address:, webhook_listener_url:,
-                     account_type:, completed_at:, category: OMIT, status_detail: OMIT, end_user_origin_id: OMIT, subdomain: OMIT, is_duplicate: OMIT, integration: OMIT, additional_properties: nil)
+                     account_type:, completed_at:, category: OMIT, status_detail: OMIT, end_user_origin_id: OMIT, subdomain: OMIT, is_duplicate: OMIT, integration: OMIT, integration_specific_fields: OMIT, additional_properties: nil)
         @id = id
         @category = category if category != OMIT
         @status = status
@@ -86,6 +89,7 @@ module Merge
         @integration = integration if integration != OMIT
         @account_type = account_type
         @completed_at = completed_at
+        @integration_specific_fields = integration_specific_fields if integration_specific_fields != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
@@ -100,7 +104,8 @@ module Merge
           "is_duplicate": is_duplicate,
           "integration": integration,
           "account_type": account_type,
-          "completed_at": completed_at
+          "completed_at": completed_at,
+          "integration_specific_fields": integration_specific_fields
         }.reject do |_k, v|
           v == OMIT
         end
@@ -131,6 +136,7 @@ module Merge
         end
         account_type = parsed_json["account_type"]
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
+        integration_specific_fields = parsed_json["integration_specific_fields"]
         new(
           id: id,
           category: category,
@@ -145,6 +151,7 @@ module Merge
           integration: integration,
           account_type: account_type,
           completed_at: completed_at,
+          integration_specific_fields: integration_specific_fields,
           additional_properties: struct
         )
       end
@@ -176,6 +183,7 @@ module Merge
         obj.integration.nil? || Merge::Filestorage::AccountDetailsAndActionsIntegration.validate_raw(obj: obj.integration)
         obj.account_type.is_a?(String) != false || raise("Passed value for field obj.account_type is not the expected type, validation failed.")
         obj.completed_at.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
+        obj.integration_specific_fields&.is_a?(Hash) != false || raise("Passed value for field obj.integration_specific_fields is not the expected type, validation failed.")
       end
     end
   end

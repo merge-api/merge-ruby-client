@@ -14,8 +14,6 @@ module Merge
       attr_reader :method
       # @return [Hash{String => Object}]
       attr_reader :headers
-      # @return [Hash{String => Object}]
-      attr_reader :body
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -28,17 +26,15 @@ module Merge
       # @param url [String]
       # @param method [String]
       # @param headers [Hash{String => Object}]
-      # @param body [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::DownloadRequestMeta]
-      def initialize(id:, url:, method:, headers:, body:, additional_properties: nil)
+      def initialize(id:, url:, method:, headers:, additional_properties: nil)
         @id = id
         @url = url
         @method = method
         @headers = headers
-        @body = body
         @additional_properties = additional_properties
-        @_field_set = { "id": id, "url": url, "method": method, "headers": headers, "body": body }
+        @_field_set = { "id": id, "url": url, "method": method, "headers": headers }
       end
 
       # Deserialize a JSON object to an instance of DownloadRequestMeta
@@ -52,13 +48,11 @@ module Merge
         url = parsed_json["url"]
         method = parsed_json["method"]
         headers = parsed_json["headers"]
-        body = parsed_json["body"]
         new(
           id: id,
           url: url,
           method: method,
           headers: headers,
-          body: body,
           additional_properties: struct
         )
       end
@@ -81,7 +75,6 @@ module Merge
         obj.url.is_a?(String) != false || raise("Passed value for field obj.url is not the expected type, validation failed.")
         obj.method.is_a?(String) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
         obj.headers.is_a?(Hash) != false || raise("Passed value for field obj.headers is not the expected type, validation failed.")
-        obj.body.is_a?(Hash) != false || raise("Passed value for field obj.body is not the expected type, validation failed.")
       end
     end
   end

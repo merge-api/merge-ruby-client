@@ -2,6 +2,7 @@
 
 require "date"
 require_relative "ticket_status_enum"
+require_relative "ticket_access_level_enum"
 require_relative "priority_enum"
 require_relative "remote_field_request"
 require "ostruct"
@@ -51,6 +52,13 @@ module Merge
       attr_reader :contact
       # @return [String] The ticket's parent ticket.
       attr_reader :parent_ticket
+      # @return [Merge::Ticketing::TicketAccessLevelEnum] The description of who is able to access a given ticket, or where access is
+      #  inherited from.
+      #  * `COMPANY` - COMPANY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
+      #  * `COLLECTION` - COLLECTION
+      attr_reader :access_level
       # @return [Array<String>]
       attr_reader :tags
       # @return [Array<String>]
@@ -103,6 +111,12 @@ module Merge
       # @param account [String] The account associated with the ticket.
       # @param contact [String] The contact associated with the ticket.
       # @param parent_ticket [String] The ticket's parent ticket.
+      # @param access_level [Merge::Ticketing::TicketAccessLevelEnum] The description of who is able to access a given ticket, or where access is
+      #  inherited from.
+      #  * `COMPANY` - COMPANY
+      #  * `PUBLIC` - PUBLIC
+      #  * `PRIVATE` - PRIVATE
+      #  * `COLLECTION` - COLLECTION
       # @param tags [Array<String>]
       # @param roles [Array<String>]
       # @param completed_at [DateTime] When the ticket was completed.
@@ -118,7 +132,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::PatchedTicketRequest]
       def initialize(name: OMIT, assignees: OMIT, assigned_teams: OMIT, creator: OMIT, due_date: OMIT, status: OMIT,
-                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, tags: OMIT, roles: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, access_level: OMIT, tags: OMIT, roles: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @name = name if name != OMIT
         @assignees = assignees if assignees != OMIT
         @assigned_teams = assigned_teams if assigned_teams != OMIT
@@ -131,6 +145,7 @@ module Merge
         @account = account if account != OMIT
         @contact = contact if contact != OMIT
         @parent_ticket = parent_ticket if parent_ticket != OMIT
+        @access_level = access_level if access_level != OMIT
         @tags = tags if tags != OMIT
         @roles = roles if roles != OMIT
         @completed_at = completed_at if completed_at != OMIT
@@ -153,6 +168,7 @@ module Merge
           "account": account,
           "contact": contact,
           "parent_ticket": parent_ticket,
+          "access_level": access_level,
           "tags": tags,
           "roles": roles,
           "completed_at": completed_at,
@@ -185,6 +201,7 @@ module Merge
         account = parsed_json["account"]
         contact = parsed_json["contact"]
         parent_ticket = parsed_json["parent_ticket"]
+        access_level = parsed_json["access_level"]
         tags = parsed_json["tags"]
         roles = parsed_json["roles"]
         completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
@@ -209,6 +226,7 @@ module Merge
           account: account,
           contact: contact,
           parent_ticket: parent_ticket,
+          access_level: access_level,
           tags: tags,
           roles: roles,
           completed_at: completed_at,
@@ -247,6 +265,7 @@ module Merge
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.parent_ticket&.is_a?(String) != false || raise("Passed value for field obj.parent_ticket is not the expected type, validation failed.")
+        obj.access_level&.is_a?(Merge::Ticketing::TicketAccessLevelEnum) != false || raise("Passed value for field obj.access_level is not the expected type, validation failed.")
         obj.tags&.is_a?(Array) != false || raise("Passed value for field obj.tags is not the expected type, validation failed.")
         obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
         obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
