@@ -9,6 +9,7 @@ require_relative "merge_ruby_client/hris/client"
 require_relative "merge_ruby_client/filestorage/client"
 require_relative "merge_ruby_client/ticketing/client"
 require_relative "merge_ruby_client/accounting/client"
+require_relative "merge_ruby_client/organizations/client"
 
 module Merge
   class Client
@@ -24,6 +25,8 @@ module Merge
     attr_reader :ticketing
     # @return [Merge::Accounting::Client]
     attr_reader :accounting
+    # @return [Merge::Organizations::Client]
+    attr_reader :organizations
 
     # @param base_url [String]
     # @param environment [Merge::Environment]
@@ -48,6 +51,7 @@ module Merge
       @filestorage = Merge::Filestorage::Client.new(request_client: @request_client)
       @ticketing = Merge::Ticketing::Client.new(request_client: @request_client)
       @accounting = Merge::Accounting::Client.new(request_client: @request_client)
+      @organizations = Merge::Organizations::Client.new(request_client: @request_client)
     end
   end
 
@@ -64,6 +68,8 @@ module Merge
     attr_reader :ticketing
     # @return [Merge::Accounting::AsyncClient]
     attr_reader :accounting
+    # @return [Merge::Organizations::AsyncClient]
+    attr_reader :organizations
 
     # @param base_url [String]
     # @param environment [Merge::Environment]
@@ -88,6 +94,7 @@ module Merge
       @filestorage = Merge::Filestorage::AsyncClient.new(request_client: @async_request_client)
       @ticketing = Merge::Ticketing::AsyncClient.new(request_client: @async_request_client)
       @accounting = Merge::Accounting::AsyncClient.new(request_client: @async_request_client)
+      @organizations = Merge::Organizations::AsyncClient.new(request_client: @async_request_client)
     end
   end
 end
