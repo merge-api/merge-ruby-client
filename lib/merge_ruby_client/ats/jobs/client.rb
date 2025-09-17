@@ -65,7 +65,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.jobs.list
+      #  api.ats.jobs.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(code: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
                include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, offices: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -176,7 +176,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.jobs.screening_questions_list(job_id: "job_id")
+      #  api.ats.jobs.screening_questions_list(job_id: "job_id", cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def screening_questions_list(job_id:, cursor: nil, expand: nil, include_deleted_data: nil,
                                    include_remote_data: nil, include_shell_data: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -258,7 +258,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.jobs.list
+      #  api.ats.jobs.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(code: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
                include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, offices: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         Async do
@@ -373,7 +373,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.jobs.screening_questions_list(job_id: "job_id")
+      #  api.ats.jobs.screening_questions_list(job_id: "job_id", cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def screening_questions_list(job_id:, cursor: nil, expand: nil, include_deleted_data: nil,
                                    include_remote_data: nil, include_shell_data: nil, page_size: nil, request_options: nil)
         Async do

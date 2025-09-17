@@ -36,6 +36,7 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param display_full_name [String] If provided, will only return employees with this display name.
+      # @param employee_number [String] If provided, will only return employees with this employee number.
       # @param employment_status [Merge::Hris::Employees::EmployeesListRequestEmploymentStatus] If provided, will only return employees with this employment status.
       #  * `ACTIVE` - ACTIVE
       #  * `PENDING` - PENDING
@@ -90,9 +91,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.employees.list
+      #  api.hris.employees.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, display_full_name: nil,
-               employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
+               employee_number: nil, employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -109,6 +110,7 @@ module Merge
             "created_before": created_before,
             "cursor": cursor,
             "display_full_name": display_full_name,
+            "employee_number": employee_number,
             "employment_status": employment_status,
             "employment_type": employment_type,
             "expand": expand,
@@ -347,6 +349,7 @@ module Merge
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param display_full_name [String] If provided, will only return employees with this display name.
+      # @param employee_number [String] If provided, will only return employees with this employee number.
       # @param employment_status [Merge::Hris::Employees::EmployeesListRequestEmploymentStatus] If provided, will only return employees with this employment status.
       #  * `ACTIVE` - ACTIVE
       #  * `PENDING` - PENDING
@@ -401,9 +404,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.employees.list
+      #  api.hris.employees.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, display_full_name: nil,
-               employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
+               employee_number: nil, employment_status: nil, employment_type: nil, expand: nil, first_name: nil, groups: nil, home_location_id: nil, include_deleted_data: nil, include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, job_title: nil, last_name: nil, manager_id: nil, modified_after: nil, modified_before: nil, page_size: nil, pay_group_id: nil, personal_email: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, started_after: nil, started_before: nil, team_id: nil, terminated_after: nil, terminated_before: nil, work_email: nil, work_location_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -421,6 +424,7 @@ module Merge
               "created_before": created_before,
               "cursor": cursor,
               "display_full_name": display_full_name,
+              "employee_number": employee_number,
               "employment_status": employment_status,
               "employment_type": employment_type,
               "expand": expand,

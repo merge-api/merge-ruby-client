@@ -8,6 +8,7 @@ require_relative "../types/contact_request"
 require_relative "../types/contact_response"
 require_relative "types/contacts_retrieve_request_expand"
 require_relative "../types/contact"
+require_relative "../types/patched_contact_request"
 require_relative "../types/meta_response"
 require_relative "../types/paginated_remote_field_class_list"
 require "async"
@@ -64,7 +65,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.contacts.list
+      #  api.accounting.contacts.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, is_customer: nil, is_supplier: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -207,6 +208,88 @@ module Merge
         Merge::Accounting::Contact.from_json(json_object: response.body)
       end
 
+      # Updates a `Contact` object with the given `id`.
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::PatchedContactRequest, as a Hash
+      #   * :name (String)
+      #   * :is_supplier (Boolean)
+      #   * :is_customer (Boolean)
+      #   * :email_address (String)
+      #   * :tax_number (String)
+      #   * :status (Merge::Accounting::Status7D1Enum)
+      #   * :currency (String)
+      #   * :company (String)
+      #   * :addresses (Array<Merge::Accounting::PatchedContactRequestAddressesItem>)
+      #   * :phone_numbers (Array<Merge::Accounting::AccountingPhoneNumberRequest>)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.contacts.partial_update(id: "id", model: {  })
+      def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        response = @request_client.conn.patch do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "is_debug_mode": is_debug_mode,
+            "run_async": run_async
+          }.compact
+          req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/contacts/#{id}"
+        end
+        Merge::Accounting::ContactResponse.from_json(json_object: response.body)
+      end
+
+      # Returns metadata for `Contact` PATCHs.
+      #
+      # @param id [String]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.contacts.meta_patch_retrieve(id: "id")
+      def meta_patch_retrieve(id:, request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/contacts/meta/patch/#{id}"
+        end
+        Merge::Accounting::MetaResponse.from_json(json_object: response.body)
+      end
+
       # Returns metadata for `Contact` POSTs.
       #
       # @param request_options [Merge::RequestOptions]
@@ -262,7 +345,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.contacts.remote_field_classes_list
+      #  api.accounting.contacts.remote_field_classes_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -343,7 +426,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.contacts.list
+      #  api.accounting.contacts.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
                include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, is_customer: nil, is_supplier: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         Async do
@@ -492,6 +575,92 @@ module Merge
         end
       end
 
+      # Updates a `Contact` object with the given `id`.
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::PatchedContactRequest, as a Hash
+      #   * :name (String)
+      #   * :is_supplier (Boolean)
+      #   * :is_customer (Boolean)
+      #   * :email_address (String)
+      #   * :tax_number (String)
+      #   * :status (Merge::Accounting::Status7D1Enum)
+      #   * :currency (String)
+      #   * :company (String)
+      #   * :addresses (Array<Merge::Accounting::PatchedContactRequestAddressesItem>)
+      #   * :phone_numbers (Array<Merge::Accounting::AccountingPhoneNumberRequest>)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::ContactResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.contacts.partial_update(id: "id", model: {  })
+      def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.patch do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "is_debug_mode": is_debug_mode,
+              "run_async": run_async
+            }.compact
+            req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/contacts/#{id}"
+          end
+          Merge::Accounting::ContactResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata for `Contact` PATCHs.
+      #
+      # @param id [String]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.contacts.meta_patch_retrieve(id: "id")
+      def meta_patch_retrieve(id:, request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/contacts/meta/patch/#{id}"
+          end
+          Merge::Accounting::MetaResponse.from_json(json_object: response.body)
+        end
+      end
+
       # Returns metadata for `Contact` POSTs.
       #
       # @param request_options [Merge::RequestOptions]
@@ -549,7 +718,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.contacts.remote_field_classes_list
+      #  api.accounting.contacts.remote_field_classes_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         Async do

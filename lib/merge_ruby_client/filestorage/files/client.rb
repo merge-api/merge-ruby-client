@@ -56,6 +56,10 @@ module Merge
       # @param order_by [Merge::Filestorage::Files::FilesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  created_at, -created_at, modified_at, -modified_at.
       # @param page_size [Integer] Number of results to return per page.
+      # @param remote_created_after [DateTime] If provided, will only return files created in the third party platform after
+      #  this datetime.
+      # @param remote_created_before [DateTime] If provided, will only return files created in the third party platform before
+      #  this datetime.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedFileList]
@@ -65,9 +69,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.files.list
+      #  api.filestorage.files.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, drive_id: nil, expand: nil, folder_id: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, order_by: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, order_by: nil, page_size: nil, remote_created_after: nil, remote_created_before: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -94,6 +98,8 @@ module Merge
             "name": name,
             "order_by": order_by,
             "page_size": page_size,
+            "remote_created_after": remote_created_after,
+            "remote_created_before": remote_created_before,
             "remote_id": remote_id
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -273,6 +279,8 @@ module Merge
       # @param created_after [String] If provided, will only return objects created after this datetime.
       # @param created_before [String] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param ids [String] If provided, will only return objects with the given IDs. Comma-separated list
+      #  of strings.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -296,9 +304,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.files.download_request_meta_list
-      def download_request_meta_list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
-                                     mime_types: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, request_options: nil)
+      #  api.filestorage.files.download_request_meta_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
+      def download_request_meta_list(created_after: nil, created_before: nil, cursor: nil, ids: nil,
+                                     include_deleted_data: nil, mime_types: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -313,6 +321,7 @@ module Merge
             "created_after": created_after,
             "created_before": created_before,
             "cursor": cursor,
+            "ids": ids,
             "include_deleted_data": include_deleted_data,
             "mime_types": mime_types,
             "modified_after": modified_after,
@@ -400,6 +409,10 @@ module Merge
       # @param order_by [Merge::Filestorage::Files::FilesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  created_at, -created_at, modified_at, -modified_at.
       # @param page_size [Integer] Number of results to return per page.
+      # @param remote_created_after [DateTime] If provided, will only return files created in the third party platform after
+      #  this datetime.
+      # @param remote_created_before [DateTime] If provided, will only return files created in the third party platform before
+      #  this datetime.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedFileList]
@@ -409,9 +422,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.files.list
+      #  api.filestorage.files.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, drive_id: nil, expand: nil, folder_id: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, order_by: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, mime_type: nil, modified_after: nil, modified_before: nil, name: nil, order_by: nil, page_size: nil, remote_created_after: nil, remote_created_before: nil, remote_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -439,6 +452,8 @@ module Merge
               "name": name,
               "order_by": order_by,
               "page_size": page_size,
+              "remote_created_after": remote_created_after,
+              "remote_created_before": remote_created_before,
               "remote_id": remote_id
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
@@ -627,6 +642,8 @@ module Merge
       # @param created_after [String] If provided, will only return objects created after this datetime.
       # @param created_before [String] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param ids [String] If provided, will only return objects with the given IDs. Comma-separated list
+      #  of strings.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -650,9 +667,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.files.download_request_meta_list
-      def download_request_meta_list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
-                                     mime_types: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, request_options: nil)
+      #  api.filestorage.files.download_request_meta_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
+      def download_request_meta_list(created_after: nil, created_before: nil, cursor: nil, ids: nil,
+                                     include_deleted_data: nil, mime_types: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -668,6 +685,7 @@ module Merge
               "created_after": created_after,
               "created_before": created_before,
               "cursor": cursor,
+              "ids": ids,
               "include_deleted_data": include_deleted_data,
               "mime_types": mime_types,
               "modified_after": modified_after,

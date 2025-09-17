@@ -49,7 +49,11 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.associations.custom_object_classes_custom_objects_associations_list(custom_object_class_id: "custom_object_class_id", object_id: "object_id")
+      #  api.crm.associations.custom_object_classes_custom_objects_associations_list(
+      #    custom_object_class_id: "custom_object_class_id",
+      #    object_id: "object_id",
+      #    cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw"
+      #  )
       def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id:,
                                                                  association_type_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -175,7 +179,11 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.associations.custom_object_classes_custom_objects_associations_list(custom_object_class_id: "custom_object_class_id", object_id: "object_id")
+      #  api.crm.associations.custom_object_classes_custom_objects_associations_list(
+      #    custom_object_class_id: "custom_object_class_id",
+      #    object_id: "object_id",
+      #    cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw"
+      #  )
       def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id:,
                                                                  association_type_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do

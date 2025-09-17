@@ -52,7 +52,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.issues.list
+      #  api.ats.issues.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_token: nil, cursor: nil, end_date: nil, end_user_organization_name: nil,
                first_incident_time_after: nil, first_incident_time_before: nil, include_muted: nil, integration_name: nil, last_incident_time_after: nil, last_incident_time_before: nil, linked_account_id: nil, page_size: nil, start_date: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -166,7 +166,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.issues.list
+      #  api.ats.issues.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_token: nil, cursor: nil, end_date: nil, end_user_organization_name: nil,
                first_incident_time_after: nil, first_incident_time_before: nil, include_muted: nil, integration_name: nil, last_incident_time_after: nil, last_incident_time_before: nil, linked_account_id: nil, page_size: nil, start_date: nil, status: nil, request_options: nil)
         Async do

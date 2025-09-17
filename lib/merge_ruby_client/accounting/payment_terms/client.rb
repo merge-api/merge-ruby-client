@@ -39,7 +39,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.payment_terms.list
+      #  api.accounting.payment_terms.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil,
                page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -143,7 +143,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.accounting.payment_terms.list
+      #  api.accounting.payment_terms.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil,
                page_size: nil, request_options: nil)
         Async do
