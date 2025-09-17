@@ -37,13 +37,13 @@ module Merge
       attr_reader :start_date
       # @return [DateTime] The day and time the benefit ended.
       attr_reader :end_date
+      # @return [String] The employer benefit plan the employee is enrolled in.
+      attr_reader :employer_benefit
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       attr_reader :remote_was_deleted
-      # @return [String] The employer benefit plan the employee is enrolled in.
-      attr_reader :employer_benefit
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
       # @return [Array<Merge::Hris::RemoteData>]
@@ -67,17 +67,17 @@ module Merge
       # @param company_contribution [Float] The company's contribution.
       # @param start_date [DateTime] The day and time the benefit started.
       # @param end_date [DateTime] The day and time the benefit ended.
+      # @param employer_benefit [String] The employer benefit plan the employee is enrolled in.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
-      # @param employer_benefit [String] The employer benefit plan the employee is enrolled in.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Hris::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Hris::Benefit]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, employee: OMIT,
-                     provider_name: OMIT, benefit_plan_type: OMIT, employee_contribution: OMIT, company_contribution: OMIT, start_date: OMIT, end_date: OMIT, remote_was_deleted: OMIT, employer_benefit: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     provider_name: OMIT, benefit_plan_type: OMIT, employee_contribution: OMIT, company_contribution: OMIT, start_date: OMIT, end_date: OMIT, employer_benefit: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -89,8 +89,8 @@ module Merge
         @company_contribution = company_contribution if company_contribution != OMIT
         @start_date = start_date if start_date != OMIT
         @end_date = end_date if end_date != OMIT
-        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @employer_benefit = employer_benefit if employer_benefit != OMIT
+        @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
         @additional_properties = additional_properties
@@ -106,8 +106,8 @@ module Merge
           "company_contribution": company_contribution,
           "start_date": start_date,
           "end_date": end_date,
-          "remote_was_deleted": remote_was_deleted,
           "employer_benefit": employer_benefit,
+          "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
           "remote_data": remote_data
         }.reject do |_k, v|
@@ -138,8 +138,8 @@ module Merge
         company_contribution = parsed_json["company_contribution"]
         start_date = (DateTime.parse(parsed_json["start_date"]) unless parsed_json["start_date"].nil?)
         end_date = (DateTime.parse(parsed_json["end_date"]) unless parsed_json["end_date"].nil?)
-        remote_was_deleted = parsed_json["remote_was_deleted"]
         employer_benefit = parsed_json["employer_benefit"]
+        remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
           item = item.to_json
@@ -157,8 +157,8 @@ module Merge
           company_contribution: company_contribution,
           start_date: start_date,
           end_date: end_date,
-          remote_was_deleted: remote_was_deleted,
           employer_benefit: employer_benefit,
+          remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
           remote_data: remote_data,
           additional_properties: struct
@@ -190,8 +190,8 @@ module Merge
         obj.company_contribution&.is_a?(Float) != false || raise("Passed value for field obj.company_contribution is not the expected type, validation failed.")
         obj.start_date&.is_a?(DateTime) != false || raise("Passed value for field obj.start_date is not the expected type, validation failed.")
         obj.end_date&.is_a?(DateTime) != false || raise("Passed value for field obj.end_date is not the expected type, validation failed.")
-        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.employer_benefit&.is_a?(String) != false || raise("Passed value for field obj.employer_benefit is not the expected type, validation failed.")
+        obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end

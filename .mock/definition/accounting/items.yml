@@ -207,7 +207,10 @@ service:
         type: root.PaginatedItemList
         status-code: 200
       examples:
-        - headers: {}
+        - query-parameters:
+            cursor: cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               next: cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw
@@ -219,6 +222,7 @@ service:
                   modified_at: '2021-10-16T00:00:00Z'
                   name: Pickleball Paddle
                   status: ACTIVE
+                  type: INVENTORY
                   unit_price: 10
                   purchase_price: 25
                   purchase_account: purchase_account
@@ -264,7 +268,8 @@ service:
         type: root.ItemResponse
         status-code: 201
       examples:
-        - headers: {}
+        - headers:
+            X-Account-Token: X-Account-Token
           request:
             model: {}
           response:
@@ -276,6 +281,7 @@ service:
                 modified_at: '2021-10-16T00:00:00Z'
                 name: Pickleball Paddle
                 status: ACTIVE
+                type: INVENTORY
                 unit_price: 10
                 purchase_price: 25
                 purchase_account: purchase_account
@@ -358,7 +364,8 @@ service:
       examples:
         - path-parameters:
             id: id
-          headers: {}
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               id: d2f972d0-2526-434b-9409-4c3b468e08f0
@@ -367,6 +374,7 @@ service:
               modified_at: '2021-10-16T00:00:00Z'
               name: Pickleball Paddle
               status: ACTIVE
+              type: INVENTORY
               unit_price: 10
               purchase_price: 25
               purchase_account: purchase_account
@@ -416,7 +424,8 @@ service:
       examples:
         - path-parameters:
             id: id
-          headers: {}
+          headers:
+            X-Account-Token: X-Account-Token
           request:
             model: {}
           response:
@@ -428,6 +437,7 @@ service:
                 modified_at: '2021-10-16T00:00:00Z'
                 name: Pickleball Paddle
                 status: ACTIVE
+                type: INVENTORY
                 unit_price: 10
                 purchase_price: 25
                 purchase_account: purchase_account
@@ -482,7 +492,8 @@ service:
       examples:
         - path-parameters:
             id: id
-          headers: {}
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               request_schema:
@@ -666,7 +677,8 @@ service:
         type: root.MetaResponse
         status-code: 200
       examples:
-        - headers: {}
+        - headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               request_schema:

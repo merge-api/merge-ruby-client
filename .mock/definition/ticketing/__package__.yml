@@ -1853,9 +1853,6 @@ types:
           * `COLLECTION` - COLLECTION
       tags: optional<list<optional<string>>>
       roles: optional<list<optional<string>>>
-      completed_at:
-        type: optional<datetime>
-        docs: When the ticket was completed.
       ticket_url:
         type: optional<string>
         docs: The 3rd party url of the Ticket.
@@ -1871,6 +1868,9 @@ types:
           * `HIGH` - HIGH
           * `NORMAL` - NORMAL
           * `LOW` - LOW
+      completed_at:
+        type: optional<datetime>
+        docs: When the ticket was completed.
       integration_params:
         type: optional<map<string, unknown>>
         access: write-only
@@ -2039,6 +2039,7 @@ types:
       remote_key_name: optional<string>
       description: optional<string>
       is_custom: optional<boolean>
+      is_common_model_field: optional<boolean>
       is_required: optional<boolean>
       field_type: optional<FieldTypeEnum>
       field_format: optional<FieldFormatEnum>

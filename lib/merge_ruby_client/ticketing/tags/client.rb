@@ -44,7 +44,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tags.list
+      #  api.ticketing.tags.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -153,7 +153,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tags.list
+      #  api.ticketing.tags.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do

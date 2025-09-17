@@ -21,6 +21,7 @@ require_relative "credit_notes/client"
 require_relative "scopes/client"
 require_relative "delete_account/client"
 require_relative "employees/client"
+require_relative "expense_reports/client"
 require_relative "expenses/client"
 require_relative "field_mapping/client"
 require_relative "general_ledger_transactions/client"
@@ -91,6 +92,8 @@ module Merge
       attr_reader :delete_account
       # @return [Merge::Accounting::EmployeesClient]
       attr_reader :employees
+      # @return [Merge::Accounting::ExpenseReportsClient]
+      attr_reader :expense_reports
       # @return [Merge::Accounting::ExpensesClient]
       attr_reader :expenses
       # @return [Merge::Accounting::FieldMappingClient]
@@ -167,6 +170,7 @@ module Merge
         @scopes = Merge::Accounting::ScopesClient.new(request_client: request_client)
         @delete_account = Merge::Accounting::DeleteAccountClient.new(request_client: request_client)
         @employees = Merge::Accounting::EmployeesClient.new(request_client: request_client)
+        @expense_reports = Merge::Accounting::ExpenseReportsClient.new(request_client: request_client)
         @expenses = Merge::Accounting::ExpensesClient.new(request_client: request_client)
         @field_mapping = Merge::Accounting::FieldMappingClient.new(request_client: request_client)
         @general_ledger_transactions = Merge::Accounting::GeneralLedgerTransactionsClient.new(request_client: request_client)
@@ -237,6 +241,8 @@ module Merge
       attr_reader :delete_account
       # @return [Merge::Accounting::AsyncEmployeesClient]
       attr_reader :employees
+      # @return [Merge::Accounting::AsyncExpenseReportsClient]
+      attr_reader :expense_reports
       # @return [Merge::Accounting::AsyncExpensesClient]
       attr_reader :expenses
       # @return [Merge::Accounting::AsyncFieldMappingClient]
@@ -313,6 +319,7 @@ module Merge
         @scopes = Merge::Accounting::AsyncScopesClient.new(request_client: request_client)
         @delete_account = Merge::Accounting::AsyncDeleteAccountClient.new(request_client: request_client)
         @employees = Merge::Accounting::AsyncEmployeesClient.new(request_client: request_client)
+        @expense_reports = Merge::Accounting::AsyncExpenseReportsClient.new(request_client: request_client)
         @expenses = Merge::Accounting::AsyncExpensesClient.new(request_client: request_client)
         @field_mapping = Merge::Accounting::AsyncFieldMappingClient.new(request_client: request_client)
         @general_ledger_transactions = Merge::Accounting::AsyncGeneralLedgerTransactionsClient.new(request_client: request_client)

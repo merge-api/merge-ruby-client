@@ -44,6 +44,7 @@ module Merge
       # @param contact_id [String] If provided, will only return tickets for this contact.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
+      # @param creator_id [String] If provided, will only return tickets created by this creator_id.
       # @param cursor [String] The pagination cursor value.
       # @param due_after [DateTime] If provided, will only return tickets due after this datetime.
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
@@ -96,9 +97,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.list
+      #  api.ticketing.tickets.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, creator_id: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -118,6 +119,7 @@ module Merge
             "contact_id": contact_id,
             "created_after": created_after,
             "created_before": created_before,
+            "creator_id": creator_id,
             "cursor": cursor,
             "due_after": due_after,
             "due_before": due_before,
@@ -281,9 +283,9 @@ module Merge
       #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
-      #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :completed_at (DateTime)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
@@ -342,7 +344,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.viewers_list(ticket_id: "ticket_id")
+      #  api.ticketing.tickets.viewers_list(ticket_id: "ticket_id", cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def viewers_list(ticket_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
                        include_shell_data: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -464,7 +466,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.remote_field_classes_list
+      #  api.ticketing.tickets.remote_field_classes_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def remote_field_classes_list(cursor: nil, ids: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -518,6 +520,7 @@ module Merge
       # @param contact_id [String] If provided, will only return tickets for this contact.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
+      # @param creator_id [String] If provided, will only return tickets created by this creator_id.
       # @param cursor [String] The pagination cursor value.
       # @param due_after [DateTime] If provided, will only return tickets due after this datetime.
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
@@ -570,9 +573,9 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.list
+      #  api.ticketing.tickets.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, creator_id: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -593,6 +596,7 @@ module Merge
               "contact_id": contact_id,
               "created_after": created_after,
               "created_before": created_before,
+              "creator_id": creator_id,
               "cursor": cursor,
               "due_after": due_after,
               "due_before": due_before,
@@ -761,9 +765,9 @@ module Merge
       #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
-      #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :completed_at (DateTime)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
@@ -824,7 +828,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.viewers_list(ticket_id: "ticket_id")
+      #  api.ticketing.tickets.viewers_list(ticket_id: "ticket_id", cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def viewers_list(ticket_id:, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil,
                        include_shell_data: nil, page_size: nil, request_options: nil)
         Async do
@@ -952,7 +956,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.tickets.remote_field_classes_list
+      #  api.ticketing.tickets.remote_field_classes_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def remote_field_classes_list(cursor: nil, ids: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         Async do

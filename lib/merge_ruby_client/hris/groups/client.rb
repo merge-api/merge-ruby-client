@@ -55,7 +55,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.groups.list
+      #  api.hris.groups.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_shell_data: nil, is_commonly_used_as_team: nil, modified_after: nil, modified_before: nil, names: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, types: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -187,7 +187,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.groups.list
+      #  api.hris.groups.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_shell_data: nil, is_commonly_used_as_team: nil, modified_after: nil, modified_before: nil, names: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, types: nil, request_options: nil)
         Async do

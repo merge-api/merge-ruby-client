@@ -20,6 +20,8 @@ module Merge
       # @return [Boolean]
       attr_reader :is_custom
       # @return [Boolean]
+      attr_reader :is_common_model_field
+      # @return [Boolean]
       attr_reader :is_required
       # @return [Merge::Accounting::FieldTypeEnum]
       attr_reader :field_type
@@ -42,6 +44,7 @@ module Merge
       # @param remote_key_name [String]
       # @param description [String]
       # @param is_custom [Boolean]
+      # @param is_common_model_field [Boolean]
       # @param is_required [Boolean]
       # @param field_type [Merge::Accounting::FieldTypeEnum]
       # @param field_format [Merge::Accounting::FieldFormatEnum]
@@ -50,12 +53,13 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::RemoteFieldClass]
       def initialize(id: OMIT, display_name: OMIT, remote_key_name: OMIT, description: OMIT, is_custom: OMIT,
-                     is_required: OMIT, field_type: OMIT, field_format: OMIT, field_choices: OMIT, item_schema: OMIT, additional_properties: nil)
+                     is_common_model_field: OMIT, is_required: OMIT, field_type: OMIT, field_format: OMIT, field_choices: OMIT, item_schema: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @display_name = display_name if display_name != OMIT
         @remote_key_name = remote_key_name if remote_key_name != OMIT
         @description = description if description != OMIT
         @is_custom = is_custom if is_custom != OMIT
+        @is_common_model_field = is_common_model_field if is_common_model_field != OMIT
         @is_required = is_required if is_required != OMIT
         @field_type = field_type if field_type != OMIT
         @field_format = field_format if field_format != OMIT
@@ -68,6 +72,7 @@ module Merge
           "remote_key_name": remote_key_name,
           "description": description,
           "is_custom": is_custom,
+          "is_common_model_field": is_common_model_field,
           "is_required": is_required,
           "field_type": field_type,
           "field_format": field_format,
@@ -90,6 +95,7 @@ module Merge
         remote_key_name = parsed_json["remote_key_name"]
         description = parsed_json["description"]
         is_custom = parsed_json["is_custom"]
+        is_common_model_field = parsed_json["is_common_model_field"]
         is_required = parsed_json["is_required"]
         field_type = parsed_json["field_type"]
         field_format = parsed_json["field_format"]
@@ -106,6 +112,7 @@ module Merge
           remote_key_name: remote_key_name,
           description: description,
           is_custom: is_custom,
+          is_common_model_field: is_common_model_field,
           is_required: is_required,
           field_type: field_type,
           field_format: field_format,
@@ -134,6 +141,7 @@ module Merge
         obj.remote_key_name&.is_a?(String) != false || raise("Passed value for field obj.remote_key_name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.is_custom&.is_a?(Boolean) != false || raise("Passed value for field obj.is_custom is not the expected type, validation failed.")
+        obj.is_common_model_field&.is_a?(Boolean) != false || raise("Passed value for field obj.is_common_model_field is not the expected type, validation failed.")
         obj.is_required&.is_a?(Boolean) != false || raise("Passed value for field obj.is_required is not the expected type, validation failed.")
         obj.field_type&.is_a?(Merge::Accounting::FieldTypeEnum) != false || raise("Passed value for field obj.field_type is not the expected type, validation failed.")
         obj.field_format&.is_a?(Merge::Accounting::FieldFormatEnum) != false || raise("Passed value for field obj.field_format is not the expected type, validation failed.")

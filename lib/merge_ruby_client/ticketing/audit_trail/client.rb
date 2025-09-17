@@ -60,7 +60,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.audit_trail.list
+      #  api.ticketing.audit_trail.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(cursor: nil, end_date: nil, event_type: nil, page_size: nil, start_date: nil, user_email: nil,
                request_options: nil)
         response = @request_client.conn.get do |req|
@@ -144,7 +144,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ticketing.audit_trail.list
+      #  api.ticketing.audit_trail.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(cursor: nil, end_date: nil, event_type: nil, page_size: nil, start_date: nil, user_email: nil,
                request_options: nil)
         Async do

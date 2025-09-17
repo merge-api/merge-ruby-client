@@ -142,6 +142,16 @@ service:
           page_size:
             type: optional<integer>
             docs: Number of results to return per page.
+          remote_created_after:
+            type: optional<datetime>
+            docs: >-
+              If provided, will only return files created in the third party
+              platform after this datetime.
+          remote_created_before:
+            type: optional<datetime>
+            docs: >-
+              If provided, will only return files created in the third party
+              platform before this datetime.
           remote_id:
             type: optional<string>
             docs: The API provider's ID for the given object.
@@ -150,7 +160,10 @@ service:
         type: root.PaginatedFileList
         status-code: 200
       examples:
-        - headers: {}
+        - query-parameters:
+            cursor: cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               next: cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw
@@ -215,7 +228,8 @@ service:
         type: root.FileStorageFileResponse
         status-code: 201
       examples:
-        - headers: {}
+        - headers:
+            X-Account-Token: X-Account-Token
           request:
             model: {}
           response:
@@ -307,7 +321,8 @@ service:
       examples:
         - path-parameters:
             id: id
-          headers: {}
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               id: 45ce474c-dhcj-43a6-754r-629f799f7d68
@@ -401,7 +416,8 @@ service:
       examples:
         - path-parameters:
             id: id
-          headers: {}
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
@@ -432,6 +448,12 @@ service:
           cursor:
             type: optional<string>
             docs: The pagination cursor value.
+          ids:
+            type: optional<string>
+            allow-multiple: true
+            docs: >-
+              If provided, will only return objects with the given IDs.
+              Comma-separated list of strings.
           include_deleted_data:
             type: optional<boolean>
             docs: >-
@@ -473,7 +495,10 @@ service:
         type: root.PaginatedDownloadRequestMetaList
         status-code: 200
       examples:
-        - headers: {}
+        - query-parameters:
+            cursor: cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw
+          headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               next: cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw
@@ -496,7 +521,8 @@ service:
         type: root.MetaResponse
         status-code: 200
       examples:
-        - headers: {}
+        - headers:
+            X-Account-Token: X-Account-Token
           response:
             body:
               request_schema:

@@ -56,7 +56,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.linked_accounts.list
+      #  api.filestorage.linked_accounts.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(category: nil, cursor: nil, end_user_email_address: nil, end_user_organization_name: nil,
                end_user_origin_id: nil, end_user_origin_ids: nil, id: nil, ids: nil, include_duplicates: nil, integration_name: nil, is_test_account: nil, page_size: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -142,7 +142,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.filestorage.linked_accounts.list
+      #  api.filestorage.linked_accounts.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(category: nil, cursor: nil, end_user_email_address: nil, end_user_organization_name: nil,
                end_user_origin_id: nil, end_user_origin_ids: nil, id: nil, ids: nil, include_duplicates: nil, integration_name: nil, is_test_account: nil, page_size: nil, status: nil, request_options: nil)
         Async do

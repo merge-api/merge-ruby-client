@@ -2,6 +2,7 @@
 
 require "date"
 require_relative "status_7_d_1_enum"
+require_relative "type_2_bb_enum"
 require_relative "item_purchase_account"
 require_relative "item_sales_account"
 require_relative "item_company"
@@ -33,6 +34,12 @@ module Merge
       #  * `ACTIVE` - ACTIVE
       #  * `ARCHIVED` - ARCHIVED
       attr_reader :status
+      # @return [Merge::Accounting::Type2BbEnum] The item's type.
+      #  * `INVENTORY` - INVENTORY
+      #  * `NON_INVENTORY` - NON_INVENTORY
+      #  * `SERVICE` - SERVICE
+      #  * `UNKNOWN` - UNKNOWN
+      attr_reader :type
       # @return [Float] The item's unit price.
       attr_reader :unit_price
       # @return [Float] The price at which the item is purchased from a vendor.
@@ -74,6 +81,11 @@ module Merge
       # @param status [Merge::Accounting::Status7D1Enum] The item's status.
       #  * `ACTIVE` - ACTIVE
       #  * `ARCHIVED` - ARCHIVED
+      # @param type [Merge::Accounting::Type2BbEnum] The item's type.
+      #  * `INVENTORY` - INVENTORY
+      #  * `NON_INVENTORY` - NON_INVENTORY
+      #  * `SERVICE` - SERVICE
+      #  * `UNKNOWN` - UNKNOWN
       # @param unit_price [Float] The item's unit price.
       # @param purchase_price [Float] The price at which the item is purchased from a vendor.
       # @param purchase_account [Merge::Accounting::ItemPurchaseAccount] References the default account used to record a purchase of the item.
@@ -91,13 +103,14 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Item]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, status: OMIT,
-                     unit_price: OMIT, purchase_price: OMIT, purchase_account: OMIT, sales_account: OMIT, company: OMIT, purchase_tax_rate: OMIT, sales_tax_rate: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
+                     type: OMIT, unit_price: OMIT, purchase_price: OMIT, purchase_account: OMIT, sales_account: OMIT, company: OMIT, purchase_tax_rate: OMIT, sales_tax_rate: OMIT, remote_updated_at: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
         @name = name if name != OMIT
         @status = status if status != OMIT
+        @type = type if type != OMIT
         @unit_price = unit_price if unit_price != OMIT
         @purchase_price = purchase_price if purchase_price != OMIT
         @purchase_account = purchase_account if purchase_account != OMIT
@@ -117,6 +130,7 @@ module Merge
           "modified_at": modified_at,
           "name": name,
           "status": status,
+          "type": type,
           "unit_price": unit_price,
           "purchase_price": purchase_price,
           "purchase_account": purchase_account,
@@ -146,6 +160,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         status = parsed_json["status"]
+        type = parsed_json["type"]
         unit_price = parsed_json["unit_price"]
         purchase_price = parsed_json["purchase_price"]
         if parsed_json["purchase_account"].nil?
@@ -194,6 +209,7 @@ module Merge
           modified_at: modified_at,
           name: name,
           status: status,
+          type: type,
           unit_price: unit_price,
           purchase_price: purchase_price,
           purchase_account: purchase_account,
@@ -229,6 +245,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Accounting::Status7D1Enum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
+        obj.type&.is_a?(Merge::Accounting::Type2BbEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.unit_price&.is_a?(Float) != false || raise("Passed value for field obj.unit_price is not the expected type, validation failed.")
         obj.purchase_price&.is_a?(Float) != false || raise("Passed value for field obj.purchase_price is not the expected type, validation failed.")
         obj.purchase_account.nil? || Merge::Accounting::ItemPurchaseAccount.validate_raw(obj: obj.purchase_account)

@@ -60,7 +60,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.bank_info.list
+      #  api.hris.bank_info.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_type: nil, bank_name: nil, created_after: nil, created_before: nil, cursor: nil,
                employee_id: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -200,7 +200,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.bank_info.list
+      #  api.hris.bank_info.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_type: nil, bank_name: nil, created_after: nil, created_before: nil, cursor: nil,
                employee_id: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, order_by: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         Async do

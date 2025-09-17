@@ -63,8 +63,6 @@ module Merge
       attr_reader :tags
       # @return [Array<String>]
       attr_reader :roles
-      # @return [DateTime] When the ticket was completed.
-      attr_reader :completed_at
       # @return [String] The 3rd party url of the Ticket.
       attr_reader :ticket_url
       # @return [Merge::Ticketing::PriorityEnum] The priority or urgency of the Ticket.
@@ -73,6 +71,8 @@ module Merge
       #  * `NORMAL` - NORMAL
       #  * `LOW` - LOW
       attr_reader :priority
+      # @return [DateTime] When the ticket was completed.
+      attr_reader :completed_at
       # @return [Hash{String => Object}]
       attr_reader :integration_params
       # @return [Hash{String => Object}]
@@ -119,20 +119,20 @@ module Merge
       #  * `COLLECTION` - COLLECTION
       # @param tags [Array<String>]
       # @param roles [Array<String>]
-      # @param completed_at [DateTime] When the ticket was completed.
       # @param ticket_url [String] The 3rd party url of the Ticket.
       # @param priority [Merge::Ticketing::PriorityEnum] The priority or urgency of the Ticket.
       #  * `URGENT` - URGENT
       #  * `HIGH` - HIGH
       #  * `NORMAL` - NORMAL
       #  * `LOW` - LOW
+      # @param completed_at [DateTime] When the ticket was completed.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param remote_fields [Array<Merge::Ticketing::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::PatchedTicketRequest]
       def initialize(name: OMIT, assignees: OMIT, assigned_teams: OMIT, creator: OMIT, due_date: OMIT, status: OMIT,
-                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, access_level: OMIT, tags: OMIT, roles: OMIT, completed_at: OMIT, ticket_url: OMIT, priority: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     description: OMIT, collections: OMIT, ticket_type: OMIT, account: OMIT, contact: OMIT, parent_ticket: OMIT, access_level: OMIT, tags: OMIT, roles: OMIT, ticket_url: OMIT, priority: OMIT, completed_at: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @name = name if name != OMIT
         @assignees = assignees if assignees != OMIT
         @assigned_teams = assigned_teams if assigned_teams != OMIT
@@ -148,9 +148,9 @@ module Merge
         @access_level = access_level if access_level != OMIT
         @tags = tags if tags != OMIT
         @roles = roles if roles != OMIT
-        @completed_at = completed_at if completed_at != OMIT
         @ticket_url = ticket_url if ticket_url != OMIT
         @priority = priority if priority != OMIT
+        @completed_at = completed_at if completed_at != OMIT
         @integration_params = integration_params if integration_params != OMIT
         @linked_account_params = linked_account_params if linked_account_params != OMIT
         @remote_fields = remote_fields if remote_fields != OMIT
@@ -171,9 +171,9 @@ module Merge
           "access_level": access_level,
           "tags": tags,
           "roles": roles,
-          "completed_at": completed_at,
           "ticket_url": ticket_url,
           "priority": priority,
+          "completed_at": completed_at,
           "integration_params": integration_params,
           "linked_account_params": linked_account_params,
           "remote_fields": remote_fields
@@ -204,9 +204,9 @@ module Merge
         access_level = parsed_json["access_level"]
         tags = parsed_json["tags"]
         roles = parsed_json["roles"]
-        completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
         ticket_url = parsed_json["ticket_url"]
         priority = parsed_json["priority"]
+        completed_at = (DateTime.parse(parsed_json["completed_at"]) unless parsed_json["completed_at"].nil?)
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         remote_fields = parsed_json["remote_fields"]&.map do |item|
@@ -229,9 +229,9 @@ module Merge
           access_level: access_level,
           tags: tags,
           roles: roles,
-          completed_at: completed_at,
           ticket_url: ticket_url,
           priority: priority,
+          completed_at: completed_at,
           integration_params: integration_params,
           linked_account_params: linked_account_params,
           remote_fields: remote_fields,
@@ -268,9 +268,9 @@ module Merge
         obj.access_level&.is_a?(Merge::Ticketing::TicketAccessLevelEnum) != false || raise("Passed value for field obj.access_level is not the expected type, validation failed.")
         obj.tags&.is_a?(Array) != false || raise("Passed value for field obj.tags is not the expected type, validation failed.")
         obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
-        obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
         obj.ticket_url&.is_a?(String) != false || raise("Passed value for field obj.ticket_url is not the expected type, validation failed.")
         obj.priority&.is_a?(Merge::Ticketing::PriorityEnum) != false || raise("Passed value for field obj.priority is not the expected type, validation failed.")
+        obj.completed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_at is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
         obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")

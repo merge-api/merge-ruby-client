@@ -47,7 +47,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.stages.list
+      #  api.crm.stages.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -149,7 +149,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.stages.remote_field_classes_list
+      #  api.crm.stages.remote_field_classes_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -219,7 +219,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.stages.list
+      #  api.crm.stages.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
                include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
@@ -325,7 +325,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.stages.remote_field_classes_list
+      #  api.crm.stages.remote_field_classes_list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def remote_field_classes_list(cursor: nil, include_deleted_data: nil, include_remote_data: nil,
                                     include_remote_fields: nil, include_shell_data: nil, is_common_model_field: nil, is_custom: nil, page_size: nil, request_options: nil)
         Async do

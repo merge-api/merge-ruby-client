@@ -28,6 +28,8 @@ module Merge
       # @return [Array<Merge::Accounting::FieldMappingApiInstance>]
       attr_reader :purchase_order
       # @return [Array<Merge::Accounting::FieldMappingApiInstance>]
+      attr_reader :expense_report
+      # @return [Array<Merge::Accounting::FieldMappingApiInstance>]
       attr_reader :tracking_category
       # @return [Array<Merge::Accounting::FieldMappingApiInstance>]
       attr_reader :journal_entry
@@ -75,6 +77,7 @@ module Merge
       # @param credit_note [Array<Merge::Accounting::FieldMappingApiInstance>]
       # @param item [Array<Merge::Accounting::FieldMappingApiInstance>]
       # @param purchase_order [Array<Merge::Accounting::FieldMappingApiInstance>]
+      # @param expense_report [Array<Merge::Accounting::FieldMappingApiInstance>]
       # @param tracking_category [Array<Merge::Accounting::FieldMappingApiInstance>]
       # @param journal_entry [Array<Merge::Accounting::FieldMappingApiInstance>]
       # @param tax_rate [Array<Merge::Accounting::FieldMappingApiInstance>]
@@ -93,7 +96,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::FieldMappingApiInstanceResponse]
       def initialize(account: OMIT, accounting_attachment: OMIT, balance_sheet: OMIT, cash_flow_statement: OMIT,
-                     company_info: OMIT, contact: OMIT, income_statement: OMIT, credit_note: OMIT, item: OMIT, purchase_order: OMIT, tracking_category: OMIT, journal_entry: OMIT, tax_rate: OMIT, invoice: OMIT, payment: OMIT, expense: OMIT, vendor_credit: OMIT, transaction: OMIT, accounting_period: OMIT, general_ledger_transaction: OMIT, bank_feed_account: OMIT, employee: OMIT, payment_method: OMIT, project: OMIT, payment_term: OMIT, additional_properties: nil)
+                     company_info: OMIT, contact: OMIT, income_statement: OMIT, credit_note: OMIT, item: OMIT, purchase_order: OMIT, expense_report: OMIT, tracking_category: OMIT, journal_entry: OMIT, tax_rate: OMIT, invoice: OMIT, payment: OMIT, expense: OMIT, vendor_credit: OMIT, transaction: OMIT, accounting_period: OMIT, general_ledger_transaction: OMIT, bank_feed_account: OMIT, employee: OMIT, payment_method: OMIT, project: OMIT, payment_term: OMIT, additional_properties: nil)
         @account = account if account != OMIT
         @accounting_attachment = accounting_attachment if accounting_attachment != OMIT
         @balance_sheet = balance_sheet if balance_sheet != OMIT
@@ -104,6 +107,7 @@ module Merge
         @credit_note = credit_note if credit_note != OMIT
         @item = item if item != OMIT
         @purchase_order = purchase_order if purchase_order != OMIT
+        @expense_report = expense_report if expense_report != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
         @journal_entry = journal_entry if journal_entry != OMIT
         @tax_rate = tax_rate if tax_rate != OMIT
@@ -131,6 +135,7 @@ module Merge
           "CreditNote": credit_note,
           "Item": item,
           "PurchaseOrder": purchase_order,
+          "ExpenseReport": expense_report,
           "TrackingCategory": tracking_category,
           "JournalEntry": journal_entry,
           "TaxRate": tax_rate,
@@ -195,6 +200,10 @@ module Merge
           Merge::Accounting::FieldMappingApiInstance.from_json(json_object: item)
         end
         purchase_order = parsed_json["PurchaseOrder"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::FieldMappingApiInstance.from_json(json_object: item)
+        end
+        expense_report = parsed_json["ExpenseReport"]&.map do |item|
           item = item.to_json
           Merge::Accounting::FieldMappingApiInstance.from_json(json_object: item)
         end
@@ -269,6 +278,7 @@ module Merge
           credit_note: credit_note,
           item: item,
           purchase_order: purchase_order,
+          expense_report: expense_report,
           tracking_category: tracking_category,
           journal_entry: journal_entry,
           tax_rate: tax_rate,
@@ -312,6 +322,7 @@ module Merge
         obj.credit_note&.is_a?(Array) != false || raise("Passed value for field obj.credit_note is not the expected type, validation failed.")
         obj.item&.is_a?(Array) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
         obj.purchase_order&.is_a?(Array) != false || raise("Passed value for field obj.purchase_order is not the expected type, validation failed.")
+        obj.expense_report&.is_a?(Array) != false || raise("Passed value for field obj.expense_report is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(Array) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.journal_entry&.is_a?(Array) != false || raise("Passed value for field obj.journal_entry is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(Array) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")

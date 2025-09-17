@@ -57,7 +57,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.applications.list
+      #  api.ats.applications.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
                cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         response = @request_client.conn.get do |req|
@@ -319,7 +319,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.ats.applications.list
+      #  api.ats.applications.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(candidate_id: nil, created_after: nil, created_before: nil, credited_to_id: nil, current_stage_id: nil,
                cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, job_id: nil, modified_after: nil, modified_before: nil, page_size: nil, reject_reason_id: nil, remote_id: nil, source: nil, request_options: nil)
         Async do

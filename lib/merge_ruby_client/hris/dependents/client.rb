@@ -23,6 +23,7 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param employee_id [String] If provided, will only return dependents for this employee.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -46,8 +47,8 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.dependents.list
-      def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
+      #  api.hris.dependents.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
+      def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, include_deleted_data: nil,
                include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -63,6 +64,7 @@ module Merge
             "created_after": created_after,
             "created_before": created_before,
             "cursor": cursor,
+            "employee_id": employee_id,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
             "include_sensitive_fields": include_sensitive_fields,
@@ -139,6 +141,7 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param employee_id [String] If provided, will only return dependents for this employee.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -162,8 +165,8 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.dependents.list
-      def list(created_after: nil, created_before: nil, cursor: nil, include_deleted_data: nil,
+      #  api.hris.dependents.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
+      def list(created_after: nil, created_before: nil, cursor: nil, employee_id: nil, include_deleted_data: nil,
                include_remote_data: nil, include_sensitive_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
@@ -180,6 +183,7 @@ module Merge
               "created_after": created_after,
               "created_before": created_before,
               "cursor": cursor,
+              "employee_id": employee_id,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
               "include_sensitive_fields": include_sensitive_fields,
