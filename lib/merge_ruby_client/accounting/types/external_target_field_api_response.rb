@@ -28,6 +28,10 @@ module Merge
       # @return [Array<Merge::Accounting::ExternalTargetFieldApi>]
       attr_reader :purchase_order
       # @return [Array<Merge::Accounting::ExternalTargetFieldApi>]
+      attr_reader :sales_order
+      # @return [Array<Merge::Accounting::ExternalTargetFieldApi>]
+      attr_reader :item_fulfillment
+      # @return [Array<Merge::Accounting::ExternalTargetFieldApi>]
       attr_reader :expense_report
       # @return [Array<Merge::Accounting::ExternalTargetFieldApi>]
       attr_reader :tracking_category
@@ -77,6 +81,8 @@ module Merge
       # @param credit_note [Array<Merge::Accounting::ExternalTargetFieldApi>]
       # @param item [Array<Merge::Accounting::ExternalTargetFieldApi>]
       # @param purchase_order [Array<Merge::Accounting::ExternalTargetFieldApi>]
+      # @param sales_order [Array<Merge::Accounting::ExternalTargetFieldApi>]
+      # @param item_fulfillment [Array<Merge::Accounting::ExternalTargetFieldApi>]
       # @param expense_report [Array<Merge::Accounting::ExternalTargetFieldApi>]
       # @param tracking_category [Array<Merge::Accounting::ExternalTargetFieldApi>]
       # @param journal_entry [Array<Merge::Accounting::ExternalTargetFieldApi>]
@@ -96,7 +102,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::ExternalTargetFieldApiResponse]
       def initialize(account: OMIT, accounting_attachment: OMIT, balance_sheet: OMIT, cash_flow_statement: OMIT,
-                     company_info: OMIT, contact: OMIT, income_statement: OMIT, credit_note: OMIT, item: OMIT, purchase_order: OMIT, expense_report: OMIT, tracking_category: OMIT, journal_entry: OMIT, tax_rate: OMIT, invoice: OMIT, payment: OMIT, expense: OMIT, vendor_credit: OMIT, transaction: OMIT, accounting_period: OMIT, general_ledger_transaction: OMIT, bank_feed_account: OMIT, employee: OMIT, payment_method: OMIT, project: OMIT, payment_term: OMIT, additional_properties: nil)
+                     company_info: OMIT, contact: OMIT, income_statement: OMIT, credit_note: OMIT, item: OMIT, purchase_order: OMIT, sales_order: OMIT, item_fulfillment: OMIT, expense_report: OMIT, tracking_category: OMIT, journal_entry: OMIT, tax_rate: OMIT, invoice: OMIT, payment: OMIT, expense: OMIT, vendor_credit: OMIT, transaction: OMIT, accounting_period: OMIT, general_ledger_transaction: OMIT, bank_feed_account: OMIT, employee: OMIT, payment_method: OMIT, project: OMIT, payment_term: OMIT, additional_properties: nil)
         @account = account if account != OMIT
         @accounting_attachment = accounting_attachment if accounting_attachment != OMIT
         @balance_sheet = balance_sheet if balance_sheet != OMIT
@@ -107,6 +113,8 @@ module Merge
         @credit_note = credit_note if credit_note != OMIT
         @item = item if item != OMIT
         @purchase_order = purchase_order if purchase_order != OMIT
+        @sales_order = sales_order if sales_order != OMIT
+        @item_fulfillment = item_fulfillment if item_fulfillment != OMIT
         @expense_report = expense_report if expense_report != OMIT
         @tracking_category = tracking_category if tracking_category != OMIT
         @journal_entry = journal_entry if journal_entry != OMIT
@@ -135,6 +143,8 @@ module Merge
           "CreditNote": credit_note,
           "Item": item,
           "PurchaseOrder": purchase_order,
+          "SalesOrder": sales_order,
+          "ItemFulfillment": item_fulfillment,
           "ExpenseReport": expense_report,
           "TrackingCategory": tracking_category,
           "JournalEntry": journal_entry,
@@ -200,6 +210,14 @@ module Merge
           Merge::Accounting::ExternalTargetFieldApi.from_json(json_object: item)
         end
         purchase_order = parsed_json["PurchaseOrder"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ExternalTargetFieldApi.from_json(json_object: item)
+        end
+        sales_order = parsed_json["SalesOrder"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::ExternalTargetFieldApi.from_json(json_object: item)
+        end
+        item_fulfillment = parsed_json["ItemFulfillment"]&.map do |item|
           item = item.to_json
           Merge::Accounting::ExternalTargetFieldApi.from_json(json_object: item)
         end
@@ -278,6 +296,8 @@ module Merge
           credit_note: credit_note,
           item: item,
           purchase_order: purchase_order,
+          sales_order: sales_order,
+          item_fulfillment: item_fulfillment,
           expense_report: expense_report,
           tracking_category: tracking_category,
           journal_entry: journal_entry,
@@ -322,6 +342,8 @@ module Merge
         obj.credit_note&.is_a?(Array) != false || raise("Passed value for field obj.credit_note is not the expected type, validation failed.")
         obj.item&.is_a?(Array) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
         obj.purchase_order&.is_a?(Array) != false || raise("Passed value for field obj.purchase_order is not the expected type, validation failed.")
+        obj.sales_order&.is_a?(Array) != false || raise("Passed value for field obj.sales_order is not the expected type, validation failed.")
+        obj.item_fulfillment&.is_a?(Array) != false || raise("Passed value for field obj.item_fulfillment is not the expected type, validation failed.")
         obj.expense_report&.is_a?(Array) != false || raise("Passed value for field obj.expense_report is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(Array) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.journal_entry&.is_a?(Array) != false || raise("Passed value for field obj.journal_entry is not the expected type, validation failed.")

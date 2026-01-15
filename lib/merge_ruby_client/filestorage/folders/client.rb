@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/folders_list_request_expand"
+require_relative "types/list_folders_request_expand"
 require_relative "../types/paginated_folder_list"
 require_relative "../types/folder_request"
 require_relative "../types/file_storage_folder_response"
-require_relative "types/folders_retrieve_request_expand"
+require_relative "types/retrieve_folders_request_expand"
 require_relative "../types/folder"
 require_relative "../types/meta_response"
 require "async"
@@ -23,13 +23,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Folder` objects.
+      # Returns a list of `Folder` objects.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2zLn6TeE7BH4mtD9gTkjV858hDUX3P+60H9mksHIVbQl0yY/RLLdeNM9z+z32B2//QVpBVnixoLAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param drive_id [String] If provided, will only return folders in this drive.
-      # @param expand [Merge::Filestorage::Folders::FoldersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Folders::ListFoldersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -44,7 +48,7 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return folders with this name. This performs an exact
       #  match.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param parent_folder_id [String] If provided, will only return folders in this parent folder. If null, will
       #  return folders in root directory.
       # @param remote_id [String] The API provider's ID for the given object.
@@ -93,7 +97,11 @@ module Merge
         Merge::Filestorage::PaginatedFolderList.from_json(json_object: response.body)
       end
 
-      # Creates a `Folder` object with the given values.
+      # Creates a `Folder` object with the given values.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  8qTnoA9+rFOck9AIdMqym/hyXt14V/+KoMxVtCXTJj92lHwJjnvf0NeGLJefGXM3eNPCCMMPtkJAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -102,9 +110,9 @@ module Merge
       #   * :folder_url (String)
       #   * :size (Long)
       #   * :description (String)
-      #   * :parent_folder (Hash)
-      #   * :drive (Hash)
-      #   * :permissions (Hash)
+      #   * :parent_folder (String)
+      #   * :drive (String)
+      #   * :permissions (Array<Merge::Filestorage::PermissionRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -137,10 +145,14 @@ module Merge
         Merge::Filestorage::FileStorageFolderResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `Folder` object with the given `id`.
+      # Returns a `Folder` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2zLn6TeE7BH4mtD9gTkjV858hDUX3P+60H9mksHIVbQl0yY/RLLdeNM9z+z32B2//QVpBVnixoLAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Filestorage::Folders::FoldersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Folders::RetrieveFoldersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -179,7 +191,11 @@ module Merge
         Merge::Filestorage::Folder.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `FileStorageFolder` POSTs.
+      # Returns metadata for `FileStorageFolder` POSTs.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2zLn6TeE7BH4mtD9gTkjV858hDUX3P+60H9mksHIVbQl0yY/RLLdeNM9z+z32B2//QVpBVnixoLAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::MetaResponse]
@@ -222,13 +238,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Folder` objects.
+      # Returns a list of `Folder` objects.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2zLn6TeE7BH4mtD9gTkjV858hDUX3P+60H9mksHIVbQl0yY/RLLdeNM9z+z32B2//QVpBVnixoLAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param drive_id [String] If provided, will only return folders in this drive.
-      # @param expand [Merge::Filestorage::Folders::FoldersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Folders::ListFoldersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -243,7 +263,7 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return folders with this name. This performs an exact
       #  match.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param parent_folder_id [String] If provided, will only return folders in this parent folder. If null, will
       #  return folders in root directory.
       # @param remote_id [String] The API provider's ID for the given object.
@@ -294,7 +314,11 @@ module Merge
         end
       end
 
-      # Creates a `Folder` object with the given values.
+      # Creates a `Folder` object with the given values.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  8qTnoA9+rFOck9AIdMqym/hyXt14V/+KoMxVtCXTJj92lHwJjnvf0NeGLJefGXM3eNPCCMMPtkJAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -303,9 +327,9 @@ module Merge
       #   * :folder_url (String)
       #   * :size (Long)
       #   * :description (String)
-      #   * :parent_folder (Hash)
-      #   * :drive (Hash)
-      #   * :permissions (Hash)
+      #   * :parent_folder (String)
+      #   * :drive (String)
+      #   * :permissions (Array<Merge::Filestorage::PermissionRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -340,10 +364,14 @@ module Merge
         end
       end
 
-      # Returns a `Folder` object with the given `id`.
+      # Returns a `Folder` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2zLn6TeE7BH4mtD9gTkjV858hDUX3P+60H9mksHIVbQl0yY/RLLdeNM9z+z32B2//QVpBVnixoLAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Filestorage::Folders::FoldersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Folders::RetrieveFoldersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -384,7 +412,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `FileStorageFolder` POSTs.
+      # Returns metadata for `FileStorageFolder` POSTs.{/*
+      #  BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2zLn6TeE7BH4mtD9gTkjV858hDUX3P+60H9mksHIVbQl0yY/RLLdeNM9z+z32B2//QVpBVnixoLAAA="
+      #  /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::MetaResponse]

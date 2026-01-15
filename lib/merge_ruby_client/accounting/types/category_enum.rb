@@ -9,6 +9,7 @@ module Merge
     #  * `crm` - crm
     #  * `mktg` - mktg
     #  * `filestorage` - filestorage
+    #  * `knowledgebase` - knowledgebase
     class CategoryEnum
       HRIS = "hris"
       ATS = "ats"
@@ -17,6 +18,7 @@ module Merge
       CRM = "crm"
       MKTG = "mktg"
       FILESTORAGE = "filestorage"
+      KNOWLEDGEBASE = "knowledgebase"
     end
   end
 end

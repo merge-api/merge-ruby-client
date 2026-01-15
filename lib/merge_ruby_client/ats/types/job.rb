@@ -4,10 +4,6 @@ require "date"
 require_relative "job_status_enum"
 require_relative "job_type_enum"
 require_relative "url"
-require_relative "job_departments_item"
-require_relative "job_offices_item"
-require_relative "job_hiring_managers_item"
-require_relative "job_recruiters_item"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -58,13 +54,13 @@ module Merge
       attr_reader :remote_updated_at
       # @return [Boolean] Whether the job is confidential.
       attr_reader :confidential
-      # @return [Array<Merge::Ats::JobDepartmentsItem>] IDs of `Department` objects for this `Job`.
+      # @return [Array<String>] IDs of `Department` objects for this `Job`.
       attr_reader :departments
-      # @return [Array<Merge::Ats::JobOfficesItem>] IDs of `Office` objects for this `Job`.
+      # @return [Array<String>] IDs of `Office` objects for this `Job`.
       attr_reader :offices
-      # @return [Array<Merge::Ats::JobHiringManagersItem>] IDs of `RemoteUser` objects that serve as hiring managers for this `Job`.
+      # @return [Array<String>] IDs of `RemoteUser` objects that serve as hiring managers for this `Job`.
       attr_reader :hiring_managers
-      # @return [Array<Merge::Ats::JobRecruitersItem>] IDs of `RemoteUser` objects that serve as recruiters for this `Job`.
+      # @return [Array<String>] IDs of `RemoteUser` objects that serve as recruiters for this `Job`.
       attr_reader :recruiters
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -106,10 +102,10 @@ module Merge
       # @param remote_created_at [DateTime] When the third party's job was created.
       # @param remote_updated_at [DateTime] When the third party's job was updated.
       # @param confidential [Boolean] Whether the job is confidential.
-      # @param departments [Array<Merge::Ats::JobDepartmentsItem>] IDs of `Department` objects for this `Job`.
-      # @param offices [Array<Merge::Ats::JobOfficesItem>] IDs of `Office` objects for this `Job`.
-      # @param hiring_managers [Array<Merge::Ats::JobHiringManagersItem>] IDs of `RemoteUser` objects that serve as hiring managers for this `Job`.
-      # @param recruiters [Array<Merge::Ats::JobRecruitersItem>] IDs of `RemoteUser` objects that serve as recruiters for this `Job`.
+      # @param departments [Array<String>] IDs of `Department` objects for this `Job`.
+      # @param offices [Array<String>] IDs of `Office` objects for this `Job`.
+      # @param hiring_managers [Array<String>] IDs of `RemoteUser` objects that serve as hiring managers for this `Job`.
+      # @param recruiters [Array<String>] IDs of `RemoteUser` objects that serve as recruiters for this `Job`.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -197,22 +193,10 @@ module Merge
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
         confidential = parsed_json["confidential"]
-        departments = parsed_json["departments"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::JobDepartmentsItem.from_json(json_object: item)
-        end
-        offices = parsed_json["offices"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::JobOfficesItem.from_json(json_object: item)
-        end
-        hiring_managers = parsed_json["hiring_managers"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::JobHiringManagersItem.from_json(json_object: item)
-        end
-        recruiters = parsed_json["recruiters"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::JobRecruitersItem.from_json(json_object: item)
-        end
+        departments = parsed_json["departments"]
+        offices = parsed_json["offices"]
+        hiring_managers = parsed_json["hiring_managers"]
+        recruiters = parsed_json["recruiters"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|

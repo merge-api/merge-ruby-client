@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "screening_question_answer_question"
 require "ostruct"
 require "json"
 
@@ -22,7 +21,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::ScreeningQuestionAnswerQuestion] The screening question associated with the candidate’s answer. To determine the
+      # @return [String] The screening question associated with the candidate’s answer. To determine the
       #  data type of the answer, you can expand on the screening question by adding
       #  `screening_question_answers.question` to the `expand` query parameter.
       attr_reader :question
@@ -45,7 +44,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param question [Merge::Ats::ScreeningQuestionAnswerQuestion] The screening question associated with the candidate’s answer. To determine the
+      # @param question [String] The screening question associated with the candidate’s answer. To determine the
       #  data type of the answer, you can expand on the screening question by adding
       #  `screening_question_answers.question` to the `expand` query parameter.
       # @param answer [String] The candidate’s response to the screening question.
@@ -89,12 +88,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["question"].nil?
-          question = nil
-        else
-          question = parsed_json["question"].to_json
-          question = Merge::Ats::ScreeningQuestionAnswerQuestion.from_json(json_object: question)
-        end
+        question = parsed_json["question"]
         answer = parsed_json["answer"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
@@ -127,7 +121,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.question.nil? || Merge::Ats::ScreeningQuestionAnswerQuestion.validate_raw(obj: obj.question)
+        obj.question&.is_a?(String) != false || raise("Passed value for field obj.question is not the expected type, validation failed.")
         obj.answer&.is_a?(String) != false || raise("Passed value for field obj.answer is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end

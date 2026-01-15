@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "note_request_owner"
-require_relative "note_request_contact"
-require_relative "note_request_account"
-require_relative "note_request_opportunity"
 require_relative "remote_field_request"
 require "ostruct"
 require "json"
@@ -16,15 +12,15 @@ module Merge
     #  ### Usage Example
     #  TODO
     class NoteRequest
-      # @return [Merge::Crm::NoteRequestOwner] The note's owner.
+      # @return [String] The note's owner.
       attr_reader :owner
       # @return [String] The note's content.
       attr_reader :content
-      # @return [Merge::Crm::NoteRequestContact] The note's contact.
+      # @return [String] The note's contact.
       attr_reader :contact
-      # @return [Merge::Crm::NoteRequestAccount] The note's account.
+      # @return [String] The note's account.
       attr_reader :account
-      # @return [Merge::Crm::NoteRequestOpportunity] The note's opportunity.
+      # @return [String] The note's opportunity.
       attr_reader :opportunity
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -40,11 +36,11 @@ module Merge
 
       OMIT = Object.new
 
-      # @param owner [Merge::Crm::NoteRequestOwner] The note's owner.
+      # @param owner [String] The note's owner.
       # @param content [String] The note's content.
-      # @param contact [Merge::Crm::NoteRequestContact] The note's contact.
-      # @param account [Merge::Crm::NoteRequestAccount] The note's account.
-      # @param opportunity [Merge::Crm::NoteRequestOpportunity] The note's opportunity.
+      # @param contact [String] The note's contact.
+      # @param account [String] The note's account.
+      # @param opportunity [String] The note's opportunity.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param remote_fields [Array<Merge::Crm::RemoteFieldRequest>]
@@ -82,31 +78,11 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::NoteRequestOwner.from_json(json_object: owner)
-        end
+        owner = parsed_json["owner"]
         content = parsed_json["content"]
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Crm::NoteRequestContact.from_json(json_object: contact)
-        end
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Crm::NoteRequestAccount.from_json(json_object: account)
-        end
-        if parsed_json["opportunity"].nil?
-          opportunity = nil
-        else
-          opportunity = parsed_json["opportunity"].to_json
-          opportunity = Merge::Crm::NoteRequestOpportunity.from_json(json_object: opportunity)
-        end
+        contact = parsed_json["contact"]
+        account = parsed_json["account"]
+        opportunity = parsed_json["opportunity"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         remote_fields = parsed_json["remote_fields"]&.map do |item|
@@ -140,11 +116,11 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.owner.nil? || Merge::Crm::NoteRequestOwner.validate_raw(obj: obj.owner)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.content&.is_a?(String) != false || raise("Passed value for field obj.content is not the expected type, validation failed.")
-        obj.contact.nil? || Merge::Crm::NoteRequestContact.validate_raw(obj: obj.contact)
-        obj.account.nil? || Merge::Crm::NoteRequestAccount.validate_raw(obj: obj.account)
-        obj.opportunity.nil? || Merge::Crm::NoteRequestOpportunity.validate_raw(obj: obj.opportunity)
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.opportunity&.is_a?(String) != false || raise("Passed value for field obj.opportunity is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
         obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")

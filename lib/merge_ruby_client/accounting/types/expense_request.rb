@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "expense_request_account"
-require_relative "expense_request_contact"
 require_relative "transaction_currency_enum"
-require_relative "expense_request_company"
-require_relative "expense_request_employee"
 require_relative "expense_line_request"
-require_relative "expense_request_tracking_categories_item"
-require_relative "expense_request_accounting_period"
 require_relative "remote_field_request"
 require "ostruct"
 require "json"
@@ -21,7 +15,7 @@ module Merge
     #  typically made with a check, credit card, or cash. Each `Expense` object is
     #  dedicated to a grouping of expenses, with each expense recorded in the lines
     #  object.
-    #  The `Expense` object is used also used to represent refunds to direct purchases.
+    #  The `Expense` object is also used to represent refunds to direct purchases.
     #  Refunds can be distinguished from purchases by the amount sign of the records.
     #  Expense objects with a negative amount are purchases and `Expense` objects with
     #  a positive amount are refunds to those purchases.
@@ -30,9 +24,9 @@ module Merge
     class ExpenseRequest
       # @return [DateTime] When the transaction occurred.
       attr_reader :transaction_date
-      # @return [Merge::Accounting::ExpenseRequestAccount] The expense's payment account.
+      # @return [String] The expense's payment account.
       attr_reader :account
-      # @return [Merge::Accounting::ExpenseRequestContact] The expense's contact.
+      # @return [String] The expense's contact.
       attr_reader :contact
       # @return [Float] The expense's total amount.
       attr_reader :total_amount
@@ -353,17 +347,17 @@ module Merge
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       attr_reader :inclusive_of_tax
-      # @return [Merge::Accounting::ExpenseRequestCompany] The company the expense belongs to.
+      # @return [String] The company the expense belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::ExpenseRequestEmployee] The employee this overall transaction relates to.
+      # @return [String] The employee this overall transaction relates to.
       attr_reader :employee
       # @return [String] The expense's private note.
       attr_reader :memo
       # @return [Array<Merge::Accounting::ExpenseLineRequest>]
       attr_reader :lines
-      # @return [Array<Merge::Accounting::ExpenseRequestTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
-      # @return [Merge::Accounting::ExpenseRequestAccountingPeriod] The accounting period that the Expense was generated in.
+      # @return [String] The accounting period that the Expense was generated in.
       attr_reader :accounting_period
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -380,8 +374,8 @@ module Merge
       OMIT = Object.new
 
       # @param transaction_date [DateTime] When the transaction occurred.
-      # @param account [Merge::Accounting::ExpenseRequestAccount] The expense's payment account.
-      # @param contact [Merge::Accounting::ExpenseRequestContact] The expense's contact.
+      # @param account [String] The expense's payment account.
+      # @param contact [String] The expense's contact.
       # @param total_amount [Float] The expense's total amount.
       # @param sub_total [Float] The expense's total amount before tax.
       # @param total_tax_amount [Float] The expense's total tax amount.
@@ -695,12 +689,12 @@ module Merge
       # @param exchange_rate [String] The expense's exchange rate.
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
-      # @param company [Merge::Accounting::ExpenseRequestCompany] The company the expense belongs to.
-      # @param employee [Merge::Accounting::ExpenseRequestEmployee] The employee this overall transaction relates to.
+      # @param company [String] The company the expense belongs to.
+      # @param employee [String] The employee this overall transaction relates to.
       # @param memo [String] The expense's private note.
       # @param lines [Array<Merge::Accounting::ExpenseLineRequest>]
-      # @param tracking_categories [Array<Merge::Accounting::ExpenseRequestTrackingCategoriesItem>]
-      # @param accounting_period [Merge::Accounting::ExpenseRequestAccountingPeriod] The accounting period that the Expense was generated in.
+      # @param tracking_categories [Array<String>]
+      # @param accounting_period [String] The accounting period that the Expense was generated in.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param remote_fields [Array<Merge::Accounting::RemoteFieldRequest>]
@@ -759,51 +753,23 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Accounting::ExpenseRequestAccount.from_json(json_object: account)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::ExpenseRequestContact.from_json(json_object: contact)
-        end
+        account = parsed_json["account"]
+        contact = parsed_json["contact"]
         total_amount = parsed_json["total_amount"]
         sub_total = parsed_json["sub_total"]
         total_tax_amount = parsed_json["total_tax_amount"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::ExpenseRequestCompany.from_json(json_object: company)
-        end
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Accounting::ExpenseRequestEmployee.from_json(json_object: employee)
-        end
+        company = parsed_json["company"]
+        employee = parsed_json["employee"]
         memo = parsed_json["memo"]
         lines = parsed_json["lines"]&.map do |item|
           item = item.to_json
           Merge::Accounting::ExpenseLineRequest.from_json(json_object: item)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::ExpenseRequestTrackingCategoriesItem.from_json(json_object: item)
-        end
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::ExpenseRequestAccountingPeriod.from_json(json_object: accounting_period)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
+        accounting_period = parsed_json["accounting_period"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         remote_fields = parsed_json["remote_fields"]&.map do |item|
@@ -848,20 +814,20 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
-        obj.account.nil? || Merge::Accounting::ExpenseRequestAccount.validate_raw(obj: obj.account)
-        obj.contact.nil? || Merge::Accounting::ExpenseRequestContact.validate_raw(obj: obj.contact)
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.sub_total&.is_a?(Float) != false || raise("Passed value for field obj.sub_total is not the expected type, validation failed.")
         obj.total_tax_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_tax_amount is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::ExpenseRequestCompany.validate_raw(obj: obj.company)
-        obj.employee.nil? || Merge::Accounting::ExpenseRequestEmployee.validate_raw(obj: obj.employee)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.lines&.is_a?(Array) != false || raise("Passed value for field obj.lines is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::ExpenseRequestAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
         obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")

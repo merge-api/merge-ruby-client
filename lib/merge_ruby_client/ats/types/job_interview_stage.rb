@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "job_interview_stage_job"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -27,7 +26,7 @@ module Merge
       attr_reader :modified_at
       # @return [String] Standard stage names are offered by ATS systems but can be modified by users.
       attr_reader :name
-      # @return [Merge::Ats::JobInterviewStageJob] This field is populated only if the stage is specific to a particular job. If
+      # @return [String] This field is populated only if the stage is specific to a particular job. If
       #  the stage is generic, this field will not be populated.
       attr_reader :job
       # @return [Integer] The stage’s order, with the lowest values ordered first. If the third-party does
@@ -55,7 +54,7 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] Standard stage names are offered by ATS systems but can be modified by users.
-      # @param job [Merge::Ats::JobInterviewStageJob] This field is populated only if the stage is specific to a particular job. If
+      # @param job [String] This field is populated only if the stage is specific to a particular job. If
       #  the stage is generic, this field will not be populated.
       # @param stage_order [Integer] The stage’s order, with the lowest values ordered first. If the third-party does
       #  not return details on the order of stages, this field will not be populated.
@@ -108,12 +107,7 @@ module Merge
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
-        if parsed_json["job"].nil?
-          job = nil
-        else
-          job = parsed_json["job"].to_json
-          job = Merge::Ats::JobInterviewStageJob.from_json(json_object: job)
-        end
+        job = parsed_json["job"]
         stage_order = parsed_json["stage_order"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -155,7 +149,7 @@ module Merge
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
-        obj.job.nil? || Merge::Ats::JobInterviewStageJob.validate_raw(obj: obj.job)
+        obj.job&.is_a?(String) != false || raise("Passed value for field obj.job is not the expected type, validation failed.")
         obj.stage_order&.is_a?(Integer) != false || raise("Passed value for field obj.stage_order is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

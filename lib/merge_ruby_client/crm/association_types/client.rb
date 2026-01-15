@@ -21,7 +21,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `AssociationType` objects.
+      # Returns a list of `AssociationType` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -40,7 +44,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedAssociationTypeList]
@@ -84,7 +88,9 @@ module Merge
         Merge::Crm::PaginatedAssociationTypeList.from_json(json_object: response.body)
       end
 
-      # Creates an `AssociationType` object with the given values.
+      # Creates an `AssociationType` object with the given values.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -129,7 +135,11 @@ module Merge
         Merge::Crm::CrmAssociationTypeResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `AssociationType` object with the given `id`.
+      # Returns an `AssociationType` object with the given `id`.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param id [String]
@@ -173,7 +183,11 @@ module Merge
         Merge::Crm::AssociationType.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `CRMAssociationType` POSTs.
+      # Returns metadata for `CRMAssociationType` POSTs.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param request_options [Merge::RequestOptions]
@@ -217,7 +231,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `AssociationType` objects.
+      # Returns a list of `AssociationType` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -236,7 +254,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedAssociationTypeList]
@@ -282,7 +300,9 @@ module Merge
         end
       end
 
-      # Creates an `AssociationType` object with the given values.
+      # Creates an `AssociationType` object with the given values.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -329,7 +349,11 @@ module Merge
         end
       end
 
-      # Returns an `AssociationType` object with the given `id`.
+      # Returns an `AssociationType` object with the given `id`.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param id [String]
@@ -375,7 +399,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMAssociationType` POSTs.
+      # Returns metadata for `CRMAssociationType` POSTs.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param request_options [Merge::RequestOptions]

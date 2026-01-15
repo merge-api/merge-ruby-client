@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "opportunity_owner"
-require_relative "opportunity_account"
-require_relative "opportunity_stage"
 require_relative "opportunity_status_enum"
 require_relative "remote_data"
 require_relative "remote_field"
@@ -33,11 +30,11 @@ module Merge
       attr_reader :description
       # @return [Integer] The opportunity's amount.
       attr_reader :amount
-      # @return [Merge::Crm::OpportunityOwner] The opportunity's owner.
+      # @return [String] The opportunity's owner.
       attr_reader :owner
-      # @return [Merge::Crm::OpportunityAccount] The account of the opportunity.
+      # @return [String] The account of the opportunity.
       attr_reader :account
-      # @return [Merge::Crm::OpportunityStage] The stage of the opportunity.
+      # @return [String] The stage of the opportunity.
       attr_reader :stage
       # @return [Merge::Crm::OpportunityStatusEnum] The opportunity's status.
       #  * `OPEN` - OPEN
@@ -76,9 +73,9 @@ module Merge
       # @param name [String] The opportunity's name.
       # @param description [String] The opportunity's description.
       # @param amount [Integer] The opportunity's amount.
-      # @param owner [Merge::Crm::OpportunityOwner] The opportunity's owner.
-      # @param account [Merge::Crm::OpportunityAccount] The account of the opportunity.
-      # @param stage [Merge::Crm::OpportunityStage] The stage of the opportunity.
+      # @param owner [String] The opportunity's owner.
+      # @param account [String] The account of the opportunity.
+      # @param stage [String] The stage of the opportunity.
       # @param status [Merge::Crm::OpportunityStatusEnum] The opportunity's status.
       #  * `OPEN` - OPEN
       #  * `WON` - WON
@@ -154,24 +151,9 @@ module Merge
         name = parsed_json["name"]
         description = parsed_json["description"]
         amount = parsed_json["amount"]
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::OpportunityOwner.from_json(json_object: owner)
-        end
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Crm::OpportunityAccount.from_json(json_object: account)
-        end
-        if parsed_json["stage"].nil?
-          stage = nil
-        else
-          stage = parsed_json["stage"].to_json
-          stage = Merge::Crm::OpportunityStage.from_json(json_object: stage)
-        end
+        owner = parsed_json["owner"]
+        account = parsed_json["account"]
+        stage = parsed_json["stage"]
         status = parsed_json["status"]
         last_activity_at = (DateTime.parse(parsed_json["last_activity_at"]) unless parsed_json["last_activity_at"].nil?)
         close_date = (DateTime.parse(parsed_json["close_date"]) unless parsed_json["close_date"].nil?)
@@ -232,9 +214,9 @@ module Merge
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.amount&.is_a?(Integer) != false || raise("Passed value for field obj.amount is not the expected type, validation failed.")
-        obj.owner.nil? || Merge::Crm::OpportunityOwner.validate_raw(obj: obj.owner)
-        obj.account.nil? || Merge::Crm::OpportunityAccount.validate_raw(obj: obj.account)
-        obj.stage.nil? || Merge::Crm::OpportunityStage.validate_raw(obj: obj.stage)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.stage&.is_a?(String) != false || raise("Passed value for field obj.stage is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Crm::OpportunityStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.last_activity_at&.is_a?(DateTime) != false || raise("Passed value for field obj.last_activity_at is not the expected type, validation failed.")
         obj.close_date&.is_a?(DateTime) != false || raise("Passed value for field obj.close_date is not the expected type, validation failed.")

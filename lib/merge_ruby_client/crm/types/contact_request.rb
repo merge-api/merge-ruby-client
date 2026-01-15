@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "contact_request_account"
-require_relative "contact_request_owner"
 require_relative "address_request"
 require_relative "email_address_request"
 require_relative "phone_number_request"
@@ -23,9 +21,9 @@ module Merge
       attr_reader :first_name
       # @return [String] The contact's last name.
       attr_reader :last_name
-      # @return [Merge::Crm::ContactRequestAccount] The contact's account.
+      # @return [String] The contact's account.
       attr_reader :account
-      # @return [Merge::Crm::ContactRequestOwner] The contact's owner.
+      # @return [String] The contact's owner.
       attr_reader :owner
       # @return [Array<Merge::Crm::AddressRequest>]
       attr_reader :addresses
@@ -51,8 +49,8 @@ module Merge
 
       # @param first_name [String] The contact's first name.
       # @param last_name [String] The contact's last name.
-      # @param account [Merge::Crm::ContactRequestAccount] The contact's account.
-      # @param owner [Merge::Crm::ContactRequestOwner] The contact's owner.
+      # @param account [String] The contact's account.
+      # @param owner [String] The contact's owner.
       # @param addresses [Array<Merge::Crm::AddressRequest>]
       # @param email_addresses [Array<Merge::Crm::EmailAddressRequest>]
       # @param phone_numbers [Array<Merge::Crm::PhoneNumberRequest>]
@@ -102,18 +100,8 @@ module Merge
         parsed_json = JSON.parse(json_object)
         first_name = parsed_json["first_name"]
         last_name = parsed_json["last_name"]
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Crm::ContactRequestAccount.from_json(json_object: account)
-        end
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::ContactRequestOwner.from_json(json_object: owner)
-        end
+        account = parsed_json["account"]
+        owner = parsed_json["owner"]
         addresses = parsed_json["addresses"]&.map do |item|
           item = item.to_json
           Merge::Crm::AddressRequest.from_json(json_object: item)
@@ -165,8 +153,8 @@ module Merge
       def self.validate_raw(obj:)
         obj.first_name&.is_a?(String) != false || raise("Passed value for field obj.first_name is not the expected type, validation failed.")
         obj.last_name&.is_a?(String) != false || raise("Passed value for field obj.last_name is not the expected type, validation failed.")
-        obj.account.nil? || Merge::Crm::ContactRequestAccount.validate_raw(obj: obj.account)
-        obj.owner.nil? || Merge::Crm::ContactRequestOwner.validate_raw(obj: obj.owner)
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.addresses&.is_a?(Array) != false || raise("Passed value for field obj.addresses is not the expected type, validation failed.")
         obj.email_addresses&.is_a?(Array) != false || raise("Passed value for field obj.email_addresses is not the expected type, validation failed.")
         obj.phone_numbers&.is_a?(Array) != false || raise("Passed value for field obj.phone_numbers is not the expected type, validation failed.")

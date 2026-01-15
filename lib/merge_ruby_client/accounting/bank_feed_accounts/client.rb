@@ -20,7 +20,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BankFeedAccount` objects.
+      # Returns a list of `BankFeedAccount` objects.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  dZs572VlejmfyDBm9/QlWGUvXJvMIcmJ/cppprh3TdUq0oY4pdosCBHplF6/3L/8hvOwA3nyQMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -31,7 +35,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedBankFeedAccountList]
       # @example
@@ -68,7 +72,11 @@ module Merge
         Merge::Accounting::PaginatedBankFeedAccountList.from_json(json_object: response.body)
       end
 
-      # Creates a `BankFeedAccount` object with the given values.
+      # Creates a `BankFeedAccount` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  htU8nMcKpHsL3mQCjNpsHI4X/k4txRu2RPmZY2uDDobBJmiqE55z2jNvkr/hxW93r/+Ag0ssBpUCAAA"
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -115,7 +123,11 @@ module Merge
         Merge::Accounting::BankFeedAccountResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `BankFeedAccount` object with the given `id`.
+      # Returns a `BankFeedAccount` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  dZs572VlejmfyDBm9/QlWGUvXJvMIcmJ/cppprh3TdUq0oY4pdosCBHplF6/3L/8hvOwA3nyQMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -154,7 +166,11 @@ module Merge
         Merge::Accounting::BankFeedAccount.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `BankFeedAccount` POSTs.
+      # Returns metadata for `BankFeedAccount` POSTs.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  dZs572VlejmfyDBm9/QlWGUvXJvMIcmJ/cppprh3TdUq0oY4pdosCBHplF6/3L/8hvOwA3nyQMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -197,7 +213,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BankFeedAccount` objects.
+      # Returns a list of `BankFeedAccount` objects.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  dZs572VlejmfyDBm9/QlWGUvXJvMIcmJ/cppprh3TdUq0oY4pdosCBHplF6/3L/8hvOwA3nyQMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -208,7 +228,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedBankFeedAccountList]
       # @example
@@ -247,7 +267,11 @@ module Merge
         end
       end
 
-      # Creates a `BankFeedAccount` object with the given values.
+      # Creates a `BankFeedAccount` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  htU8nMcKpHsL3mQCjNpsHI4X/k4txRu2RPmZY2uDDobBJmiqE55z2jNvkr/hxW93r/+Ag0ssBpUCAAA"
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -296,7 +320,11 @@ module Merge
         end
       end
 
-      # Returns a `BankFeedAccount` object with the given `id`.
+      # Returns a `BankFeedAccount` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  dZs572VlejmfyDBm9/QlWGUvXJvMIcmJ/cppprh3TdUq0oY4pdosCBHplF6/3L/8hvOwA3nyQMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -337,7 +365,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `BankFeedAccount` POSTs.
+      # Returns metadata for `BankFeedAccount` POSTs.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  dZs572VlejmfyDBm9/QlWGUvXJvMIcmJ/cppprh3TdUq0oY4pdosCBHplF6/3L/8hvOwA3nyQMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]

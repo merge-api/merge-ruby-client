@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "tax_rate_company"
 require_relative "status_7_d_1_enum"
-require_relative "tax_rate_tax_components_item"
+require_relative "tax_component"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -25,7 +24,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Accounting::TaxRateCompany] The subsidiary that the tax rate belongs to (in the case of multi-entity
+      # @return [String] The subsidiary that the tax rate belongs to (in the case of multi-entity
       #  systems).
       attr_reader :company
       # @return [String] The tax code associated with this tax rate or group of tax rates from the
@@ -46,7 +45,7 @@ module Merge
       attr_reader :total_tax_rate
       # @return [Float] The tax rate’s effective tax rate - total amount of tax with compounding.
       attr_reader :effective_tax_rate
-      # @return [Array<Merge::Accounting::TaxRateTaxComponentsItem>] The related tax components of the tax rate.
+      # @return [Array<Merge::Accounting::TaxComponent>] The related tax components of the tax rate.
       attr_reader :tax_components
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -69,7 +68,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param company [Merge::Accounting::TaxRateCompany] The subsidiary that the tax rate belongs to (in the case of multi-entity
+      # @param company [String] The subsidiary that the tax rate belongs to (in the case of multi-entity
       #  systems).
       # @param code [String] The tax code associated with this tax rate or group of tax rates from the
       #  third-party platform.
@@ -82,7 +81,7 @@ module Merge
       # @param country [String] The country the tax rate is associated with.
       # @param total_tax_rate [Float] The tax’s total tax rate - sum of the tax components (not compounded).
       # @param effective_tax_rate [Float] The tax rate’s effective tax rate - total amount of tax with compounding.
-      # @param tax_components [Array<Merge::Accounting::TaxRateTaxComponentsItem>] The related tax components of the tax rate.
+      # @param tax_components [Array<Merge::Accounting::TaxComponent>] The related tax components of the tax rate.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -143,12 +142,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::TaxRateCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         code = parsed_json["code"]
         name = parsed_json["name"]
         description = parsed_json["description"]
@@ -158,7 +152,7 @@ module Merge
         effective_tax_rate = parsed_json["effective_tax_rate"]
         tax_components = parsed_json["tax_components"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::TaxRateTaxComponentsItem.from_json(json_object: item)
+          Merge::Accounting::TaxComponent.from_json(json_object: item)
         end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -205,7 +199,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::TaxRateCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.code&.is_a?(String) != false || raise("Passed value for field obj.code is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")

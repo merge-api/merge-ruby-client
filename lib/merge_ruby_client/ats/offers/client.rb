@@ -2,9 +2,10 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/offers_list_request_expand"
+require_relative "types/list_offers_request_expand"
+require_relative "types/list_offers_request_status"
 require_relative "../types/paginated_offer_list"
-require_relative "types/offers_retrieve_request_expand"
+require_relative "types/retrieve_offers_request_expand"
 require_relative "../types/offer"
 require "async"
 
@@ -20,14 +21,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Offer` objects.
+      # Returns a list of `Offer` objects.{/* BEGIN_ATS_OFFER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zlfC7nM1lII3Xu1XDIYJZzb/PgAZn4B0Rfg8qCg//79834v+jof07/5Bnj+CN9++w4C9T/XYRMAAA=="
+      #  /></Footer>{/* END_ATS_OFFER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param application_id [String] If provided, will only return offers for this application.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param creator_id [String] If provided, will only return offers created by this user.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Offers::OffersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Offers::ListOffersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -40,12 +44,24 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [Merge::Ats::Offers::ListOffersRequestStatus] If provided, will only return offers with this status. Options: ('DRAFT',
+      #  'APPROVAL-SENT', 'APPROVED', 'SENT', 'SENT-MANUALLY', 'OPENED', 'DENIED',
+      #  'SIGNED', 'DEPRECATED')
+      #  * `DRAFT` - DRAFT
+      #  * `APPROVAL-SENT` - APPROVAL-SENT
+      #  * `APPROVED` - APPROVED
+      #  * `SENT` - SENT
+      #  * `SENT-MANUALLY` - SENT-MANUALLY
+      #  * `OPENED` - OPENED
+      #  * `DENIED` - DENIED
+      #  * `SIGNED` - SIGNED
+      #  * `DEPRECATED` - DEPRECATED
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedOfferList]
       # @example
@@ -56,7 +72,7 @@ module Merge
       #  )
       #  api.ats.offers.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(application_id: nil, created_after: nil, created_before: nil, creator_id: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -82,7 +98,8 @@ module Merge
             "page_size": page_size,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
-            "show_enum_origins": show_enum_origins
+            "show_enum_origins": show_enum_origins,
+            "status": status
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -92,10 +109,14 @@ module Merge
         Merge::Ats::PaginatedOfferList.from_json(json_object: response.body)
       end
 
-      # Returns an `Offer` object with the given `id`.
+      # Returns an `Offer` object with the given `id`.{/*
+      #  BEGIN_ATS_OFFER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zlfC7nM1lII3Xu1XDIYJZzb/PgAZn4B0Rfg8qCg//79834v+jof07/5Bnj+CN9++w4C9T/XYRMAAA=="
+      #  /></Footer>{/* END_ATS_OFFER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Offers::OffersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Offers::RetrieveOffersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -152,14 +173,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Offer` objects.
+      # Returns a list of `Offer` objects.{/* BEGIN_ATS_OFFER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zlfC7nM1lII3Xu1XDIYJZzb/PgAZn4B0Rfg8qCg//79834v+jof07/5Bnj+CN9++w4C9T/XYRMAAA=="
+      #  /></Footer>{/* END_ATS_OFFER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param application_id [String] If provided, will only return offers for this application.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param creator_id [String] If provided, will only return offers created by this user.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Offers::OffersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Offers::ListOffersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -172,12 +196,24 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [Merge::Ats::Offers::ListOffersRequestStatus] If provided, will only return offers with this status. Options: ('DRAFT',
+      #  'APPROVAL-SENT', 'APPROVED', 'SENT', 'SENT-MANUALLY', 'OPENED', 'DENIED',
+      #  'SIGNED', 'DEPRECATED')
+      #  * `DRAFT` - DRAFT
+      #  * `APPROVAL-SENT` - APPROVAL-SENT
+      #  * `APPROVED` - APPROVED
+      #  * `SENT` - SENT
+      #  * `SENT-MANUALLY` - SENT-MANUALLY
+      #  * `OPENED` - OPENED
+      #  * `DENIED` - DENIED
+      #  * `SIGNED` - SIGNED
+      #  * `DEPRECATED` - DEPRECATED
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedOfferList]
       # @example
@@ -188,7 +224,7 @@ module Merge
       #  )
       #  api.ats.offers.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(application_id: nil, created_after: nil, created_before: nil, creator_id: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, status: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -215,7 +251,8 @@ module Merge
               "page_size": page_size,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
-              "show_enum_origins": show_enum_origins
+              "show_enum_origins": show_enum_origins,
+              "status": status
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -226,10 +263,14 @@ module Merge
         end
       end
 
-      # Returns an `Offer` object with the given `id`.
+      # Returns an `Offer` object with the given `id`.{/*
+      #  BEGIN_ATS_OFFER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zlfC7nM1lII3Xu1XDIYJZzb/PgAZn4B0Rfg8qCg//79834v+jof07/5Bnj+CN9++w4C9T/XYRMAAA=="
+      #  /></Footer>{/* END_ATS_OFFER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Offers::OffersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Offers::RetrieveOffersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.

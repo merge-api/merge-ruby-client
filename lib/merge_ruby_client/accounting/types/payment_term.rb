@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "payment_term_company"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -28,7 +27,7 @@ module Merge
       attr_reader :name
       # @return [Boolean] `True` if the payment term is active, `False` if not.
       attr_reader :is_active
-      # @return [Merge::Accounting::PaymentTermCompany] The subsidiary that the payment term belongs to.
+      # @return [String] The subsidiary that the payment term belongs to.
       attr_reader :company
       # @return [Integer] The number of days after the invoice date that payment is due.
       attr_reader :days_until_due
@@ -54,7 +53,7 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The name of the payment term.
       # @param is_active [Boolean] `True` if the payment term is active, `False` if not.
-      # @param company [Merge::Accounting::PaymentTermCompany] The subsidiary that the payment term belongs to.
+      # @param company [String] The subsidiary that the payment term belongs to.
       # @param days_until_due [Integer] The number of days after the invoice date that payment is due.
       # @param discount_days [Integer] The number of days the invoice must be paid before discounts expire.
       # @param remote_last_modified_at [DateTime] When the third party's payment term was modified.
@@ -108,12 +107,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         is_active = parsed_json["is_active"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::PaymentTermCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         days_until_due = parsed_json["days_until_due"]
         discount_days = parsed_json["discount_days"]
         remote_last_modified_at = unless parsed_json["remote_last_modified_at"].nil?
@@ -161,7 +155,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.is_active&.is_a?(Boolean) != false || raise("Passed value for field obj.is_active is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::PaymentTermCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.days_until_due&.is_a?(Integer) != false || raise("Passed value for field obj.days_until_due is not the expected type, validation failed.")
         obj.discount_days&.is_a?(Integer) != false || raise("Passed value for field obj.discount_days is not the expected type, validation failed.")
         obj.remote_last_modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_last_modified_at is not the expected type, validation failed.")
