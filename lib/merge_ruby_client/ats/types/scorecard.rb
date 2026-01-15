@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "scorecard_application"
-require_relative "scorecard_interview"
-require_relative "scorecard_interviewer"
 require_relative "overall_recommendation_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -27,11 +24,11 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::ScorecardApplication] The application being scored.
+      # @return [String] The application being scored.
       attr_reader :application
-      # @return [Merge::Ats::ScorecardInterview] The interview being scored.
+      # @return [String] The interview being scored.
       attr_reader :interview
-      # @return [Merge::Ats::ScorecardInterviewer] The interviewer doing the scoring.
+      # @return [String] The interviewer doing the scoring.
       attr_reader :interviewer
       # @return [DateTime] When the third party's scorecard was created.
       attr_reader :remote_created_at
@@ -65,9 +62,9 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param application [Merge::Ats::ScorecardApplication] The application being scored.
-      # @param interview [Merge::Ats::ScorecardInterview] The interview being scored.
-      # @param interviewer [Merge::Ats::ScorecardInterviewer] The interviewer doing the scoring.
+      # @param application [String] The application being scored.
+      # @param interview [String] The interview being scored.
+      # @param interviewer [String] The interviewer doing the scoring.
       # @param remote_created_at [DateTime] When the third party's scorecard was created.
       # @param submitted_at [DateTime] When the scorecard was submitted.
       # @param overall_recommendation [Merge::Ats::OverallRecommendationEnum] The inteviewer's recommendation.
@@ -130,24 +127,9 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["application"].nil?
-          application = nil
-        else
-          application = parsed_json["application"].to_json
-          application = Merge::Ats::ScorecardApplication.from_json(json_object: application)
-        end
-        if parsed_json["interview"].nil?
-          interview = nil
-        else
-          interview = parsed_json["interview"].to_json
-          interview = Merge::Ats::ScorecardInterview.from_json(json_object: interview)
-        end
-        if parsed_json["interviewer"].nil?
-          interviewer = nil
-        else
-          interviewer = parsed_json["interviewer"].to_json
-          interviewer = Merge::Ats::ScorecardInterviewer.from_json(json_object: interviewer)
-        end
+        application = parsed_json["application"]
+        interview = parsed_json["interview"]
+        interviewer = parsed_json["interviewer"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
@@ -195,9 +177,9 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.application.nil? || Merge::Ats::ScorecardApplication.validate_raw(obj: obj.application)
-        obj.interview.nil? || Merge::Ats::ScorecardInterview.validate_raw(obj: obj.interview)
-        obj.interviewer.nil? || Merge::Ats::ScorecardInterviewer.validate_raw(obj: obj.interviewer)
+        obj.application&.is_a?(String) != false || raise("Passed value for field obj.application is not the expected type, validation failed.")
+        obj.interview&.is_a?(String) != false || raise("Passed value for field obj.interview is not the expected type, validation failed.")
+        obj.interviewer&.is_a?(String) != false || raise("Passed value for field obj.interviewer is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.submitted_at&.is_a?(DateTime) != false || raise("Passed value for field obj.submitted_at is not the expected type, validation failed.")
         obj.overall_recommendation&.is_a?(Merge::Ats::OverallRecommendationEnum) != false || raise("Passed value for field obj.overall_recommendation is not the expected type, validation failed.")

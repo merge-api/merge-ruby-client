@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "employment_employee"
 require_relative "pay_period_enum"
 require_relative "pay_frequency_enum"
 require_relative "pay_currency_enum"
-require_relative "employment_pay_group"
 require_relative "flsa_status_enum"
 require_relative "employment_type_enum"
 require_relative "remote_data"
@@ -34,7 +32,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::EmploymentEmployee] The employee holding this position.
+      # @return [String] The employee holding this position.
       attr_reader :employee
       # @return [String] The position's title.
       attr_reader :job_title
@@ -370,7 +368,7 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       attr_reader :pay_currency
-      # @return [Merge::Hris::EmploymentPayGroup] The employment's pay group
+      # @return [String] The employment's pay group
       attr_reader :pay_group
       # @return [Merge::Hris::FlsaStatusEnum] The position's FLSA status.
       #  * `EXEMPT` - EXEMPT
@@ -408,7 +406,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::EmploymentEmployee] The employee holding this position.
+      # @param employee [String] The employee holding this position.
       # @param job_title [String] The position's title.
       # @param pay_rate [Float] The position's pay rate.
       # @param pay_period [Merge::Hris::PayPeriodEnum] The time period this pay rate encompasses.
@@ -738,7 +736,7 @@ module Merge
       #  * `ZWD` - Zimbabwean Dollar (1980–2008)
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
-      # @param pay_group [Merge::Hris::EmploymentPayGroup] The employment's pay group
+      # @param pay_group [String] The employment's pay group
       # @param flsa_status [Merge::Hris::FlsaStatusEnum] The position's FLSA status.
       #  * `EXEMPT` - EXEMPT
       #  * `SALARIED_NONEXEMPT` - SALARIED_NONEXEMPT
@@ -813,23 +811,13 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::EmploymentEmployee.from_json(json_object: employee)
-        end
+        employee = parsed_json["employee"]
         job_title = parsed_json["job_title"]
         pay_rate = parsed_json["pay_rate"]
         pay_period = parsed_json["pay_period"]
         pay_frequency = parsed_json["pay_frequency"]
         pay_currency = parsed_json["pay_currency"]
-        if parsed_json["pay_group"].nil?
-          pay_group = nil
-        else
-          pay_group = parsed_json["pay_group"].to_json
-          pay_group = Merge::Hris::EmploymentPayGroup.from_json(json_object: pay_group)
-        end
+        pay_group = parsed_json["pay_group"]
         flsa_status = parsed_json["flsa_status"]
         effective_date = (DateTime.parse(parsed_json["effective_date"]) unless parsed_json["effective_date"].nil?)
         employment_type = parsed_json["employment_type"]
@@ -879,13 +867,13 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::EmploymentEmployee.validate_raw(obj: obj.employee)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.job_title&.is_a?(String) != false || raise("Passed value for field obj.job_title is not the expected type, validation failed.")
         obj.pay_rate&.is_a?(Float) != false || raise("Passed value for field obj.pay_rate is not the expected type, validation failed.")
         obj.pay_period&.is_a?(Merge::Hris::PayPeriodEnum) != false || raise("Passed value for field obj.pay_period is not the expected type, validation failed.")
         obj.pay_frequency&.is_a?(Merge::Hris::PayFrequencyEnum) != false || raise("Passed value for field obj.pay_frequency is not the expected type, validation failed.")
         obj.pay_currency&.is_a?(Merge::Hris::PayCurrencyEnum) != false || raise("Passed value for field obj.pay_currency is not the expected type, validation failed.")
-        obj.pay_group.nil? || Merge::Hris::EmploymentPayGroup.validate_raw(obj: obj.pay_group)
+        obj.pay_group&.is_a?(String) != false || raise("Passed value for field obj.pay_group is not the expected type, validation failed.")
         obj.flsa_status&.is_a?(Merge::Hris::FlsaStatusEnum) != false || raise("Passed value for field obj.flsa_status is not the expected type, validation failed.")
         obj.effective_date&.is_a?(DateTime) != false || raise("Passed value for field obj.effective_date is not the expected type, validation failed.")
         obj.employment_type&.is_a?(Merge::Hris::EmploymentTypeEnum) != false || raise("Passed value for field obj.employment_type is not the expected type, validation failed.")

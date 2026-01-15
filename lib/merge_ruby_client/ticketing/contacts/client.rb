@@ -21,11 +21,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Contact` objects.
+      # Returns a list of `Contact` objects.{/*
+      #  BEGIN_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  iOm5V2krLeDlWjUugvyD/z0B1jD9rB33f2NS9SPciIrfmmErVzkf39V9XsXp7dfvwFf9UcAjRgAAA=="
+      #  /></Footer>{/* END_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param email_address [String] If provided, will only return Contacts that match this email.
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -39,7 +44,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedContactList]
@@ -50,8 +55,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.contacts.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
-      def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
-               include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
+      def list(created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -66,6 +71,7 @@ module Merge
             "created_after": created_after,
             "created_before": created_before,
             "cursor": cursor,
+            "email_address": email_address,
             "expand": expand,
             "include_deleted_data": include_deleted_data,
             "include_remote_data": include_remote_data,
@@ -83,7 +89,11 @@ module Merge
         Merge::Ticketing::PaginatedContactList.from_json(json_object: response.body)
       end
 
-      # Creates a `Contact` object with the given values.
+      # Creates a `Contact` object with the given values.{/*
+      #  BEGIN_TICKETING_CONTACT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  LAgR2aNfAu6e/Les+07KU52/m9cO5PoJtoUW2jaXUTVtTj8wLC4l4yuhv/Brr/w5+7pJ3TkyQqsBAAA"
+      #  /></Footer>{/* END_TICKETING_CONTACT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -92,7 +102,7 @@ module Merge
       #   * :email_address (String)
       #   * :phone_number (String)
       #   * :details (String)
-      #   * :account (Hash)
+      #   * :account (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -125,7 +135,11 @@ module Merge
         Merge::Ticketing::TicketingContactResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `Contact` object with the given `id`.
+      # Returns a `Contact` object with the given `id`.{/*
+      #  BEGIN_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  iOm5V2krLeDlWjUugvyD/z0B1jD9rB33f2NS9SPciIrfmmErVzkf39V9XsXp7dfvwFf9UcAjRgAAA=="
+      #  /></Footer>{/* END_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -167,7 +181,11 @@ module Merge
         Merge::Ticketing::Contact.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `TicketingContact` POSTs.
+      # Returns metadata for `TicketingContact` POSTs.{/*
+      #  BEGIN_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  iOm5V2krLeDlWjUugvyD/z0B1jD9rB33f2NS9SPciIrfmmErVzkf39V9XsXp7dfvwFf9UcAjRgAAA=="
+      #  /></Footer>{/* END_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::MetaResponse]
@@ -210,11 +228,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Contact` objects.
+      # Returns a list of `Contact` objects.{/*
+      #  BEGIN_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  iOm5V2krLeDlWjUugvyD/z0B1jD9rB33f2NS9SPciIrfmmErVzkf39V9XsXp7dfvwFf9UcAjRgAAA=="
+      #  /></Footer>{/* END_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
+      # @param email_address [String] If provided, will only return Contacts that match this email.
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -228,7 +251,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedContactList]
@@ -239,8 +262,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.contacts.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
-      def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
-               include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
+      def list(created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -256,6 +279,7 @@ module Merge
               "created_after": created_after,
               "created_before": created_before,
               "cursor": cursor,
+              "email_address": email_address,
               "expand": expand,
               "include_deleted_data": include_deleted_data,
               "include_remote_data": include_remote_data,
@@ -274,7 +298,11 @@ module Merge
         end
       end
 
-      # Creates a `Contact` object with the given values.
+      # Creates a `Contact` object with the given values.{/*
+      #  BEGIN_TICKETING_CONTACT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  LAgR2aNfAu6e/Les+07KU52/m9cO5PoJtoUW2jaXUTVtTj8wLC4l4yuhv/Brr/w5+7pJ3TkyQqsBAAA"
+      #  /></Footer>{/* END_TICKETING_CONTACT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -283,7 +311,7 @@ module Merge
       #   * :email_address (String)
       #   * :phone_number (String)
       #   * :details (String)
-      #   * :account (Hash)
+      #   * :account (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -318,7 +346,11 @@ module Merge
         end
       end
 
-      # Returns a `Contact` object with the given `id`.
+      # Returns a `Contact` object with the given `id`.{/*
+      #  BEGIN_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  iOm5V2krLeDlWjUugvyD/z0B1jD9rB33f2NS9SPciIrfmmErVzkf39V9XsXp7dfvwFf9UcAjRgAAA=="
+      #  /></Footer>{/* END_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -362,7 +394,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `TicketingContact` POSTs.
+      # Returns metadata for `TicketingContact` POSTs.{/*
+      #  BEGIN_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  iOm5V2krLeDlWjUugvyD/z0B1jD9rB33f2NS9SPciIrfmmErVzkf39V9XsXp7dfvwFf9UcAjRgAAA=="
+      #  /></Footer>{/* END_TICKETING_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::MetaResponse]

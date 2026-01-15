@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/interviews_list_request_expand"
+require_relative "types/list_interviews_request_expand"
 require_relative "../types/paginated_scheduled_interview_list"
 require_relative "../types/scheduled_interview_request"
 require_relative "../types/scheduled_interview_response"
-require_relative "types/interviews_retrieve_request_expand"
+require_relative "types/retrieve_interviews_request_expand"
 require_relative "../types/scheduled_interview"
 require_relative "../types/meta_response"
 require "async"
@@ -23,13 +23,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `ScheduledInterview` objects.
+      # Returns a list of `ScheduledInterview` objects.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  S7VOISSbn49DmYoVbIEfREV/tiWtnIo+ipjuUr0cnnNkVe5/pyZ/i/j99cb3NZz+er7D5iPdNoYEwAA"
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param application_id [String] If provided, will only return interviews for this application.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Interviews::InterviewsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Interviews::ListInterviewsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -45,7 +49,7 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param organizer_id [String] If provided, will only return interviews organized by this user.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -99,15 +103,19 @@ module Merge
         Merge::Ats::PaginatedScheduledInterviewList.from_json(json_object: response.body)
       end
 
-      # Creates a `ScheduledInterview` object with the given values.
+      # Creates a `ScheduledInterview` object with the given values.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  sctftDvs3PZRN/JJqZC6efyJXqdaK8V7XTaf89vOao3Ef3Td3sXqjGX7E2IK5Aubv8A1rYzYXAHAAA="
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ats::ScheduledInterviewRequest, as a Hash
-      #   * :application (Hash)
-      #   * :job_interview_stage (Hash)
-      #   * :organizer (Hash)
-      #   * :interviewers (Array<Merge::Ats::ScheduledInterviewRequestInterviewersItem>)
+      #   * :application (String)
+      #   * :job_interview_stage (String)
+      #   * :organizer (String)
+      #   * :interviewers (Array<String>)
       #   * :location (String)
       #   * :start_at (DateTime)
       #   * :end_at (DateTime)
@@ -149,10 +157,14 @@ module Merge
         Merge::Ats::ScheduledInterviewResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `ScheduledInterview` object with the given `id`.
+      # Returns a `ScheduledInterview` object with the given `id`.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  S7VOISSbn49DmYoVbIEfREV/tiWtnIo+ipjuUr0cnnNkVe5/pyZ/i/j99cb3NZz+er7D5iPdNoYEwAA"
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Interviews::InterviewsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Interviews::RetrieveInterviewsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -198,7 +210,11 @@ module Merge
         Merge::Ats::ScheduledInterview.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `ScheduledInterview` POSTs.
+      # Returns metadata for `ScheduledInterview` POSTs.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  S7VOISSbn49DmYoVbIEfREV/tiWtnIo+ipjuUr0cnnNkVe5/pyZ/i/j99cb3NZz+er7D5iPdNoYEwAA"
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]
@@ -241,13 +257,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `ScheduledInterview` objects.
+      # Returns a list of `ScheduledInterview` objects.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  S7VOISSbn49DmYoVbIEfREV/tiWtnIo+ipjuUr0cnnNkVe5/pyZ/i/j99cb3NZz+er7D5iPdNoYEwAA"
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param application_id [String] If provided, will only return interviews for this application.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Interviews::InterviewsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Interviews::ListInterviewsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -263,7 +283,7 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param organizer_id [String] If provided, will only return interviews organized by this user.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -319,15 +339,19 @@ module Merge
         end
       end
 
-      # Creates a `ScheduledInterview` object with the given values.
+      # Creates a `ScheduledInterview` object with the given values.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  sctftDvs3PZRN/JJqZC6efyJXqdaK8V7XTaf89vOao3Ef3Td3sXqjGX7E2IK5Aubv8A1rYzYXAHAAA="
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ats::ScheduledInterviewRequest, as a Hash
-      #   * :application (Hash)
-      #   * :job_interview_stage (Hash)
-      #   * :organizer (Hash)
-      #   * :interviewers (Array<Merge::Ats::ScheduledInterviewRequestInterviewersItem>)
+      #   * :application (String)
+      #   * :job_interview_stage (String)
+      #   * :organizer (String)
+      #   * :interviewers (Array<String>)
       #   * :location (String)
       #   * :start_at (DateTime)
       #   * :end_at (DateTime)
@@ -371,10 +395,14 @@ module Merge
         end
       end
 
-      # Returns a `ScheduledInterview` object with the given `id`.
+      # Returns a `ScheduledInterview` object with the given `id`.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  S7VOISSbn49DmYoVbIEfREV/tiWtnIo+ipjuUr0cnnNkVe5/pyZ/i/j99cb3NZz+er7D5iPdNoYEwAA"
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Interviews::InterviewsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Interviews::RetrieveInterviewsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -422,7 +450,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `ScheduledInterview` POSTs.
+      # Returns metadata for `ScheduledInterview` POSTs.{/*
+      #  BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  S7VOISSbn49DmYoVbIEfREV/tiWtnIo+ipjuUr0cnnNkVe5/pyZ/i/j99cb3NZz+er7D5iPdNoYEwAA"
+      #  /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]

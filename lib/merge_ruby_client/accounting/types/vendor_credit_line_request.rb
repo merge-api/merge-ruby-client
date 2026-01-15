@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "vendor_credit_line_request_account"
-require_relative "vendor_credit_line_request_project"
-require_relative "vendor_credit_line_request_contact"
 require "ostruct"
 require "json"
 
@@ -25,13 +22,13 @@ module Merge
       attr_reader :tracking_categories
       # @return [String] The line's description.
       attr_reader :description
-      # @return [Merge::Accounting::VendorCreditLineRequestAccount] The line's account.
+      # @return [String] The line's account.
       attr_reader :account
       # @return [String] The company the line belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::VendorCreditLineRequestProject]
+      # @return [String]
       attr_reader :project
-      # @return [Merge::Accounting::VendorCreditLineRequestContact]
+      # @return [String]
       attr_reader :contact
       # @return [String] The tax rate that applies to this line item.
       attr_reader :tax_rate
@@ -54,10 +51,10 @@ module Merge
       # @param tracking_category [String] The line's associated tracking category.
       # @param tracking_categories [Array<String>] The vendor credit line item's associated tracking categories.
       # @param description [String] The line's description.
-      # @param account [Merge::Accounting::VendorCreditLineRequestAccount] The line's account.
+      # @param account [String] The line's account.
       # @param company [String] The company the line belongs to.
-      # @param project [Merge::Accounting::VendorCreditLineRequestProject]
-      # @param contact [Merge::Accounting::VendorCreditLineRequestContact]
+      # @param project [String]
+      # @param contact [String]
       # @param tax_rate [String] The tax rate that applies to this line item.
       # @param exchange_rate [String] The vendor credit line item's exchange rate.
       # @param integration_params [Hash{String => Object}]
@@ -111,25 +108,10 @@ module Merge
         tracking_category = parsed_json["tracking_category"]
         tracking_categories = parsed_json["tracking_categories"]
         description = parsed_json["description"]
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Accounting::VendorCreditLineRequestAccount.from_json(json_object: account)
-        end
+        account = parsed_json["account"]
         company = parsed_json["company"]
-        if parsed_json["project"].nil?
-          project = nil
-        else
-          project = parsed_json["project"].to_json
-          project = Merge::Accounting::VendorCreditLineRequestProject.from_json(json_object: project)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::VendorCreditLineRequestContact.from_json(json_object: contact)
-        end
+        project = parsed_json["project"]
+        contact = parsed_json["contact"]
         tax_rate = parsed_json["tax_rate"]
         exchange_rate = parsed_json["exchange_rate"]
         integration_params = parsed_json["integration_params"]
@@ -171,10 +153,10 @@ module Merge
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
-        obj.account.nil? || Merge::Accounting::VendorCreditLineRequestAccount.validate_raw(obj: obj.account)
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
-        obj.project.nil? || Merge::Accounting::VendorCreditLineRequestProject.validate_raw(obj: obj.project)
-        obj.contact.nil? || Merge::Accounting::VendorCreditLineRequestContact.validate_raw(obj: obj.contact)
+        obj.project&.is_a?(String) != false || raise("Passed value for field obj.project is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")

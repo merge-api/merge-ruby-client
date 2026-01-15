@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/applications_list_request_expand"
+require_relative "types/list_applications_request_expand"
 require_relative "../types/paginated_application_list"
 require_relative "../types/application_request"
 require_relative "../types/application_response"
-require_relative "types/applications_retrieve_request_expand"
+require_relative "types/retrieve_applications_request_expand"
 require_relative "../types/application"
 require_relative "../types/meta_response"
 require "async"
@@ -23,7 +23,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Application` objects.
+      # Returns a list of `Application` objects.{/*
+      #  BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  28eJN6x2ixFQqowseYVnxD0LXP86Mw7qUXb181EX8RwNXDpFZ6PHDnT19wP+zwhX//5F28dOoozTwAA"
+      #  /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param candidate_id [String] If provided, will only return applications for this candidate.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -31,7 +35,7 @@ module Merge
       # @param credited_to_id [String] If provided, will only return applications credited to this user.
       # @param current_stage_id [String] If provided, will only return applications at this interview stage.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Applications::ApplicationsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Applications::ListApplicationsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -45,7 +49,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param reject_reason_id [String] If provided, will only return applications with this reject reason.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param source [String] If provided, will only return applications with this source.
@@ -104,20 +108,24 @@ module Merge
       #  See our [Help Center
       #  tps://help.merge.dev/en/articles/10012366-updates-to-post-applications-oct-2024)
       #  for detailed support per integration.
+      #  {/* BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  dP1/4XS43RtTmgv1VZ26t5ECE8cvlLy20YTlSybEUev1pb7cib6Flp6VwjXf3L59uMfzxJrgTwiAAA="
+      #  /></Footer>{/* END_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ats::ApplicationRequest, as a Hash
-      #   * :candidate (Hash)
-      #   * :job (Hash)
+      #   * :candidate (String)
+      #   * :job (String)
       #   * :applied_at (DateTime)
       #   * :rejected_at (DateTime)
-      #   * :offers (Array<Merge::Ats::ApplicationRequestOffersItem>)
+      #   * :offers (Array<String>)
       #   * :source (String)
-      #   * :credited_to (Hash)
-      #   * :screening_question_answers (Array<Merge::Ats::ApplicationRequestScreeningQuestionAnswersItem>)
-      #   * :current_stage (Hash)
-      #   * :reject_reason (Hash)
+      #   * :credited_to (String)
+      #   * :screening_question_answers (Array<Merge::Ats::ScreeningQuestionAnswerRequest>)
+      #   * :current_stage (String)
+      #   * :reject_reason (String)
       #   * :remote_template_id (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -156,10 +164,14 @@ module Merge
         Merge::Ats::ApplicationResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Application` object with the given `id`.
+      # Returns an `Application` object with the given `id`.{/*
+      #  BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  28eJN6x2ixFQqowseYVnxD0LXP86Mw7qUXb181EX8RwNXDpFZ6PHDnT19wP+zwhX//5F28dOoozTwAA"
+      #  /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Applications::ApplicationsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Applications::RetrieveApplicationsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -198,7 +210,11 @@ module Merge
         Merge::Ats::Application.from_json(json_object: response.body)
       end
 
-      # Updates the `current_stage` field of an `Application` object
+      # Updates the `current_stage` field of an `Application` object{/*
+      #  BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  dP1/4XS43RtTmgv1VZ26t5ECE8cvlLy20YTlSybEUev1pb7cib6Flp6VwjXf3L59uMfzxJrgTwiAAA="
+      #  /></Footer>{/* END_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -240,7 +256,11 @@ module Merge
         Merge::Ats::ApplicationResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Application` POSTs.
+      # Returns metadata for `Application` POSTs.{/*
+      #  BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  28eJN6x2ixFQqowseYVnxD0LXP86Mw7qUXb181EX8RwNXDpFZ6PHDnT19wP+zwhX//5F28dOoozTwAA"
+      #  /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param application_remote_template_id [String] The template ID associated with the nested application in the request.
       # @param request_options [Merge::RequestOptions]
@@ -285,7 +305,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Application` objects.
+      # Returns a list of `Application` objects.{/*
+      #  BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  28eJN6x2ixFQqowseYVnxD0LXP86Mw7qUXb181EX8RwNXDpFZ6PHDnT19wP+zwhX//5F28dOoozTwAA"
+      #  /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param candidate_id [String] If provided, will only return applications for this candidate.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -293,7 +317,7 @@ module Merge
       # @param credited_to_id [String] If provided, will only return applications credited to this user.
       # @param current_stage_id [String] If provided, will only return applications at this interview stage.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Applications::ApplicationsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Applications::ListApplicationsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -307,7 +331,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param reject_reason_id [String] If provided, will only return applications with this reject reason.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param source [String] If provided, will only return applications with this source.
@@ -368,20 +392,24 @@ module Merge
       #  See our [Help Center
       #  tps://help.merge.dev/en/articles/10012366-updates-to-post-applications-oct-2024)
       #  for detailed support per integration.
+      #  {/* BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  dP1/4XS43RtTmgv1VZ26t5ECE8cvlLy20YTlSybEUev1pb7cib6Flp6VwjXf3L59uMfzxJrgTwiAAA="
+      #  /></Footer>{/* END_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ats::ApplicationRequest, as a Hash
-      #   * :candidate (Hash)
-      #   * :job (Hash)
+      #   * :candidate (String)
+      #   * :job (String)
       #   * :applied_at (DateTime)
       #   * :rejected_at (DateTime)
-      #   * :offers (Array<Merge::Ats::ApplicationRequestOffersItem>)
+      #   * :offers (Array<String>)
       #   * :source (String)
-      #   * :credited_to (Hash)
-      #   * :screening_question_answers (Array<Merge::Ats::ApplicationRequestScreeningQuestionAnswersItem>)
-      #   * :current_stage (Hash)
-      #   * :reject_reason (Hash)
+      #   * :credited_to (String)
+      #   * :screening_question_answers (Array<Merge::Ats::ScreeningQuestionAnswerRequest>)
+      #   * :current_stage (String)
+      #   * :reject_reason (String)
       #   * :remote_template_id (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -422,10 +450,14 @@ module Merge
         end
       end
 
-      # Returns an `Application` object with the given `id`.
+      # Returns an `Application` object with the given `id`.{/*
+      #  BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  28eJN6x2ixFQqowseYVnxD0LXP86Mw7qUXb181EX8RwNXDpFZ6PHDnT19wP+zwhX//5F28dOoozTwAA"
+      #  /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Applications::ApplicationsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Applications::RetrieveApplicationsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -466,7 +498,11 @@ module Merge
         end
       end
 
-      # Updates the `current_stage` field of an `Application` object
+      # Updates the `current_stage` field of an `Application` object{/*
+      #  BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  dP1/4XS43RtTmgv1VZ26t5ECE8cvlLy20YTlSybEUev1pb7cib6Flp6VwjXf3L59uMfzxJrgTwiAAA="
+      #  /></Footer>{/* END_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -510,7 +546,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Application` POSTs.
+      # Returns metadata for `Application` POSTs.{/*
+      #  BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  28eJN6x2ixFQqowseYVnxD0LXP86Mw7qUXb181EX8RwNXDpFZ6PHDnT19wP+zwhX//5F28dOoozTwAA"
+      #  /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param application_remote_template_id [String] The template ID associated with the nested application in the request.
       # @param request_options [Merge::RequestOptions]

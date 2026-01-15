@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "user_teams_item"
-require_relative "user_roles_item"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -32,9 +30,9 @@ module Merge
       attr_reader :email_address
       # @return [Boolean] Whether or not the user is active.
       attr_reader :is_active
-      # @return [Array<Merge::Ticketing::UserTeamsItem>]
+      # @return [Array<String>]
       attr_reader :teams
-      # @return [Array<Merge::Ticketing::UserRolesItem>]
+      # @return [Array<String>]
       attr_reader :roles
       # @return [String] The user's avatar picture.
       attr_reader :avatar
@@ -62,8 +60,8 @@ module Merge
       # @param name [String] The user's name.
       # @param email_address [String] The user's email address.
       # @param is_active [Boolean] Whether or not the user is active.
-      # @param teams [Array<Merge::Ticketing::UserTeamsItem>]
-      # @param roles [Array<Merge::Ticketing::UserRolesItem>]
+      # @param teams [Array<String>]
+      # @param roles [Array<String>]
       # @param avatar [String] The user's avatar picture.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -122,14 +120,8 @@ module Merge
         name = parsed_json["name"]
         email_address = parsed_json["email_address"]
         is_active = parsed_json["is_active"]
-        teams = parsed_json["teams"]&.map do |item|
-          item = item.to_json
-          Merge::Ticketing::UserTeamsItem.from_json(json_object: item)
-        end
-        roles = parsed_json["roles"]&.map do |item|
-          item = item.to_json
-          Merge::Ticketing::UserRolesItem.from_json(json_object: item)
-        end
+        teams = parsed_json["teams"]
+        roles = parsed_json["roles"]
         avatar = parsed_json["avatar"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]

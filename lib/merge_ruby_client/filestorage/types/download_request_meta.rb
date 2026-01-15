@@ -11,7 +11,7 @@ module Merge
       # @return [String]
       attr_reader :url
       # @return [String]
-      attr_reader :method
+      attr_reader :method_
       # @return [Hash{String => Object}]
       attr_reader :headers
       # @return [OpenStruct] Additional properties unmapped to the current class definition
@@ -24,17 +24,17 @@ module Merge
 
       # @param id [String]
       # @param url [String]
-      # @param method [String]
+      # @param method_ [String]
       # @param headers [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::DownloadRequestMeta]
-      def initialize(id:, url:, method:, headers:, additional_properties: nil)
+      def initialize(id:, url:, method_:, headers:, additional_properties: nil)
         @id = id
         @url = url
-        @method = method
+        @method_ = method_
         @headers = headers
         @additional_properties = additional_properties
-        @_field_set = { "id": id, "url": url, "method": method, "headers": headers }
+        @_field_set = { "id": id, "url": url, "method": method_, "headers": headers }
       end
 
       # Deserialize a JSON object to an instance of DownloadRequestMeta
@@ -46,12 +46,12 @@ module Merge
         parsed_json = JSON.parse(json_object)
         id = parsed_json["id"]
         url = parsed_json["url"]
-        method = parsed_json["method"]
+        method_ = parsed_json["method"]
         headers = parsed_json["headers"]
         new(
           id: id,
           url: url,
-          method: method,
+          method_: method_,
           headers: headers,
           additional_properties: struct
         )
@@ -73,7 +73,7 @@ module Merge
       def self.validate_raw(obj:)
         obj.id.is_a?(String) != false || raise("Passed value for field obj.id is not the expected type, validation failed.")
         obj.url.is_a?(String) != false || raise("Passed value for field obj.url is not the expected type, validation failed.")
-        obj.method.is_a?(String) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
+        obj.method_.is_a?(String) != false || raise("Passed value for field obj.method_ is not the expected type, validation failed.")
         obj.headers.is_a?(Hash) != false || raise("Passed value for field obj.headers is not the expected type, validation failed.")
       end
     end

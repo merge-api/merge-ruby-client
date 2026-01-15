@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "permission_request_user"
-require_relative "permission_request_group"
 require_relative "type_enum"
 require_relative "roles_enum"
 require "ostruct"
@@ -19,10 +17,10 @@ module Merge
     class PermissionRequest
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [Merge::Filestorage::PermissionRequestUser] The user that is granted this permission. This will only be populated if the
+      # @return [String] The user that is granted this permission. This will only be populated if the
       #  type is `USER`.
       attr_reader :user
-      # @return [Merge::Filestorage::PermissionRequestGroup] The group that is granted this permission. This will only be populated if the
+      # @return [String] The group that is granted this permission. This will only be populated if the
       #  type is `GROUP`.
       attr_reader :group
       # @return [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
@@ -49,9 +47,9 @@ module Merge
       OMIT = Object.new
 
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param user [Merge::Filestorage::PermissionRequestUser] The user that is granted this permission. This will only be populated if the
+      # @param user [String] The user that is granted this permission. This will only be populated if the
       #  type is `USER`.
-      # @param group [Merge::Filestorage::PermissionRequestGroup] The group that is granted this permission. This will only be populated if the
+      # @param group [String] The group that is granted this permission. This will only be populated if the
       #  type is `GROUP`.
       # @param type [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
       #  * `USER` - USER
@@ -97,18 +95,8 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         remote_id = parsed_json["remote_id"]
-        if parsed_json["user"].nil?
-          user = nil
-        else
-          user = parsed_json["user"].to_json
-          user = Merge::Filestorage::PermissionRequestUser.from_json(json_object: user)
-        end
-        if parsed_json["group"].nil?
-          group = nil
-        else
-          group = parsed_json["group"].to_json
-          group = Merge::Filestorage::PermissionRequestGroup.from_json(json_object: group)
-        end
+        user = parsed_json["user"]
+        group = parsed_json["group"]
         type = parsed_json["type"]
         roles = parsed_json["roles"]
         integration_params = parsed_json["integration_params"]
@@ -140,8 +128,8 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
-        obj.user.nil? || Merge::Filestorage::PermissionRequestUser.validate_raw(obj: obj.user)
-        obj.group.nil? || Merge::Filestorage::PermissionRequestGroup.validate_raw(obj: obj.group)
+        obj.user&.is_a?(String) != false || raise("Passed value for field obj.user is not the expected type, validation failed.")
+        obj.group&.is_a?(String) != false || raise("Passed value for field obj.group is not the expected type, validation failed.")
         obj.type&.is_a?(Merge::Filestorage::TypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")

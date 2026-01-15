@@ -74,6 +74,7 @@ module Merge
       # @param remote_url_path [String] The path of the remote endpoint where the remote field is coming from.
       # @param common_model_name [String] The name of the Common Model that the remote field corresponds to in a given
       #  category.
+      # @param jmes_path [String] JMES path to specify json query expression to be used on field mapping.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
@@ -91,7 +92,7 @@ module Merge
       #    common_model_name: "ExampleCommonModel"
       #  )
       def field_mappings_create(target_field_name:, target_field_description:, remote_field_traversal_path:,
-                                remote_method:, remote_url_path:, common_model_name:, exclude_remote_field_metadata: nil, request_options: nil)
+                                remote_method:, remote_url_path:, common_model_name:, exclude_remote_field_metadata: nil, jmes_path: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -112,7 +113,8 @@ module Merge
             remote_field_traversal_path: remote_field_traversal_path,
             remote_method: remote_method,
             remote_url_path: remote_url_path,
-            common_model_name: common_model_name
+            common_model_name: common_model_name,
+            jmes_path: jmes_path
           }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings"
         end
@@ -164,6 +166,7 @@ module Merge
       #  /remote-fields endpoint.
       # @param remote_method [String] The method of the remote endpoint where the remote field is coming from.
       # @param remote_url_path [String] The path of the remote endpoint where the remote field is coming from.
+      # @param jmes_path [String] JMES path to specify json query expression to be used on field mapping.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
@@ -174,7 +177,7 @@ module Merge
       #  )
       #  api.crm.field_mapping.field_mappings_partial_update(field_mapping_id: "field_mapping_id")
       def field_mappings_partial_update(field_mapping_id:, remote_field_traversal_path: nil, remote_method: nil,
-                                        remote_url_path: nil, request_options: nil)
+                                        remote_url_path: nil, jmes_path: nil, request_options: nil)
         response = @request_client.conn.patch do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -191,7 +194,8 @@ module Merge
             **(request_options&.additional_body_parameters || {}),
             remote_field_traversal_path: remote_field_traversal_path,
             remote_method: remote_method,
-            remote_url_path: remote_url_path
+            remote_url_path: remote_url_path,
+            jmes_path: jmes_path
           }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings/#{field_mapping_id}"
         end
@@ -343,6 +347,7 @@ module Merge
       # @param remote_url_path [String] The path of the remote endpoint where the remote field is coming from.
       # @param common_model_name [String] The name of the Common Model that the remote field corresponds to in a given
       #  category.
+      # @param jmes_path [String] JMES path to specify json query expression to be used on field mapping.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
@@ -360,7 +365,7 @@ module Merge
       #    common_model_name: "ExampleCommonModel"
       #  )
       def field_mappings_create(target_field_name:, target_field_description:, remote_field_traversal_path:,
-                                remote_method:, remote_url_path:, common_model_name:, exclude_remote_field_metadata: nil, request_options: nil)
+                                remote_method:, remote_url_path:, common_model_name:, exclude_remote_field_metadata: nil, jmes_path: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -382,7 +387,8 @@ module Merge
               remote_field_traversal_path: remote_field_traversal_path,
               remote_method: remote_method,
               remote_url_path: remote_url_path,
-              common_model_name: common_model_name
+              common_model_name: common_model_name,
+              jmes_path: jmes_path
             }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings"
           end
@@ -437,6 +443,7 @@ module Merge
       #  /remote-fields endpoint.
       # @param remote_method [String] The method of the remote endpoint where the remote field is coming from.
       # @param remote_url_path [String] The path of the remote endpoint where the remote field is coming from.
+      # @param jmes_path [String] JMES path to specify json query expression to be used on field mapping.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::FieldMappingInstanceResponse]
       # @example
@@ -447,7 +454,7 @@ module Merge
       #  )
       #  api.crm.field_mapping.field_mappings_partial_update(field_mapping_id: "field_mapping_id")
       def field_mappings_partial_update(field_mapping_id:, remote_field_traversal_path: nil, remote_method: nil,
-                                        remote_url_path: nil, request_options: nil)
+                                        remote_url_path: nil, jmes_path: nil, request_options: nil)
         Async do
           response = @request_client.conn.patch do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -465,7 +472,8 @@ module Merge
               **(request_options&.additional_body_parameters || {}),
               remote_field_traversal_path: remote_field_traversal_path,
               remote_method: remote_method,
-              remote_url_path: remote_url_path
+              remote_url_path: remote_url_path,
+              jmes_path: jmes_path
             }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/field-mappings/#{field_mapping_id}"
           end

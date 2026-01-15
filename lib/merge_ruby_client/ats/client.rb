@@ -8,7 +8,6 @@ require_relative "applications/client"
 require_relative "async_passthrough/client"
 require_relative "attachments/client"
 require_relative "audit_trail/client"
-require_relative "available_actions/client"
 require_relative "candidates/client"
 require_relative "scopes/client"
 require_relative "delete_account/client"
@@ -33,7 +32,6 @@ require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "tags/client"
 require_relative "users/client"
-require_relative "webhook_receivers/client"
 
 module Merge
   module Ats
@@ -52,8 +50,6 @@ module Merge
       attr_reader :attachments
       # @return [Merge::Ats::AuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Ats::AvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Ats::CandidatesClient]
       attr_reader :candidates
       # @return [Merge::Ats::ScopesClient]
@@ -102,8 +98,6 @@ module Merge
       attr_reader :tags
       # @return [Merge::Ats::UsersClient]
       attr_reader :users
-      # @return [Merge::Ats::WebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::RequestClient]
       # @return [Merge::Ats::Client]
@@ -115,7 +109,6 @@ module Merge
         @async_passthrough = Merge::Ats::AsyncPassthroughClient.new(request_client: request_client)
         @attachments = Merge::Ats::AttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Ats::AuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Ats::AvailableActionsClient.new(request_client: request_client)
         @candidates = Merge::Ats::CandidatesClient.new(request_client: request_client)
         @scopes = Merge::Ats::ScopesClient.new(request_client: request_client)
         @delete_account = Merge::Ats::DeleteAccountClient.new(request_client: request_client)
@@ -140,7 +133,6 @@ module Merge
         @force_resync = Merge::Ats::ForceResyncClient.new(request_client: request_client)
         @tags = Merge::Ats::TagsClient.new(request_client: request_client)
         @users = Merge::Ats::UsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Ats::WebhookReceiversClient.new(request_client: request_client)
       end
     end
 
@@ -159,8 +151,6 @@ module Merge
       attr_reader :attachments
       # @return [Merge::Ats::AsyncAuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Ats::AsyncAvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Ats::AsyncCandidatesClient]
       attr_reader :candidates
       # @return [Merge::Ats::AsyncScopesClient]
@@ -209,8 +199,6 @@ module Merge
       attr_reader :tags
       # @return [Merge::Ats::AsyncUsersClient]
       attr_reader :users
-      # @return [Merge::Ats::AsyncWebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::AsyncRequestClient]
       # @return [Merge::Ats::AsyncClient]
@@ -222,7 +210,6 @@ module Merge
         @async_passthrough = Merge::Ats::AsyncAsyncPassthroughClient.new(request_client: request_client)
         @attachments = Merge::Ats::AsyncAttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Ats::AsyncAuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Ats::AsyncAvailableActionsClient.new(request_client: request_client)
         @candidates = Merge::Ats::AsyncCandidatesClient.new(request_client: request_client)
         @scopes = Merge::Ats::AsyncScopesClient.new(request_client: request_client)
         @delete_account = Merge::Ats::AsyncDeleteAccountClient.new(request_client: request_client)
@@ -247,7 +234,6 @@ module Merge
         @force_resync = Merge::Ats::AsyncForceResyncClient.new(request_client: request_client)
         @tags = Merge::Ats::AsyncTagsClient.new(request_client: request_client)
         @users = Merge::Ats::AsyncUsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Ats::AsyncWebhookReceiversClient.new(request_client: request_client)
       end
     end
   end

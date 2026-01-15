@@ -2,15 +2,15 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/credit_notes_list_request_expand"
-require_relative "types/credit_notes_list_request_remote_fields"
-require_relative "types/credit_notes_list_request_show_enum_origins"
+require_relative "types/list_credit_notes_request_expand"
+require_relative "types/list_credit_notes_request_remote_fields"
+require_relative "types/list_credit_notes_request_show_enum_origins"
 require_relative "../types/paginated_credit_note_list"
 require_relative "../types/credit_note_request"
 require_relative "../types/credit_note_response"
-require_relative "types/credit_notes_retrieve_request_expand"
-require_relative "types/credit_notes_retrieve_request_remote_fields"
-require_relative "types/credit_notes_retrieve_request_show_enum_origins"
+require_relative "types/retrieve_credit_notes_request_expand"
+require_relative "types/retrieve_credit_notes_request_remote_fields"
+require_relative "types/retrieve_credit_notes_request_show_enum_origins"
 require_relative "../types/credit_note"
 require_relative "../types/meta_response"
 require "async"
@@ -27,13 +27,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CreditNote` objects.
+      # Returns a list of `CreditNote` objects.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return credit notes for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::CreditNotes::CreditNotesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CreditNotes::ListCreditNotesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -46,10 +50,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Accounting::CreditNotes::ListCreditNotesRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::ListCreditNotesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
@@ -101,7 +105,11 @@ module Merge
         Merge::Accounting::PaginatedCreditNoteList.from_json(json_object: response.body)
       end
 
-      # Creates a `CreditNote` object with the given values.
+      # Creates a `CreditNote` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Z/HC6S5la+x/wWd3Q/rASn+cY/4PxzUv+T2vyI1YnRffhe3rz3NTYTasA1z83Dz8Cuf6kSOCwoAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -109,18 +117,18 @@ module Merge
       #   * :transaction_date (DateTime)
       #   * :status (Merge::Accounting::CreditNoteStatusEnum)
       #   * :number (String)
-      #   * :contact (Hash)
-      #   * :company (Hash)
+      #   * :contact (String)
+      #   * :company (String)
       #   * :exchange_rate (String)
       #   * :total_amount (Float)
       #   * :remaining_credit (Float)
       #   * :inclusive_of_tax (Boolean)
-      #   * :line_items (Array<Merge::Accounting::CreditNoteRequestLineItemsItem>)
-      #   * :tracking_categories (Array<Merge::Accounting::CreditNoteRequestTrackingCategoriesItem>)
+      #   * :line_items (Array<Merge::Accounting::CreditNoteLineItemRequest>)
+      #   * :tracking_categories (Array<String>)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
-      #   * :payments (Array<Merge::Accounting::CreditNoteRequestPaymentsItem>)
-      #   * :applied_payments (Array<Merge::Accounting::CreditNoteRequestAppliedPaymentsItem>)
-      #   * :accounting_period (Hash)
+      #   * :payments (Array<String>)
+      #   * :applied_payments (Array<String>)
+      #   * :accounting_period (String)
       #   * :applied_to_lines (Array<Merge::Accounting::CreditNoteApplyLineForCreditNoteRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -154,17 +162,21 @@ module Merge
         Merge::Accounting::CreditNoteResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `CreditNote` object with the given `id`.
+      # Returns a `CreditNote` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CreditNotes::RetrieveCreditNotesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Accounting::CreditNotes::RetrieveCreditNotesRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::RetrieveCreditNotesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -203,7 +215,158 @@ module Merge
         Merge::Accounting::CreditNote.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `CreditNote` POSTs.
+      # Updates a `CreditNote` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  FAzLTjBL0T+TEa/ja6BFP8zu/6WkkJx6a2YEdNj5nDx38V9xbDP9YzA3ZevOfTm4RuspL79zgcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_EDIT_SUPPORTED_FIELDS * /}
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::CreditNoteRequest, as a Hash
+      #   * :transaction_date (DateTime)
+      #   * :status (Merge::Accounting::CreditNoteStatusEnum)
+      #   * :number (String)
+      #   * :contact (String)
+      #   * :company (String)
+      #   * :exchange_rate (String)
+      #   * :total_amount (Float)
+      #   * :remaining_credit (Float)
+      #   * :inclusive_of_tax (Boolean)
+      #   * :line_items (Array<Merge::Accounting::CreditNoteLineItemRequest>)
+      #   * :tracking_categories (Array<String>)
+      #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
+      #   * :payments (Array<String>)
+      #   * :applied_payments (Array<String>)
+      #   * :accounting_period (String)
+      #   * :applied_to_lines (Array<Merge::Accounting::CreditNoteApplyLineForCreditNoteRequest>)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::CreditNoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.credit_notes.partial_update(id: "id", model: {  })
+      def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        response = @request_client.conn.patch do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "is_debug_mode": is_debug_mode,
+            "run_async": run_async
+          }.compact
+          req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/#{id}"
+        end
+        Merge::Accounting::CreditNoteResponse.from_json(json_object: response.body)
+      end
+
+      # Creates a new CreditNoteApplyLine to apply a credit note to an invoice{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Z/HC6S5la+x/wWd3Q/rASn+cY/4PxzUv+T2vyI1YnRffhe3rz3NTYTasA1z83Dz8Cuf6kSOCwoAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS * /}
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param invoice [String] The invoice to apply the credit note to.
+      # @param applied_date [DateTime] Date that the credit note is applied to the invoice.
+      # @param applied_amount [String] The amount of credit applied to the invoice.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::CreditNoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.credit_notes.application_create(
+      #    id: "id",
+      #    applied_date: DateTime.parse("2024-01-15T09:30:00.000Z"),
+      #    applied_amount: "applied_amount"
+      #  )
+      def application_create(id:, applied_date:, applied_amount:, is_debug_mode: nil, run_async: nil, invoice: nil,
+                             request_options: nil)
+        response = @request_client.conn.post do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "is_debug_mode": is_debug_mode,
+            "run_async": run_async
+          }.compact
+          req.body = {
+            **(request_options&.additional_body_parameters || {}),
+            invoice: invoice,
+            applied_date: applied_date,
+            applied_amount: applied_amount
+          }.compact
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/#{id}/application"
+        end
+        Merge::Accounting::CreditNoteResponse.from_json(json_object: response.body)
+      end
+
+      # Returns metadata for `CreditNote` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
+      #
+      # @param id [String]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.credit_notes.meta_patch_retrieve(id: "id")
+      def meta_patch_retrieve(id:, request_options: nil)
+        response = @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          unless request_options.nil? || request_options&.additional_query_parameters.nil?
+            req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+          end
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/meta/patch/#{id}"
+        end
+        Merge::Accounting::MetaResponse.from_json(json_object: response.body)
+      end
+
+      # Returns metadata for `CreditNote` POSTs.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -246,13 +409,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CreditNote` objects.
+      # Returns a list of `CreditNote` objects.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return credit notes for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::CreditNotes::CreditNotesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CreditNotes::ListCreditNotesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -265,10 +432,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Accounting::CreditNotes::ListCreditNotesRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::ListCreditNotesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
@@ -322,7 +489,11 @@ module Merge
         end
       end
 
-      # Creates a `CreditNote` object with the given values.
+      # Creates a `CreditNote` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Z/HC6S5la+x/wWd3Q/rASn+cY/4PxzUv+T2vyI1YnRffhe3rz3NTYTasA1z83Dz8Cuf6kSOCwoAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -330,18 +501,18 @@ module Merge
       #   * :transaction_date (DateTime)
       #   * :status (Merge::Accounting::CreditNoteStatusEnum)
       #   * :number (String)
-      #   * :contact (Hash)
-      #   * :company (Hash)
+      #   * :contact (String)
+      #   * :company (String)
       #   * :exchange_rate (String)
       #   * :total_amount (Float)
       #   * :remaining_credit (Float)
       #   * :inclusive_of_tax (Boolean)
-      #   * :line_items (Array<Merge::Accounting::CreditNoteRequestLineItemsItem>)
-      #   * :tracking_categories (Array<Merge::Accounting::CreditNoteRequestTrackingCategoriesItem>)
+      #   * :line_items (Array<Merge::Accounting::CreditNoteLineItemRequest>)
+      #   * :tracking_categories (Array<String>)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
-      #   * :payments (Array<Merge::Accounting::CreditNoteRequestPaymentsItem>)
-      #   * :applied_payments (Array<Merge::Accounting::CreditNoteRequestAppliedPaymentsItem>)
-      #   * :accounting_period (Hash)
+      #   * :payments (Array<String>)
+      #   * :applied_payments (Array<String>)
+      #   * :accounting_period (String)
       #   * :applied_to_lines (Array<Merge::Accounting::CreditNoteApplyLineForCreditNoteRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -377,17 +548,21 @@ module Merge
         end
       end
 
-      # Returns a `CreditNote` object with the given `id`.
+      # Returns a `CreditNote` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CreditNotes::RetrieveCreditNotesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Accounting::CreditNotes::CreditNotesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Accounting::CreditNotes::RetrieveCreditNotesRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Accounting::CreditNotes::RetrieveCreditNotesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -428,7 +603,164 @@ module Merge
         end
       end
 
-      # Returns metadata for `CreditNote` POSTs.
+      # Updates a `CreditNote` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  FAzLTjBL0T+TEa/ja6BFP8zu/6WkkJx6a2YEdNj5nDx38V9xbDP9YzA3ZevOfTm4RuspL79zgcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_EDIT_SUPPORTED_FIELDS * /}
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param model [Hash] Request of type Merge::Accounting::CreditNoteRequest, as a Hash
+      #   * :transaction_date (DateTime)
+      #   * :status (Merge::Accounting::CreditNoteStatusEnum)
+      #   * :number (String)
+      #   * :contact (String)
+      #   * :company (String)
+      #   * :exchange_rate (String)
+      #   * :total_amount (Float)
+      #   * :remaining_credit (Float)
+      #   * :inclusive_of_tax (Boolean)
+      #   * :line_items (Array<Merge::Accounting::CreditNoteLineItemRequest>)
+      #   * :tracking_categories (Array<String>)
+      #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
+      #   * :payments (Array<String>)
+      #   * :applied_payments (Array<String>)
+      #   * :accounting_period (String)
+      #   * :applied_to_lines (Array<Merge::Accounting::CreditNoteApplyLineForCreditNoteRequest>)
+      #   * :integration_params (Hash{String => Object})
+      #   * :linked_account_params (Hash{String => Object})
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::CreditNoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.credit_notes.partial_update(id: "id", model: {  })
+      def partial_update(id:, model:, is_debug_mode: nil, run_async: nil, request_options: nil)
+        Async do
+          response = @request_client.conn.patch do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "is_debug_mode": is_debug_mode,
+              "run_async": run_async
+            }.compact
+            req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/#{id}"
+          end
+          Merge::Accounting::CreditNoteResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Creates a new CreditNoteApplyLine to apply a credit note to an invoice{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Z/HC6S5la+x/wWd3Q/rASn+cY/4PxzUv+T2vyI1YnRffhe3rz3NTYTasA1z83Dz8Cuf6kSOCwoAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS * /}
+      #
+      # @param id [String]
+      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
+      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
+      # @param invoice [String] The invoice to apply the credit note to.
+      # @param applied_date [DateTime] Date that the credit note is applied to the invoice.
+      # @param applied_amount [String] The amount of credit applied to the invoice.
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::CreditNoteResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.credit_notes.application_create(
+      #    id: "id",
+      #    applied_date: DateTime.parse("2024-01-15T09:30:00.000Z"),
+      #    applied_amount: "applied_amount"
+      #  )
+      def application_create(id:, applied_date:, applied_amount:, is_debug_mode: nil, run_async: nil, invoice: nil,
+                             request_options: nil)
+        Async do
+          response = @request_client.conn.post do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "is_debug_mode": is_debug_mode,
+              "run_async": run_async
+            }.compact
+            req.body = {
+              **(request_options&.additional_body_parameters || {}),
+              invoice: invoice,
+              applied_date: applied_date,
+              applied_amount: applied_amount
+            }.compact
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/#{id}/application"
+          end
+          Merge::Accounting::CreditNoteResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata for `CreditNote` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
+      #
+      # @param id [String]
+      # @param request_options [Merge::RequestOptions]
+      # @return [Merge::Accounting::MetaResponse]
+      # @example
+      #  api = Merge::Client.new(
+      #    base_url: "https://api.example.com",
+      #    environment: Merge::Environment::PRODUCTION,
+      #    api_key: "YOUR_AUTH_TOKEN"
+      #  )
+      #  api.accounting.credit_notes.meta_patch_retrieve(id: "id")
+      def meta_patch_retrieve(id:, request_options: nil)
+        Async do
+          response = @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            unless request_options.nil? || request_options&.additional_query_parameters.nil?
+              req.params = { **(request_options&.additional_query_parameters || {}) }.compact
+            end
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/accounting/v1/credit-notes/meta/patch/#{id}"
+          end
+          Merge::Accounting::MetaResponse.from_json(json_object: response.body)
+        end
+      end
+
+      # Returns metadata for `CreditNote` POSTs.{/*
+      #  BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  ah/7EbkAekWX0R2C/T+Ww35j+iJzBYfrAy/1feqnXgPeW9weOGTx7u/ZPyqNcHtz38B2ynOBCMgAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]

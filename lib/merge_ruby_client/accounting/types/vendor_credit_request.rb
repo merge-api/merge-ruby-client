@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "vendor_credit_request_vendor"
 require_relative "transaction_currency_enum"
-require_relative "vendor_credit_request_company"
-require_relative "vendor_credit_request_tracking_categories_item"
 require_relative "vendor_credit_apply_line_for_vendor_credit_request"
-require_relative "vendor_credit_request_accounting_period"
 require "ostruct"
 require "json"
 
@@ -27,7 +23,7 @@ module Merge
       attr_reader :number
       # @return [DateTime] The vendor credit's transaction date.
       attr_reader :transaction_date
-      # @return [Merge::Accounting::VendorCreditRequestVendor] The vendor that owes the gift or refund.
+      # @return [String] The vendor that owes the gift or refund.
       attr_reader :vendor
       # @return [Float] The vendor credit's total amount.
       attr_reader :total_amount
@@ -344,13 +340,13 @@ module Merge
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       attr_reader :inclusive_of_tax
-      # @return [Merge::Accounting::VendorCreditRequestCompany] The company the vendor credit belongs to.
+      # @return [String] The company the vendor credit belongs to.
       attr_reader :company
-      # @return [Array<Merge::Accounting::VendorCreditRequestTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
       # @return [Array<Merge::Accounting::VendorCreditApplyLineForVendorCreditRequest>] A list of VendorCredit Applied to Lines objects.
       attr_reader :applied_to_lines
-      # @return [Merge::Accounting::VendorCreditRequestAccountingPeriod] The accounting period that the VendorCredit was generated in.
+      # @return [String] The accounting period that the VendorCredit was generated in.
       attr_reader :accounting_period
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -366,7 +362,7 @@ module Merge
 
       # @param number [String] The vendor credit's number.
       # @param transaction_date [DateTime] The vendor credit's transaction date.
-      # @param vendor [Merge::Accounting::VendorCreditRequestVendor] The vendor that owes the gift or refund.
+      # @param vendor [String] The vendor that owes the gift or refund.
       # @param total_amount [Float] The vendor credit's total amount.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The vendor credit's currency.
       #  * `XUA` - ADB Unit of Account
@@ -678,10 +674,10 @@ module Merge
       # @param exchange_rate [String] The vendor credit's exchange rate.
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
-      # @param company [Merge::Accounting::VendorCreditRequestCompany] The company the vendor credit belongs to.
-      # @param tracking_categories [Array<Merge::Accounting::VendorCreditRequestTrackingCategoriesItem>]
+      # @param company [String] The company the vendor credit belongs to.
+      # @param tracking_categories [Array<String>]
       # @param applied_to_lines [Array<Merge::Accounting::VendorCreditApplyLineForVendorCreditRequest>] A list of VendorCredit Applied to Lines objects.
-      # @param accounting_period [Merge::Accounting::VendorCreditRequestAccountingPeriod] The accounting period that the VendorCredit was generated in.
+      # @param accounting_period [String] The accounting period that the VendorCredit was generated in.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -730,36 +726,18 @@ module Merge
         parsed_json = JSON.parse(json_object)
         number = parsed_json["number"]
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
-        if parsed_json["vendor"].nil?
-          vendor = nil
-        else
-          vendor = parsed_json["vendor"].to_json
-          vendor = Merge::Accounting::VendorCreditRequestVendor.from_json(json_object: vendor)
-        end
+        vendor = parsed_json["vendor"]
         total_amount = parsed_json["total_amount"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::VendorCreditRequestCompany.from_json(json_object: company)
-        end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::VendorCreditRequestTrackingCategoriesItem.from_json(json_object: item)
-        end
+        company = parsed_json["company"]
+        tracking_categories = parsed_json["tracking_categories"]
         applied_to_lines = parsed_json["applied_to_lines"]&.map do |item|
           item = item.to_json
           Merge::Accounting::VendorCreditApplyLineForVendorCreditRequest.from_json(json_object: item)
         end
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::VendorCreditRequestAccountingPeriod.from_json(json_object: accounting_period)
-        end
+        accounting_period = parsed_json["accounting_period"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         new(
@@ -796,15 +774,15 @@ module Merge
       def self.validate_raw(obj:)
         obj.number&.is_a?(String) != false || raise("Passed value for field obj.number is not the expected type, validation failed.")
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
-        obj.vendor.nil? || Merge::Accounting::VendorCreditRequestVendor.validate_raw(obj: obj.vendor)
+        obj.vendor&.is_a?(String) != false || raise("Passed value for field obj.vendor is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::VendorCreditRequestCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::VendorCreditRequestAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
       end

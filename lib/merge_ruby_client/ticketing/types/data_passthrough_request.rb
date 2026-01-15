@@ -17,7 +17,7 @@ module Merge
     #  integration.
     class DataPassthroughRequest
       # @return [Merge::Ticketing::MethodEnum]
-      attr_reader :method
+      attr_reader :method_
       # @return [String] The path of the request in the third party's platform.
       attr_reader :path
       # @return [String] An optional override of the third party's base url for the request.
@@ -46,7 +46,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param method [Merge::Ticketing::MethodEnum]
+      # @param method_ [Merge::Ticketing::MethodEnum]
       # @param path [String] The path of the request in the third party's platform.
       # @param base_url_override [String] An optional override of the third party's base url for the request.
       # @param data [String] The data with the request. You must include a `request_format` parameter
@@ -62,9 +62,9 @@ module Merge
       #  array, object`.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::DataPassthroughRequest]
-      def initialize(method:, path:, base_url_override: OMIT, data: OMIT, multipart_form_data: OMIT, headers: OMIT,
+      def initialize(method_:, path:, base_url_override: OMIT, data: OMIT, multipart_form_data: OMIT, headers: OMIT,
                      request_format: OMIT, normalize_response: OMIT, additional_properties: nil)
-        @method = method
+        @method_ = method_
         @path = path
         @base_url_override = base_url_override if base_url_override != OMIT
         @data = data if data != OMIT
@@ -74,7 +74,7 @@ module Merge
         @normalize_response = normalize_response if normalize_response != OMIT
         @additional_properties = additional_properties
         @_field_set = {
-          "method": method,
+          "method": method_,
           "path": path,
           "base_url_override": base_url_override,
           "data": data,
@@ -94,7 +94,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        method = parsed_json["method"]
+        method_ = parsed_json["method"]
         path = parsed_json["path"]
         base_url_override = parsed_json["base_url_override"]
         data = parsed_json["data"]
@@ -106,7 +106,7 @@ module Merge
         request_format = parsed_json["request_format"]
         normalize_response = parsed_json["normalize_response"]
         new(
-          method: method,
+          method_: method_,
           path: path,
           base_url_override: base_url_override,
           data: data,
@@ -132,7 +132,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.method.is_a?(Merge::Ticketing::MethodEnum) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
+        obj.method_.is_a?(Merge::Ticketing::MethodEnum) != false || raise("Passed value for field obj.method_ is not the expected type, validation failed.")
         obj.path.is_a?(String) != false || raise("Passed value for field obj.path is not the expected type, validation failed.")
         obj.base_url_override&.is_a?(String) != false || raise("Passed value for field obj.base_url_override is not the expected type, validation failed.")
         obj.data&.is_a?(String) != false || raise("Passed value for field obj.data is not the expected type, validation failed.")
