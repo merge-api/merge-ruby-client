@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/eeocs_list_request_remote_fields"
-require_relative "types/eeocs_list_request_show_enum_origins"
+require_relative "types/list_eeocs_request_remote_fields"
+require_relative "types/list_eeocs_request_show_enum_origins"
 require_relative "../types/paginated_eeoc_list"
-require_relative "types/eeocs_retrieve_request_remote_fields"
-require_relative "types/eeocs_retrieve_request_show_enum_origins"
+require_relative "types/retrieve_eeocs_request_remote_fields"
+require_relative "types/retrieve_eeocs_request_show_enum_origins"
 require_relative "../types/eeoc"
 require "async"
 
@@ -22,7 +22,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `EEOC` objects.
+      # Returns a list of `EEOC` objects.{/* BEGIN_ATS_EEOC_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  DNKUakWUC2k2g/JXc+dcJ7RaxG2Dv+HcF4JOWPwsB+k/Qj0WMh4Y/ruwfy3/O6evgNzyB1U9gkAAA=="
+      #  /></Footer>{/* END_ATS_EEOC_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param candidate_id [String] If provided, will only return EEOC info for this candidate.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -41,10 +44,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Ats::Eeocs::EeocsListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Ats::Eeocs::ListEeocsRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Ats::Eeocs::EeocsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Ats::Eeocs::ListEeocsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -92,7 +95,11 @@ module Merge
         Merge::Ats::PaginatedEeocList.from_json(json_object: response.body)
       end
 
-      # Returns an `EEOC` object with the given `id`.
+      # Returns an `EEOC` object with the given `id`.{/*
+      #  BEGIN_ATS_EEOC_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  DNKUakWUC2k2g/JXc+dcJ7RaxG2Dv+HcF4JOWPwsB+k/Qj0WMh4Y/ruwfy3/O6evgNzyB1U9gkAAA=="
+      #  /></Footer>{/* END_ATS_EEOC_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -101,8 +108,8 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Ats::Eeocs::EeocsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Ats::Eeocs::EeocsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Ats::Eeocs::RetrieveEeocsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ats::Eeocs::RetrieveEeocsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -152,7 +159,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `EEOC` objects.
+      # Returns a list of `EEOC` objects.{/* BEGIN_ATS_EEOC_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  DNKUakWUC2k2g/JXc+dcJ7RaxG2Dv+HcF4JOWPwsB+k/Qj0WMh4Y/ruwfy3/O6evgNzyB1U9gkAAA=="
+      #  /></Footer>{/* END_ATS_EEOC_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param candidate_id [String] If provided, will only return EEOC info for this candidate.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -171,10 +181,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Ats::Eeocs::EeocsListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Ats::Eeocs::ListEeocsRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Ats::Eeocs::EeocsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Ats::Eeocs::ListEeocsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -224,7 +234,11 @@ module Merge
         end
       end
 
-      # Returns an `EEOC` object with the given `id`.
+      # Returns an `EEOC` object with the given `id`.{/*
+      #  BEGIN_ATS_EEOC_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  DNKUakWUC2k2g/JXc+dcJ7RaxG2Dv+HcF4JOWPwsB+k/Qj0WMh4Y/ruwfy3/O6evgNzyB1U9gkAAA=="
+      #  /></Footer>{/* END_ATS_EEOC_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -233,8 +247,8 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Ats::Eeocs::EeocsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Ats::Eeocs::EeocsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Ats::Eeocs::RetrieveEeocsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ats::Eeocs::RetrieveEeocsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]

@@ -7,8 +7,6 @@ require_relative "types/employees_list_request_expand"
 require_relative "types/employees_list_request_remote_fields"
 require_relative "types/employees_list_request_show_enum_origins"
 require_relative "../types/paginated_employee_list"
-require_relative "../types/employee_request"
-require_relative "../types/employee_response"
 require_relative "types/employees_retrieve_request_expand"
 require_relative "types/employees_retrieve_request_remote_fields"
 require_relative "types/employees_retrieve_request_show_enum_origins"
@@ -29,7 +27,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Employee` objects.
+      # Returns a list of `Employee` objects.{/*
+      #  BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  PvfgCEPOilEi/Jtoz3qah/y9I0POWqnUQEWnUadRzyhdK6N+Fq7yu/PaZuep83vf/4fIKodBi6+AAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return employees for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -42,7 +44,7 @@ module Merge
       #  * `PENDING` - PENDING
       #  * `INACTIVE` - INACTIVE
       # @param employment_type [String] If provided, will only return employees that have an employment of the specified
-      #  employment_type.
+      #  employment type.
       # @param expand [Merge::Hris::Employees::EmployeesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param first_name [String] If provided, will only return employees with this first name.
@@ -60,13 +62,13 @@ module Merge
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
       # @param job_title [String] If provided, will only return employees that have an employment of the specified
-      #  job_title.
+      #  job title.
       # @param last_name [String] If provided, will only return employees with this last name.
       # @param manager_id [String] If provided, will only return employees for this manager.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param pay_group_id [String] If provided, will only return employees for this pay group
       # @param personal_email [String] If provided, will only return Employees with this personal email
       # @param remote_fields [Merge::Hris::Employees::EmployeesListRequestRemoteFields] Deprecated. Use show_enum_origins.
@@ -148,71 +150,11 @@ module Merge
         Merge::Hris::PaginatedEmployeeList.from_json(json_object: response.body)
       end
 
-      # Creates an `Employee` object with the given values.
-      #
-      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
-      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Merge::Hris::EmployeeRequest, as a Hash
-      #   * :employee_number (String)
-      #   * :company (Hash)
-      #   * :first_name (String)
-      #   * :last_name (String)
-      #   * :preferred_name (String)
-      #   * :display_full_name (String)
-      #   * :username (String)
-      #   * :groups (Array<Merge::Hris::EmployeeRequestGroupsItem>)
-      #   * :work_email (String)
-      #   * :personal_email (String)
-      #   * :mobile_phone_number (String)
-      #   * :employments (Array<Merge::Hris::EmployeeRequestEmploymentsItem>)
-      #   * :home_location (Hash)
-      #   * :work_location (Hash)
-      #   * :manager (Hash)
-      #   * :team (Hash)
-      #   * :pay_group (Hash)
-      #   * :ssn (String)
-      #   * :gender (Merge::Hris::GenderEnum)
-      #   * :ethnicity (Merge::Hris::EthnicityEnum)
-      #   * :marital_status (Merge::Hris::MaritalStatusEnum)
-      #   * :date_of_birth (DateTime)
-      #   * :hire_date (DateTime)
-      #   * :start_date (DateTime)
-      #   * :employment_status (Merge::Hris::EmploymentStatusEnum)
-      #   * :termination_date (DateTime)
-      #   * :avatar (String)
-      #   * :integration_params (Hash{String => Object})
-      #   * :linked_account_params (Hash{String => Object})
-      # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Hris::EmployeeResponse]
-      # @example
-      #  api = Merge::Client.new(
-      #    base_url: "https://api.example.com",
-      #    environment: Merge::Environment::PRODUCTION,
-      #    api_key: "YOUR_AUTH_TOKEN"
-      #  )
-      #  api.hris.employees.create(model: {  })
-      def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        response = @request_client.conn.post do |req|
-          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
-          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
-          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-          req.headers = {
-        **(req.headers || {}),
-        **@request_client.get_headers,
-        **(request_options&.additional_headers || {})
-          }.compact
-          req.params = {
-            **(request_options&.additional_query_parameters || {}),
-            "is_debug_mode": is_debug_mode,
-            "run_async": run_async
-          }.compact
-          req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
-          req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees"
-        end
-        Merge::Hris::EmployeeResponse.from_json(json_object: response.body)
-      end
-
-      # Returns an `Employee` object with the given `id`.
+      # Returns an `Employee` object with the given `id`.{/*
+      #  BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  PvfgCEPOilEi/Jtoz3qah/y9I0POWqnUQEWnUadRzyhdK6N+Fq7yu/PaZuep83vf/4fIKodBi6+AAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::Employees::EmployeesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -267,7 +209,10 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_HRIS_EMPLOYEE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  yWX1MID1Wg4W2mrkmsrIHyNIRP2kaUCGe2rVG8CvSKnr7aYB1WOfrnpnzX13ePd498OA3I04REAAA=="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param reason [Merge::Hris::ReasonEnum]
@@ -299,7 +244,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Employee` POSTs.
+      # Returns metadata for `Employee` POSTs.{/*
+      #  BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  PvfgCEPOilEi/Jtoz3qah/y9I0POWqnUQEWnUadRzyhdK6N+Fq7yu/PaZuep83vf/4fIKodBi6+AAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::MetaResponse]
@@ -342,7 +291,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Employee` objects.
+      # Returns a list of `Employee` objects.{/*
+      #  BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  PvfgCEPOilEi/Jtoz3qah/y9I0POWqnUQEWnUadRzyhdK6N+Fq7yu/PaZuep83vf/4fIKodBi6+AAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return employees for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -355,7 +308,7 @@ module Merge
       #  * `PENDING` - PENDING
       #  * `INACTIVE` - INACTIVE
       # @param employment_type [String] If provided, will only return employees that have an employment of the specified
-      #  employment_type.
+      #  employment type.
       # @param expand [Merge::Hris::Employees::EmployeesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param first_name [String] If provided, will only return employees with this first name.
@@ -373,13 +326,13 @@ module Merge
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
       # @param job_title [String] If provided, will only return employees that have an employment of the specified
-      #  job_title.
+      #  job title.
       # @param last_name [String] If provided, will only return employees with this last name.
       # @param manager_id [String] If provided, will only return employees for this manager.
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param pay_group_id [String] If provided, will only return employees for this pay group
       # @param personal_email [String] If provided, will only return Employees with this personal email
       # @param remote_fields [Merge::Hris::Employees::EmployeesListRequestRemoteFields] Deprecated. Use show_enum_origins.
@@ -463,73 +416,11 @@ module Merge
         end
       end
 
-      # Creates an `Employee` object with the given values.
-      #
-      # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
-      # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
-      # @param model [Hash] Request of type Merge::Hris::EmployeeRequest, as a Hash
-      #   * :employee_number (String)
-      #   * :company (Hash)
-      #   * :first_name (String)
-      #   * :last_name (String)
-      #   * :preferred_name (String)
-      #   * :display_full_name (String)
-      #   * :username (String)
-      #   * :groups (Array<Merge::Hris::EmployeeRequestGroupsItem>)
-      #   * :work_email (String)
-      #   * :personal_email (String)
-      #   * :mobile_phone_number (String)
-      #   * :employments (Array<Merge::Hris::EmployeeRequestEmploymentsItem>)
-      #   * :home_location (Hash)
-      #   * :work_location (Hash)
-      #   * :manager (Hash)
-      #   * :team (Hash)
-      #   * :pay_group (Hash)
-      #   * :ssn (String)
-      #   * :gender (Merge::Hris::GenderEnum)
-      #   * :ethnicity (Merge::Hris::EthnicityEnum)
-      #   * :marital_status (Merge::Hris::MaritalStatusEnum)
-      #   * :date_of_birth (DateTime)
-      #   * :hire_date (DateTime)
-      #   * :start_date (DateTime)
-      #   * :employment_status (Merge::Hris::EmploymentStatusEnum)
-      #   * :termination_date (DateTime)
-      #   * :avatar (String)
-      #   * :integration_params (Hash{String => Object})
-      #   * :linked_account_params (Hash{String => Object})
-      # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Hris::EmployeeResponse]
-      # @example
-      #  api = Merge::Client.new(
-      #    base_url: "https://api.example.com",
-      #    environment: Merge::Environment::PRODUCTION,
-      #    api_key: "YOUR_AUTH_TOKEN"
-      #  )
-      #  api.hris.employees.create(model: {  })
-      def create(model:, is_debug_mode: nil, run_async: nil, request_options: nil)
-        Async do
-          response = @request_client.conn.post do |req|
-            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
-            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
-            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
-            req.headers = {
-          **(req.headers || {}),
-          **@request_client.get_headers,
-          **(request_options&.additional_headers || {})
-            }.compact
-            req.params = {
-              **(request_options&.additional_query_parameters || {}),
-              "is_debug_mode": is_debug_mode,
-              "run_async": run_async
-            }.compact
-            req.body = { **(request_options&.additional_body_parameters || {}), model: model }.compact
-            req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/employees"
-          end
-          Merge::Hris::EmployeeResponse.from_json(json_object: response.body)
-        end
-      end
-
-      # Returns an `Employee` object with the given `id`.
+      # Returns an `Employee` object with the given `id`.{/*
+      #  BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  PvfgCEPOilEi/Jtoz3qah/y9I0POWqnUQEWnUadRzyhdK6N+Fq7yu/PaZuep83vf/4fIKodBi6+AAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::Employees::EmployeesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -586,7 +477,10 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_HRIS_EMPLOYEE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  yWX1MID1Wg4W2mrkmsrIHyNIRP2kaUCGe2rVG8CvSKnr7aYB1WOfrnpnzX13ePd498OA3I04REAAA=="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param reason [Merge::Hris::ReasonEnum]
@@ -624,7 +518,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Employee` POSTs.
+      # Returns metadata for `Employee` POSTs.{/*
+      #  BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  PvfgCEPOilEi/Jtoz3qah/y9I0POWqnUQEWnUadRzyhdK6N+Fq7yu/PaZuep83vf/4fIKodBi6+AAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::MetaResponse]

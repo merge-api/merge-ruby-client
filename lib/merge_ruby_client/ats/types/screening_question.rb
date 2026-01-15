@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "screening_question_job"
 require_relative "screening_question_type_enum"
+require_relative "screening_question_option"
 require "ostruct"
 require "json"
 
@@ -23,7 +23,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::ScreeningQuestionJob] The job associated with the screening question.
+      # @return [String] The job associated with the screening question.
       attr_reader :job
       # @return [String] The description of the screening question
       attr_reader :description
@@ -41,7 +41,7 @@ module Merge
       attr_reader :type
       # @return [Boolean] Whether or not the screening question is required.
       attr_reader :required
-      # @return [Array<Object>]
+      # @return [Array<Merge::Ats::ScreeningQuestionOption>]
       attr_reader :options
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -60,7 +60,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param job [Merge::Ats::ScreeningQuestionJob] The job associated with the screening question.
+      # @param job [String] The job associated with the screening question.
       # @param description [String] The description of the screening question
       # @param title [String] The title of the screening question
       # @param type [Merge::Ats::ScreeningQuestionTypeEnum] The data type for the screening question.
@@ -73,7 +73,7 @@ module Merge
       #  * `NUMERIC` - NUMERIC
       #  * `BOOLEAN` - BOOLEAN
       # @param required [Boolean] Whether or not the screening question is required.
-      # @param options [Array<Object>]
+      # @param options [Array<Merge::Ats::ScreeningQuestionOption>]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -122,17 +122,15 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["job"].nil?
-          job = nil
-        else
-          job = parsed_json["job"].to_json
-          job = Merge::Ats::ScreeningQuestionJob.from_json(json_object: job)
-        end
+        job = parsed_json["job"]
         description = parsed_json["description"]
         title = parsed_json["title"]
         type = parsed_json["type"]
         required = parsed_json["required"]
-        options = parsed_json["options"]
+        options = parsed_json["options"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::ScreeningQuestionOption.from_json(json_object: item)
+        end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
@@ -168,7 +166,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.job.nil? || Merge::Ats::ScreeningQuestionJob.validate_raw(obj: obj.job)
+        obj.job&.is_a?(String) != false || raise("Passed value for field obj.job is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.title&.is_a?(String) != false || raise("Passed value for field obj.title is not the expected type, validation failed.")
         obj.type&.is_a?(Merge::Ats::ScreeningQuestionTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")

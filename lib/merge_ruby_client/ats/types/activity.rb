@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "activity_user"
 require_relative "activity_type_enum"
 require_relative "visibility_enum"
 require_relative "remote_data"
@@ -26,7 +25,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::ActivityUser] The user that performed the action.
+      # @return [String] The user that performed the action.
       attr_reader :user
       # @return [DateTime] When the third party's activity was created.
       attr_reader :remote_created_at
@@ -67,7 +66,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param user [Merge::Ats::ActivityUser] The user that performed the action.
+      # @param user [String] The user that performed the action.
       # @param remote_created_at [DateTime] When the third party's activity was created.
       # @param activity_type [Merge::Ats::ActivityTypeEnum] The activity's type.
       #  * `NOTE` - NOTE
@@ -136,12 +135,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["user"].nil?
-          user = nil
-        else
-          user = parsed_json["user"].to_json
-          user = Merge::Ats::ActivityUser.from_json(json_object: user)
-        end
+        user = parsed_json["user"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
@@ -193,7 +187,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.user.nil? || Merge::Ats::ActivityUser.validate_raw(obj: obj.user)
+        obj.user&.is_a?(String) != false || raise("Passed value for field obj.user is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.activity_type&.is_a?(Merge::Ats::ActivityTypeEnum) != false || raise("Passed value for field obj.activity_type is not the expected type, validation failed.")
         obj.subject&.is_a?(String) != false || raise("Passed value for field obj.subject is not the expected type, validation failed.")

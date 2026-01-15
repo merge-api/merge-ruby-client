@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/journal_entries_list_request_expand"
+require_relative "types/list_journal_entries_request_expand"
 require_relative "../types/paginated_journal_entry_list"
 require_relative "../types/journal_entry_request"
 require_relative "../types/journal_entry_response"
-require_relative "types/journal_entries_retrieve_request_expand"
+require_relative "types/retrieve_journal_entries_request_expand"
 require_relative "../types/journal_entry"
 require_relative "../types/paginated_remote_field_class_list"
 require_relative "../types/meta_response"
@@ -24,13 +24,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `JournalEntry` objects.
+      # Returns a list of `JournalEntry` objects.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return journal entries for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::JournalEntries::JournalEntriesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::JournalEntries::ListJournalEntriesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -45,7 +49,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
@@ -95,18 +99,22 @@ module Merge
         Merge::Accounting::PaginatedJournalEntryList.from_json(json_object: response.body)
       end
 
-      # Creates a `JournalEntry` object with the given values.
+      # Creates a `JournalEntry` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  sal0swvMq8ag+cT2PwdfHdHty3Ud0vhG2p1GAl4pPK/NnT7F/A9urV3s/8B6Xz/dP/0N31CILSmDwAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::JournalEntryRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :payments (Array<Merge::Accounting::JournalEntryRequestPaymentsItem>)
+      #   * :payments (Array<String>)
       #   * :memo (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
-      #   * :company (Hash)
-      #   * :tracking_categories (Array<Merge::Accounting::JournalEntryRequestTrackingCategoriesItem>)
+      #   * :company (String)
+      #   * :tracking_categories (Array<String>)
       #   * :inclusive_of_tax (Boolean)
       #   * :lines (Array<Merge::Accounting::JournalLineRequest>)
       #   * :journal_number (String)
@@ -144,10 +152,14 @@ module Merge
         Merge::Accounting::JournalEntryResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `JournalEntry` object with the given `id`.
+      # Returns a `JournalEntry` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::JournalEntries::JournalEntriesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::JournalEntries::RetrieveJournalEntriesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -190,7 +202,11 @@ module Merge
         Merge::Accounting::JournalEntry.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -204,7 +220,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -243,7 +259,11 @@ module Merge
         Merge::Accounting::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `JournalEntry` POSTs.
+      # Returns metadata for `JournalEntry` POSTs.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -275,7 +295,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -289,7 +313,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -339,13 +363,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `JournalEntry` objects.
+      # Returns a list of `JournalEntry` objects.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return journal entries for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::JournalEntries::JournalEntriesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::JournalEntries::ListJournalEntriesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -360,7 +388,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
@@ -412,18 +440,22 @@ module Merge
         end
       end
 
-      # Creates a `JournalEntry` object with the given values.
+      # Creates a `JournalEntry` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  sal0swvMq8ag+cT2PwdfHdHty3Ud0vhG2p1GAl4pPK/NnT7F/A9urV3s/8B6Xz/dP/0N31CILSmDwAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::JournalEntryRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :payments (Array<Merge::Accounting::JournalEntryRequestPaymentsItem>)
+      #   * :payments (Array<String>)
       #   * :memo (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
-      #   * :company (Hash)
-      #   * :tracking_categories (Array<Merge::Accounting::JournalEntryRequestTrackingCategoriesItem>)
+      #   * :company (String)
+      #   * :tracking_categories (Array<String>)
       #   * :inclusive_of_tax (Boolean)
       #   * :lines (Array<Merge::Accounting::JournalLineRequest>)
       #   * :journal_number (String)
@@ -463,10 +495,14 @@ module Merge
         end
       end
 
-      # Returns a `JournalEntry` object with the given `id`.
+      # Returns a `JournalEntry` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::JournalEntries::JournalEntriesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::JournalEntries::RetrieveJournalEntriesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -511,7 +547,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -525,7 +565,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -566,7 +606,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `JournalEntry` POSTs.
+      # Returns metadata for `JournalEntry` POSTs.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -600,7 +644,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WJvAvZ7q+pZOP94GWxK7v9kR6YS/BoT4j3/GLNPb/NJPphsVxhbfo/f4D63dwXHw6//AaYnNlPQIAAA"
+      #  /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -614,7 +662,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example

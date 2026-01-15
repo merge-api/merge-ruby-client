@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "purchase_order_line_item_request_item"
 require_relative "transaction_currency_enum"
 require_relative "remote_field_request"
 require "ostruct"
@@ -24,7 +23,7 @@ module Merge
       attr_reader :unit_price
       # @return [Float] The line item's quantity.
       attr_reader :quantity
-      # @return [Merge::Accounting::PurchaseOrderLineItemRequestItem]
+      # @return [String]
       attr_reader :item
       # @return [String] The purchase order line item's account.
       attr_reader :account
@@ -368,7 +367,7 @@ module Merge
       # @param description [String] A description of the good being purchased.
       # @param unit_price [Float] The line item's unit price.
       # @param quantity [Float] The line item's quantity.
-      # @param item [Merge::Accounting::PurchaseOrderLineItemRequestItem]
+      # @param item [String]
       # @param account [String] The purchase order line item's account.
       # @param tracking_category [String] The purchase order line item's associated tracking category.
       # @param tracking_categories [Array<String>] The purchase order line item's associated tracking categories.
@@ -743,12 +742,7 @@ module Merge
         description = parsed_json["description"]
         unit_price = parsed_json["unit_price"]
         quantity = parsed_json["quantity"]
-        if parsed_json["item"].nil?
-          item = nil
-        else
-          item = parsed_json["item"].to_json
-          item = Merge::Accounting::PurchaseOrderLineItemRequestItem.from_json(json_object: item)
-        end
+        item = parsed_json["item"]
         account = parsed_json["account"]
         tracking_category = parsed_json["tracking_category"]
         tracking_categories = parsed_json["tracking_categories"]
@@ -804,7 +798,7 @@ module Merge
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.unit_price&.is_a?(Float) != false || raise("Passed value for field obj.unit_price is not the expected type, validation failed.")
         obj.quantity&.is_a?(Float) != false || raise("Passed value for field obj.quantity is not the expected type, validation failed.")
-        obj.item.nil? || Merge::Accounting::PurchaseOrderLineItemRequestItem.validate_raw(obj: obj.item)
+        obj.item&.is_a?(String) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")

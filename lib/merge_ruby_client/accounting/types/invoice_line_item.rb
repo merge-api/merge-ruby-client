@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "invoice_line_item_employee"
-require_relative "invoice_line_item_project"
-require_relative "invoice_line_item_contact"
 require_relative "transaction_currency_enum"
-require_relative "invoice_line_item_item"
-require_relative "invoice_line_item_account"
-require_relative "invoice_line_item_tracking_category"
-require_relative "invoice_line_item_tracking_categories_item"
 require_relative "remote_field"
 require "ostruct"
 require "json"
@@ -38,11 +31,11 @@ module Merge
       attr_reader :quantity
       # @return [Float] The line item's total amount.
       attr_reader :total_amount
-      # @return [Merge::Accounting::InvoiceLineItemEmployee] The employee this overall transaction relates to.
+      # @return [String] The employee this overall transaction relates to.
       attr_reader :employee
-      # @return [Merge::Accounting::InvoiceLineItemProject]
+      # @return [String]
       attr_reader :project
-      # @return [Merge::Accounting::InvoiceLineItemContact] The invoice's contact.
+      # @return [String] The invoice's contact.
       attr_reader :contact
       # @return [Merge::Accounting::TransactionCurrencyEnum] The line item's currency.
       #  * `XUA` - ADB Unit of Account
@@ -354,15 +347,15 @@ module Merge
       attr_reader :currency
       # @return [String] The line item's exchange rate.
       attr_reader :exchange_rate
-      # @return [Merge::Accounting::InvoiceLineItemItem]
+      # @return [String]
       attr_reader :item
-      # @return [Merge::Accounting::InvoiceLineItemAccount]
+      # @return [String]
       attr_reader :account
       # @return [String] The tax rate that applies to this line item.
       attr_reader :tax_rate
-      # @return [Merge::Accounting::InvoiceLineItemTrackingCategory]
+      # @return [String]
       attr_reader :tracking_category
-      # @return [Array<Merge::Accounting::InvoiceLineItemTrackingCategoriesItem>] The invoice line item's associated tracking categories.
+      # @return [Array<String>] The invoice line item's associated tracking categories.
       attr_reader :tracking_categories
       # @return [String] The company the invoice belongs to.
       attr_reader :company
@@ -391,9 +384,9 @@ module Merge
       # @param unit_price [Float] The line item's unit price.
       # @param quantity [Float] The line item's quantity.
       # @param total_amount [Float] The line item's total amount.
-      # @param employee [Merge::Accounting::InvoiceLineItemEmployee] The employee this overall transaction relates to.
-      # @param project [Merge::Accounting::InvoiceLineItemProject]
-      # @param contact [Merge::Accounting::InvoiceLineItemContact] The invoice's contact.
+      # @param employee [String] The employee this overall transaction relates to.
+      # @param project [String]
+      # @param contact [String] The invoice's contact.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The line item's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -702,11 +695,11 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The line item's exchange rate.
-      # @param item [Merge::Accounting::InvoiceLineItemItem]
-      # @param account [Merge::Accounting::InvoiceLineItemAccount]
+      # @param item [String]
+      # @param account [String]
       # @param tax_rate [String] The tax rate that applies to this line item.
-      # @param tracking_category [Merge::Accounting::InvoiceLineItemTrackingCategory]
-      # @param tracking_categories [Array<Merge::Accounting::InvoiceLineItemTrackingCategoriesItem>] The invoice line item's associated tracking categories.
+      # @param tracking_category [String]
+      # @param tracking_categories [Array<String>] The invoice line item's associated tracking categories.
       # @param company [String] The company the invoice belongs to.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -784,49 +777,16 @@ module Merge
         unit_price = parsed_json["unit_price"]
         quantity = parsed_json["quantity"]
         total_amount = parsed_json["total_amount"]
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Accounting::InvoiceLineItemEmployee.from_json(json_object: employee)
-        end
-        if parsed_json["project"].nil?
-          project = nil
-        else
-          project = parsed_json["project"].to_json
-          project = Merge::Accounting::InvoiceLineItemProject.from_json(json_object: project)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::InvoiceLineItemContact.from_json(json_object: contact)
-        end
+        employee = parsed_json["employee"]
+        project = parsed_json["project"]
+        contact = parsed_json["contact"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
-        if parsed_json["item"].nil?
-          item = nil
-        else
-          item = parsed_json["item"].to_json
-          item = Merge::Accounting::InvoiceLineItemItem.from_json(json_object: item)
-        end
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Accounting::InvoiceLineItemAccount.from_json(json_object: account)
-        end
+        item = parsed_json["item"]
+        account = parsed_json["account"]
         tax_rate = parsed_json["tax_rate"]
-        if parsed_json["tracking_category"].nil?
-          tracking_category = nil
-        else
-          tracking_category = parsed_json["tracking_category"].to_json
-          tracking_category = Merge::Accounting::InvoiceLineItemTrackingCategory.from_json(json_object: tracking_category)
-        end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::InvoiceLineItemTrackingCategoriesItem.from_json(json_object: item)
-        end
+        tracking_category = parsed_json["tracking_category"]
+        tracking_categories = parsed_json["tracking_categories"]
         company = parsed_json["company"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -883,15 +843,15 @@ module Merge
         obj.unit_price&.is_a?(Float) != false || raise("Passed value for field obj.unit_price is not the expected type, validation failed.")
         obj.quantity&.is_a?(Float) != false || raise("Passed value for field obj.quantity is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Accounting::InvoiceLineItemEmployee.validate_raw(obj: obj.employee)
-        obj.project.nil? || Merge::Accounting::InvoiceLineItemProject.validate_raw(obj: obj.project)
-        obj.contact.nil? || Merge::Accounting::InvoiceLineItemContact.validate_raw(obj: obj.contact)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.project&.is_a?(String) != false || raise("Passed value for field obj.project is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
-        obj.item.nil? || Merge::Accounting::InvoiceLineItemItem.validate_raw(obj: obj.item)
-        obj.account.nil? || Merge::Accounting::InvoiceLineItemAccount.validate_raw(obj: obj.account)
+        obj.item&.is_a?(String) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
-        obj.tracking_category.nil? || Merge::Accounting::InvoiceLineItemTrackingCategory.validate_raw(obj: obj.tracking_category)
+        obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

@@ -3,7 +3,7 @@
 require_relative "../../../requests"
 require_relative "../types/data_passthrough_request"
 require_relative "../types/async_passthrough_reciept"
-require_relative "types/async_passthrough_retrieve_response"
+require_relative "../types/remote_response"
 require "async"
 
 module Merge
@@ -21,7 +21,7 @@ module Merge
       # Asynchronously pull data from an endpoint not currently supported by Merge.
       #
       # @param request [Hash] Request of type Merge::Hris::DataPassthroughRequest, as a Hash
-      #   * :method (Merge::Hris::MethodEnum)
+      #   * :method_ (Merge::Hris::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
@@ -37,7 +37,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.async_passthrough.create(request: { method: GET, path: "/scooters" })
+      #  api.hris.async_passthrough.create(request: { method_: GET, path: "/scooters" })
       def create(request:, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -61,7 +61,7 @@ module Merge
       #
       # @param async_passthrough_receipt_id [String]
       # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Hris::RemoteResponse, String]
+      # @return [Merge::Hris::RemoteResponse]
       # @example
       #  api = Merge::Client.new(
       #    base_url: "https://api.example.com",
@@ -87,7 +87,7 @@ module Merge
           end
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/async-passthrough/#{async_passthrough_receipt_id}"
         end
-        Merge::Hris::AsyncPassthrough::AsyncPassthroughRetrieveResponse.from_json(json_object: response.body)
+        Merge::Hris::RemoteResponse.from_json(json_object: response.body)
       end
     end
 
@@ -104,7 +104,7 @@ module Merge
       # Asynchronously pull data from an endpoint not currently supported by Merge.
       #
       # @param request [Hash] Request of type Merge::Hris::DataPassthroughRequest, as a Hash
-      #   * :method (Merge::Hris::MethodEnum)
+      #   * :method_ (Merge::Hris::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
@@ -120,7 +120,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.hris.async_passthrough.create(request: { method: GET, path: "/scooters" })
+      #  api.hris.async_passthrough.create(request: { method_: GET, path: "/scooters" })
       def create(request:, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
@@ -146,7 +146,7 @@ module Merge
       #
       # @param async_passthrough_receipt_id [String]
       # @param request_options [Merge::RequestOptions]
-      # @return [Merge::Hris::RemoteResponse, String]
+      # @return [Merge::Hris::RemoteResponse]
       # @example
       #  api = Merge::Client.new(
       #    base_url: "https://api.example.com",
@@ -173,7 +173,7 @@ module Merge
             end
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/async-passthrough/#{async_passthrough_receipt_id}"
           end
-          Merge::Hris::AsyncPassthrough::AsyncPassthroughRetrieveResponse.from_json(json_object: response.body)
+          Merge::Hris::RemoteResponse.from_json(json_object: response.body)
         end
       end
     end

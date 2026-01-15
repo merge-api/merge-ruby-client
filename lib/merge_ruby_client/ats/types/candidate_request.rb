@@ -4,8 +4,6 @@ require "date"
 require_relative "phone_number_request"
 require_relative "email_address_request"
 require_relative "url_request"
-require_relative "candidate_request_applications_item"
-require_relative "candidate_request_attachments_item"
 require "ostruct"
 require "json"
 
@@ -44,9 +42,9 @@ module Merge
       attr_reader :urls
       # @return [Array<String>] Array of `Tag` names as strings.
       attr_reader :tags
-      # @return [Array<Merge::Ats::CandidateRequestApplicationsItem>] Array of `Application` object IDs.
+      # @return [Array<String>] Array of `Application` object IDs.
       attr_reader :applications
-      # @return [Array<Merge::Ats::CandidateRequestAttachmentsItem>] Array of `Attachment` object IDs.
+      # @return [Array<String>] Array of `Attachment` object IDs.
       attr_reader :attachments
       # @return [String]
       attr_reader :remote_template_id
@@ -74,8 +72,8 @@ module Merge
       # @param email_addresses [Array<Merge::Ats::EmailAddressRequest>]
       # @param urls [Array<Merge::Ats::UrlRequest>]
       # @param tags [Array<String>] Array of `Tag` names as strings.
-      # @param applications [Array<Merge::Ats::CandidateRequestApplicationsItem>] Array of `Application` object IDs.
-      # @param attachments [Array<Merge::Ats::CandidateRequestAttachmentsItem>] Array of `Attachment` object IDs.
+      # @param applications [Array<String>] Array of `Application` object IDs.
+      # @param attachments [Array<String>] Array of `Attachment` object IDs.
       # @param remote_template_id [String]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
@@ -154,14 +152,8 @@ module Merge
           Merge::Ats::UrlRequest.from_json(json_object: item)
         end
         tags = parsed_json["tags"]
-        applications = parsed_json["applications"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::CandidateRequestApplicationsItem.from_json(json_object: item)
-        end
-        attachments = parsed_json["attachments"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::CandidateRequestAttachmentsItem.from_json(json_object: item)
-        end
+        applications = parsed_json["applications"]
+        attachments = parsed_json["attachments"]
         remote_template_id = parsed_json["remote_template_id"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]

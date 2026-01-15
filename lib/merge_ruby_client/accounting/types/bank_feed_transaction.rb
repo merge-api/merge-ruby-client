@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "bank_feed_transaction_bank_feed_account"
 require_relative "credit_or_debit_enum"
 require "ostruct"
 require "json"
@@ -25,7 +24,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Accounting::BankFeedTransactionBankFeedAccount] The bank feed account associated with the transaction.
+      # @return [String] The bank feed account associated with the transaction.
       attr_reader :bank_feed_account
       # @return [DateTime] The date that the transaction occurred.
       attr_reader :transaction_date
@@ -67,7 +66,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param bank_feed_account [Merge::Accounting::BankFeedTransactionBankFeedAccount] The bank feed account associated with the transaction.
+      # @param bank_feed_account [String] The bank feed account associated with the transaction.
       # @param transaction_date [DateTime] The date that the transaction occurred.
       # @param posted_date [DateTime] The date the transaction was posted to the bank account.
       # @param amount [Float] The amount of the transaction.
@@ -138,12 +137,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["bank_feed_account"].nil?
-          bank_feed_account = nil
-        else
-          bank_feed_account = parsed_json["bank_feed_account"].to_json
-          bank_feed_account = Merge::Accounting::BankFeedTransactionBankFeedAccount.from_json(json_object: bank_feed_account)
-        end
+        bank_feed_account = parsed_json["bank_feed_account"]
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
         posted_date = (DateTime.parse(parsed_json["posted_date"]) unless parsed_json["posted_date"].nil?)
         amount = parsed_json["amount"]
@@ -192,7 +186,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.bank_feed_account.nil? || Merge::Accounting::BankFeedTransactionBankFeedAccount.validate_raw(obj: obj.bank_feed_account)
+        obj.bank_feed_account&.is_a?(String) != false || raise("Passed value for field obj.bank_feed_account is not the expected type, validation failed.")
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.posted_date&.is_a?(DateTime) != false || raise("Passed value for field obj.posted_date is not the expected type, validation failed.")
         obj.amount&.is_a?(Float) != false || raise("Passed value for field obj.amount is not the expected type, validation failed.")

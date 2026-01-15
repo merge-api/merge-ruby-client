@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "expense_report_request_employee"
 require_relative "expense_report_status_enum"
 require_relative "transaction_currency_enum"
-require_relative "expense_report_request_accounting_period"
-require_relative "expense_report_request_company"
 require_relative "remote_field_request"
 require "ostruct"
 require "json"
@@ -26,7 +23,7 @@ module Merge
       attr_reader :report_date
       # @return [String] Human-readable expense report identifier.
       attr_reader :report_identifier
-      # @return [Merge::Accounting::ExpenseReportRequestEmployee] Identifier for the employee who submitted or is associated with the expense
+      # @return [String] Identifier for the employee who submitted or is associated with the expense
       #  report
       attr_reader :employee
       # @return [Merge::Accounting::ExpenseReportStatusEnum] Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED,
@@ -348,9 +345,9 @@ module Merge
       attr_reader :currency
       # @return [String] A brief description or purpose for the expense report
       attr_reader :description
-      # @return [Merge::Accounting::ExpenseReportRequestAccountingPeriod] The accounting period the report was posted in
+      # @return [String] The accounting period the report was posted in
       attr_reader :accounting_period
-      # @return [Merge::Accounting::ExpenseReportRequestCompany] The subsidiary that the expense report is created in
+      # @return [String] The subsidiary that the expense report is created in
       attr_reader :company
       # @return [Array<String>] The related tracking categories associated with the expense report
       attr_reader :tracking_categories
@@ -370,7 +367,7 @@ module Merge
 
       # @param report_date [DateTime] The date of the expense report.
       # @param report_identifier [String] Human-readable expense report identifier.
-      # @param employee [Merge::Accounting::ExpenseReportRequestEmployee] Identifier for the employee who submitted or is associated with the expense
+      # @param employee [String] Identifier for the employee who submitted or is associated with the expense
       #  report
       # @param status [Merge::Accounting::ExpenseReportStatusEnum] Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED,
       #  REJECTED
@@ -687,8 +684,8 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param description [String] A brief description or purpose for the expense report
-      # @param accounting_period [Merge::Accounting::ExpenseReportRequestAccountingPeriod] The accounting period the report was posted in
-      # @param company [Merge::Accounting::ExpenseReportRequestCompany] The subsidiary that the expense report is created in
+      # @param accounting_period [String] The accounting period the report was posted in
+      # @param company [String] The subsidiary that the expense report is created in
       # @param tracking_categories [Array<String>] The related tracking categories associated with the expense report
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
@@ -739,28 +736,13 @@ module Merge
         parsed_json = JSON.parse(json_object)
         report_date = (DateTime.parse(parsed_json["report_date"]) unless parsed_json["report_date"].nil?)
         report_identifier = parsed_json["report_identifier"]
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Accounting::ExpenseReportRequestEmployee.from_json(json_object: employee)
-        end
+        employee = parsed_json["employee"]
         status = parsed_json["status"]
         total_amount = parsed_json["total_amount"]
         currency = parsed_json["currency"]
         description = parsed_json["description"]
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::ExpenseReportRequestAccountingPeriod.from_json(json_object: accounting_period)
-        end
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::ExpenseReportRequestCompany.from_json(json_object: company)
-        end
+        accounting_period = parsed_json["accounting_period"]
+        company = parsed_json["company"]
         tracking_categories = parsed_json["tracking_categories"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
@@ -802,13 +784,13 @@ module Merge
       def self.validate_raw(obj:)
         obj.report_date&.is_a?(DateTime) != false || raise("Passed value for field obj.report_date is not the expected type, validation failed.")
         obj.report_identifier&.is_a?(String) != false || raise("Passed value for field obj.report_identifier is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Accounting::ExpenseReportRequestEmployee.validate_raw(obj: obj.employee)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Accounting::ExpenseReportStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::ExpenseReportRequestAccountingPeriod.validate_raw(obj: obj.accounting_period)
-        obj.company.nil? || Merge::Accounting::ExpenseReportRequestCompany.validate_raw(obj: obj.company)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")

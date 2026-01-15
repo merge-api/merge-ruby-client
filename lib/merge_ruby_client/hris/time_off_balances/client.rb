@@ -19,7 +19,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TimeOffBalance` objects.
+      # Returns a list of `TimeOffBalance` objects.{/*
+      #  BEGIN_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WkzHV23D+crx16lmjnqI4SWds2/LPkRQufnuXeQSfkyV9mPTuv1RQ490KB62tDd5z8B1dymneoZAAA="
+      #  /></Footer>{/* END_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -38,7 +42,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param policy_type [Merge::Hris::TimeOffBalances::TimeOffBalancesListRequestPolicyType] If provided, will only return TimeOffBalance with this policy type. Options:
       #  ('VACATION', 'SICK', 'PERSONAL', 'JURY_DUTY', 'VOLUNTEER', 'BEREAVEMENT')
       #  * `VACATION` - VACATION
@@ -98,7 +102,11 @@ module Merge
         Merge::Hris::PaginatedTimeOffBalanceList.from_json(json_object: response.body)
       end
 
-      # Returns a `TimeOffBalance` object with the given `id`.
+      # Returns a `TimeOffBalance` object with the given `id`.{/*
+      #  BEGIN_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WkzHV23D+crx16lmjnqI4SWds2/LPkRQufnuXeQSfkyV9mPTuv1RQ490KB62tDd5z8B1dymneoZAAA="
+      #  /></Footer>{/* END_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -158,7 +166,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TimeOffBalance` objects.
+      # Returns a list of `TimeOffBalance` objects.{/*
+      #  BEGIN_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WkzHV23D+crx16lmjnqI4SWds2/LPkRQufnuXeQSfkyV9mPTuv1RQ490KB62tDd5z8B1dymneoZAAA="
+      #  /></Footer>{/* END_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -177,7 +189,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param policy_type [Merge::Hris::TimeOffBalances::TimeOffBalancesListRequestPolicyType] If provided, will only return TimeOffBalance with this policy type. Options:
       #  ('VACATION', 'SICK', 'PERSONAL', 'JURY_DUTY', 'VOLUNTEER', 'BEREAVEMENT')
       #  * `VACATION` - VACATION
@@ -239,7 +251,11 @@ module Merge
         end
       end
 
-      # Returns a `TimeOffBalance` object with the given `id`.
+      # Returns a `TimeOffBalance` object with the given `id`.{/*
+      #  BEGIN_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WkzHV23D+crx16lmjnqI4SWds2/LPkRQufnuXeQSfkyV9mPTuv1RQ490KB62tDd5z8B1dymneoZAAA="
+      #  /></Footer>{/* END_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

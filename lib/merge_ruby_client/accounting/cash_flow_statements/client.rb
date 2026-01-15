@@ -18,7 +18,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CashFlowStatement` objects.
+      # Returns a list of `CashFlowStatement` objects.{/*
+      #  BEGIN_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  FH/6IIfruwvX+hmgJ841BoSqNGCR07BP+/5fkBrnidmFVPwZ872O8H6n+Xm6W1cf/4CeWzfvi4KAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return cash flow statements for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -37,7 +41,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedCashFlowStatementList]
@@ -82,7 +86,11 @@ module Merge
         Merge::Accounting::PaginatedCashFlowStatementList.from_json(json_object: response.body)
       end
 
-      # Returns a `CashFlowStatement` object with the given `id`.
+      # Returns a `CashFlowStatement` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  FH/6IIfruwvX+hmgJ841BoSqNGCR07BP+/5fkBrnidmFVPwZ872O8H6n+Xm6W1cf/4CeWzfvi4KAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -135,7 +143,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CashFlowStatement` objects.
+      # Returns a list of `CashFlowStatement` objects.{/*
+      #  BEGIN_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  FH/6IIfruwvX+hmgJ841BoSqNGCR07BP+/5fkBrnidmFVPwZ872O8H6n+Xm6W1cf/4CeWzfvi4KAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return cash flow statements for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -154,7 +166,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedCashFlowStatementList]
@@ -201,7 +213,11 @@ module Merge
         end
       end
 
-      # Returns a `CashFlowStatement` object with the given `id`.
+      # Returns a `CashFlowStatement` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  FH/6IIfruwvX+hmgJ841BoSqNGCR07BP+/5fkBrnidmFVPwZ872O8H6n+Xm6W1cf/4CeWzfvi4KAAA="
+      #  /></Footer>{/* END_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

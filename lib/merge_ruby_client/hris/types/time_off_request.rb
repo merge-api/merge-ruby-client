@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "time_off_request_employee"
-require_relative "time_off_request_approver"
 require_relative "time_off_status_enum"
 require_relative "units_enum"
 require_relative "request_type_enum"
@@ -18,9 +16,9 @@ module Merge
     #  Fetch from the `LIST TimeOffs` endpoint and filter by `ID` to show all time off
     #  requests.
     class TimeOffRequest
-      # @return [Merge::Hris::TimeOffRequestEmployee] The employee requesting time off.
+      # @return [String] The employee requesting time off.
       attr_reader :employee
-      # @return [Merge::Hris::TimeOffRequestApprover] The Merge ID of the employee with the ability to approve the time off request.
+      # @return [String] The Merge ID of the employee with the ability to approve the time off request.
       attr_reader :approver
       # @return [Merge::Hris::TimeOffStatusEnum] The status of this time off request.
       #  * `REQUESTED` - REQUESTED
@@ -61,8 +59,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param employee [Merge::Hris::TimeOffRequestEmployee] The employee requesting time off.
-      # @param approver [Merge::Hris::TimeOffRequestApprover] The Merge ID of the employee with the ability to approve the time off request.
+      # @param employee [String] The employee requesting time off.
+      # @param approver [String] The Merge ID of the employee with the ability to approve the time off request.
       # @param status [Merge::Hris::TimeOffStatusEnum] The status of this time off request.
       #  * `REQUESTED` - REQUESTED
       #  * `APPROVED` - APPROVED
@@ -125,18 +123,8 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::TimeOffRequestEmployee.from_json(json_object: employee)
-        end
-        if parsed_json["approver"].nil?
-          approver = nil
-        else
-          approver = parsed_json["approver"].to_json
-          approver = Merge::Hris::TimeOffRequestApprover.from_json(json_object: approver)
-        end
+        employee = parsed_json["employee"]
+        approver = parsed_json["approver"]
         status = parsed_json["status"]
         employee_note = parsed_json["employee_note"]
         units = parsed_json["units"]
@@ -176,8 +164,8 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.employee.nil? || Merge::Hris::TimeOffRequestEmployee.validate_raw(obj: obj.employee)
-        obj.approver.nil? || Merge::Hris::TimeOffRequestApprover.validate_raw(obj: obj.approver)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.approver&.is_a?(String) != false || raise("Passed value for field obj.approver is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Hris::TimeOffStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.employee_note&.is_a?(String) != false || raise("Passed value for field obj.employee_note is not the expected type, validation failed.")
         obj.units&.is_a?(Merge::Hris::UnitsEnum) != false || raise("Passed value for field obj.units is not the expected type, validation failed.")
