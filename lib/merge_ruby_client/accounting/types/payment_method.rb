@@ -64,13 +64,13 @@ module Merge
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::PaymentMethod]
-      def initialize(method_type:, name:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT,
+      def initialize(name:, id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, method_type: OMIT,
                      is_active: OMIT, remote_updated_at: OMIT, field_mappings: OMIT, remote_data: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
         @modified_at = modified_at if modified_at != OMIT
-        @method_type = method_type
+        @method_type = method_type if method_type != OMIT
         @name = name
         @is_active = is_active if is_active != OMIT
         @remote_updated_at = remote_updated_at if remote_updated_at != OMIT
@@ -148,7 +148,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.method_type.is_a?(Merge::Accounting::MethodTypeEnum) != false || raise("Passed value for field obj.method_type is not the expected type, validation failed.")
+        obj.method_type&.is_a?(Merge::Accounting::MethodTypeEnum) != false || raise("Passed value for field obj.method_type is not the expected type, validation failed.")
         obj.name.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.is_active&.is_a?(Boolean) != false || raise("Passed value for field obj.is_active is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")

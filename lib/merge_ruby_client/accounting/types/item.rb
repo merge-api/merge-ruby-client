@@ -3,11 +3,6 @@
 require "date"
 require_relative "status_7_d_1_enum"
 require_relative "type_2_bb_enum"
-require_relative "item_purchase_account"
-require_relative "item_sales_account"
-require_relative "item_company"
-require_relative "item_purchase_tax_rate"
-require_relative "item_sales_tax_rate"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -44,15 +39,15 @@ module Merge
       attr_reader :unit_price
       # @return [Float] The price at which the item is purchased from a vendor.
       attr_reader :purchase_price
-      # @return [Merge::Accounting::ItemPurchaseAccount] References the default account used to record a purchase of the item.
+      # @return [String] References the default account used to record a purchase of the item.
       attr_reader :purchase_account
-      # @return [Merge::Accounting::ItemSalesAccount] References the default account used to record a sale.
+      # @return [String] References the default account used to record a sale.
       attr_reader :sales_account
-      # @return [Merge::Accounting::ItemCompany] The company the item belongs to.
+      # @return [String] The company the item belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::ItemPurchaseTaxRate] The default purchase tax rate for this item.
+      # @return [String] The default purchase tax rate for this item.
       attr_reader :purchase_tax_rate
-      # @return [Merge::Accounting::ItemSalesTaxRate] The default sales tax rate for this item.
+      # @return [String] The default sales tax rate for this item.
       attr_reader :sales_tax_rate
       # @return [DateTime] When the third party's item note was updated.
       attr_reader :remote_updated_at
@@ -88,11 +83,11 @@ module Merge
       #  * `UNKNOWN` - UNKNOWN
       # @param unit_price [Float] The item's unit price.
       # @param purchase_price [Float] The price at which the item is purchased from a vendor.
-      # @param purchase_account [Merge::Accounting::ItemPurchaseAccount] References the default account used to record a purchase of the item.
-      # @param sales_account [Merge::Accounting::ItemSalesAccount] References the default account used to record a sale.
-      # @param company [Merge::Accounting::ItemCompany] The company the item belongs to.
-      # @param purchase_tax_rate [Merge::Accounting::ItemPurchaseTaxRate] The default purchase tax rate for this item.
-      # @param sales_tax_rate [Merge::Accounting::ItemSalesTaxRate] The default sales tax rate for this item.
+      # @param purchase_account [String] References the default account used to record a purchase of the item.
+      # @param sales_account [String] References the default account used to record a sale.
+      # @param company [String] The company the item belongs to.
+      # @param purchase_tax_rate [String] The default purchase tax rate for this item.
+      # @param sales_tax_rate [String] The default sales tax rate for this item.
       # @param remote_updated_at [DateTime] When the third party's item note was updated.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -163,36 +158,11 @@ module Merge
         type = parsed_json["type"]
         unit_price = parsed_json["unit_price"]
         purchase_price = parsed_json["purchase_price"]
-        if parsed_json["purchase_account"].nil?
-          purchase_account = nil
-        else
-          purchase_account = parsed_json["purchase_account"].to_json
-          purchase_account = Merge::Accounting::ItemPurchaseAccount.from_json(json_object: purchase_account)
-        end
-        if parsed_json["sales_account"].nil?
-          sales_account = nil
-        else
-          sales_account = parsed_json["sales_account"].to_json
-          sales_account = Merge::Accounting::ItemSalesAccount.from_json(json_object: sales_account)
-        end
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::ItemCompany.from_json(json_object: company)
-        end
-        if parsed_json["purchase_tax_rate"].nil?
-          purchase_tax_rate = nil
-        else
-          purchase_tax_rate = parsed_json["purchase_tax_rate"].to_json
-          purchase_tax_rate = Merge::Accounting::ItemPurchaseTaxRate.from_json(json_object: purchase_tax_rate)
-        end
-        if parsed_json["sales_tax_rate"].nil?
-          sales_tax_rate = nil
-        else
-          sales_tax_rate = parsed_json["sales_tax_rate"].to_json
-          sales_tax_rate = Merge::Accounting::ItemSalesTaxRate.from_json(json_object: sales_tax_rate)
-        end
+        purchase_account = parsed_json["purchase_account"]
+        sales_account = parsed_json["sales_account"]
+        company = parsed_json["company"]
+        purchase_tax_rate = parsed_json["purchase_tax_rate"]
+        sales_tax_rate = parsed_json["sales_tax_rate"]
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
@@ -248,11 +218,11 @@ module Merge
         obj.type&.is_a?(Merge::Accounting::Type2BbEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.unit_price&.is_a?(Float) != false || raise("Passed value for field obj.unit_price is not the expected type, validation failed.")
         obj.purchase_price&.is_a?(Float) != false || raise("Passed value for field obj.purchase_price is not the expected type, validation failed.")
-        obj.purchase_account.nil? || Merge::Accounting::ItemPurchaseAccount.validate_raw(obj: obj.purchase_account)
-        obj.sales_account.nil? || Merge::Accounting::ItemSalesAccount.validate_raw(obj: obj.sales_account)
-        obj.company.nil? || Merge::Accounting::ItemCompany.validate_raw(obj: obj.company)
-        obj.purchase_tax_rate.nil? || Merge::Accounting::ItemPurchaseTaxRate.validate_raw(obj: obj.purchase_tax_rate)
-        obj.sales_tax_rate.nil? || Merge::Accounting::ItemSalesTaxRate.validate_raw(obj: obj.sales_tax_rate)
+        obj.purchase_account&.is_a?(String) != false || raise("Passed value for field obj.purchase_account is not the expected type, validation failed.")
+        obj.sales_account&.is_a?(String) != false || raise("Passed value for field obj.sales_account is not the expected type, validation failed.")
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.purchase_tax_rate&.is_a?(String) != false || raise("Passed value for field obj.purchase_tax_rate is not the expected type, validation failed.")
+        obj.sales_tax_rate&.is_a?(String) != false || raise("Passed value for field obj.sales_tax_rate is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

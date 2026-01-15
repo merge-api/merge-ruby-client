@@ -18,7 +18,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Drive` objects.
+      # Returns a list of `Drive` objects.{/*
+      #  BEGIN_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7HEmoj5CPiAnnVpb9DfE/L/C3O6AI0TxaXdL86db175fgx0rwneM06HGG4x/he+N/e/AGpVLOF2BgAA"
+      #  /></Footer>{/* END_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -36,7 +40,7 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return drives with this name. This performs an exact
       #  match.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedDriveList]
@@ -80,7 +84,11 @@ module Merge
         Merge::Filestorage::PaginatedDriveList.from_json(json_object: response.body)
       end
 
-      # Returns a `Drive` object with the given `id`.
+      # Returns a `Drive` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7HEmoj5CPiAnnVpb9DfE/L/C3O6AI0TxaXdL86db175fgx0rwneM06HGG4x/he+N/e/AGpVLOF2BgAA"
+      #  /></Footer>{/* END_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -130,7 +138,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Drive` objects.
+      # Returns a list of `Drive` objects.{/*
+      #  BEGIN_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7HEmoj5CPiAnnVpb9DfE/L/C3O6AI0TxaXdL86db175fgx0rwneM06HGG4x/he+N/e/AGpVLOF2BgAA"
+      #  /></Footer>{/* END_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -148,7 +160,7 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return drives with this name. This performs an exact
       #  match.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedDriveList]
@@ -194,7 +206,11 @@ module Merge
         end
       end
 
-      # Returns a `Drive` object with the given `id`.
+      # Returns a `Drive` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7HEmoj5CPiAnnVpb9DfE/L/C3O6AI0TxaXdL86db175fgx0rwneM06HGG4x/he+N/e/AGpVLOF2BgAA"
+      #  /></Footer>{/* END_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

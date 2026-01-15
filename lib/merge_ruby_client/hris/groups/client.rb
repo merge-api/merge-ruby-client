@@ -18,7 +18,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Group` objects.
+      # Returns a list of `Group` objects.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bcAUbnVYsZEJfp8XgYt2tMwtir6CzDkVTdDLED4rr0N+CLGAnVEaIDZiPAVP+Tm61//BUeEGh4VYAAA"
+      #  /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -39,7 +42,7 @@ module Merge
       #  returned.
       # @param names [String] If provided, will only return groups with these names. Multiple values can be
       #  separated by commas.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -93,7 +96,11 @@ module Merge
         Merge::Hris::PaginatedGroupList.from_json(json_object: response.body)
       end
 
-      # Returns a `Group` object with the given `id`.
+      # Returns a `Group` object with the given `id`.{/*
+      #  BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bcAUbnVYsZEJfp8XgYt2tMwtir6CzDkVTdDLED4rr0N+CLGAnVEaIDZiPAVP+Tm61//BUeEGh4VYAAA"
+      #  /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -150,7 +157,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Group` objects.
+      # Returns a list of `Group` objects.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bcAUbnVYsZEJfp8XgYt2tMwtir6CzDkVTdDLED4rr0N+CLGAnVEaIDZiPAVP+Tm61//BUeEGh4VYAAA"
+      #  /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -171,7 +181,7 @@ module Merge
       #  returned.
       # @param names [String] If provided, will only return groups with these names. Multiple values can be
       #  separated by commas.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -227,7 +237,11 @@ module Merge
         end
       end
 
-      # Returns a `Group` object with the given `id`.
+      # Returns a `Group` object with the given `id`.{/*
+      #  BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bcAUbnVYsZEJfp8XgYt2tMwtir6CzDkVTdDLED4rr0N+CLGAnVEaIDZiPAVP+Tm61//BUeEGh4VYAAA"
+      #  /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

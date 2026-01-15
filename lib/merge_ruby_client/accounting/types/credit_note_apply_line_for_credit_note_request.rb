@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "credit_note_apply_line_for_credit_note_request_invoice"
 require "date"
 require "ostruct"
 require "json"
@@ -16,7 +15,7 @@ module Merge
     class CreditNoteApplyLineForCreditNoteRequest
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [Merge::Accounting::CreditNoteApplyLineForCreditNoteRequestInvoice]
+      # @return [String]
       attr_reader :invoice
       # @return [DateTime] Date that the credit note is applied to the invoice.
       attr_reader :applied_date
@@ -35,7 +34,7 @@ module Merge
       OMIT = Object.new
 
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param invoice [Merge::Accounting::CreditNoteApplyLineForCreditNoteRequestInvoice]
+      # @param invoice [String]
       # @param applied_date [DateTime] Date that the credit note is applied to the invoice.
       # @param applied_amount [String] The amount of the Credit Note applied to the invoice.
       # @param integration_params [Hash{String => Object}]
@@ -72,12 +71,7 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         remote_id = parsed_json["remote_id"]
-        if parsed_json["invoice"].nil?
-          invoice = nil
-        else
-          invoice = parsed_json["invoice"].to_json
-          invoice = Merge::Accounting::CreditNoteApplyLineForCreditNoteRequestInvoice.from_json(json_object: invoice)
-        end
+        invoice = parsed_json["invoice"]
         applied_date = (DateTime.parse(parsed_json["applied_date"]) unless parsed_json["applied_date"].nil?)
         applied_amount = parsed_json["applied_amount"]
         integration_params = parsed_json["integration_params"]
@@ -109,7 +103,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
-        obj.invoice.nil? || Merge::Accounting::CreditNoteApplyLineForCreditNoteRequestInvoice.validate_raw(obj: obj.invoice)
+        obj.invoice&.is_a?(String) != false || raise("Passed value for field obj.invoice is not the expected type, validation failed.")
         obj.applied_date&.is_a?(DateTime) != false || raise("Passed value for field obj.applied_date is not the expected type, validation failed.")
         obj.applied_amount&.is_a?(String) != false || raise("Passed value for field obj.applied_amount is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")

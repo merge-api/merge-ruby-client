@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "application_candidate"
-require_relative "application_job"
-require_relative "application_offers_item"
-require_relative "application_credited_to"
-require_relative "application_screening_question_answers_item"
-require_relative "application_current_stage"
-require_relative "application_reject_reason"
+require_relative "screening_question_answer"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -32,25 +26,25 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::ApplicationCandidate] The candidate applying.
+      # @return [String] The candidate applying.
       attr_reader :candidate
-      # @return [Merge::Ats::ApplicationJob] The job being applied for.
+      # @return [String] The job being applied for.
       attr_reader :job
       # @return [DateTime] When the application was submitted.
       attr_reader :applied_at
       # @return [DateTime] When the application was rejected.
       attr_reader :rejected_at
-      # @return [Array<Merge::Ats::ApplicationOffersItem>]
+      # @return [Array<String>]
       attr_reader :offers
       # @return [String] The application's source.
       attr_reader :source
-      # @return [Merge::Ats::ApplicationCreditedTo] The user credited for this application.
+      # @return [String] The user credited for this application.
       attr_reader :credited_to
-      # @return [Array<Merge::Ats::ApplicationScreeningQuestionAnswersItem>]
+      # @return [Array<Merge::Ats::ScreeningQuestionAnswer>]
       attr_reader :screening_question_answers
-      # @return [Merge::Ats::ApplicationCurrentStage] The application's current stage.
+      # @return [String] The application's current stage.
       attr_reader :current_stage
-      # @return [Merge::Ats::ApplicationRejectReason] The application's reason for rejection.
+      # @return [String] The application's reason for rejection.
       attr_reader :reject_reason
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -73,16 +67,16 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param candidate [Merge::Ats::ApplicationCandidate] The candidate applying.
-      # @param job [Merge::Ats::ApplicationJob] The job being applied for.
+      # @param candidate [String] The candidate applying.
+      # @param job [String] The job being applied for.
       # @param applied_at [DateTime] When the application was submitted.
       # @param rejected_at [DateTime] When the application was rejected.
-      # @param offers [Array<Merge::Ats::ApplicationOffersItem>]
+      # @param offers [Array<String>]
       # @param source [String] The application's source.
-      # @param credited_to [Merge::Ats::ApplicationCreditedTo] The user credited for this application.
-      # @param screening_question_answers [Array<Merge::Ats::ApplicationScreeningQuestionAnswersItem>]
-      # @param current_stage [Merge::Ats::ApplicationCurrentStage] The application's current stage.
-      # @param reject_reason [Merge::Ats::ApplicationRejectReason] The application's reason for rejection.
+      # @param credited_to [String] The user credited for this application.
+      # @param screening_question_answers [Array<Merge::Ats::ScreeningQuestionAnswer>]
+      # @param current_stage [String] The application's current stage.
+      # @param reject_reason [String] The application's reason for rejection.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -145,47 +139,19 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["candidate"].nil?
-          candidate = nil
-        else
-          candidate = parsed_json["candidate"].to_json
-          candidate = Merge::Ats::ApplicationCandidate.from_json(json_object: candidate)
-        end
-        if parsed_json["job"].nil?
-          job = nil
-        else
-          job = parsed_json["job"].to_json
-          job = Merge::Ats::ApplicationJob.from_json(json_object: job)
-        end
+        candidate = parsed_json["candidate"]
+        job = parsed_json["job"]
         applied_at = (DateTime.parse(parsed_json["applied_at"]) unless parsed_json["applied_at"].nil?)
         rejected_at = (DateTime.parse(parsed_json["rejected_at"]) unless parsed_json["rejected_at"].nil?)
-        offers = parsed_json["offers"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::ApplicationOffersItem.from_json(json_object: item)
-        end
+        offers = parsed_json["offers"]
         source = parsed_json["source"]
-        if parsed_json["credited_to"].nil?
-          credited_to = nil
-        else
-          credited_to = parsed_json["credited_to"].to_json
-          credited_to = Merge::Ats::ApplicationCreditedTo.from_json(json_object: credited_to)
-        end
+        credited_to = parsed_json["credited_to"]
         screening_question_answers = parsed_json["screening_question_answers"]&.map do |item|
           item = item.to_json
-          Merge::Ats::ApplicationScreeningQuestionAnswersItem.from_json(json_object: item)
+          Merge::Ats::ScreeningQuestionAnswer.from_json(json_object: item)
         end
-        if parsed_json["current_stage"].nil?
-          current_stage = nil
-        else
-          current_stage = parsed_json["current_stage"].to_json
-          current_stage = Merge::Ats::ApplicationCurrentStage.from_json(json_object: current_stage)
-        end
-        if parsed_json["reject_reason"].nil?
-          reject_reason = nil
-        else
-          reject_reason = parsed_json["reject_reason"].to_json
-          reject_reason = Merge::Ats::ApplicationRejectReason.from_json(json_object: reject_reason)
-        end
+        current_stage = parsed_json["current_stage"]
+        reject_reason = parsed_json["reject_reason"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
@@ -232,16 +198,16 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.candidate.nil? || Merge::Ats::ApplicationCandidate.validate_raw(obj: obj.candidate)
-        obj.job.nil? || Merge::Ats::ApplicationJob.validate_raw(obj: obj.job)
+        obj.candidate&.is_a?(String) != false || raise("Passed value for field obj.candidate is not the expected type, validation failed.")
+        obj.job&.is_a?(String) != false || raise("Passed value for field obj.job is not the expected type, validation failed.")
         obj.applied_at&.is_a?(DateTime) != false || raise("Passed value for field obj.applied_at is not the expected type, validation failed.")
         obj.rejected_at&.is_a?(DateTime) != false || raise("Passed value for field obj.rejected_at is not the expected type, validation failed.")
         obj.offers&.is_a?(Array) != false || raise("Passed value for field obj.offers is not the expected type, validation failed.")
         obj.source&.is_a?(String) != false || raise("Passed value for field obj.source is not the expected type, validation failed.")
-        obj.credited_to.nil? || Merge::Ats::ApplicationCreditedTo.validate_raw(obj: obj.credited_to)
+        obj.credited_to&.is_a?(String) != false || raise("Passed value for field obj.credited_to is not the expected type, validation failed.")
         obj.screening_question_answers&.is_a?(Array) != false || raise("Passed value for field obj.screening_question_answers is not the expected type, validation failed.")
-        obj.current_stage.nil? || Merge::Ats::ApplicationCurrentStage.validate_raw(obj: obj.current_stage)
-        obj.reject_reason.nil? || Merge::Ats::ApplicationRejectReason.validate_raw(obj: obj.reject_reason)
+        obj.current_stage&.is_a?(String) != false || raise("Passed value for field obj.current_stage is not the expected type, validation failed.")
+        obj.reject_reason&.is_a?(String) != false || raise("Passed value for field obj.reject_reason is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")

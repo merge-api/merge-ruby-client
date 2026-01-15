@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "project_company"
-require_relative "project_contact"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -30,9 +28,9 @@ module Merge
       attr_reader :name
       # @return [Boolean] `True` if the project is active, `False` if the project is not active.
       attr_reader :is_active
-      # @return [Merge::Accounting::ProjectCompany] The subsidiary that the project belongs to.
+      # @return [String] The subsidiary that the project belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::ProjectContact] The supplier, or customer involved in the project.
+      # @return [String] The supplier, or customer involved in the project.
       attr_reader :contact
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
@@ -52,8 +50,8 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The project’s name
       # @param is_active [Boolean] `True` if the project is active, `False` if the project is not active.
-      # @param company [Merge::Accounting::ProjectCompany] The subsidiary that the project belongs to.
-      # @param contact [Merge::Accounting::ProjectContact] The supplier, or customer involved in the project.
+      # @param company [String] The subsidiary that the project belongs to.
+      # @param contact [String] The supplier, or customer involved in the project.
       # @param field_mappings [Hash{String => Object}]
       # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -100,18 +98,8 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         is_active = parsed_json["is_active"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::ProjectCompany.from_json(json_object: company)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::ProjectContact.from_json(json_object: contact)
-        end
+        company = parsed_json["company"]
+        contact = parsed_json["contact"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
           item = item.to_json
@@ -152,8 +140,8 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.is_active&.is_a?(Boolean) != false || raise("Passed value for field obj.is_active is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::ProjectCompany.validate_raw(obj: obj.company)
-        obj.contact.nil? || Merge::Accounting::ProjectContact.validate_raw(obj: obj.contact)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")
       end

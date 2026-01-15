@@ -7,7 +7,7 @@ module Merge
   module Accounting
     class FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
       # @return [String]
-      attr_reader :method
+      attr_reader :method_
       # @return [String]
       attr_reader :url_path
       # @return [Array<String>]
@@ -20,18 +20,18 @@ module Merge
 
       OMIT = Object.new
 
-      # @param method [String]
+      # @param method_ [String]
       # @param url_path [String]
       # @param field_traversal_path [Array<String>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo]
-      def initialize(method: OMIT, url_path: OMIT, field_traversal_path: OMIT, additional_properties: nil)
-        @method = method if method != OMIT
+      def initialize(method_: OMIT, url_path: OMIT, field_traversal_path: OMIT, additional_properties: nil)
+        @method_ = method_ if method_ != OMIT
         @url_path = url_path if url_path != OMIT
         @field_traversal_path = field_traversal_path if field_traversal_path != OMIT
         @additional_properties = additional_properties
         @_field_set = {
-          "method": method,
+          "method": method_,
           "url_path": url_path,
           "field_traversal_path": field_traversal_path
         }.reject do |_k, v|
@@ -47,11 +47,11 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        method = parsed_json["method"]
+        method_ = parsed_json["method"]
         url_path = parsed_json["url_path"]
         field_traversal_path = parsed_json["field_traversal_path"]
         new(
-          method: method,
+          method_: method_,
           url_path: url_path,
           field_traversal_path: field_traversal_path,
           additional_properties: struct
@@ -73,7 +73,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.method&.is_a?(String) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
+        obj.method_&.is_a?(String) != false || raise("Passed value for field obj.method_ is not the expected type, validation failed.")
         obj.url_path&.is_a?(String) != false || raise("Passed value for field obj.url_path is not the expected type, validation failed.")
         obj.field_traversal_path&.is_a?(Array) != false || raise("Passed value for field obj.field_traversal_path is not the expected type, validation failed.")
       end

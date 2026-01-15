@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "viewer_team"
-require_relative "viewer_user"
 require "ostruct"
 require "json"
 
@@ -22,9 +20,9 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ticketing::ViewerTeam] The Team this Viewer belongs to.
+      # @return [String] The Team this Viewer belongs to.
       attr_reader :team
-      # @return [Merge::Ticketing::ViewerUser] The User this Viewer belongs to.
+      # @return [String] The User this Viewer belongs to.
       attr_reader :user
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -38,8 +36,8 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param team [Merge::Ticketing::ViewerTeam] The Team this Viewer belongs to.
-      # @param user [Merge::Ticketing::ViewerUser] The User this Viewer belongs to.
+      # @param team [String] The Team this Viewer belongs to.
+      # @param user [String] The User this Viewer belongs to.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::Viewer]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, team: OMIT, user: OMIT,
@@ -74,18 +72,8 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["team"].nil?
-          team = nil
-        else
-          team = parsed_json["team"].to_json
-          team = Merge::Ticketing::ViewerTeam.from_json(json_object: team)
-        end
-        if parsed_json["user"].nil?
-          user = nil
-        else
-          user = parsed_json["user"].to_json
-          user = Merge::Ticketing::ViewerUser.from_json(json_object: user)
-        end
+        team = parsed_json["team"]
+        user = parsed_json["user"]
         new(
           id: id,
           remote_id: remote_id,
@@ -115,8 +103,8 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.team.nil? || Merge::Ticketing::ViewerTeam.validate_raw(obj: obj.team)
-        obj.user.nil? || Merge::Ticketing::ViewerUser.validate_raw(obj: obj.user)
+        obj.team&.is_a?(String) != false || raise("Passed value for field obj.team is not the expected type, validation failed.")
+        obj.user&.is_a?(String) != false || raise("Passed value for field obj.user is not the expected type, validation failed.")
       end
     end
   end

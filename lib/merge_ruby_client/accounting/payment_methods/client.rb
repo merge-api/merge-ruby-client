@@ -17,7 +17,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `PaymentMethod` objects.
+      # Returns a list of `PaymentMethod` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7abtf+I5OFc5Bwc8gTc39IdQYqVvnLAmPscsKVisldMRju0q5Wgtgn/CNoPd/D++SfHONquGAYAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -28,7 +32,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedPaymentMethodList]
       # @example
@@ -65,7 +69,11 @@ module Merge
         Merge::Accounting::PaginatedPaymentMethodList.from_json(json_object: response.body)
       end
 
-      # Returns a `PaymentMethod` object with the given `id`.
+      # Returns a `PaymentMethod` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7abtf+I5OFc5Bwc8gTc39IdQYqVvnLAmPscsKVisldMRju0q5Wgtgn/CNoPd/D++SfHONquGAYAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -115,7 +123,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `PaymentMethod` objects.
+      # Returns a list of `PaymentMethod` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7abtf+I5OFc5Bwc8gTc39IdQYqVvnLAmPscsKVisldMRju0q5Wgtgn/CNoPd/D++SfHONquGAYAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -126,7 +138,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedPaymentMethodList]
       # @example
@@ -165,7 +177,11 @@ module Merge
         end
       end
 
-      # Returns a `PaymentMethod` object with the given `id`.
+      # Returns a `PaymentMethod` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7abtf+I5OFc5Bwc8gTc39IdQYqVvnLAmPscsKVisldMRju0q5Wgtgn/CNoPd/D++SfHONquGAYAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "employee_company"
 require_relative "status_895_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -36,7 +35,7 @@ module Merge
       attr_reader :employee_number
       # @return [String] The employee's email address.
       attr_reader :email_address
-      # @return [Merge::Accounting::EmployeeCompany] The subsidiary that the employee belongs to.
+      # @return [String] The subsidiary that the employee belongs to.
       attr_reader :company
       # @return [Merge::Accounting::Status895Enum] The employee's status in the accounting system.
       #  * `ACTIVE` - ACTIVE
@@ -68,7 +67,7 @@ module Merge
       # @param is_contractor [Boolean] `True` if the employee is a contractor, `False` if not.
       # @param employee_number [String] The employee's internal identification number.
       # @param email_address [String] The employee's email address.
-      # @param company [Merge::Accounting::EmployeeCompany] The subsidiary that the employee belongs to.
+      # @param company [String] The subsidiary that the employee belongs to.
       # @param status [Merge::Accounting::Status895Enum] The employee's status in the accounting system.
       #  * `ACTIVE` - ACTIVE
       #  * `INACTIVE` - INACTIVE
@@ -133,12 +132,7 @@ module Merge
         is_contractor = parsed_json["is_contractor"]
         employee_number = parsed_json["employee_number"]
         email_address = parsed_json["email_address"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::EmployeeCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         status = parsed_json["status"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -188,7 +182,7 @@ module Merge
         obj.is_contractor&.is_a?(Boolean) != false || raise("Passed value for field obj.is_contractor is not the expected type, validation failed.")
         obj.employee_number&.is_a?(String) != false || raise("Passed value for field obj.employee_number is not the expected type, validation failed.")
         obj.email_address&.is_a?(String) != false || raise("Passed value for field obj.email_address is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::EmployeeCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.status.is_a?(Merge::Accounting::Status895Enum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
