@@ -38,7 +38,7 @@ module Merge
       #  datetime.
       # @param linked_account_id [String] If provided, will only include issues pertaining to the linked account passed
       #  in.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param start_date [String] If included, will only include issues whose most recent action occurred after
       #  this time
       # @param status [Merge::Hris::Issues::IssuesListRequestStatus] Status of the issue. Options: ('ONGOING', 'RESOLVED')
@@ -152,7 +152,7 @@ module Merge
       #  datetime.
       # @param linked_account_id [String] If provided, will only include issues pertaining to the linked account passed
       #  in.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param start_date [String] If included, will only include issues whose most recent action occurred after
       #  this time
       # @param status [Merge::Hris::Issues::IssuesListRequestStatus] Status of the issue. Options: ('ONGOING', 'RESOLVED')

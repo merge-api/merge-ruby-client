@@ -5,7 +5,6 @@ require_relative "account_details/client"
 require_relative "account_token/client"
 require_relative "async_passthrough/client"
 require_relative "audit_trail/client"
-require_relative "available_actions/client"
 require_relative "scopes/client"
 require_relative "delete_account/client"
 require_relative "drives/client"
@@ -22,7 +21,6 @@ require_relative "regenerate_key/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "users/client"
-require_relative "webhook_receivers/client"
 
 module Merge
   module Filestorage
@@ -35,8 +33,6 @@ module Merge
       attr_reader :async_passthrough
       # @return [Merge::Filestorage::AuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Filestorage::AvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Filestorage::ScopesClient]
       attr_reader :scopes
       # @return [Merge::Filestorage::DeleteAccountClient]
@@ -69,8 +65,6 @@ module Merge
       attr_reader :force_resync
       # @return [Merge::Filestorage::UsersClient]
       attr_reader :users
-      # @return [Merge::Filestorage::WebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::RequestClient]
       # @return [Merge::Filestorage::Client]
@@ -79,7 +73,6 @@ module Merge
         @account_token = Merge::Filestorage::AccountTokenClient.new(request_client: request_client)
         @async_passthrough = Merge::Filestorage::AsyncPassthroughClient.new(request_client: request_client)
         @audit_trail = Merge::Filestorage::AuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Filestorage::AvailableActionsClient.new(request_client: request_client)
         @scopes = Merge::Filestorage::ScopesClient.new(request_client: request_client)
         @delete_account = Merge::Filestorage::DeleteAccountClient.new(request_client: request_client)
         @drives = Merge::Filestorage::DrivesClient.new(request_client: request_client)
@@ -96,7 +89,6 @@ module Merge
         @sync_status = Merge::Filestorage::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Filestorage::ForceResyncClient.new(request_client: request_client)
         @users = Merge::Filestorage::UsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Filestorage::WebhookReceiversClient.new(request_client: request_client)
       end
     end
 
@@ -109,8 +101,6 @@ module Merge
       attr_reader :async_passthrough
       # @return [Merge::Filestorage::AsyncAuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Filestorage::AsyncAvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Filestorage::AsyncScopesClient]
       attr_reader :scopes
       # @return [Merge::Filestorage::AsyncDeleteAccountClient]
@@ -143,8 +133,6 @@ module Merge
       attr_reader :force_resync
       # @return [Merge::Filestorage::AsyncUsersClient]
       attr_reader :users
-      # @return [Merge::Filestorage::AsyncWebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::AsyncRequestClient]
       # @return [Merge::Filestorage::AsyncClient]
@@ -153,7 +141,6 @@ module Merge
         @account_token = Merge::Filestorage::AsyncAccountTokenClient.new(request_client: request_client)
         @async_passthrough = Merge::Filestorage::AsyncAsyncPassthroughClient.new(request_client: request_client)
         @audit_trail = Merge::Filestorage::AsyncAuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Filestorage::AsyncAvailableActionsClient.new(request_client: request_client)
         @scopes = Merge::Filestorage::AsyncScopesClient.new(request_client: request_client)
         @delete_account = Merge::Filestorage::AsyncDeleteAccountClient.new(request_client: request_client)
         @drives = Merge::Filestorage::AsyncDrivesClient.new(request_client: request_client)
@@ -170,7 +157,6 @@ module Merge
         @sync_status = Merge::Filestorage::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Filestorage::AsyncForceResyncClient.new(request_client: request_client)
         @users = Merge::Filestorage::AsyncUsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Filestorage::AsyncWebhookReceiversClient.new(request_client: request_client)
       end
     end
   end

@@ -16,7 +16,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns an `Address` object with the given `id`.
+      # Returns an `Address` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2x6MeGr8hv7/+pfblGrbLhMkAovom/5h5XwW6n8RU2Vk+EXggTv6w8EL4LaTAvY/ZdfATf99KTGEwAA"
+      #  /></Footer>{/* END_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -73,7 +77,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns an `Address` object with the given `id`.
+      # Returns an `Address` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  2x6MeGr8hv7/+pfblGrbLhMkAovom/5h5XwW6n8RU2Vk+EXggTv6w8EL4LaTAvY/ZdfATf99KTGEwAA"
+      #  /></Footer>{/* END_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

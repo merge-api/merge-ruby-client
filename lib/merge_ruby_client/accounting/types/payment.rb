@@ -1,15 +1,9 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "payment_contact"
-require_relative "payment_account"
-require_relative "payment_payment_method"
 require_relative "transaction_currency_enum"
-require_relative "payment_company"
 require_relative "payment_type_enum"
-require_relative "payment_tracking_categories_item"
-require_relative "payment_accounting_period"
-require_relative "payment_applied_to_lines_item"
+require_relative "payment_line_item"
 require_relative "remote_data"
 require_relative "remote_field"
 require "ostruct"
@@ -34,11 +28,11 @@ module Merge
       attr_reader :modified_at
       # @return [DateTime] The payment's transaction date.
       attr_reader :transaction_date
-      # @return [Merge::Accounting::PaymentContact] The supplier, or customer involved in the payment.
+      # @return [String] The supplier, or customer involved in the payment.
       attr_reader :contact
-      # @return [Merge::Accounting::PaymentAccount] The supplier’s or customer’s account in which the payment is made.
+      # @return [String] The supplier’s or customer’s account in which the payment is made.
       attr_reader :account
-      # @return [Merge::Accounting::PaymentPaymentMethod] The method which this payment was made by.
+      # @return [String] The method which this payment was made by.
       attr_reader :payment_method
       # @return [Merge::Accounting::TransactionCurrencyEnum] The payment's currency.
       #  * `XUA` - ADB Unit of Account
@@ -350,7 +344,7 @@ module Merge
       attr_reader :currency
       # @return [String] The payment's exchange rate.
       attr_reader :exchange_rate
-      # @return [Merge::Accounting::PaymentCompany] The company the payment belongs to.
+      # @return [String] The company the payment belongs to.
       attr_reader :company
       # @return [Float] The total amount of money being paid to the supplier, or customer, after taxes.
       attr_reader :total_amount
@@ -358,11 +352,11 @@ module Merge
       #  * `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
       #  * `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       attr_reader :type
-      # @return [Array<Merge::Accounting::PaymentTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
-      # @return [Merge::Accounting::PaymentAccountingPeriod] The accounting period that the Payment was generated in.
+      # @return [String] The accounting period that the Payment was generated in.
       attr_reader :accounting_period
-      # @return [Array<Merge::Accounting::PaymentAppliedToLinesItem>] A list of “Payment Applied to Lines” objects.
+      # @return [Array<Merge::Accounting::PaymentLineItem>] A list of “Payment Applied to Lines” objects.
       attr_reader :applied_to_lines
       # @return [DateTime] When the third party's payment entry was updated.
       attr_reader :remote_updated_at
@@ -390,9 +384,9 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param transaction_date [DateTime] The payment's transaction date.
-      # @param contact [Merge::Accounting::PaymentContact] The supplier, or customer involved in the payment.
-      # @param account [Merge::Accounting::PaymentAccount] The supplier’s or customer’s account in which the payment is made.
-      # @param payment_method [Merge::Accounting::PaymentPaymentMethod] The method which this payment was made by.
+      # @param contact [String] The supplier, or customer involved in the payment.
+      # @param account [String] The supplier’s or customer’s account in which the payment is made.
+      # @param payment_method [String] The method which this payment was made by.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The payment's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -701,14 +695,14 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The payment's exchange rate.
-      # @param company [Merge::Accounting::PaymentCompany] The company the payment belongs to.
+      # @param company [String] The company the payment belongs to.
       # @param total_amount [Float] The total amount of money being paid to the supplier, or customer, after taxes.
       # @param type [Merge::Accounting::PaymentTypeEnum] The type of the invoice.
       #  * `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
       #  * `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
-      # @param tracking_categories [Array<Merge::Accounting::PaymentTrackingCategoriesItem>]
-      # @param accounting_period [Merge::Accounting::PaymentAccountingPeriod] The accounting period that the Payment was generated in.
-      # @param applied_to_lines [Array<Merge::Accounting::PaymentAppliedToLinesItem>] A list of “Payment Applied to Lines” objects.
+      # @param tracking_categories [Array<String>]
+      # @param accounting_period [String] The accounting period that the Payment was generated in.
+      # @param applied_to_lines [Array<Merge::Accounting::PaymentLineItem>] A list of “Payment Applied to Lines” objects.
       # @param remote_updated_at [DateTime] When the third party's payment entry was updated.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -782,47 +776,19 @@ module Merge
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::PaymentContact.from_json(json_object: contact)
-        end
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Accounting::PaymentAccount.from_json(json_object: account)
-        end
-        if parsed_json["payment_method"].nil?
-          payment_method = nil
-        else
-          payment_method = parsed_json["payment_method"].to_json
-          payment_method = Merge::Accounting::PaymentPaymentMethod.from_json(json_object: payment_method)
-        end
+        contact = parsed_json["contact"]
+        account = parsed_json["account"]
+        payment_method = parsed_json["payment_method"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::PaymentCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         total_amount = parsed_json["total_amount"]
         type = parsed_json["type"]
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::PaymentTrackingCategoriesItem.from_json(json_object: item)
-        end
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::PaymentAccountingPeriod.from_json(json_object: accounting_period)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
+        accounting_period = parsed_json["accounting_period"]
         applied_to_lines = parsed_json["applied_to_lines"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::PaymentAppliedToLinesItem.from_json(json_object: item)
+          Merge::Accounting::PaymentLineItem.from_json(json_object: item)
         end
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
@@ -882,16 +848,16 @@ module Merge
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
-        obj.contact.nil? || Merge::Accounting::PaymentContact.validate_raw(obj: obj.contact)
-        obj.account.nil? || Merge::Accounting::PaymentAccount.validate_raw(obj: obj.account)
-        obj.payment_method.nil? || Merge::Accounting::PaymentPaymentMethod.validate_raw(obj: obj.payment_method)
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.payment_method&.is_a?(String) != false || raise("Passed value for field obj.payment_method is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::PaymentCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.type&.is_a?(Merge::Accounting::PaymentTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::PaymentAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
         obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

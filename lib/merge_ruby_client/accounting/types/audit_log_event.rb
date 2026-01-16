@@ -23,6 +23,7 @@ module Merge
       #  * `API` - API
       #  * `SYSTEM` - SYSTEM
       #  * `MERGE_TEAM` - MERGE_TEAM
+      #  * `SUPPORT` - SUPPORT
       attr_reader :role
       # @return [String]
       attr_reader :ip_address
@@ -105,6 +106,7 @@ module Merge
       #  * `API` - API
       #  * `SYSTEM` - SYSTEM
       #  * `MERGE_TEAM` - MERGE_TEAM
+      #  * `SUPPORT` - SUPPORT
       # @param ip_address [String]
       # @param event_type [Merge::Accounting::EventTypeEnum] Designates the type of event that occurred.
       #  * `CREATED_REMOTE_PRODUCTION_API_KEY` - CREATED_REMOTE_PRODUCTION_API_KEY

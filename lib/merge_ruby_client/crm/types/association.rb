@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "association_association_type"
 require "ostruct"
 require "json"
 
@@ -21,7 +20,7 @@ module Merge
       attr_reader :source_object
       # @return [String]
       attr_reader :target_object
-      # @return [Merge::Crm::AssociationAssociationType] The association type the association belongs to.
+      # @return [String] The association type the association belongs to.
       attr_reader :association_type
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -35,7 +34,7 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param source_object [String]
       # @param target_object [String]
-      # @param association_type [Merge::Crm::AssociationAssociationType] The association type the association belongs to.
+      # @param association_type [String] The association type the association belongs to.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::Association]
       def initialize(created_at: OMIT, modified_at: OMIT, source_object: OMIT, target_object: OMIT,
@@ -68,12 +67,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         source_object = parsed_json["source_object"]
         target_object = parsed_json["target_object"]
-        if parsed_json["association_type"].nil?
-          association_type = nil
-        else
-          association_type = parsed_json["association_type"].to_json
-          association_type = Merge::Crm::AssociationAssociationType.from_json(json_object: association_type)
-        end
+        association_type = parsed_json["association_type"]
         new(
           created_at: created_at,
           modified_at: modified_at,
@@ -102,7 +96,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.source_object&.is_a?(String) != false || raise("Passed value for field obj.source_object is not the expected type, validation failed.")
         obj.target_object&.is_a?(String) != false || raise("Passed value for field obj.target_object is not the expected type, validation failed.")
-        obj.association_type.nil? || Merge::Crm::AssociationAssociationType.validate_raw(obj: obj.association_type)
+        obj.association_type&.is_a?(String) != false || raise("Passed value for field obj.association_type is not the expected type, validation failed.")
       end
     end
   end

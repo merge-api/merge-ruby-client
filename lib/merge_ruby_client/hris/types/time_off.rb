@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "time_off_employee"
-require_relative "time_off_approver"
 require_relative "time_off_status_enum"
 require_relative "units_enum"
 require_relative "request_type_enum"
@@ -27,9 +25,9 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::TimeOffEmployee] The employee requesting time off.
+      # @return [String] The employee requesting time off.
       attr_reader :employee
-      # @return [Merge::Hris::TimeOffApprover] The Merge ID of the employee with the ability to approve the time off request.
+      # @return [String] The Merge ID of the employee with the ability to approve the time off request.
       attr_reader :approver
       # @return [Merge::Hris::TimeOffStatusEnum] The status of this time off request.
       #  * `REQUESTED` - REQUESTED
@@ -79,8 +77,8 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::TimeOffEmployee] The employee requesting time off.
-      # @param approver [Merge::Hris::TimeOffApprover] The Merge ID of the employee with the ability to approve the time off request.
+      # @param employee [String] The employee requesting time off.
+      # @param approver [String] The Merge ID of the employee with the ability to approve the time off request.
       # @param status [Merge::Hris::TimeOffStatusEnum] The status of this time off request.
       #  * `REQUESTED` - REQUESTED
       #  * `APPROVED` - APPROVED
@@ -161,18 +159,8 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::TimeOffEmployee.from_json(json_object: employee)
-        end
-        if parsed_json["approver"].nil?
-          approver = nil
-        else
-          approver = parsed_json["approver"].to_json
-          approver = Merge::Hris::TimeOffApprover.from_json(json_object: approver)
-        end
+        employee = parsed_json["employee"]
+        approver = parsed_json["approver"]
         status = parsed_json["status"]
         employee_note = parsed_json["employee_note"]
         units = parsed_json["units"]
@@ -225,8 +213,8 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::TimeOffEmployee.validate_raw(obj: obj.employee)
-        obj.approver.nil? || Merge::Hris::TimeOffApprover.validate_raw(obj: obj.approver)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.approver&.is_a?(String) != false || raise("Passed value for field obj.approver is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Hris::TimeOffStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.employee_note&.is_a?(String) != false || raise("Passed value for field obj.employee_note is not the expected type, validation failed.")
         obj.units&.is_a?(Merge::Hris::UnitsEnum) != false || raise("Passed value for field obj.units is not the expected type, validation failed.")

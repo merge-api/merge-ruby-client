@@ -2,12 +2,12 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/opportunities_list_request_expand"
-require_relative "types/opportunities_list_request_status"
+require_relative "types/list_opportunities_request_expand"
+require_relative "types/list_opportunities_request_status"
 require_relative "../types/paginated_opportunity_list"
 require_relative "../types/opportunity_request"
 require_relative "../types/opportunity_response"
-require_relative "types/opportunities_retrieve_request_expand"
+require_relative "types/retrieve_opportunities_request_expand"
 require_relative "../types/opportunity"
 require_relative "../types/patched_opportunity_request"
 require_relative "../types/meta_response"
@@ -26,13 +26,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Opportunity` objects.
+      # Returns a list of `Opportunity` objects.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return opportunities with this account.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Crm::Opportunities::OpportunitiesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Opportunities::ListOpportunitiesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -48,7 +52,7 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param owner_id [String] If provided, will only return opportunities with this owner.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_created_after [DateTime] If provided, will only return opportunities created in the third party platform
       #  after this datetime.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
@@ -57,7 +61,7 @@ module Merge
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param stage_id [String] If provided, will only return opportunities with this stage.
-      # @param status [Merge::Crm::Opportunities::OpportunitiesListRequestStatus] If provided, will only return opportunities with this status. Options: ('OPEN',
+      # @param status [Merge::Crm::Opportunities::ListOpportunitiesRequestStatus] If provided, will only return opportunities with this status. Options: ('OPEN',
       #  'WON', 'LOST')
       #  * `OPEN` - OPEN
       #  * `WON` - WON
@@ -112,7 +116,11 @@ module Merge
         Merge::Crm::PaginatedOpportunityList.from_json(json_object: response.body)
       end
 
-      # Creates an `Opportunity` object with the given values.
+      # Creates an `Opportunity` object with the given values.{/*
+      #  BEGIN_CRM_OPPORTUNITY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  e0UhaiW7BI5+nNp98Pww3PR/eSc7qDdxaqaqvwvimoZXaupojq537//g3R/0C+biy//AVfgGZQgEgAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -120,9 +128,9 @@ module Merge
       #   * :name (String)
       #   * :description (String)
       #   * :amount (Integer)
-      #   * :owner (Hash)
-      #   * :account (Hash)
-      #   * :stage (Hash)
+      #   * :owner (String)
+      #   * :account (String)
+      #   * :stage (String)
       #   * :status (Merge::Crm::OpportunityStatusEnum)
       #   * :last_activity_at (DateTime)
       #   * :close_date (DateTime)
@@ -159,10 +167,14 @@ module Merge
         Merge::Crm::OpportunityResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Opportunity` object with the given `id`.
+      # Returns an `Opportunity` object with the given `id`.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Crm::Opportunities::OpportunitiesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Opportunities::RetrieveOpportunitiesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -211,7 +223,11 @@ module Merge
         Merge::Crm::Opportunity.from_json(json_object: response.body)
       end
 
-      # Updates an `Opportunity` object with the given `id`.
+      # Updates an `Opportunity` object with the given `id`.{/*
+      #  BEGIN_CRM_OPPORTUNITY_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  2ky/yTJDrrPOn2p2aPQWuDe88z9l03oDiG+yYksfqW7lWElJ5Lp9Md78Dyl+N1n5PTyOzQjv10HDAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -259,7 +275,11 @@ module Merge
         Merge::Crm::OpportunityResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Opportunity` PATCHs.
+      # Returns metadata for `Opportunity` PATCHs.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -292,7 +312,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Opportunity` POSTs.
+      # Returns metadata for `Opportunity` POSTs.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -324,7 +348,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -340,7 +368,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
@@ -391,13 +419,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Opportunity` objects.
+      # Returns a list of `Opportunity` objects.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return opportunities with this account.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Crm::Opportunities::OpportunitiesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Opportunities::ListOpportunitiesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -413,7 +445,7 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param owner_id [String] If provided, will only return opportunities with this owner.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_created_after [DateTime] If provided, will only return opportunities created in the third party platform
       #  after this datetime.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
@@ -422,7 +454,7 @@ module Merge
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param stage_id [String] If provided, will only return opportunities with this stage.
-      # @param status [Merge::Crm::Opportunities::OpportunitiesListRequestStatus] If provided, will only return opportunities with this status. Options: ('OPEN',
+      # @param status [Merge::Crm::Opportunities::ListOpportunitiesRequestStatus] If provided, will only return opportunities with this status. Options: ('OPEN',
       #  'WON', 'LOST')
       #  * `OPEN` - OPEN
       #  * `WON` - WON
@@ -479,7 +511,11 @@ module Merge
         end
       end
 
-      # Creates an `Opportunity` object with the given values.
+      # Creates an `Opportunity` object with the given values.{/*
+      #  BEGIN_CRM_OPPORTUNITY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  e0UhaiW7BI5+nNp98Pww3PR/eSc7qDdxaqaqvwvimoZXaupojq537//g3R/0C+biy//AVfgGZQgEgAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -487,9 +523,9 @@ module Merge
       #   * :name (String)
       #   * :description (String)
       #   * :amount (Integer)
-      #   * :owner (Hash)
-      #   * :account (Hash)
-      #   * :stage (Hash)
+      #   * :owner (String)
+      #   * :account (String)
+      #   * :stage (String)
       #   * :status (Merge::Crm::OpportunityStatusEnum)
       #   * :last_activity_at (DateTime)
       #   * :close_date (DateTime)
@@ -528,10 +564,14 @@ module Merge
         end
       end
 
-      # Returns an `Opportunity` object with the given `id`.
+      # Returns an `Opportunity` object with the given `id`.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Crm::Opportunities::OpportunitiesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Opportunities::RetrieveOpportunitiesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -582,7 +622,11 @@ module Merge
         end
       end
 
-      # Updates an `Opportunity` object with the given `id`.
+      # Updates an `Opportunity` object with the given `id`.{/*
+      #  BEGIN_CRM_OPPORTUNITY_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  2ky/yTJDrrPOn2p2aPQWuDe88z9l03oDiG+yYksfqW7lWElJ5Lp9Md78Dyl+N1n5PTyOzQjv10HDAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -632,7 +676,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Opportunity` PATCHs.
+      # Returns metadata for `Opportunity` PATCHs.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -667,7 +715,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Opportunity` POSTs.
+      # Returns metadata for `Opportunity` POSTs.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -701,7 +753,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p7cf8QkQDWvXRr7Y7ZRoET2f17qY8/741AaVP3S+qOIhHmDWYlI/FAx/f+2P9/W6ebLX2xd5ntSIAAA"
+      #  /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -717,7 +773,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example

@@ -25,7 +25,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Employment` objects.
+      # Returns a list of `Employment` objects.{/*
+      #  BEGIN_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  32g6jcVfqIANYD3Mp+TtoJUviAn7qdqRAPkYVww/kWMBWkdRAMWdRAzN/uRaO3X3/8H2a/mQyxnAAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -46,7 +50,7 @@ module Merge
       #  returned.
       # @param order_by [Merge::Hris::Employments::EmploymentsListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  effective_date, -effective_date.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [Merge::Hris::Employments::EmploymentsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [Merge::Hris::Employments::EmploymentsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
@@ -98,7 +102,11 @@ module Merge
         Merge::Hris::PaginatedEmploymentList.from_json(json_object: response.body)
       end
 
-      # Returns an `Employment` object with the given `id`.
+      # Returns an `Employment` object with the given `id`.{/*
+      #  BEGIN_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  32g6jcVfqIANYD3Mp+TtoJUviAn7qdqRAPkYVww/kWMBWkdRAMWdRAzN/uRaO3X3/8H2a/mQyxnAAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::Employments::EmploymentsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -158,7 +166,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Employment` objects.
+      # Returns a list of `Employment` objects.{/*
+      #  BEGIN_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  32g6jcVfqIANYD3Mp+TtoJUviAn7qdqRAPkYVww/kWMBWkdRAMWdRAzN/uRaO3X3/8H2a/mQyxnAAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -179,7 +191,7 @@ module Merge
       #  returned.
       # @param order_by [Merge::Hris::Employments::EmploymentsListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  effective_date, -effective_date.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [Merge::Hris::Employments::EmploymentsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [Merge::Hris::Employments::EmploymentsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
@@ -233,7 +245,11 @@ module Merge
         end
       end
 
-      # Returns an `Employment` object with the given `id`.
+      # Returns an `Employment` object with the given `id`.{/*
+      #  BEGIN_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  32g6jcVfqIANYD3Mp+TtoJUviAn7qdqRAPkYVww/kWMBWkdRAMWdRAzN/uRaO3X3/8H2a/mQyxnAAA="
+      #  /></Footer>{/* END_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::Employments::EmploymentsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names

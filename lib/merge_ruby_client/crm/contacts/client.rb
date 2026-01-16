@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/contacts_list_request_expand"
+require_relative "types/list_contacts_request_expand"
 require_relative "../types/paginated_contact_list"
 require_relative "../types/contact_request"
 require_relative "../types/crm_contact_response"
-require_relative "types/contacts_retrieve_request_expand"
+require_relative "types/retrieve_contacts_request_expand"
 require_relative "../types/contact"
 require_relative "../types/patched_contact_request"
 require_relative "../types/ignore_common_model_request"
@@ -26,7 +26,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Contact` objects.
+      # Returns a list of `Contact` objects.{/* BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS
+      #  * /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return contacts with this account.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -34,7 +37,7 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param email_addresses [String] If provided, will only return contacts matching the email addresses; multiple
       #  email_addresses can be separated by commas.
-      # @param expand [Merge::Crm::Contacts::ContactsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Contacts::ListContactsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -49,7 +52,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param phone_numbers [String] If provided, will only return contacts matching the phone numbers; multiple
       #  phone numbers can be separated by commas.
       # @param remote_id [String] The API provider's ID for the given object.
@@ -99,15 +102,19 @@ module Merge
         Merge::Crm::PaginatedContactList.from_json(json_object: response.body)
       end
 
-      # Creates a `Contact` object with the given values.
+      # Creates a `Contact` object with the given values.{/*
+      #  BEGIN_CRM_CONTACT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  TD8vgFgO+g0gma79Z4I/57XBj5v9VaNVPF3st2+LtRIUZ0+fnp2uRfvtgsbe3t9/wvsfPLEFwoAAA=="
+      #  /></Footer>{/* END_CRM_CONTACT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Crm::ContactRequest, as a Hash
       #   * :first_name (String)
       #   * :last_name (String)
-      #   * :account (Hash)
-      #   * :owner (Hash)
+      #   * :account (String)
+      #   * :owner (String)
       #   * :addresses (Array<Merge::Crm::AddressRequest>)
       #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
       #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
@@ -145,10 +152,14 @@ module Merge
         Merge::Crm::CrmContactResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `Contact` object with the given `id`.
+      # Returns a `Contact` object with the given `id`.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Crm::Contacts::ContactsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Contacts::RetrieveContactsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -191,7 +202,11 @@ module Merge
         Merge::Crm::Contact.from_json(json_object: response.body)
       end
 
-      # Updates a `Contact` object with the given `id`.
+      # Updates a `Contact` object with the given `id`.{/*
+      #  BEGIN_CRM_CONTACT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  wSBZqw0fWfkz75eIT+OOTCm0RisusYcuEj2M/8ykWKiJCayzNOK8+tp7GLOPmAyd0+/AKOi0yiFBgAA"
+      #  /></Footer>{/* END_CRM_CONTACT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -200,7 +215,7 @@ module Merge
       #   * :first_name (String)
       #   * :last_name (String)
       #   * :account (String)
-      #   * :owner (Hash)
+      #   * :owner (String)
       #   * :addresses (Array<Merge::Crm::AddressRequest>)
       #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
       #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
@@ -241,7 +256,10 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_CRM_CONTACT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  TD8vgFgO+g0gma79Z4I/57XBj5v9VaNVPF3st2+LtRIUZ0+fnp2uRfvtgsbe3t9/wvsfPLEFwoAAA=="
+      #  /></Footer>{/* END_CRM_CONTACT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param request [Hash] Request of type Merge::Crm::IgnoreCommonModelRequest, as a Hash
@@ -274,7 +292,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMContact` PATCHs.
+      # Returns metadata for `CRMContact` PATCHs.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -307,7 +329,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `CRMContact` POSTs.
+      # Returns metadata for `CRMContact` POSTs.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -339,7 +365,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -355,7 +385,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
@@ -406,7 +436,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Contact` objects.
+      # Returns a list of `Contact` objects.{/* BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS
+      #  * /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return contacts with this account.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -414,7 +447,7 @@ module Merge
       # @param cursor [String] The pagination cursor value.
       # @param email_addresses [String] If provided, will only return contacts matching the email addresses; multiple
       #  email_addresses can be separated by commas.
-      # @param expand [Merge::Crm::Contacts::ContactsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Contacts::ListContactsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -429,7 +462,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param phone_numbers [String] If provided, will only return contacts matching the phone numbers; multiple
       #  phone numbers can be separated by commas.
       # @param remote_id [String] The API provider's ID for the given object.
@@ -481,15 +514,19 @@ module Merge
         end
       end
 
-      # Creates a `Contact` object with the given values.
+      # Creates a `Contact` object with the given values.{/*
+      #  BEGIN_CRM_CONTACT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  TD8vgFgO+g0gma79Z4I/57XBj5v9VaNVPF3st2+LtRIUZ0+fnp2uRfvtgsbe3t9/wvsfPLEFwoAAA=="
+      #  /></Footer>{/* END_CRM_CONTACT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Crm::ContactRequest, as a Hash
       #   * :first_name (String)
       #   * :last_name (String)
-      #   * :account (Hash)
-      #   * :owner (Hash)
+      #   * :account (String)
+      #   * :owner (String)
       #   * :addresses (Array<Merge::Crm::AddressRequest>)
       #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
       #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
@@ -529,10 +566,14 @@ module Merge
         end
       end
 
-      # Returns a `Contact` object with the given `id`.
+      # Returns a `Contact` object with the given `id`.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Crm::Contacts::ContactsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Contacts::RetrieveContactsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -577,7 +618,11 @@ module Merge
         end
       end
 
-      # Updates a `Contact` object with the given `id`.
+      # Updates a `Contact` object with the given `id`.{/*
+      #  BEGIN_CRM_CONTACT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  wSBZqw0fWfkz75eIT+OOTCm0RisusYcuEj2M/8ykWKiJCayzNOK8+tp7GLOPmAyd0+/AKOi0yiFBgAA"
+      #  /></Footer>{/* END_CRM_CONTACT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -586,7 +631,7 @@ module Merge
       #   * :first_name (String)
       #   * :last_name (String)
       #   * :account (String)
-      #   * :owner (Hash)
+      #   * :owner (String)
       #   * :addresses (Array<Merge::Crm::AddressRequest>)
       #   * :email_addresses (Array<Merge::Crm::EmailAddressRequest>)
       #   * :phone_numbers (Array<Merge::Crm::PhoneNumberRequest>)
@@ -629,7 +674,10 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_CRM_CONTACT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  TD8vgFgO+g0gma79Z4I/57XBj5v9VaNVPF3st2+LtRIUZ0+fnp2uRfvtgsbe3t9/wvsfPLEFwoAAA=="
+      #  /></Footer>{/* END_CRM_CONTACT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param request [Hash] Request of type Merge::Crm::IgnoreCommonModelRequest, as a Hash
@@ -664,7 +712,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMContact` PATCHs.
+      # Returns metadata for `CRMContact` PATCHs.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -699,7 +751,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMContact` POSTs.
+      # Returns metadata for `CRMContact` POSTs.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -733,7 +789,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_CONTACT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  vyMIkI9qR1b2+OtFFgih7/OzHYQ/P0avL9ah1mfZSLte9NcJvKHKvJbh/Xko+Dzr/8CsD2Ty6EiAAA="
+      #  /></Footer>{/* END_CRM_CONTACT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -749,7 +809,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example

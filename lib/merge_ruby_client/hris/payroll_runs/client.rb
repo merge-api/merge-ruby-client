@@ -23,7 +23,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `PayrollRun` objects.
+      # Returns a list of `PayrollRun` objects.{/*
+      #  BEGIN_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  mShx2wGboTAC/rB/Y2Ohgi9D6vgNSH8n0qZ7NrGoagjZFcR7kRftJZ5PqIPu99c/fgLWAARqcYRAAA="
+      #  /></Footer>{/* END_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -41,7 +45,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [Merge::Hris::PayrollRuns::PayrollRunsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param run_type [Merge::Hris::PayrollRuns::PayrollRunsListRequestRunType] If provided, will only return PayrollRun's with this status. Options:
@@ -104,7 +108,11 @@ module Merge
         Merge::Hris::PaginatedPayrollRunList.from_json(json_object: response.body)
       end
 
-      # Returns a `PayrollRun` object with the given `id`.
+      # Returns a `PayrollRun` object with the given `id`.{/*
+      #  BEGIN_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  mShx2wGboTAC/rB/Y2Ohgi9D6vgNSH8n0qZ7NrGoagjZFcR7kRftJZ5PqIPu99c/fgLWAARqcYRAAA="
+      #  /></Footer>{/* END_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -161,7 +169,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `PayrollRun` objects.
+      # Returns a list of `PayrollRun` objects.{/*
+      #  BEGIN_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  mShx2wGboTAC/rB/Y2Ohgi9D6vgNSH8n0qZ7NrGoagjZFcR7kRftJZ5PqIPu99c/fgLWAARqcYRAAA="
+      #  /></Footer>{/* END_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -179,7 +191,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [Merge::Hris::PayrollRuns::PayrollRunsListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param run_type [Merge::Hris::PayrollRuns::PayrollRunsListRequestRunType] If provided, will only return PayrollRun's with this status. Options:
@@ -244,7 +256,11 @@ module Merge
         end
       end
 
-      # Returns a `PayrollRun` object with the given `id`.
+      # Returns a `PayrollRun` object with the given `id`.{/*
+      #  BEGIN_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  mShx2wGboTAC/rB/Y2Ohgi9D6vgNSH8n0qZ7NrGoagjZFcR7kRftJZ5PqIPu99c/fgLWAARqcYRAAA="
+      #  /></Footer>{/* END_HRIS_PAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

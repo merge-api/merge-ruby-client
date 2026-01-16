@@ -3,7 +3,6 @@
 require "date"
 require_relative "field_type_enum"
 require_relative "field_format_enum"
-require_relative "remote_field_class_for_custom_object_class_field_choices_item"
 require_relative "remote_field_class_for_custom_object_class_item_schema"
 require "ostruct"
 require "json"
@@ -27,7 +26,7 @@ module Merge
       attr_reader :field_type
       # @return [Merge::Crm::FieldFormatEnum]
       attr_reader :field_format
-      # @return [Array<Merge::Crm::RemoteFieldClassForCustomObjectClassFieldChoicesItem>]
+      # @return [Array<String>]
       attr_reader :field_choices
       # @return [Merge::Crm::RemoteFieldClassForCustomObjectClassItemSchema]
       attr_reader :item_schema
@@ -47,7 +46,7 @@ module Merge
       # @param is_required [Boolean]
       # @param field_type [Merge::Crm::FieldTypeEnum]
       # @param field_format [Merge::Crm::FieldFormatEnum]
-      # @param field_choices [Array<Merge::Crm::RemoteFieldClassForCustomObjectClassFieldChoicesItem>]
+      # @param field_choices [Array<String>]
       # @param item_schema [Merge::Crm::RemoteFieldClassForCustomObjectClassItemSchema]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::RemoteFieldClassForCustomObjectClass]
@@ -95,10 +94,7 @@ module Merge
         is_required = parsed_json["is_required"]
         field_type = parsed_json["field_type"]
         field_format = parsed_json["field_format"]
-        field_choices = parsed_json["field_choices"]&.map do |item|
-          item = item.to_json
-          Merge::Crm::RemoteFieldClassForCustomObjectClassFieldChoicesItem.from_json(json_object: item)
-        end
+        field_choices = parsed_json["field_choices"]
         if parsed_json["item_schema"].nil?
           item_schema = nil
         else

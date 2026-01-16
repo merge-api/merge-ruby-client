@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "employee_company"
-require_relative "employee_groups_item"
-require_relative "employee_employments_item"
-require_relative "employee_home_location"
-require_relative "employee_work_location"
-require_relative "employee_manager"
-require_relative "employee_team"
-require_relative "employee_pay_group"
 require_relative "gender_enum"
 require_relative "ethnicity_enum"
 require_relative "marital_status_enum"
@@ -38,7 +30,7 @@ module Merge
       attr_reader :modified_at
       # @return [String] The employee's number that appears in the third-party integration's UI.
       attr_reader :employee_number
-      # @return [Merge::Hris::EmployeeCompany] The ID of the employee's company.
+      # @return [String] The ID of the employee's company.
       attr_reader :company
       # @return [String] The employee's first name.
       attr_reader :first_name
@@ -51,7 +43,7 @@ module Merge
       attr_reader :display_full_name
       # @return [String] The employee's username that appears in the remote UI.
       attr_reader :username
-      # @return [Array<Merge::Hris::EmployeeGroupsItem>]
+      # @return [Array<String>]
       attr_reader :groups
       # @return [String] The employee's work email.
       attr_reader :work_email
@@ -59,17 +51,17 @@ module Merge
       attr_reader :personal_email
       # @return [String] The employee's mobile phone number.
       attr_reader :mobile_phone_number
-      # @return [Array<Merge::Hris::EmployeeEmploymentsItem>] Array of `Employment` IDs for this Employee.
+      # @return [Array<String>] Array of `Employment` IDs for this Employee.
       attr_reader :employments
-      # @return [Merge::Hris::EmployeeHomeLocation] The employee's home address.
+      # @return [String] The employee's home address.
       attr_reader :home_location
-      # @return [Merge::Hris::EmployeeWorkLocation] The employee's work address.
+      # @return [String] The employee's work address.
       attr_reader :work_location
-      # @return [Merge::Hris::EmployeeManager] The employee ID of the employee's manager.
+      # @return [String] The employee ID of the employee's manager.
       attr_reader :manager
-      # @return [Merge::Hris::EmployeeTeam] The employee's team.
+      # @return [String] The employee's team.
       attr_reader :team
-      # @return [Merge::Hris::EmployeePayGroup] The employee's pay group
+      # @return [String] The employee's pay group
       attr_reader :pay_group
       # @return [String] The employee's social security number.
       attr_reader :ssn
@@ -144,23 +136,23 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param employee_number [String] The employee's number that appears in the third-party integration's UI.
-      # @param company [Merge::Hris::EmployeeCompany] The ID of the employee's company.
+      # @param company [String] The ID of the employee's company.
       # @param first_name [String] The employee's first name.
       # @param last_name [String] The employee's last name.
       # @param preferred_name [String] The employee's preferred first name.
       # @param display_full_name [String] The employee's full name, to use for display purposes. If a preferred first name
       #  is available, the full name will include the preferred first name.
       # @param username [String] The employee's username that appears in the remote UI.
-      # @param groups [Array<Merge::Hris::EmployeeGroupsItem>]
+      # @param groups [Array<String>]
       # @param work_email [String] The employee's work email.
       # @param personal_email [String] The employee's personal email.
       # @param mobile_phone_number [String] The employee's mobile phone number.
-      # @param employments [Array<Merge::Hris::EmployeeEmploymentsItem>] Array of `Employment` IDs for this Employee.
-      # @param home_location [Merge::Hris::EmployeeHomeLocation] The employee's home address.
-      # @param work_location [Merge::Hris::EmployeeWorkLocation] The employee's work address.
-      # @param manager [Merge::Hris::EmployeeManager] The employee ID of the employee's manager.
-      # @param team [Merge::Hris::EmployeeTeam] The employee's team.
-      # @param pay_group [Merge::Hris::EmployeePayGroup] The employee's pay group
+      # @param employments [Array<String>] Array of `Employment` IDs for this Employee.
+      # @param home_location [String] The employee's home address.
+      # @param work_location [String] The employee's work address.
+      # @param manager [String] The employee ID of the employee's manager.
+      # @param team [String] The employee's team.
+      # @param pay_group [String] The employee's pay group
       # @param ssn [String] The employee's social security number.
       # @param gender [Merge::Hris::GenderEnum] The employee's gender.
       #  * `MALE` - MALE
@@ -301,58 +293,22 @@ module Merge
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         employee_number = parsed_json["employee_number"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Hris::EmployeeCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         first_name = parsed_json["first_name"]
         last_name = parsed_json["last_name"]
         preferred_name = parsed_json["preferred_name"]
         display_full_name = parsed_json["display_full_name"]
         username = parsed_json["username"]
-        groups = parsed_json["groups"]&.map do |item|
-          item = item.to_json
-          Merge::Hris::EmployeeGroupsItem.from_json(json_object: item)
-        end
+        groups = parsed_json["groups"]
         work_email = parsed_json["work_email"]
         personal_email = parsed_json["personal_email"]
         mobile_phone_number = parsed_json["mobile_phone_number"]
-        employments = parsed_json["employments"]&.map do |item|
-          item = item.to_json
-          Merge::Hris::EmployeeEmploymentsItem.from_json(json_object: item)
-        end
-        if parsed_json["home_location"].nil?
-          home_location = nil
-        else
-          home_location = parsed_json["home_location"].to_json
-          home_location = Merge::Hris::EmployeeHomeLocation.from_json(json_object: home_location)
-        end
-        if parsed_json["work_location"].nil?
-          work_location = nil
-        else
-          work_location = parsed_json["work_location"].to_json
-          work_location = Merge::Hris::EmployeeWorkLocation.from_json(json_object: work_location)
-        end
-        if parsed_json["manager"].nil?
-          manager = nil
-        else
-          manager = parsed_json["manager"].to_json
-          manager = Merge::Hris::EmployeeManager.from_json(json_object: manager)
-        end
-        if parsed_json["team"].nil?
-          team = nil
-        else
-          team = parsed_json["team"].to_json
-          team = Merge::Hris::EmployeeTeam.from_json(json_object: team)
-        end
-        if parsed_json["pay_group"].nil?
-          pay_group = nil
-        else
-          pay_group = parsed_json["pay_group"].to_json
-          pay_group = Merge::Hris::EmployeePayGroup.from_json(json_object: pay_group)
-        end
+        employments = parsed_json["employments"]
+        home_location = parsed_json["home_location"]
+        work_location = parsed_json["work_location"]
+        manager = parsed_json["manager"]
+        team = parsed_json["team"]
+        pay_group = parsed_json["pay_group"]
         ssn = parsed_json["ssn"]
         gender = parsed_json["gender"]
         ethnicity = parsed_json["ethnicity"]
@@ -433,7 +389,7 @@ module Merge
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.employee_number&.is_a?(String) != false || raise("Passed value for field obj.employee_number is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Hris::EmployeeCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.first_name&.is_a?(String) != false || raise("Passed value for field obj.first_name is not the expected type, validation failed.")
         obj.last_name&.is_a?(String) != false || raise("Passed value for field obj.last_name is not the expected type, validation failed.")
         obj.preferred_name&.is_a?(String) != false || raise("Passed value for field obj.preferred_name is not the expected type, validation failed.")
@@ -444,11 +400,11 @@ module Merge
         obj.personal_email&.is_a?(String) != false || raise("Passed value for field obj.personal_email is not the expected type, validation failed.")
         obj.mobile_phone_number&.is_a?(String) != false || raise("Passed value for field obj.mobile_phone_number is not the expected type, validation failed.")
         obj.employments&.is_a?(Array) != false || raise("Passed value for field obj.employments is not the expected type, validation failed.")
-        obj.home_location.nil? || Merge::Hris::EmployeeHomeLocation.validate_raw(obj: obj.home_location)
-        obj.work_location.nil? || Merge::Hris::EmployeeWorkLocation.validate_raw(obj: obj.work_location)
-        obj.manager.nil? || Merge::Hris::EmployeeManager.validate_raw(obj: obj.manager)
-        obj.team.nil? || Merge::Hris::EmployeeTeam.validate_raw(obj: obj.team)
-        obj.pay_group.nil? || Merge::Hris::EmployeePayGroup.validate_raw(obj: obj.pay_group)
+        obj.home_location&.is_a?(String) != false || raise("Passed value for field obj.home_location is not the expected type, validation failed.")
+        obj.work_location&.is_a?(String) != false || raise("Passed value for field obj.work_location is not the expected type, validation failed.")
+        obj.manager&.is_a?(String) != false || raise("Passed value for field obj.manager is not the expected type, validation failed.")
+        obj.team&.is_a?(String) != false || raise("Passed value for field obj.team is not the expected type, validation failed.")
+        obj.pay_group&.is_a?(String) != false || raise("Passed value for field obj.pay_group is not the expected type, validation failed.")
         obj.ssn&.is_a?(String) != false || raise("Passed value for field obj.ssn is not the expected type, validation failed.")
         obj.gender&.is_a?(Merge::Hris::GenderEnum) != false || raise("Passed value for field obj.gender is not the expected type, validation failed.")
         obj.ethnicity&.is_a?(Merge::Hris::EthnicityEnum) != false || raise("Passed value for field obj.ethnicity is not the expected type, validation failed.")
