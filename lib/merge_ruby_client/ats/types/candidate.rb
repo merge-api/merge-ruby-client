@@ -4,8 +4,6 @@ require "date"
 require_relative "phone_number"
 require_relative "email_address"
 require_relative "url"
-require_relative "candidate_applications_item"
-require_relative "candidate_attachments_item"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -57,9 +55,9 @@ module Merge
       attr_reader :urls
       # @return [Array<String>] Array of `Tag` names as strings.
       attr_reader :tags
-      # @return [Array<Merge::Ats::CandidateApplicationsItem>] Array of `Application` object IDs.
+      # @return [Array<String>] Array of `Application` object IDs.
       attr_reader :applications
-      # @return [Array<Merge::Ats::CandidateAttachmentsItem>] Array of `Attachment` object IDs.
+      # @return [Array<String>] Array of `Attachment` object IDs.
       attr_reader :attachments
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -96,8 +94,8 @@ module Merge
       # @param email_addresses [Array<Merge::Ats::EmailAddress>]
       # @param urls [Array<Merge::Ats::Url>]
       # @param tags [Array<String>] Array of `Tag` names as strings.
-      # @param applications [Array<Merge::Ats::CandidateApplicationsItem>] Array of `Application` object IDs.
-      # @param attachments [Array<Merge::Ats::CandidateAttachmentsItem>] Array of `Attachment` object IDs.
+      # @param applications [Array<String>] Array of `Application` object IDs.
+      # @param attachments [Array<String>] Array of `Attachment` object IDs.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -201,14 +199,8 @@ module Merge
           Merge::Ats::Url.from_json(json_object: item)
         end
         tags = parsed_json["tags"]
-        applications = parsed_json["applications"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::CandidateApplicationsItem.from_json(json_object: item)
-        end
-        attachments = parsed_json["attachments"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::CandidateAttachmentsItem.from_json(json_object: item)
-        end
+        applications = parsed_json["applications"]
+        attachments = parsed_json["attachments"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|

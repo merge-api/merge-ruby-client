@@ -10,7 +10,6 @@ require_relative "async_passthrough/client"
 require_relative "async_tasks/client"
 require_relative "attachments/client"
 require_relative "audit_trail/client"
-require_relative "available_actions/client"
 require_relative "balance_sheets/client"
 require_relative "bank_feed_accounts/client"
 require_relative "bank_feed_transactions/client"
@@ -29,6 +28,7 @@ require_relative "generate_key/client"
 require_relative "income_statements/client"
 require_relative "invoices/client"
 require_relative "issues/client"
+require_relative "item_fulfillments/client"
 require_relative "items/client"
 require_relative "journal_entries/client"
 require_relative "link_token/client"
@@ -41,13 +41,13 @@ require_relative "phone_numbers/client"
 require_relative "projects/client"
 require_relative "purchase_orders/client"
 require_relative "regenerate_key/client"
+require_relative "sales_orders/client"
 require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "tax_rates/client"
 require_relative "tracking_categories/client"
 require_relative "transactions/client"
 require_relative "vendor_credits/client"
-require_relative "webhook_receivers/client"
 
 module Merge
   module Accounting
@@ -70,8 +70,6 @@ module Merge
       attr_reader :attachments
       # @return [Merge::Accounting::AuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Accounting::AvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Accounting::BalanceSheetsClient]
       attr_reader :balance_sheets
       # @return [Merge::Accounting::BankFeedAccountsClient]
@@ -108,6 +106,8 @@ module Merge
       attr_reader :invoices
       # @return [Merge::Accounting::IssuesClient]
       attr_reader :issues
+      # @return [Merge::Accounting::ItemFulfillmentsClient]
+      attr_reader :item_fulfillments
       # @return [Merge::Accounting::ItemsClient]
       attr_reader :items
       # @return [Merge::Accounting::JournalEntriesClient]
@@ -132,6 +132,8 @@ module Merge
       attr_reader :purchase_orders
       # @return [Merge::Accounting::RegenerateKeyClient]
       attr_reader :regenerate_key
+      # @return [Merge::Accounting::SalesOrdersClient]
+      attr_reader :sales_orders
       # @return [Merge::Accounting::SyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Accounting::ForceResyncClient]
@@ -144,8 +146,6 @@ module Merge
       attr_reader :transactions
       # @return [Merge::Accounting::VendorCreditsClient]
       attr_reader :vendor_credits
-      # @return [Merge::Accounting::WebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::RequestClient]
       # @return [Merge::Accounting::Client]
@@ -159,7 +159,6 @@ module Merge
         @async_tasks = Merge::Accounting::AsyncTasksClient.new(request_client: request_client)
         @attachments = Merge::Accounting::AttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Accounting::AuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Accounting::AvailableActionsClient.new(request_client: request_client)
         @balance_sheets = Merge::Accounting::BalanceSheetsClient.new(request_client: request_client)
         @bank_feed_accounts = Merge::Accounting::BankFeedAccountsClient.new(request_client: request_client)
         @bank_feed_transactions = Merge::Accounting::BankFeedTransactionsClient.new(request_client: request_client)
@@ -178,6 +177,7 @@ module Merge
         @income_statements = Merge::Accounting::IncomeStatementsClient.new(request_client: request_client)
         @invoices = Merge::Accounting::InvoicesClient.new(request_client: request_client)
         @issues = Merge::Accounting::IssuesClient.new(request_client: request_client)
+        @item_fulfillments = Merge::Accounting::ItemFulfillmentsClient.new(request_client: request_client)
         @items = Merge::Accounting::ItemsClient.new(request_client: request_client)
         @journal_entries = Merge::Accounting::JournalEntriesClient.new(request_client: request_client)
         @link_token = Merge::Accounting::LinkTokenClient.new(request_client: request_client)
@@ -190,13 +190,13 @@ module Merge
         @projects = Merge::Accounting::ProjectsClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::PurchaseOrdersClient.new(request_client: request_client)
         @regenerate_key = Merge::Accounting::RegenerateKeyClient.new(request_client: request_client)
+        @sales_orders = Merge::Accounting::SalesOrdersClient.new(request_client: request_client)
         @sync_status = Merge::Accounting::SyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Accounting::ForceResyncClient.new(request_client: request_client)
         @tax_rates = Merge::Accounting::TaxRatesClient.new(request_client: request_client)
         @tracking_categories = Merge::Accounting::TrackingCategoriesClient.new(request_client: request_client)
         @transactions = Merge::Accounting::TransactionsClient.new(request_client: request_client)
         @vendor_credits = Merge::Accounting::VendorCreditsClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Accounting::WebhookReceiversClient.new(request_client: request_client)
       end
     end
 
@@ -219,8 +219,6 @@ module Merge
       attr_reader :attachments
       # @return [Merge::Accounting::AsyncAuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Accounting::AsyncAvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Accounting::AsyncBalanceSheetsClient]
       attr_reader :balance_sheets
       # @return [Merge::Accounting::AsyncBankFeedAccountsClient]
@@ -257,6 +255,8 @@ module Merge
       attr_reader :invoices
       # @return [Merge::Accounting::AsyncIssuesClient]
       attr_reader :issues
+      # @return [Merge::Accounting::AsyncItemFulfillmentsClient]
+      attr_reader :item_fulfillments
       # @return [Merge::Accounting::AsyncItemsClient]
       attr_reader :items
       # @return [Merge::Accounting::AsyncJournalEntriesClient]
@@ -281,6 +281,8 @@ module Merge
       attr_reader :purchase_orders
       # @return [Merge::Accounting::AsyncRegenerateKeyClient]
       attr_reader :regenerate_key
+      # @return [Merge::Accounting::AsyncSalesOrdersClient]
+      attr_reader :sales_orders
       # @return [Merge::Accounting::AsyncSyncStatusClient]
       attr_reader :sync_status
       # @return [Merge::Accounting::AsyncForceResyncClient]
@@ -293,8 +295,6 @@ module Merge
       attr_reader :transactions
       # @return [Merge::Accounting::AsyncVendorCreditsClient]
       attr_reader :vendor_credits
-      # @return [Merge::Accounting::AsyncWebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::AsyncRequestClient]
       # @return [Merge::Accounting::AsyncClient]
@@ -308,7 +308,6 @@ module Merge
         @async_tasks = Merge::Accounting::AsyncAsyncTasksClient.new(request_client: request_client)
         @attachments = Merge::Accounting::AsyncAttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Accounting::AsyncAuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Accounting::AsyncAvailableActionsClient.new(request_client: request_client)
         @balance_sheets = Merge::Accounting::AsyncBalanceSheetsClient.new(request_client: request_client)
         @bank_feed_accounts = Merge::Accounting::AsyncBankFeedAccountsClient.new(request_client: request_client)
         @bank_feed_transactions = Merge::Accounting::AsyncBankFeedTransactionsClient.new(request_client: request_client)
@@ -327,6 +326,7 @@ module Merge
         @income_statements = Merge::Accounting::AsyncIncomeStatementsClient.new(request_client: request_client)
         @invoices = Merge::Accounting::AsyncInvoicesClient.new(request_client: request_client)
         @issues = Merge::Accounting::AsyncIssuesClient.new(request_client: request_client)
+        @item_fulfillments = Merge::Accounting::AsyncItemFulfillmentsClient.new(request_client: request_client)
         @items = Merge::Accounting::AsyncItemsClient.new(request_client: request_client)
         @journal_entries = Merge::Accounting::AsyncJournalEntriesClient.new(request_client: request_client)
         @link_token = Merge::Accounting::AsyncLinkTokenClient.new(request_client: request_client)
@@ -339,13 +339,13 @@ module Merge
         @projects = Merge::Accounting::AsyncProjectsClient.new(request_client: request_client)
         @purchase_orders = Merge::Accounting::AsyncPurchaseOrdersClient.new(request_client: request_client)
         @regenerate_key = Merge::Accounting::AsyncRegenerateKeyClient.new(request_client: request_client)
+        @sales_orders = Merge::Accounting::AsyncSalesOrdersClient.new(request_client: request_client)
         @sync_status = Merge::Accounting::AsyncSyncStatusClient.new(request_client: request_client)
         @force_resync = Merge::Accounting::AsyncForceResyncClient.new(request_client: request_client)
         @tax_rates = Merge::Accounting::AsyncTaxRatesClient.new(request_client: request_client)
         @tracking_categories = Merge::Accounting::AsyncTrackingCategoriesClient.new(request_client: request_client)
         @transactions = Merge::Accounting::AsyncTransactionsClient.new(request_client: request_client)
         @vendor_credits = Merge::Accounting::AsyncVendorCreditsClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Accounting::AsyncWebhookReceiversClient.new(request_client: request_client)
       end
     end
   end

@@ -14,7 +14,7 @@ module Merge
     #  View the `RemoteResponse` returned from your `DataPassthrough`.
     class RemoteResponse
       # @return [String]
-      attr_reader :method
+      attr_reader :method_
       # @return [String]
       attr_reader :path
       # @return [Integer]
@@ -35,7 +35,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param method [String]
+      # @param method_ [String]
       # @param path [String]
       # @param status [Integer]
       # @param response [Object]
@@ -44,9 +44,9 @@ module Merge
       # @param headers [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::RemoteResponse]
-      def initialize(method:, path:, status:, response:, response_headers: OMIT, response_type: OMIT, headers: OMIT,
+      def initialize(method_:, path:, status:, response:, response_headers: OMIT, response_type: OMIT, headers: OMIT,
                      additional_properties: nil)
-        @method = method
+        @method_ = method_
         @path = path
         @status = status
         @response = response
@@ -55,7 +55,7 @@ module Merge
         @headers = headers if headers != OMIT
         @additional_properties = additional_properties
         @_field_set = {
-          "method": method,
+          "method": method_,
           "path": path,
           "status": status,
           "response": response,
@@ -74,7 +74,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        method = parsed_json["method"]
+        method_ = parsed_json["method"]
         path = parsed_json["path"]
         status = parsed_json["status"]
         response = parsed_json["response"]
@@ -82,7 +82,7 @@ module Merge
         response_type = parsed_json["response_type"]
         headers = parsed_json["headers"]
         new(
-          method: method,
+          method_: method_,
           path: path,
           status: status,
           response: response,
@@ -107,7 +107,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.method.is_a?(String) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
+        obj.method_.is_a?(String) != false || raise("Passed value for field obj.method_ is not the expected type, validation failed.")
         obj.path.is_a?(String) != false || raise("Passed value for field obj.path is not the expected type, validation failed.")
         obj.status.is_a?(Integer) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.response.is_a?(Object) != false || raise("Passed value for field obj.response is not the expected type, validation failed.")

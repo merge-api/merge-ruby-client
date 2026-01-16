@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "permission_user"
-require_relative "permission_group"
 require_relative "type_enum"
 require_relative "roles_enum"
 require "ostruct"
@@ -26,10 +24,10 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Filestorage::PermissionUser] The user that is granted this permission. This will only be populated if the
+      # @return [String] The user that is granted this permission. This will only be populated if the
       #  type is `USER`.
       attr_reader :user
-      # @return [Merge::Filestorage::PermissionGroup] The group that is granted this permission. This will only be populated if the
+      # @return [String] The group that is granted this permission. This will only be populated if the
       #  type is `GROUP`.
       attr_reader :group
       # @return [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
@@ -55,9 +53,9 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param user [Merge::Filestorage::PermissionUser] The user that is granted this permission. This will only be populated if the
+      # @param user [String] The user that is granted this permission. This will only be populated if the
       #  type is `USER`.
-      # @param group [Merge::Filestorage::PermissionGroup] The group that is granted this permission. This will only be populated if the
+      # @param group [String] The group that is granted this permission. This will only be populated if the
       #  type is `GROUP`.
       # @param type [Merge::Filestorage::TypeEnum] Denotes what type of people have access to the file.
       #  * `USER` - USER
@@ -106,18 +104,8 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["user"].nil?
-          user = nil
-        else
-          user = parsed_json["user"].to_json
-          user = Merge::Filestorage::PermissionUser.from_json(json_object: user)
-        end
-        if parsed_json["group"].nil?
-          group = nil
-        else
-          group = parsed_json["group"].to_json
-          group = Merge::Filestorage::PermissionGroup.from_json(json_object: group)
-        end
+        user = parsed_json["user"]
+        group = parsed_json["group"]
         type = parsed_json["type"]
         roles = parsed_json["roles"]
         new(
@@ -151,8 +139,8 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.user.nil? || Merge::Filestorage::PermissionUser.validate_raw(obj: obj.user)
-        obj.group.nil? || Merge::Filestorage::PermissionGroup.validate_raw(obj: obj.group)
+        obj.user&.is_a?(String) != false || raise("Passed value for field obj.user is not the expected type, validation failed.")
+        obj.group&.is_a?(String) != false || raise("Passed value for field obj.group is not the expected type, validation failed.")
         obj.type&.is_a?(Merge::Filestorage::TypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
         obj.roles&.is_a?(Array) != false || raise("Passed value for field obj.roles is not the expected type, validation failed.")
       end

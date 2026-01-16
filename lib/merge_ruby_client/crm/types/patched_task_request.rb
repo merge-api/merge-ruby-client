@@ -24,6 +24,8 @@ module Merge
       attr_reader :account
       # @return [String] The task's opportunity.
       attr_reader :opportunity
+      # @return [String] The task's contact.
+      attr_reader :contact
       # @return [DateTime] When the task is completed.
       attr_reader :completed_date
       # @return [DateTime] When the task is due.
@@ -51,6 +53,7 @@ module Merge
       # @param owner [String] The task's owner.
       # @param account [String] The task's account.
       # @param opportunity [String] The task's opportunity.
+      # @param contact [String] The task's contact.
       # @param completed_date [DateTime] When the task is completed.
       # @param due_date [DateTime] When the task is due.
       # @param status [Merge::Crm::TaskStatusEnum] The task's status.
@@ -61,13 +64,14 @@ module Merge
       # @param remote_fields [Array<Merge::Crm::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::PatchedTaskRequest]
-      def initialize(subject: OMIT, content: OMIT, owner: OMIT, account: OMIT, opportunity: OMIT, completed_date: OMIT,
-                     due_date: OMIT, status: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+      def initialize(subject: OMIT, content: OMIT, owner: OMIT, account: OMIT, opportunity: OMIT, contact: OMIT,
+                     completed_date: OMIT, due_date: OMIT, status: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @subject = subject if subject != OMIT
         @content = content if content != OMIT
         @owner = owner if owner != OMIT
         @account = account if account != OMIT
         @opportunity = opportunity if opportunity != OMIT
+        @contact = contact if contact != OMIT
         @completed_date = completed_date if completed_date != OMIT
         @due_date = due_date if due_date != OMIT
         @status = status if status != OMIT
@@ -81,6 +85,7 @@ module Merge
           "owner": owner,
           "account": account,
           "opportunity": opportunity,
+          "contact": contact,
           "completed_date": completed_date,
           "due_date": due_date,
           "status": status,
@@ -104,6 +109,7 @@ module Merge
         owner = parsed_json["owner"]
         account = parsed_json["account"]
         opportunity = parsed_json["opportunity"]
+        contact = parsed_json["contact"]
         completed_date = (DateTime.parse(parsed_json["completed_date"]) unless parsed_json["completed_date"].nil?)
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
         status = parsed_json["status"]
@@ -119,6 +125,7 @@ module Merge
           owner: owner,
           account: account,
           opportunity: opportunity,
+          contact: contact,
           completed_date: completed_date,
           due_date: due_date,
           status: status,
@@ -148,6 +155,7 @@ module Merge
         obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.opportunity&.is_a?(String) != false || raise("Passed value for field obj.opportunity is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.completed_date&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_date is not the expected type, validation failed.")
         obj.due_date&.is_a?(DateTime) != false || raise("Passed value for field obj.due_date is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Crm::TaskStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")

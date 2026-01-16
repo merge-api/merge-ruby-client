@@ -2,7 +2,7 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/job_postings_list_request_status"
+require_relative "types/list_job_postings_request_status"
 require_relative "../types/paginated_job_posting_list"
 require_relative "../types/job_posting"
 require "async"
@@ -19,7 +19,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `JobPosting` objects.
+      # Returns a list of `JobPosting` objects.{/*
+      #  BEGIN_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  SljFjvdk1jz9qJLSKqDDZ3gjffxCvRNfQhN97jei7j/KkYPzsKsAULkOLK/8W7I95//APspLstnNAAA"
+      #  /></Footer>{/* END_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -37,9 +41,9 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param status [Merge::Ats::JobPostings::JobPostingsListRequestStatus] If provided, will only return Job Postings with this status. Options:
+      # @param status [Merge::Ats::JobPostings::ListJobPostingsRequestStatus] If provided, will only return Job Postings with this status. Options:
       #  ('PUBLISHED', 'CLOSED', 'DRAFT', 'INTERNAL', 'PENDING')
       #  * `PUBLISHED` - PUBLISHED
       #  * `CLOSED` - CLOSED
@@ -89,7 +93,11 @@ module Merge
         Merge::Ats::PaginatedJobPostingList.from_json(json_object: response.body)
       end
 
-      # Returns a `JobPosting` object with the given `id`.
+      # Returns a `JobPosting` object with the given `id`.{/*
+      #  BEGIN_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  SljFjvdk1jz9qJLSKqDDZ3gjffxCvRNfQhN97jei7j/KkYPzsKsAULkOLK/8W7I95//APspLstnNAAA"
+      #  /></Footer>{/* END_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -142,7 +150,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `JobPosting` objects.
+      # Returns a list of `JobPosting` objects.{/*
+      #  BEGIN_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  SljFjvdk1jz9qJLSKqDDZ3gjffxCvRNfQhN97jei7j/KkYPzsKsAULkOLK/8W7I95//APspLstnNAAA"
+      #  /></Footer>{/* END_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -160,9 +172,9 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param status [Merge::Ats::JobPostings::JobPostingsListRequestStatus] If provided, will only return Job Postings with this status. Options:
+      # @param status [Merge::Ats::JobPostings::ListJobPostingsRequestStatus] If provided, will only return Job Postings with this status. Options:
       #  ('PUBLISHED', 'CLOSED', 'DRAFT', 'INTERNAL', 'PENDING')
       #  * `PUBLISHED` - PUBLISHED
       #  * `CLOSED` - CLOSED
@@ -214,7 +226,11 @@ module Merge
         end
       end
 
-      # Returns a `JobPosting` object with the given `id`.
+      # Returns a `JobPosting` object with the given `id`.{/*
+      #  BEGIN_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  SljFjvdk1jz9qJLSKqDDZ3gjffxCvRNfQhN97jei7j/KkYPzsKsAULkOLK/8W7I95//APspLstnNAAA"
+      #  /></Footer>{/* END_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

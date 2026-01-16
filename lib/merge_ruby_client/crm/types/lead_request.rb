@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "lead_request_owner"
 require_relative "address_request"
 require_relative "email_address_request"
 require_relative "phone_number_request"
 require "date"
-require_relative "lead_request_converted_contact"
-require_relative "lead_request_converted_account"
 require_relative "remote_field_request"
 require "ostruct"
 require "json"
@@ -20,7 +17,7 @@ module Merge
     #  ### Usage Example
     #  TODO
     class LeadRequest
-      # @return [Merge::Crm::LeadRequestOwner] The lead's owner.
+      # @return [String] The lead's owner.
       attr_reader :owner
       # @return [String] The lead's source.
       attr_reader :lead_source
@@ -40,9 +37,9 @@ module Merge
       attr_reader :phone_numbers
       # @return [DateTime] When the lead was converted.
       attr_reader :converted_date
-      # @return [Merge::Crm::LeadRequestConvertedContact] The contact of the converted lead.
+      # @return [String] The contact of the converted lead.
       attr_reader :converted_contact
-      # @return [Merge::Crm::LeadRequestConvertedAccount] The account of the converted lead.
+      # @return [String] The account of the converted lead.
       attr_reader :converted_account
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -58,7 +55,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param owner [Merge::Crm::LeadRequestOwner] The lead's owner.
+      # @param owner [String] The lead's owner.
       # @param lead_source [String] The lead's source.
       # @param title [String] The lead's title.
       # @param company [String] The lead's company.
@@ -68,8 +65,8 @@ module Merge
       # @param email_addresses [Array<Merge::Crm::EmailAddressRequest>]
       # @param phone_numbers [Array<Merge::Crm::PhoneNumberRequest>]
       # @param converted_date [DateTime] When the lead was converted.
-      # @param converted_contact [Merge::Crm::LeadRequestConvertedContact] The contact of the converted lead.
-      # @param converted_account [Merge::Crm::LeadRequestConvertedAccount] The account of the converted lead.
+      # @param converted_contact [String] The contact of the converted lead.
+      # @param converted_account [String] The account of the converted lead.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param remote_fields [Array<Merge::Crm::RemoteFieldRequest>]
@@ -121,12 +118,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::LeadRequestOwner.from_json(json_object: owner)
-        end
+        owner = parsed_json["owner"]
         lead_source = parsed_json["lead_source"]
         title = parsed_json["title"]
         company = parsed_json["company"]
@@ -145,18 +137,8 @@ module Merge
           Merge::Crm::PhoneNumberRequest.from_json(json_object: item)
         end
         converted_date = (DateTime.parse(parsed_json["converted_date"]) unless parsed_json["converted_date"].nil?)
-        if parsed_json["converted_contact"].nil?
-          converted_contact = nil
-        else
-          converted_contact = parsed_json["converted_contact"].to_json
-          converted_contact = Merge::Crm::LeadRequestConvertedContact.from_json(json_object: converted_contact)
-        end
-        if parsed_json["converted_account"].nil?
-          converted_account = nil
-        else
-          converted_account = parsed_json["converted_account"].to_json
-          converted_account = Merge::Crm::LeadRequestConvertedAccount.from_json(json_object: converted_account)
-        end
+        converted_contact = parsed_json["converted_contact"]
+        converted_account = parsed_json["converted_account"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         remote_fields = parsed_json["remote_fields"]&.map do |item|
@@ -197,7 +179,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.owner.nil? || Merge::Crm::LeadRequestOwner.validate_raw(obj: obj.owner)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.lead_source&.is_a?(String) != false || raise("Passed value for field obj.lead_source is not the expected type, validation failed.")
         obj.title&.is_a?(String) != false || raise("Passed value for field obj.title is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
@@ -207,8 +189,8 @@ module Merge
         obj.email_addresses&.is_a?(Array) != false || raise("Passed value for field obj.email_addresses is not the expected type, validation failed.")
         obj.phone_numbers&.is_a?(Array) != false || raise("Passed value for field obj.phone_numbers is not the expected type, validation failed.")
         obj.converted_date&.is_a?(DateTime) != false || raise("Passed value for field obj.converted_date is not the expected type, validation failed.")
-        obj.converted_contact.nil? || Merge::Crm::LeadRequestConvertedContact.validate_raw(obj: obj.converted_contact)
-        obj.converted_account.nil? || Merge::Crm::LeadRequestConvertedAccount.validate_raw(obj: obj.converted_account)
+        obj.converted_contact&.is_a?(String) != false || raise("Passed value for field obj.converted_contact is not the expected type, validation failed.")
+        obj.converted_account&.is_a?(String) != false || raise("Passed value for field obj.converted_account is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
         obj.remote_fields&.is_a?(Array) != false || raise("Passed value for field obj.remote_fields is not the expected type, validation failed.")

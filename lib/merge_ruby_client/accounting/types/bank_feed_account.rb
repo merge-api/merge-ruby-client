@@ -4,6 +4,7 @@ require "date"
 require_relative "transaction_currency_enum"
 require_relative "feed_status_enum"
 require_relative "bank_feed_account_account_type_enum"
+require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -365,7 +366,7 @@ module Merge
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Merge::Accounting::RemoteData>]
       attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -705,7 +706,7 @@ module Merge
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Hash{String => Object}>]
+      # @param remote_data [Array<Merge::Accounting::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::BankFeedAccount]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, source_account_id: OMIT,
@@ -774,7 +775,10 @@ module Merge
         account_type = parsed_json["account_type"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Accounting::RemoteData.from_json(json_object: item)
+        end
         new(
           id: id,
           remote_id: remote_id,

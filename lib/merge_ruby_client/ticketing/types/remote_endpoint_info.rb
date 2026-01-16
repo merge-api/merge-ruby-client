@@ -7,7 +7,7 @@ module Merge
   module Ticketing
     class RemoteEndpointInfo
       # @return [String]
-      attr_reader :method
+      attr_reader :method_
       # @return [String]
       attr_reader :url_path
       # @return [Array<Object>]
@@ -20,17 +20,17 @@ module Merge
 
       OMIT = Object.new
 
-      # @param method [String]
+      # @param method_ [String]
       # @param url_path [String]
       # @param field_traversal_path [Array<Object>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::RemoteEndpointInfo]
-      def initialize(method:, url_path:, field_traversal_path:, additional_properties: nil)
-        @method = method
+      def initialize(method_:, url_path:, field_traversal_path:, additional_properties: nil)
+        @method_ = method_
         @url_path = url_path
         @field_traversal_path = field_traversal_path
         @additional_properties = additional_properties
-        @_field_set = { "method": method, "url_path": url_path, "field_traversal_path": field_traversal_path }
+        @_field_set = { "method": method_, "url_path": url_path, "field_traversal_path": field_traversal_path }
       end
 
       # Deserialize a JSON object to an instance of RemoteEndpointInfo
@@ -40,11 +40,11 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        method = parsed_json["method"]
+        method_ = parsed_json["method"]
         url_path = parsed_json["url_path"]
         field_traversal_path = parsed_json["field_traversal_path"]
         new(
-          method: method,
+          method_: method_,
           url_path: url_path,
           field_traversal_path: field_traversal_path,
           additional_properties: struct
@@ -65,7 +65,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.method.is_a?(String) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
+        obj.method_.is_a?(String) != false || raise("Passed value for field obj.method_ is not the expected type, validation failed.")
         obj.url_path.is_a?(String) != false || raise("Passed value for field obj.url_path is not the expected type, validation failed.")
         obj.field_traversal_path.is_a?(Array) != false || raise("Passed value for field obj.field_traversal_path is not the expected type, validation failed.")
       end

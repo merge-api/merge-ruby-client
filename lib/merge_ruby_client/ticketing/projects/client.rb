@@ -4,7 +4,7 @@ require_relative "../../../requests"
 require "date"
 require_relative "../types/paginated_project_list"
 require_relative "../types/project"
-require_relative "types/projects_users_list_request_expand"
+require_relative "types/users_list_projects_request_expand"
 require_relative "../types/paginated_user_list"
 require "async"
 
@@ -20,7 +20,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Project` objects.
+      # Returns a list of `Project` objects.{/*
+      #  BEGIN_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  VcV666p4IPaDNejzbM09khTHyRLG3qtqFAvIFFPvIEfRSJaJyZutNSX0FvmSy/1V1//AcjABU92FgAA"
+      #  /></Footer>{/* END_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -36,7 +40,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedProjectList]
@@ -79,7 +83,11 @@ module Merge
         Merge::Ticketing::PaginatedProjectList.from_json(json_object: response.body)
       end
 
-      # Returns a `Project` object with the given `id`.
+      # Returns a `Project` object with the given `id`.{/*
+      #  BEGIN_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  VcV666p4IPaDNejzbM09khTHyRLG3qtqFAvIFFPvIEfRSJaJyZutNSX0FvmSy/1V1//AcjABU92FgAA"
+      #  /></Footer>{/* END_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -118,11 +126,15 @@ module Merge
         Merge::Ticketing::Project.from_json(json_object: response.body)
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `User` objects.{/*
+      #  BEGIN_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  VcV666p4IPaDNejzbM09khTHyRLG3qtqFAvIFFPvIEfRSJaJyZutNSX0FvmSy/1V1//AcjABU92FgAA"
+      #  /></Footer>{/* END_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param parent_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Projects::ProjectsUsersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Projects::UsersListProjectsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -132,7 +144,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedUserList]
       # @example
@@ -181,7 +193,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Project` objects.
+      # Returns a list of `Project` objects.{/*
+      #  BEGIN_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  VcV666p4IPaDNejzbM09khTHyRLG3qtqFAvIFFPvIEfRSJaJyZutNSX0FvmSy/1V1//AcjABU92FgAA"
+      #  /></Footer>{/* END_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -197,7 +213,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedProjectList]
@@ -242,7 +258,11 @@ module Merge
         end
       end
 
-      # Returns a `Project` object with the given `id`.
+      # Returns a `Project` object with the given `id`.{/*
+      #  BEGIN_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  VcV666p4IPaDNejzbM09khTHyRLG3qtqFAvIFFPvIEfRSJaJyZutNSX0FvmSy/1V1//AcjABU92FgAA"
+      #  /></Footer>{/* END_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -283,11 +303,15 @@ module Merge
         end
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `User` objects.{/*
+      #  BEGIN_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  VcV666p4IPaDNejzbM09khTHyRLG3qtqFAvIFFPvIEfRSJaJyZutNSX0FvmSy/1V1//AcjABU92FgAA"
+      #  /></Footer>{/* END_TICKETING_PROJECT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param parent_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Projects::ProjectsUsersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Projects::UsersListProjectsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -297,7 +321,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedUserList]
       # @example

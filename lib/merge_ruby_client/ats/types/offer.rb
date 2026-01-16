@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "offer_application"
-require_relative "offer_creator"
 require_relative "offer_status_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -25,9 +23,9 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::OfferApplication] The application who is receiving the offer.
+      # @return [String] The application who is receiving the offer.
       attr_reader :application
-      # @return [Merge::Ats::OfferCreator] The user who created the offer.
+      # @return [String] The user who created the offer.
       attr_reader :creator
       # @return [DateTime] When the third party's offer was created.
       attr_reader :remote_created_at
@@ -69,8 +67,8 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param application [Merge::Ats::OfferApplication] The application who is receiving the offer.
-      # @param creator [Merge::Ats::OfferCreator] The user who created the offer.
+      # @param application [String] The application who is receiving the offer.
+      # @param creator [String] The user who created the offer.
       # @param remote_created_at [DateTime] When the third party's offer was created.
       # @param closed_at [DateTime] When the offer was closed.
       # @param sent_at [DateTime] When the offer was sent.
@@ -141,18 +139,8 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["application"].nil?
-          application = nil
-        else
-          application = parsed_json["application"].to_json
-          application = Merge::Ats::OfferApplication.from_json(json_object: application)
-        end
-        if parsed_json["creator"].nil?
-          creator = nil
-        else
-          creator = parsed_json["creator"].to_json
-          creator = Merge::Ats::OfferCreator.from_json(json_object: creator)
-        end
+        application = parsed_json["application"]
+        creator = parsed_json["creator"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
@@ -203,8 +191,8 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.application.nil? || Merge::Ats::OfferApplication.validate_raw(obj: obj.application)
-        obj.creator.nil? || Merge::Ats::OfferCreator.validate_raw(obj: obj.creator)
+        obj.application&.is_a?(String) != false || raise("Passed value for field obj.application is not the expected type, validation failed.")
+        obj.creator&.is_a?(String) != false || raise("Passed value for field obj.creator is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.closed_at&.is_a?(DateTime) != false || raise("Passed value for field obj.closed_at is not the expected type, validation failed.")
         obj.sent_at&.is_a?(DateTime) != false || raise("Passed value for field obj.sent_at is not the expected type, validation failed.")

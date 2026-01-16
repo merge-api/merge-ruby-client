@@ -16,7 +16,9 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns an `AccountingPhoneNumber` object with the given `id`.
+      # Returns an `AccountingPhoneNumber` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PHONENUMBER_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_PHONENUMBER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -66,7 +68,9 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns an `AccountingPhoneNumber` object with the given `id`.
+      # Returns an `AccountingPhoneNumber` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PHONENUMBER_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_PHONENUMBER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

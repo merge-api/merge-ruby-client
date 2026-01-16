@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "activity_request_user"
 require_relative "activity_type_enum"
 require_relative "visibility_enum"
 require "ostruct"
@@ -16,7 +15,7 @@ module Merge
     #  Fetch from the `LIST Activities` endpoint and filter by `ID` to show all
     #  activities.
     class ActivityRequest
-      # @return [Merge::Ats::ActivityRequestUser] The user that performed the action.
+      # @return [String] The user that performed the action.
       attr_reader :user
       # @return [Merge::Ats::ActivityTypeEnum] The activity's type.
       #  * `NOTE` - NOTE
@@ -46,7 +45,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param user [Merge::Ats::ActivityRequestUser] The user that performed the action.
+      # @param user [String] The user that performed the action.
       # @param activity_type [Merge::Ats::ActivityTypeEnum] The activity's type.
       #  * `NOTE` - NOTE
       #  * `EMAIL` - EMAIL
@@ -94,12 +93,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        if parsed_json["user"].nil?
-          user = nil
-        else
-          user = parsed_json["user"].to_json
-          user = Merge::Ats::ActivityRequestUser.from_json(json_object: user)
-        end
+        user = parsed_json["user"]
         activity_type = parsed_json["activity_type"]
         subject = parsed_json["subject"]
         body = parsed_json["body"]
@@ -134,7 +128,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.user.nil? || Merge::Ats::ActivityRequestUser.validate_raw(obj: obj.user)
+        obj.user&.is_a?(String) != false || raise("Passed value for field obj.user is not the expected type, validation failed.")
         obj.activity_type&.is_a?(Merge::Ats::ActivityTypeEnum) != false || raise("Passed value for field obj.activity_type is not the expected type, validation failed.")
         obj.subject&.is_a?(String) != false || raise("Passed value for field obj.subject is not the expected type, validation failed.")
         obj.body&.is_a?(String) != false || raise("Passed value for field obj.body is not the expected type, validation failed.")
