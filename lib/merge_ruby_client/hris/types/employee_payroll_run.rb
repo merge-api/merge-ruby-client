@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "employee_payroll_run_employee"
-require_relative "employee_payroll_run_payroll_run"
 require_relative "earning"
 require_relative "deduction"
 require_relative "tax"
@@ -28,9 +26,9 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::EmployeePayrollRunEmployee] The employee whose payroll is being run.
+      # @return [String] The employee whose payroll is being run.
       attr_reader :employee
-      # @return [Merge::Hris::EmployeePayrollRunPayrollRun] The payroll being run.
+      # @return [String] The payroll being run.
       attr_reader :payroll_run
       # @return [Float] The total earnings throughout a given period for an employee before any
       #  deductions are made.
@@ -71,8 +69,8 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::EmployeePayrollRunEmployee] The employee whose payroll is being run.
-      # @param payroll_run [Merge::Hris::EmployeePayrollRunPayrollRun] The payroll being run.
+      # @param employee [String] The employee whose payroll is being run.
+      # @param payroll_run [String] The payroll being run.
       # @param gross_pay [Float] The total earnings throughout a given period for an employee before any
       #  deductions are made.
       # @param net_pay [Float] The take-home pay throughout a given period for an employee after deductions are
@@ -145,18 +143,8 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::EmployeePayrollRunEmployee.from_json(json_object: employee)
-        end
-        if parsed_json["payroll_run"].nil?
-          payroll_run = nil
-        else
-          payroll_run = parsed_json["payroll_run"].to_json
-          payroll_run = Merge::Hris::EmployeePayrollRunPayrollRun.from_json(json_object: payroll_run)
-        end
+        employee = parsed_json["employee"]
+        payroll_run = parsed_json["payroll_run"]
         gross_pay = parsed_json["gross_pay"]
         net_pay = parsed_json["net_pay"]
         start_date = (DateTime.parse(parsed_json["start_date"]) unless parsed_json["start_date"].nil?)
@@ -220,8 +208,8 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::EmployeePayrollRunEmployee.validate_raw(obj: obj.employee)
-        obj.payroll_run.nil? || Merge::Hris::EmployeePayrollRunPayrollRun.validate_raw(obj: obj.payroll_run)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.payroll_run&.is_a?(String) != false || raise("Passed value for field obj.payroll_run is not the expected type, validation failed.")
         obj.gross_pay&.is_a?(Float) != false || raise("Passed value for field obj.gross_pay is not the expected type, validation failed.")
         obj.net_pay&.is_a?(Float) != false || raise("Passed value for field obj.net_pay is not the expected type, validation failed.")
         obj.start_date&.is_a?(DateTime) != false || raise("Passed value for field obj.start_date is not the expected type, validation failed.")

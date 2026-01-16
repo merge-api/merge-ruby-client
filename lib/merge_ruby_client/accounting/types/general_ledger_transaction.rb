@@ -2,10 +2,7 @@
 
 require "date"
 require_relative "underlying_transaction_type_enum"
-require_relative "general_ledger_transaction_accounting_period"
-require_relative "general_ledger_transaction_company"
-require_relative "general_ledger_transaction_tracking_categories_item"
-require_relative "general_ledger_transaction_general_ledger_transaction_lines_item"
+require_relative "general_ledger_transaction_line"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -45,19 +42,19 @@ module Merge
       #  * `VENDOR_CREDIT` - VENDOR_CREDIT
       #  * `CREDIT_NOTE` - CREDIT_NOTE
       attr_reader :underlying_transaction_type
-      # @return [Merge::Accounting::GeneralLedgerTransactionAccountingPeriod] The accounting period that the GeneralLedgerTransaction was generated in.
+      # @return [String] The accounting period that the GeneralLedgerTransaction was generated in.
       attr_reader :accounting_period
-      # @return [Merge::Accounting::GeneralLedgerTransactionCompany] The company the GeneralLedgerTransaction belongs to.
+      # @return [String] The company the GeneralLedgerTransaction belongs to.
       attr_reader :company
       # @return [DateTime] When the third party's GeneralLedgerTransaction entry was updated.
       attr_reader :remote_updated_at
       # @return [DateTime] When the third party's GeneralLedgerTransaction entry was created.
       attr_reader :remote_created_at
-      # @return [Array<Merge::Accounting::GeneralLedgerTransactionTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
       # @return [DateTime] The date that the transaction was posted to the general ledger.
       attr_reader :posting_date
-      # @return [Array<Merge::Accounting::GeneralLedgerTransactionGeneralLedgerTransactionLinesItem>] A list of “General Ledger Transaction Applied to Lines” objects.
+      # @return [Array<Merge::Accounting::GeneralLedgerTransactionLine>] A list of “General Ledger Transaction Applied to Lines” objects.
       attr_reader :general_ledger_transaction_lines
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -89,13 +86,13 @@ module Merge
       #  * `PAYMENT` - PAYMENT
       #  * `VENDOR_CREDIT` - VENDOR_CREDIT
       #  * `CREDIT_NOTE` - CREDIT_NOTE
-      # @param accounting_period [Merge::Accounting::GeneralLedgerTransactionAccountingPeriod] The accounting period that the GeneralLedgerTransaction was generated in.
-      # @param company [Merge::Accounting::GeneralLedgerTransactionCompany] The company the GeneralLedgerTransaction belongs to.
+      # @param accounting_period [String] The accounting period that the GeneralLedgerTransaction was generated in.
+      # @param company [String] The company the GeneralLedgerTransaction belongs to.
       # @param remote_updated_at [DateTime] When the third party's GeneralLedgerTransaction entry was updated.
       # @param remote_created_at [DateTime] When the third party's GeneralLedgerTransaction entry was created.
-      # @param tracking_categories [Array<Merge::Accounting::GeneralLedgerTransactionTrackingCategoriesItem>]
+      # @param tracking_categories [Array<String>]
       # @param posting_date [DateTime] The date that the transaction was posted to the general ledger.
-      # @param general_ledger_transaction_lines [Array<Merge::Accounting::GeneralLedgerTransactionGeneralLedgerTransactionLinesItem>] A list of “General Ledger Transaction Applied to Lines” objects.
+      # @param general_ledger_transaction_lines [Array<Merge::Accounting::GeneralLedgerTransactionLine>] A list of “General Ledger Transaction Applied to Lines” objects.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -158,32 +155,19 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         underlying_transaction_remote_id = parsed_json["underlying_transaction_remote_id"]
         underlying_transaction_type = parsed_json["underlying_transaction_type"]
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::GeneralLedgerTransactionAccountingPeriod.from_json(json_object: accounting_period)
-        end
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::GeneralLedgerTransactionCompany.from_json(json_object: company)
-        end
+        accounting_period = parsed_json["accounting_period"]
+        company = parsed_json["company"]
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::GeneralLedgerTransactionTrackingCategoriesItem.from_json(json_object: item)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
         posting_date = (DateTime.parse(parsed_json["posting_date"]) unless parsed_json["posting_date"].nil?)
         general_ledger_transaction_lines = parsed_json["general_ledger_transaction_lines"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::GeneralLedgerTransactionGeneralLedgerTransactionLinesItem.from_json(json_object: item)
+          Merge::Accounting::GeneralLedgerTransactionLine.from_json(json_object: item)
         end
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -232,8 +216,8 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.underlying_transaction_remote_id&.is_a?(String) != false || raise("Passed value for field obj.underlying_transaction_remote_id is not the expected type, validation failed.")
         obj.underlying_transaction_type&.is_a?(Merge::Accounting::UnderlyingTransactionTypeEnum) != false || raise("Passed value for field obj.underlying_transaction_type is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::GeneralLedgerTransactionAccountingPeriod.validate_raw(obj: obj.accounting_period)
-        obj.company.nil? || Merge::Accounting::GeneralLedgerTransactionCompany.validate_raw(obj: obj.company)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")

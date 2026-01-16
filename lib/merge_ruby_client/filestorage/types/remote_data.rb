@@ -14,7 +14,8 @@ module Merge
     class RemoteData
       # @return [String] The third-party API path that is being called.
       attr_reader :path
-      # @return [Object]
+      # @return [Object] The data returned from the third-party for this object in its original,
+      #  unnormalized format.
       attr_reader :data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -25,7 +26,8 @@ module Merge
       OMIT = Object.new
 
       # @param path [String] The third-party API path that is being called.
-      # @param data [Object]
+      # @param data [Object] The data returned from the third-party for this object in its original,
+      #  unnormalized format.
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Filestorage::RemoteData]
       def initialize(path:, data: OMIT, additional_properties: nil)

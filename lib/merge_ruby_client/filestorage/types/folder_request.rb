@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "folder_request_parent_folder"
-require_relative "folder_request_drive"
-require_relative "folder_request_permissions"
+require_relative "permission_request"
 require "ostruct"
 require "json"
 
@@ -24,13 +22,11 @@ module Merge
       attr_reader :size
       # @return [String] The folder's description.
       attr_reader :description
-      # @return [Merge::Filestorage::FolderRequestParentFolder] The folder that the folder belongs to.
+      # @return [String] The folder that the folder belongs to.
       attr_reader :parent_folder
-      # @return [Merge::Filestorage::FolderRequestDrive] The drive that the folder belongs to.
+      # @return [String] The drive that the folder belongs to.
       attr_reader :drive
-      # @return [Merge::Filestorage::FolderRequestPermissions] The Permission object is used to represent a user's or group's access to a File
-      #  or Folder. Permissions are unexpanded by default. Use the query param
-      #  `expand=permissions` to see more details under `GET /folders`.
+      # @return [Array<Merge::Filestorage::PermissionRequest>]
       attr_reader :permissions
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -48,11 +44,9 @@ module Merge
       # @param folder_url [String] The URL to access the folder.
       # @param size [Long] The folder's size, in bytes.
       # @param description [String] The folder's description.
-      # @param parent_folder [Merge::Filestorage::FolderRequestParentFolder] The folder that the folder belongs to.
-      # @param drive [Merge::Filestorage::FolderRequestDrive] The drive that the folder belongs to.
-      # @param permissions [Merge::Filestorage::FolderRequestPermissions] The Permission object is used to represent a user's or group's access to a File
-      #  or Folder. Permissions are unexpanded by default. Use the query param
-      #  `expand=permissions` to see more details under `GET /folders`.
+      # @param parent_folder [String] The folder that the folder belongs to.
+      # @param drive [String] The drive that the folder belongs to.
+      # @param permissions [Array<Merge::Filestorage::PermissionRequest>]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -95,23 +89,11 @@ module Merge
         folder_url = parsed_json["folder_url"]
         size = parsed_json["size"]
         description = parsed_json["description"]
-        if parsed_json["parent_folder"].nil?
-          parent_folder = nil
-        else
-          parent_folder = parsed_json["parent_folder"].to_json
-          parent_folder = Merge::Filestorage::FolderRequestParentFolder.from_json(json_object: parent_folder)
-        end
-        if parsed_json["drive"].nil?
-          drive = nil
-        else
-          drive = parsed_json["drive"].to_json
-          drive = Merge::Filestorage::FolderRequestDrive.from_json(json_object: drive)
-        end
-        if parsed_json["permissions"].nil?
-          permissions = nil
-        else
-          permissions = parsed_json["permissions"].to_json
-          permissions = Merge::Filestorage::FolderRequestPermissions.from_json(json_object: permissions)
+        parent_folder = parsed_json["parent_folder"]
+        drive = parsed_json["drive"]
+        permissions = parsed_json["permissions"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::PermissionRequest.from_json(json_object: item)
         end
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
@@ -147,9 +129,9 @@ module Merge
         obj.folder_url&.is_a?(String) != false || raise("Passed value for field obj.folder_url is not the expected type, validation failed.")
         obj.size&.is_a?(Long) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
-        obj.parent_folder.nil? || Merge::Filestorage::FolderRequestParentFolder.validate_raw(obj: obj.parent_folder)
-        obj.drive.nil? || Merge::Filestorage::FolderRequestDrive.validate_raw(obj: obj.drive)
-        obj.permissions.nil? || Merge::Filestorage::FolderRequestPermissions.validate_raw(obj: obj.permissions)
+        obj.parent_folder&.is_a?(String) != false || raise("Passed value for field obj.parent_folder is not the expected type, validation failed.")
+        obj.drive&.is_a?(String) != false || raise("Passed value for field obj.drive is not the expected type, validation failed.")
+        obj.permissions&.is_a?(Array) != false || raise("Passed value for field obj.permissions is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
       end

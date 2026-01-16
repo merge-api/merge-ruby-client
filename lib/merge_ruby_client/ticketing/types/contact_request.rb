@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "contact_request_account"
 require "ostruct"
 require "json"
 
@@ -21,7 +20,7 @@ module Merge
       attr_reader :phone_number
       # @return [String] The contact's details.
       attr_reader :details
-      # @return [Merge::Ticketing::ContactRequestAccount] The contact's account.
+      # @return [String] The contact's account.
       attr_reader :account
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -39,7 +38,7 @@ module Merge
       # @param email_address [String] The contact's email address.
       # @param phone_number [String] The contact's phone number.
       # @param details [String] The contact's details.
-      # @param account [Merge::Ticketing::ContactRequestAccount] The contact's account.
+      # @param account [String] The contact's account.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -78,12 +77,7 @@ module Merge
         email_address = parsed_json["email_address"]
         phone_number = parsed_json["phone_number"]
         details = parsed_json["details"]
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Ticketing::ContactRequestAccount.from_json(json_object: account)
-        end
+        account = parsed_json["account"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         new(
@@ -116,7 +110,7 @@ module Merge
         obj.email_address&.is_a?(String) != false || raise("Passed value for field obj.email_address is not the expected type, validation failed.")
         obj.phone_number&.is_a?(String) != false || raise("Passed value for field obj.phone_number is not the expected type, validation failed.")
         obj.details&.is_a?(String) != false || raise("Passed value for field obj.details is not the expected type, validation failed.")
-        obj.account.nil? || Merge::Ticketing::ContactRequestAccount.validate_raw(obj: obj.account)
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
       end

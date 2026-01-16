@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "remote_field_remote_field_class"
+require_relative "remote_field_class"
 require "ostruct"
 require "json"
 
 module Merge
   module Ticketing
     class RemoteField
-      # @return [Merge::Ticketing::RemoteFieldRemoteFieldClass]
+      # @return [Merge::Ticketing::RemoteFieldClass]
       attr_reader :remote_field_class
-      # @return [Object]
+      # @return [Hash{String => Object}]
       attr_reader :value
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -19,8 +19,8 @@ module Merge
 
       OMIT = Object.new
 
-      # @param remote_field_class [Merge::Ticketing::RemoteFieldRemoteFieldClass]
-      # @param value [Object]
+      # @param remote_field_class [Merge::Ticketing::RemoteFieldClass]
+      # @param value [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::RemoteField]
       def initialize(remote_field_class:, value: OMIT, additional_properties: nil)
@@ -43,7 +43,7 @@ module Merge
           remote_field_class = nil
         else
           remote_field_class = parsed_json["remote_field_class"].to_json
-          remote_field_class = Merge::Ticketing::RemoteFieldRemoteFieldClass.from_json(json_object: remote_field_class)
+          remote_field_class = Merge::Ticketing::RemoteFieldClass.from_json(json_object: remote_field_class)
         end
         value = parsed_json["value"]
         new(
@@ -67,8 +67,8 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        Merge::Ticketing::RemoteFieldRemoteFieldClass.validate_raw(obj: obj.remote_field_class)
-        obj.value&.is_a?(Object) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
+        Merge::Ticketing::RemoteFieldClass.validate_raw(obj: obj.remote_field_class)
+        obj.value&.is_a?(Hash) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
       end
     end
   end

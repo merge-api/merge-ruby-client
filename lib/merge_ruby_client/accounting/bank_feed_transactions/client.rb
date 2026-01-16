@@ -21,7 +21,9 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BankFeedTransaction` objects.
+      # Returns a list of `BankFeedTransaction` objects.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -41,7 +43,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedBankFeedTransactionList]
@@ -86,12 +88,16 @@ module Merge
         Merge::Accounting::PaginatedBankFeedTransactionList.from_json(json_object: response.body)
       end
 
-      # Creates a `BankFeedTransaction` object with the given values.
+      # Creates a `BankFeedTransaction` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  q8CokdFr+B+F/dKgzCvIZvprflrLGr7socVyIsuVpFv8rHa8rKTBbbx8pYjv3y4fPgBfOGEzBoJAAA="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::BankFeedTransactionRequestRequest, as a Hash
-      #   * :bank_feed_account (Hash)
+      #   * :bank_feed_account (String)
       #   * :transaction_date (DateTime)
       #   * :posted_date (DateTime)
       #   * :amount (Float)
@@ -132,7 +138,9 @@ module Merge
         Merge::Accounting::BankFeedTransactionResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `BankFeedTransaction` object with the given `id`.
+      # Returns a `BankFeedTransaction` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -174,7 +182,9 @@ module Merge
         Merge::Accounting::BankFeedTransaction.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `BankFeedTransaction` POSTs.
+      # Returns metadata for `BankFeedTransaction` POSTs.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -217,7 +227,9 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BankFeedTransaction` objects.
+      # Returns a list of `BankFeedTransaction` objects.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -237,7 +249,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedBankFeedTransactionList]
@@ -284,12 +296,16 @@ module Merge
         end
       end
 
-      # Creates a `BankFeedTransaction` object with the given values.
+      # Creates a `BankFeedTransaction` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  q8CokdFr+B+F/dKgzCvIZvprflrLGr7socVyIsuVpFv8rHa8rKTBbbx8pYjv3y4fPgBfOGEzBoJAAA="
+      #  /></Footer>{/* END_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::BankFeedTransactionRequestRequest, as a Hash
-      #   * :bank_feed_account (Hash)
+      #   * :bank_feed_account (String)
       #   * :transaction_date (DateTime)
       #   * :posted_date (DateTime)
       #   * :amount (Float)
@@ -332,7 +348,9 @@ module Merge
         end
       end
 
-      # Returns a `BankFeedTransaction` object with the given `id`.
+      # Returns a `BankFeedTransaction` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -376,7 +394,9 @@ module Merge
         end
       end
 
-      # Returns metadata for `BankFeedTransaction` POSTs.
+      # Returns metadata for `BankFeedTransaction` POSTs.{/*
+      #  BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]

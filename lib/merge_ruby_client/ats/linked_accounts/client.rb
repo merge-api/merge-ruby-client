@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../../../requests"
-require_relative "types/linked_accounts_list_request_category"
+require_relative "types/list_linked_accounts_request_category"
 require_relative "../types/paginated_account_details_and_actions_list"
 require "async"
 
@@ -19,7 +19,8 @@ module Merge
 
       # List linked accounts for your organization.
       #
-      # @param category [Merge::Ats::LinkedAccounts::LinkedAccountsListRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `mktg`, `ticketing`
+      # @param category [Merge::Ats::LinkedAccounts::ListLinkedAccountsRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `knowledgebase`,
+      #  `mktg`, `ticketing`
       #  * `hris` - hris
       #  * `ats` - ats
       #  * `accounting` - accounting
@@ -27,6 +28,10 @@ module Merge
       #  * `crm` - crm
       #  * `mktg` - mktg
       #  * `filestorage` - filestorage
+      #  * `datawarehouse` - datawarehouse
+      #  * `knowledgebase` - knowledgebase
+      #  * `communication` - communication
+      #  * `chat` - chat
       # @param cursor [String] The pagination cursor value.
       # @param end_user_email_address [String] If provided, will only return linked accounts associated with the given email
       #  address.
@@ -46,7 +51,7 @@ module Merge
       #  integration name.
       # @param is_test_account [String] If included, will only include test linked accounts. If not included, will only
       #  include non-test linked accounts.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param status [String] Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedAccountDetailsAndActionsList]
@@ -105,7 +110,8 @@ module Merge
 
       # List linked accounts for your organization.
       #
-      # @param category [Merge::Ats::LinkedAccounts::LinkedAccountsListRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `mktg`, `ticketing`
+      # @param category [Merge::Ats::LinkedAccounts::ListLinkedAccountsRequestCategory] Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `knowledgebase`,
+      #  `mktg`, `ticketing`
       #  * `hris` - hris
       #  * `ats` - ats
       #  * `accounting` - accounting
@@ -113,6 +119,10 @@ module Merge
       #  * `crm` - crm
       #  * `mktg` - mktg
       #  * `filestorage` - filestorage
+      #  * `datawarehouse` - datawarehouse
+      #  * `knowledgebase` - knowledgebase
+      #  * `communication` - communication
+      #  * `chat` - chat
       # @param cursor [String] The pagination cursor value.
       # @param end_user_email_address [String] If provided, will only return linked accounts associated with the given email
       #  address.
@@ -132,7 +142,7 @@ module Merge
       #  integration name.
       # @param is_test_account [String] If included, will only include test linked accounts. If not included, will only
       #  include non-test linked accounts.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param status [String] Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedAccountDetailsAndActionsList]

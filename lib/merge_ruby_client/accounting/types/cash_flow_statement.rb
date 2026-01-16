@@ -2,7 +2,6 @@
 
 require "date"
 require_relative "transaction_currency_enum"
-require_relative "cash_flow_statement_company"
 require_relative "report_item"
 require_relative "remote_data"
 require "ostruct"
@@ -336,7 +335,7 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       attr_reader :currency
-      # @return [Merge::Accounting::CashFlowStatementCompany] The company the cash flow statement belongs to.
+      # @return [String] The company the cash flow statement belongs to.
       attr_reader :company
       # @return [DateTime] The cash flow statement's start period.
       attr_reader :start_period
@@ -683,7 +682,7 @@ module Merge
       #  * `ZWD` - Zimbabwean Dollar (1980–2008)
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
-      # @param company [Merge::Accounting::CashFlowStatementCompany] The company the cash flow statement belongs to.
+      # @param company [String] The company the cash flow statement belongs to.
       # @param start_period [DateTime] The cash flow statement's start period.
       # @param end_period [DateTime] The cash flow statement's end period.
       # @param cash_at_beginning_of_period [Float] Cash and cash equivalents at the beginning of the cash flow statement's period.
@@ -758,12 +757,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         currency = parsed_json["currency"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::CashFlowStatementCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         start_period = (DateTime.parse(parsed_json["start_period"]) unless parsed_json["start_period"].nil?)
         end_period = (DateTime.parse(parsed_json["end_period"]) unless parsed_json["end_period"].nil?)
         cash_at_beginning_of_period = parsed_json["cash_at_beginning_of_period"]
@@ -832,7 +826,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::CashFlowStatementCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.start_period&.is_a?(DateTime) != false || raise("Passed value for field obj.start_period is not the expected type, validation failed.")
         obj.end_period&.is_a?(DateTime) != false || raise("Passed value for field obj.end_period is not the expected type, validation failed.")
         obj.cash_at_beginning_of_period&.is_a?(Float) != false || raise("Passed value for field obj.cash_at_beginning_of_period is not the expected type, validation failed.")

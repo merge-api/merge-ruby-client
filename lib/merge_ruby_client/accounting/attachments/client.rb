@@ -21,7 +21,9 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `AccountingAttachment` objects.
+      # Returns a list of `AccountingAttachment` objects.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return accounting attachments for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -38,7 +40,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountingAttachmentList]
@@ -82,7 +84,9 @@ module Merge
         Merge::Accounting::PaginatedAccountingAttachmentList.from_json(json_object: response.body)
       end
 
-      # Creates an `AccountingAttachment` object with the given values.
+      # Creates an `AccountingAttachment` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -122,7 +126,9 @@ module Merge
         Merge::Accounting::AccountingAttachmentResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `AccountingAttachment` object with the given `id`.
+      # Returns an `AccountingAttachment` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -161,7 +167,9 @@ module Merge
         Merge::Accounting::AccountingAttachment.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `AccountingAttachment` POSTs.
+      # Returns metadata for `AccountingAttachment` POSTs.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -204,7 +212,9 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `AccountingAttachment` objects.
+      # Returns a list of `AccountingAttachment` objects.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return accounting attachments for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -221,7 +231,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountingAttachmentList]
@@ -267,7 +277,9 @@ module Merge
         end
       end
 
-      # Creates an `AccountingAttachment` object with the given values.
+      # Creates an `AccountingAttachment` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -309,7 +321,9 @@ module Merge
         end
       end
 
-      # Returns an `AccountingAttachment` object with the given `id`.
+      # Returns an `AccountingAttachment` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -350,7 +364,9 @@ module Merge
         end
       end
 
-      # Returns metadata for `AccountingAttachment` POSTs.
+      # Returns metadata for `AccountingAttachment` POSTs.{/*
+      #  BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}{/*
+      #  END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]

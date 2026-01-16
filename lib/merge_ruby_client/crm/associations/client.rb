@@ -18,10 +18,14 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Association` objects.
+      # Returns a list of `Association` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
-      # @param object_id [String]
+      # @param object_id_ [String]
       # @param association_type_id [String] If provided, will only return opportunities with this association_type.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -39,7 +43,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedAssociationList]
@@ -51,10 +55,10 @@ module Merge
       #  )
       #  api.crm.associations.custom_object_classes_custom_objects_associations_list(
       #    custom_object_class_id: "custom_object_class_id",
-      #    object_id: "object_id",
+      #    object_id_: "object_id",
       #    cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw"
       #  )
-      def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id:,
+      def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id_:,
                                                                  association_type_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -83,7 +87,7 @@ module Merge
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
           end
-          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id}/associations"
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id_}/associations"
         end
         Merge::Crm::PaginatedAssociationList.from_json(json_object: response.body)
       end
@@ -91,11 +95,11 @@ module Merge
       # Creates an Association between `source_object_id` and `target_object_id` of type
       #  `association_type_id`.
       #
-      # @param association_type_id [String]
       # @param source_class_id [String]
       # @param source_object_id [String]
       # @param target_class_id [String]
       # @param target_object_id [String]
+      # @param association_type_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param request_options [Merge::RequestOptions]
@@ -107,14 +111,14 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.crm.associations.custom_object_classes_custom_objects_associations_update(
-      #    association_type_id: "association_type_id",
       #    source_class_id: "source_class_id",
       #    source_object_id: "source_object_id",
       #    target_class_id: "target_class_id",
-      #    target_object_id: "target_object_id"
+      #    target_object_id: "target_object_id",
+      #    association_type_id: "association_type_id"
       #  )
-      def custom_object_classes_custom_objects_associations_update(association_type_id:, source_class_id:,
-                                                                   source_object_id:, target_class_id:, target_object_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
+      def custom_object_classes_custom_objects_associations_update(source_class_id:, source_object_id:,
+                                                                   target_class_id:, target_object_id:, association_type_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         response = @request_client.conn.put do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -132,7 +136,7 @@ module Merge
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
           end
-          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{association_type_id}/custom-objects/#{source_class_id}/associations/#{source_object_id}/#{target_class_id}/#{target_object_id}"
+          req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{source_class_id}/custom-objects/#{source_object_id}/associations/#{target_class_id}/#{target_object_id}/#{association_type_id}"
         end
         Merge::Crm::Association.from_json(json_object: response.body)
       end
@@ -148,10 +152,14 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Association` objects.
+      # Returns a list of `Association` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
-      # @param object_id [String]
+      # @param object_id_ [String]
       # @param association_type_id [String] If provided, will only return opportunities with this association_type.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -169,7 +177,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedAssociationList]
@@ -181,10 +189,10 @@ module Merge
       #  )
       #  api.crm.associations.custom_object_classes_custom_objects_associations_list(
       #    custom_object_class_id: "custom_object_class_id",
-      #    object_id: "object_id",
+      #    object_id_: "object_id",
       #    cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw"
       #  )
-      def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id:,
+      def custom_object_classes_custom_objects_associations_list(custom_object_class_id:, object_id_:,
                                                                  association_type_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
@@ -214,7 +222,7 @@ module Merge
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
             end
-            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id}/associations"
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{custom_object_class_id}/custom-objects/#{object_id_}/associations"
           end
           Merge::Crm::PaginatedAssociationList.from_json(json_object: response.body)
         end
@@ -223,11 +231,11 @@ module Merge
       # Creates an Association between `source_object_id` and `target_object_id` of type
       #  `association_type_id`.
       #
-      # @param association_type_id [String]
       # @param source_class_id [String]
       # @param source_object_id [String]
       # @param target_class_id [String]
       # @param target_object_id [String]
+      # @param association_type_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param request_options [Merge::RequestOptions]
@@ -239,14 +247,14 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.crm.associations.custom_object_classes_custom_objects_associations_update(
-      #    association_type_id: "association_type_id",
       #    source_class_id: "source_class_id",
       #    source_object_id: "source_object_id",
       #    target_class_id: "target_class_id",
-      #    target_object_id: "target_object_id"
+      #    target_object_id: "target_object_id",
+      #    association_type_id: "association_type_id"
       #  )
-      def custom_object_classes_custom_objects_associations_update(association_type_id:, source_class_id:,
-                                                                   source_object_id:, target_class_id:, target_object_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
+      def custom_object_classes_custom_objects_associations_update(source_class_id:, source_object_id:,
+                                                                   target_class_id:, target_object_id:, association_type_id:, is_debug_mode: nil, run_async: nil, request_options: nil)
         Async do
           response = @request_client.conn.put do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -265,7 +273,7 @@ module Merge
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
             end
-            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{association_type_id}/custom-objects/#{source_class_id}/associations/#{source_object_id}/#{target_class_id}/#{target_object_id}"
+            req.url "#{@request_client.get_url(request_options: request_options)}/crm/v1/custom-object-classes/#{source_class_id}/custom-objects/#{source_object_id}/associations/#{target_class_id}/#{target_object_id}/#{association_type_id}"
           end
           Merge::Crm::Association.from_json(json_object: response.body)
         end

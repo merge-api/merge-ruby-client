@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
+require_relative "remote_data"
 require "ostruct"
 require "json"
 
@@ -27,7 +28,7 @@ module Merge
       attr_reader :remote_was_deleted
       # @return [Hash{String => Object}]
       attr_reader :field_mappings
-      # @return [Array<Hash{String => Object}>]
+      # @return [Array<Merge::Ats::RemoteData>]
       attr_reader :remote_data
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
@@ -46,7 +47,7 @@ module Merge
       #  detection is offered for free with limited coverage. [Learn
       #  more](https://docs.merge.dev/integrations/hris/supported-features/).
       # @param field_mappings [Hash{String => Object}]
-      # @param remote_data [Array<Hash{String => Object}>]
+      # @param remote_data [Array<Merge::Ats::RemoteData>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::Tag]
       def initialize(remote_id: OMIT, created_at: OMIT, modified_at: OMIT, name: OMIT, remote_was_deleted: OMIT,
@@ -85,7 +86,10 @@ module Merge
         name = parsed_json["name"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
-        remote_data = parsed_json["remote_data"]
+        remote_data = parsed_json["remote_data"]&.map do |item|
+          item = item.to_json
+          Merge::Ats::RemoteData.from_json(json_object: item)
+        end
         new(
           remote_id: remote_id,
           created_at: created_at,

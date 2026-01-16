@@ -20,7 +20,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BankInfo` objects.
+      # Returns a list of `BankInfo` objects.{/*
+      #  BEGIN_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7m+MlTE3Vx2TjtPpzQHCJ6hUPiVp+sj2L/O+6+Lq/FEnd7rGU80W9HXjPb7GO++/A3p7eqqTR8AAA=="
+      #  /></Footer>{/* END_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_type [Merge::Hris::BankInfo::BankInfoListRequestAccountType] If provided, will only return BankInfo's with this account type. Options:
       #  ('SAVINGS', 'CHECKING')
@@ -46,7 +50,7 @@ module Merge
       #  returned.
       # @param order_by [Merge::Hris::BankInfo::BankInfoListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  remote_created_at, -remote_created_at.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -100,7 +104,11 @@ module Merge
         Merge::Hris::PaginatedBankInfoList.from_json(json_object: response.body)
       end
 
-      # Returns a `BankInfo` object with the given `id`.
+      # Returns a `BankInfo` object with the given `id`.{/*
+      #  BEGIN_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7m+MlTE3Vx2TjtPpzQHCJ6hUPiVp+sj2L/O+6+Lq/FEnd7rGU80W9HXjPb7GO++/A3p7eqqTR8AAA=="
+      #  /></Footer>{/* END_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -160,7 +168,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BankInfo` objects.
+      # Returns a list of `BankInfo` objects.{/*
+      #  BEGIN_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7m+MlTE3Vx2TjtPpzQHCJ6hUPiVp+sj2L/O+6+Lq/FEnd7rGU80W9HXjPb7GO++/A3p7eqqTR8AAA=="
+      #  /></Footer>{/* END_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_type [Merge::Hris::BankInfo::BankInfoListRequestAccountType] If provided, will only return BankInfo's with this account type. Options:
       #  ('SAVINGS', 'CHECKING')
@@ -186,7 +198,7 @@ module Merge
       #  returned.
       # @param order_by [Merge::Hris::BankInfo::BankInfoListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  remote_created_at, -remote_created_at.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -242,7 +254,11 @@ module Merge
         end
       end
 
-      # Returns a `BankInfo` object with the given `id`.
+      # Returns a `BankInfo` object with the given `id`.{/*
+      #  BEGIN_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  7m+MlTE3Vx2TjtPpzQHCJ6hUPiVp+sj2L/O+6+Lq/FEnd7rGU80W9HXjPb7GO++/A3p7eqqTR8AAA=="
+      #  /></Footer>{/* END_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
