@@ -18,7 +18,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Employee` objects.
+      # Returns a list of `Employee` objects.{/*
+      #  BEGIN_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Z1tpJjPBbV1+CBme9llr5jvqYBqrgXfoDDhMP2AHvuORr+Nmh4p/ONT+e9G+k8/luu7n6Ddkc5QCgAA"
+      #  /></Footer>{/* END_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return employees for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -37,7 +41,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedEmployeeList]
@@ -82,7 +86,11 @@ module Merge
         Merge::Accounting::PaginatedEmployeeList.from_json(json_object: response.body)
       end
 
-      # Returns an `Employee` object with the given `id`.
+      # Returns an `Employee` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Z1tpJjPBbV1+CBme9llr5jvqYBqrgXfoDDhMP2AHvuORr+Nmh4p/ONT+e9G+k8/luu7n6Ddkc5QCgAA"
+      #  /></Footer>{/* END_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -135,7 +143,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Employee` objects.
+      # Returns a list of `Employee` objects.{/*
+      #  BEGIN_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Z1tpJjPBbV1+CBme9llr5jvqYBqrgXfoDDhMP2AHvuORr+Nmh4p/ONT+e9G+k8/luu7n6Ddkc5QCgAA"
+      #  /></Footer>{/* END_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return employees for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -154,7 +166,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedEmployeeList]
@@ -201,7 +213,11 @@ module Merge
         end
       end
 
-      # Returns an `Employee` object with the given `id`.
+      # Returns an `Employee` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Z1tpJjPBbV1+CBme9llr5jvqYBqrgXfoDDhMP2AHvuORr+Nmh4p/ONT+e9G+k8/luu7n6Ddkc5QCgAA"
+      #  /></Footer>{/* END_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

@@ -2,13 +2,13 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/activities_list_request_remote_fields"
-require_relative "types/activities_list_request_show_enum_origins"
+require_relative "types/list_activities_request_remote_fields"
+require_relative "types/list_activities_request_show_enum_origins"
 require_relative "../types/paginated_activity_list"
 require_relative "../types/activity_request"
 require_relative "../types/activity_response"
-require_relative "types/activities_retrieve_request_remote_fields"
-require_relative "types/activities_retrieve_request_show_enum_origins"
+require_relative "types/retrieve_activities_request_remote_fields"
+require_relative "types/retrieve_activities_request_show_enum_origins"
 require_relative "../types/activity"
 require_relative "../types/meta_response"
 require "async"
@@ -25,7 +25,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Activity` objects.
+      # Returns a list of `Activity` objects.{/*
+      #  BEGIN_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  82rL+fbq6jD5sy767N3AbmDT/rXGPNayOlq5rmw3KplkmV/zrnFTz7Ul+f/jvbbn38BiC/f+D4aAAA="
+      #  /></Footer>{/* END_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -43,10 +47,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Ats::Activities::ActivitiesListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Ats::Activities::ListActivitiesRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Ats::Activities::ActivitiesListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Ats::Activities::ListActivitiesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param user_id [String] If provided, will only return activities done by this user.
@@ -95,12 +99,16 @@ module Merge
         Merge::Ats::PaginatedActivityList.from_json(json_object: response.body)
       end
 
-      # Creates an `Activity` object with the given values.
+      # Creates an `Activity` object with the given values.{/*
+      #  BEGIN_ATS_ACTIVITY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Hn3P8uRR4OPPjULPSX3j4TcxuToU3M/IS9rc/bQ5f9Kl58h52Cc8Syvh9gx/nbB4/3j32BfhwkcDQAA"
+      #  /></Footer>{/* END_ATS_ACTIVITY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ats::ActivityRequest, as a Hash
-      #   * :user (Hash)
+      #   * :user (String)
       #   * :activity_type (Merge::Ats::ActivityTypeEnum)
       #   * :subject (String)
       #   * :body (String)
@@ -143,7 +151,11 @@ module Merge
         Merge::Ats::ActivityResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Activity` object with the given `id`.
+      # Returns an `Activity` object with the given `id`.{/*
+      #  BEGIN_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  82rL+fbq6jD5sy767N3AbmDT/rXGPNayOlq5rmw3KplkmV/zrnFTz7Ul+f/jvbbn38BiC/f+D4aAAA="
+      #  /></Footer>{/* END_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -152,8 +164,8 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Ats::Activities::ActivitiesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Ats::Activities::ActivitiesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Ats::Activities::RetrieveActivitiesRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ats::Activities::RetrieveActivitiesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -192,7 +204,11 @@ module Merge
         Merge::Ats::Activity.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Activity` POSTs.
+      # Returns metadata for `Activity` POSTs.{/*
+      #  BEGIN_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  82rL+fbq6jD5sy767N3AbmDT/rXGPNayOlq5rmw3KplkmV/zrnFTz7Ul+f/jvbbn38BiC/f+D4aAAA="
+      #  /></Footer>{/* END_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]
@@ -235,7 +251,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Activity` objects.
+      # Returns a list of `Activity` objects.{/*
+      #  BEGIN_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  82rL+fbq6jD5sy767N3AbmDT/rXGPNayOlq5rmw3KplkmV/zrnFTz7Ul+f/jvbbn38BiC/f+D4aAAA="
+      #  /></Footer>{/* END_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -253,10 +273,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Ats::Activities::ActivitiesListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Ats::Activities::ListActivitiesRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Ats::Activities::ActivitiesListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Ats::Activities::ListActivitiesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param user_id [String] If provided, will only return activities done by this user.
@@ -307,12 +327,16 @@ module Merge
         end
       end
 
-      # Creates an `Activity` object with the given values.
+      # Creates an `Activity` object with the given values.{/*
+      #  BEGIN_ATS_ACTIVITY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Hn3P8uRR4OPPjULPSX3j4TcxuToU3M/IS9rc/bQ5f9Kl58h52Cc8Syvh9gx/nbB4/3j32BfhwkcDQAA"
+      #  /></Footer>{/* END_ATS_ACTIVITY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ats::ActivityRequest, as a Hash
-      #   * :user (Hash)
+      #   * :user (String)
       #   * :activity_type (Merge::Ats::ActivityTypeEnum)
       #   * :subject (String)
       #   * :body (String)
@@ -357,7 +381,11 @@ module Merge
         end
       end
 
-      # Returns an `Activity` object with the given `id`.
+      # Returns an `Activity` object with the given `id`.{/*
+      #  BEGIN_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  82rL+fbq6jD5sy767N3AbmDT/rXGPNayOlq5rmw3KplkmV/zrnFTz7Ul+f/jvbbn38BiC/f+D4aAAA="
+      #  /></Footer>{/* END_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -366,8 +394,8 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Ats::Activities::ActivitiesRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Ats::Activities::ActivitiesRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Ats::Activities::RetrieveActivitiesRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ats::Activities::RetrieveActivitiesRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -408,7 +436,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Activity` POSTs.
+      # Returns metadata for `Activity` POSTs.{/*
+      #  BEGIN_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  82rL+fbq6jD5sy767N3AbmDT/rXGPNayOlq5rmw3KplkmV/zrnFTz7Ul+f/jvbbn38BiC/f+D4aAAA="
+      #  /></Footer>{/* END_ATS_ACTIVITY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]

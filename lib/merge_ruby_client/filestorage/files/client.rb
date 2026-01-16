@@ -2,15 +2,15 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/files_list_request_expand"
-require_relative "types/files_list_request_order_by"
+require_relative "types/list_files_request_expand"
+require_relative "types/list_files_request_order_by"
 require_relative "../types/paginated_file_list"
 require_relative "../types/file_request"
 require_relative "../types/file_storage_file_response"
-require_relative "types/files_retrieve_request_expand"
+require_relative "types/retrieve_files_request_expand"
 require_relative "../types/file"
 require_relative "../types/download_request_meta"
-require_relative "types/files_download_request_meta_list_request_order_by"
+require_relative "types/download_request_meta_list_files_request_order_by"
 require_relative "../types/paginated_download_request_meta_list"
 require_relative "../types/meta_response"
 require "async"
@@ -27,14 +27,18 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `File` objects.
+      # Returns a list of `File` objects.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param drive_id [String] Specifying a drive id returns only the files in that drive. Specifying null
       #  returns only the files outside the top-level drive.
-      # @param expand [Merge::Filestorage::Files::FilesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Files::ListFilesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param folder_id [String] Specifying a folder id returns only the files in that folder. Specifying null
       #  returns only the files in root directory.
@@ -53,9 +57,9 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return files with this name. This performs an exact
       #  match.
-      # @param order_by [Merge::Filestorage::Files::FilesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      # @param order_by [Merge::Filestorage::Files::ListFilesRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  created_at, -created_at, modified_at, -modified_at.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_created_after [DateTime] If provided, will only return files created in the third party platform after
       #  this datetime.
       # @param remote_created_before [DateTime] If provided, will only return files created in the third party platform before
@@ -110,7 +114,11 @@ module Merge
         Merge::Filestorage::PaginatedFileList.from_json(json_object: response.body)
       end
 
-      # Creates a `File` object with the given values.
+      # Creates a `File` object with the given values.{/*
+      #  BEGIN_FILESTORAGE_FILE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  2CHcj27vy+gILK0/z7+RJs6/V+SDCOsYCCZMLsVpcBNctz9yfLeJv3FCm3pc4tS90+/AOkBo6ocCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -121,10 +129,10 @@ module Merge
       #   * :size (Long)
       #   * :mime_type (String)
       #   * :description (String)
-      #   * :folder (Hash)
+      #   * :folder (String)
       #   * :checksum (Hash{String => Object})
-      #   * :permissions (Hash)
-      #   * :drive (Hash)
+      #   * :permissions (Array<Merge::Filestorage::PermissionRequest>)
+      #   * :drive (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -157,10 +165,14 @@ module Merge
         Merge::Filestorage::FileStorageFileResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `File` object with the given `id`.
+      # Returns a `File` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Filestorage::Files::FilesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Files::RetrieveFilesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -199,7 +211,11 @@ module Merge
         Merge::Filestorage::File.from_json(json_object: response.body)
       end
 
-      # Returns the `File` content with the given `id` as a stream of bytes.
+      # Returns the `File` content with the given `id` as a stream of bytes.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
@@ -238,13 +254,17 @@ module Merge
       end
 
       # Returns metadata to construct an authenticated file download request for a
-      #  singular file, allowing you to download file directly from the third-party.
+      #  singular file, allowing you to download file directly from the third-party. For
+      #  information on our download process please refer to our <a
+      #  href='https://help.merge.dev/articles/10644317' target='_blank'>direct file
+      #  download help center article</a>.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
-      #  information on supported export formats, please refer to our <a
-      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
-      #  target='_blank'>export format help center article</a>.
+      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::DownloadRequestMeta]
       # @example
@@ -274,7 +294,11 @@ module Merge
       end
 
       # Returns metadata to construct authenticated file download requests, allowing you
-      #  to download files directly from the third-party.
+      #  to download files directly from the third-party.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [String] If provided, will only return objects created after this datetime.
       # @param created_before [String] If provided, will only return objects created before this datetime.
@@ -293,9 +317,9 @@ module Merge
       #  target='_blank'>export format help center article</a>.
       # @param modified_after [String] If provided, will only return objects modified after this datetime.
       # @param modified_before [String] If provided, will only return objects modified before this datetime.
-      # @param order_by [Merge::Filestorage::Files::FilesDownloadRequestMetaListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      # @param order_by [Merge::Filestorage::Files::DownloadRequestMetaListFilesRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  created_at, -created_at, modified_at, -modified_at.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedDownloadRequestMetaList]
       # @example
@@ -337,7 +361,11 @@ module Merge
         Merge::Filestorage::PaginatedDownloadRequestMetaList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `FileStorageFile` POSTs.
+      # Returns metadata for `FileStorageFile` POSTs.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::MetaResponse]
@@ -380,14 +408,18 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `File` objects.
+      # Returns a list of `File` objects.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param drive_id [String] Specifying a drive id returns only the files in that drive. Specifying null
       #  returns only the files outside the top-level drive.
-      # @param expand [Merge::Filestorage::Files::FilesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Files::ListFilesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param folder_id [String] Specifying a folder id returns only the files in that folder. Specifying null
       #  returns only the files in root directory.
@@ -406,9 +438,9 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return files with this name. This performs an exact
       #  match.
-      # @param order_by [Merge::Filestorage::Files::FilesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      # @param order_by [Merge::Filestorage::Files::ListFilesRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  created_at, -created_at, modified_at, -modified_at.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_created_after [DateTime] If provided, will only return files created in the third party platform after
       #  this datetime.
       # @param remote_created_before [DateTime] If provided, will only return files created in the third party platform before
@@ -465,7 +497,11 @@ module Merge
         end
       end
 
-      # Creates a `File` object with the given values.
+      # Creates a `File` object with the given values.{/*
+      #  BEGIN_FILESTORAGE_FILE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  2CHcj27vy+gILK0/z7+RJs6/V+SDCOsYCCZMLsVpcBNctz9yfLeJv3FCm3pc4tS90+/AOkBo6ocCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -476,10 +512,10 @@ module Merge
       #   * :size (Long)
       #   * :mime_type (String)
       #   * :description (String)
-      #   * :folder (Hash)
+      #   * :folder (String)
       #   * :checksum (Hash{String => Object})
-      #   * :permissions (Hash)
-      #   * :drive (Hash)
+      #   * :permissions (Array<Merge::Filestorage::PermissionRequest>)
+      #   * :drive (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -514,10 +550,14 @@ module Merge
         end
       end
 
-      # Returns a `File` object with the given `id`.
+      # Returns a `File` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Filestorage::Files::FilesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Files::RetrieveFilesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -558,7 +598,11 @@ module Merge
         end
       end
 
-      # Returns the `File` content with the given `id` as a stream of bytes.
+      # Returns the `File` content with the given `id` as a stream of bytes.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
@@ -599,13 +643,17 @@ module Merge
       end
 
       # Returns metadata to construct an authenticated file download request for a
-      #  singular file, allowing you to download file directly from the third-party.
+      #  singular file, allowing you to download file directly from the third-party. For
+      #  information on our download process please refer to our <a
+      #  href='https://help.merge.dev/articles/10644317' target='_blank'>direct file
+      #  download help center article</a>.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded. For
-      #  information on supported export formats, please refer to our <a
-      #  tps://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
-      #  target='_blank'>export format help center article</a>.
+      # @param mime_type [String] If provided, specifies the export format of the file to be downloaded.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::DownloadRequestMeta]
       # @example
@@ -637,7 +685,11 @@ module Merge
       end
 
       # Returns metadata to construct authenticated file download requests, allowing you
-      #  to download files directly from the third-party.
+      #  to download files directly from the third-party.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [String] If provided, will only return objects created after this datetime.
       # @param created_before [String] If provided, will only return objects created before this datetime.
@@ -656,9 +708,9 @@ module Merge
       #  target='_blank'>export format help center article</a>.
       # @param modified_after [String] If provided, will only return objects modified after this datetime.
       # @param modified_before [String] If provided, will only return objects modified before this datetime.
-      # @param order_by [Merge::Filestorage::Files::FilesDownloadRequestMetaListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
+      # @param order_by [Merge::Filestorage::Files::DownloadRequestMetaListFilesRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  created_at, -created_at, modified_at, -modified_at.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedDownloadRequestMetaList]
       # @example
@@ -702,7 +754,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `FileStorageFile` POSTs.
+      # Returns metadata for `FileStorageFile` POSTs.{/*
+      #  BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lYs9m+5ratwg2yf7NZVWPZ54bdX5rtKdPN++/uMLjKweKa58pulVOqaQvc/pz/kdPv4HcQPC7fSCgAA"
+      #  /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::MetaResponse]

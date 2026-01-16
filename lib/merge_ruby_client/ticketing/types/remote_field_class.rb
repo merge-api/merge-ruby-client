@@ -2,7 +2,6 @@
 
 require_relative "field_type_enum"
 require_relative "field_format_enum"
-require_relative "remote_field_class_field_choices_item"
 require_relative "item_schema"
 require "ostruct"
 require "json"
@@ -28,7 +27,7 @@ module Merge
       attr_reader :field_type
       # @return [Merge::Ticketing::FieldFormatEnum]
       attr_reader :field_format
-      # @return [Array<Merge::Ticketing::RemoteFieldClassFieldChoicesItem>]
+      # @return [Array<String>]
       attr_reader :field_choices
       # @return [Merge::Ticketing::ItemSchema]
       attr_reader :item_schema
@@ -49,7 +48,7 @@ module Merge
       # @param is_required [Boolean]
       # @param field_type [Merge::Ticketing::FieldTypeEnum]
       # @param field_format [Merge::Ticketing::FieldFormatEnum]
-      # @param field_choices [Array<Merge::Ticketing::RemoteFieldClassFieldChoicesItem>]
+      # @param field_choices [Array<String>]
       # @param item_schema [Merge::Ticketing::ItemSchema]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ticketing::RemoteFieldClass]
@@ -100,10 +99,7 @@ module Merge
         is_required = parsed_json["is_required"]
         field_type = parsed_json["field_type"]
         field_format = parsed_json["field_format"]
-        field_choices = parsed_json["field_choices"]&.map do |item|
-          item = item.to_json
-          Merge::Ticketing::RemoteFieldClassFieldChoicesItem.from_json(json_object: item)
-        end
+        field_choices = parsed_json["field_choices"]
         if parsed_json["item_schema"].nil?
           item_schema = nil
         else

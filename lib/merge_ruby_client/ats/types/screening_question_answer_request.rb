@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "screening_question_answer_request_question"
 require "ostruct"
 require "json"
 
@@ -15,7 +14,7 @@ module Merge
     class ScreeningQuestionAnswerRequest
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [Merge::Ats::ScreeningQuestionAnswerRequestQuestion] The screening question associated with the candidate’s answer. To determine the
+      # @return [String] The screening question associated with the candidate’s answer. To determine the
       #  data type of the answer, you can expand on the screening question by adding
       #  `screening_question_answers.question` to the `expand` query parameter.
       attr_reader :question
@@ -34,7 +33,7 @@ module Merge
       OMIT = Object.new
 
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param question [Merge::Ats::ScreeningQuestionAnswerRequestQuestion] The screening question associated with the candidate’s answer. To determine the
+      # @param question [String] The screening question associated with the candidate’s answer. To determine the
       #  data type of the answer, you can expand on the screening question by adding
       #  `screening_question_answers.question` to the `expand` query parameter.
       # @param answer [String] The candidate’s response to the screening question.
@@ -69,12 +68,7 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         remote_id = parsed_json["remote_id"]
-        if parsed_json["question"].nil?
-          question = nil
-        else
-          question = parsed_json["question"].to_json
-          question = Merge::Ats::ScreeningQuestionAnswerRequestQuestion.from_json(json_object: question)
-        end
+        question = parsed_json["question"]
         answer = parsed_json["answer"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
@@ -103,7 +97,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
-        obj.question.nil? || Merge::Ats::ScreeningQuestionAnswerRequestQuestion.validate_raw(obj: obj.question)
+        obj.question&.is_a?(String) != false || raise("Passed value for field obj.question is not the expected type, validation failed.")
         obj.answer&.is_a?(String) != false || raise("Passed value for field obj.answer is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")

@@ -18,7 +18,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BalanceSheet` objects.
+      # Returns a list of `BalanceSheet` objects.{/*
+      #  BEGIN_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  4zl3zL49GTryNhyiTekq4AilKjBYkjB/mPmzlCr9XgjZ3I+J2uvuOG/O/ZnXvjy7hcaHlrV9AkAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return balance sheets for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -37,7 +41,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedBalanceSheetList]
@@ -82,7 +86,11 @@ module Merge
         Merge::Accounting::PaginatedBalanceSheetList.from_json(json_object: response.body)
       end
 
-      # Returns a `BalanceSheet` object with the given `id`.
+      # Returns a `BalanceSheet` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  4zl3zL49GTryNhyiTekq4AilKjBYkjB/mPmzlCr9XgjZ3I+J2uvuOG/O/ZnXvjy7hcaHlrV9AkAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -135,7 +143,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `BalanceSheet` objects.
+      # Returns a list of `BalanceSheet` objects.{/*
+      #  BEGIN_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  4zl3zL49GTryNhyiTekq4AilKjBYkjB/mPmzlCr9XgjZ3I+J2uvuOG/O/ZnXvjy7hcaHlrV9AkAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return balance sheets for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -154,7 +166,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedBalanceSheetList]
@@ -201,7 +213,11 @@ module Merge
         end
       end
 
-      # Returns a `BalanceSheet` object with the given `id`.
+      # Returns a `BalanceSheet` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  4zl3zL49GTryNhyiTekq4AilKjBYkjB/mPmzlCr9XgjZ3I+J2uvuOG/O/ZnXvjy7hcaHlrV9AkAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

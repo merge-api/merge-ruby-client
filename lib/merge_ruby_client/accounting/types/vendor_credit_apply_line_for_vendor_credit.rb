@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "vendor_credit_apply_line_for_vendor_credit_invoice"
 require "ostruct"
 require "json"
 
@@ -20,7 +19,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Accounting::VendorCreditApplyLineForVendorCreditInvoice]
+      # @return [String]
       attr_reader :invoice
       # @return [DateTime] Date that the vendor credit is applied to the invoice.
       attr_reader :applied_date
@@ -42,7 +41,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param invoice [Merge::Accounting::VendorCreditApplyLineForVendorCreditInvoice]
+      # @param invoice [String]
       # @param applied_date [DateTime] Date that the vendor credit is applied to the invoice.
       # @param applied_amount [String] The amount of the VendorCredit applied to the invoice.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -84,12 +83,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["invoice"].nil?
-          invoice = nil
-        else
-          invoice = parsed_json["invoice"].to_json
-          invoice = Merge::Accounting::VendorCreditApplyLineForVendorCreditInvoice.from_json(json_object: invoice)
-        end
+        invoice = parsed_json["invoice"]
         applied_date = (DateTime.parse(parsed_json["applied_date"]) unless parsed_json["applied_date"].nil?)
         applied_amount = parsed_json["applied_amount"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
@@ -122,7 +116,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.invoice.nil? || Merge::Accounting::VendorCreditApplyLineForVendorCreditInvoice.validate_raw(obj: obj.invoice)
+        obj.invoice&.is_a?(String) != false || raise("Passed value for field obj.invoice is not the expected type, validation failed.")
         obj.applied_date&.is_a?(DateTime) != false || raise("Passed value for field obj.applied_date is not the expected type, validation failed.")
         obj.applied_amount&.is_a?(String) != false || raise("Passed value for field obj.applied_amount is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

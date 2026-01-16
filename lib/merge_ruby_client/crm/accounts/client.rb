@@ -23,7 +23,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Account` objects.
+      # Returns a list of `Account` objects.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS
+      #  * /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -45,7 +48,7 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return accounts with this name.
       # @param owner_id [String] If provided, will only return accounts with this owner.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedAccountList]
@@ -92,12 +95,16 @@ module Merge
         Merge::Crm::PaginatedAccountList.from_json(json_object: response.body)
       end
 
-      # Creates an `Account` object with the given values.
+      # Creates an `Account` object with the given values.{/*
+      #  BEGIN_CRM_ACCOUNT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  BDNulsrp6+Wdi9J/nuSr6jvMvnPOb0+yams/miaBb2SU0l1cX2MNd9KjbfP0yA/+/I/clrB/GIOAAA="
+      #  /></Footer>{/* END_CRM_ACCOUNT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Crm::AccountRequest, as a Hash
-      #   * :owner (Hash)
+      #   * :owner (String)
       #   * :name (String)
       #   * :description (String)
       #   * :industry (String)
@@ -138,7 +145,11 @@ module Merge
         Merge::Crm::CrmAccountResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Account` object with the given `id`.
+      # Returns an `Account` object with the given `id`.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -184,7 +195,11 @@ module Merge
         Merge::Crm::Account.from_json(json_object: response.body)
       end
 
-      # Updates an `Account` object with the given `id`.
+      # Updates an `Account` object with the given `id`.{/*
+      #  BEGIN_CRM_ACCOUNT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  axhW+X83dIdZNlfz/J18598ez03zmc1VfWfRrOgV2qqqKlurp7mq+MlK+InkF98+wcFLJya+g0AAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -231,7 +246,11 @@ module Merge
         Merge::Crm::CrmAccountResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `CRMAccount` PATCHs.
+      # Returns metadata for `CRMAccount` PATCHs.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -264,7 +283,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `CRMAccount` POSTs.
+      # Returns metadata for `CRMAccount` POSTs.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -296,7 +319,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -312,7 +339,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
@@ -363,7 +390,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Account` objects.
+      # Returns a list of `Account` objects.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS
+      #  * /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -385,7 +415,7 @@ module Merge
       #  returned.
       # @param name [String] If provided, will only return accounts with this name.
       # @param owner_id [String] If provided, will only return accounts with this owner.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedAccountList]
@@ -434,12 +464,16 @@ module Merge
         end
       end
 
-      # Creates an `Account` object with the given values.
+      # Creates an `Account` object with the given values.{/*
+      #  BEGIN_CRM_ACCOUNT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  BDNulsrp6+Wdi9J/nuSr6jvMvnPOb0+yams/miaBb2SU0l1cX2MNd9KjbfP0yA/+/I/clrB/GIOAAA="
+      #  /></Footer>{/* END_CRM_ACCOUNT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Crm::AccountRequest, as a Hash
-      #   * :owner (Hash)
+      #   * :owner (String)
       #   * :name (String)
       #   * :description (String)
       #   * :industry (String)
@@ -482,7 +516,11 @@ module Merge
         end
       end
 
-      # Returns an `Account` object with the given `id`.
+      # Returns an `Account` object with the given `id`.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -530,7 +568,11 @@ module Merge
         end
       end
 
-      # Updates an `Account` object with the given `id`.
+      # Updates an `Account` object with the given `id`.{/*
+      #  BEGIN_CRM_ACCOUNT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  axhW+X83dIdZNlfz/J18598ez03zmc1VfWfRrOgV2qqqKlurp7mq+MlK+InkF98+wcFLJya+g0AAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -579,7 +621,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMAccount` PATCHs.
+      # Returns metadata for `CRMAccount` PATCHs.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -614,7 +660,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMAccount` POSTs.
+      # Returns metadata for `CRMAccount` POSTs.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -648,7 +698,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  jTDwmlmp/MFybmy/25sd7vdv3NYsv6Dby4/y4HMPlVO5UA+q/n41YWuDfzZXefl128YQM1XSSYAAA=="
+      #  /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -664,7 +718,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example

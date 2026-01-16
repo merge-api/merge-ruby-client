@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "journal_entry_payments_item"
-require_relative "journal_entry_applied_payments_item"
 require_relative "transaction_currency_enum"
-require_relative "journal_entry_company"
 require_relative "journal_line"
-require_relative "journal_entry_tracking_categories_item"
 require_relative "posting_status_enum"
-require_relative "journal_entry_accounting_period"
 require_relative "remote_data"
 require_relative "remote_field"
 require "ostruct"
@@ -39,9 +34,9 @@ module Merge
       attr_reader :modified_at
       # @return [DateTime] The journal entry's transaction date.
       attr_reader :transaction_date
-      # @return [Array<Merge::Accounting::JournalEntryPaymentsItem>] Array of `Payment` object IDs.
+      # @return [Array<String>] Array of `Payment` object IDs.
       attr_reader :payments
-      # @return [Array<Merge::Accounting::JournalEntryAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
+      # @return [Array<String>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
       attr_reader :applied_payments
       # @return [String] The journal entry's private note.
@@ -356,7 +351,7 @@ module Merge
       attr_reader :currency
       # @return [String] The journal entry's exchange rate.
       attr_reader :exchange_rate
-      # @return [Merge::Accounting::JournalEntryCompany] The company the journal entry belongs to.
+      # @return [String] The company the journal entry belongs to.
       attr_reader :company
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
@@ -365,7 +360,7 @@ module Merge
       attr_reader :lines
       # @return [String] Reference number for identifying journal entries.
       attr_reader :journal_number
-      # @return [Array<Merge::Accounting::JournalEntryTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -376,7 +371,7 @@ module Merge
       #  * `UNPOSTED` - UNPOSTED
       #  * `POSTED` - POSTED
       attr_reader :posting_status
-      # @return [Merge::Accounting::JournalEntryAccountingPeriod] The accounting period that the JournalEntry was generated in.
+      # @return [String] The accounting period that the JournalEntry was generated in.
       attr_reader :accounting_period
       # @return [DateTime] When the third party's journal entry was created.
       attr_reader :remote_created_at
@@ -401,8 +396,8 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param transaction_date [DateTime] The journal entry's transaction date.
-      # @param payments [Array<Merge::Accounting::JournalEntryPaymentsItem>] Array of `Payment` object IDs.
-      # @param applied_payments [Array<Merge::Accounting::JournalEntryAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
+      # @param payments [Array<String>] Array of `Payment` object IDs.
+      # @param applied_payments [Array<String>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
       # @param memo [String] The journal entry's private note.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The journal's currency.
@@ -713,12 +708,12 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The journal entry's exchange rate.
-      # @param company [Merge::Accounting::JournalEntryCompany] The company the journal entry belongs to.
+      # @param company [String] The company the journal entry belongs to.
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       # @param lines [Array<Merge::Accounting::JournalLine>]
       # @param journal_number [String] Reference number for identifying journal entries.
-      # @param tracking_categories [Array<Merge::Accounting::JournalEntryTrackingCategoriesItem>]
+      # @param tracking_categories [Array<String>]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -726,7 +721,7 @@ module Merge
       # @param posting_status [Merge::Accounting::PostingStatusEnum] The journal's posting status.
       #  * `UNPOSTED` - UNPOSTED
       #  * `POSTED` - POSTED
-      # @param accounting_period [Merge::Accounting::JournalEntryAccountingPeriod] The accounting period that the JournalEntry was generated in.
+      # @param accounting_period [String] The accounting period that the JournalEntry was generated in.
       # @param remote_created_at [DateTime] When the third party's journal entry was created.
       # @param remote_updated_at [DateTime] When the third party's journal entry was updated.
       # @param field_mappings [Hash{String => Object}]
@@ -801,41 +796,22 @@ module Merge
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
-        payments = parsed_json["payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::JournalEntryPaymentsItem.from_json(json_object: item)
-        end
-        applied_payments = parsed_json["applied_payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::JournalEntryAppliedPaymentsItem.from_json(json_object: item)
-        end
+        payments = parsed_json["payments"]
+        applied_payments = parsed_json["applied_payments"]
         memo = parsed_json["memo"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::JournalEntryCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
         lines = parsed_json["lines"]&.map do |item|
           item = item.to_json
           Merge::Accounting::JournalLine.from_json(json_object: item)
         end
         journal_number = parsed_json["journal_number"]
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::JournalEntryTrackingCategoriesItem.from_json(json_object: item)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         posting_status = parsed_json["posting_status"]
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::JournalEntryAccountingPeriod.from_json(json_object: accounting_period)
-        end
+        accounting_period = parsed_json["accounting_period"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
@@ -903,14 +879,14 @@ module Merge
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::JournalEntryCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.lines&.is_a?(Array) != false || raise("Passed value for field obj.lines is not the expected type, validation failed.")
         obj.journal_number&.is_a?(String) != false || raise("Passed value for field obj.journal_number is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.posting_status&.is_a?(Merge::Accounting::PostingStatusEnum) != false || raise("Passed value for field obj.posting_status is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::JournalEntryAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

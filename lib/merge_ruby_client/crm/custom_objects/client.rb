@@ -22,7 +22,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CustomObject` objects.
+      # Returns a list of `CustomObject` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -41,7 +45,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedCustomObjectList]
@@ -85,7 +89,9 @@ module Merge
         Merge::Crm::PaginatedCustomObjectList.from_json(json_object: response.body)
       end
 
-      # Creates a `CustomObject` object with the given values.
+      # Creates a `CustomObject` object with the given values.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -125,7 +131,11 @@ module Merge
         Merge::Crm::CrmCustomObjectResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `CustomObject` object with the given `id`.
+      # Returns a `CustomObject` object with the given `id`.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param id [String]
@@ -169,7 +179,11 @@ module Merge
         Merge::Crm::CustomObject.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `CRMCustomObject` POSTs.
+      # Returns metadata for `CRMCustomObject` POSTs.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param request_options [Merge::RequestOptions]
@@ -202,7 +216,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -218,7 +236,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
@@ -269,7 +287,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CustomObject` objects.
+      # Returns a list of `CustomObject` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -288,7 +310,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedCustomObjectList]
@@ -334,7 +356,9 @@ module Merge
         end
       end
 
-      # Creates a `CustomObject` object with the given values.
+      # Creates a `CustomObject` object with the given values.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -376,7 +400,11 @@ module Merge
         end
       end
 
-      # Returns a `CustomObject` object with the given `id`.
+      # Returns a `CustomObject` object with the given `id`.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param id [String]
@@ -422,7 +450,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `CRMCustomObject` POSTs.
+      # Returns metadata for `CRMCustomObject` POSTs.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param custom_object_class_id [String]
       # @param request_options [Merge::RequestOptions]
@@ -457,7 +489,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lDKc7hrg43livJLVFiSIdWOunt03hLsCgXphVSM/o1mlwLNQqryJ69XV/+3bneP3wEsexsFvAQAAA=="
+      #  /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -473,7 +509,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example

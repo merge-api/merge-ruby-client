@@ -29,7 +29,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TimeOff` objects.
+      # Returns a list of `TimeOff` objects.{/*
+      #  BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  o/P9vhX8HcQXENLkSXWHkLjj7v2Jv/rYzBwPBFj7F7j67lM9Ke51Vj9z5OrjT99/ReFWNbR5jgAAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param approver_id [String] If provided, will only return time off for this approver.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -51,7 +55,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [Merge::Hris::TimeOff::TimeOffListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_type [Merge::Hris::TimeOff::TimeOffListRequestRequestType] If provided, will only return TimeOff with this request type. Options:
@@ -126,13 +130,17 @@ module Merge
         Merge::Hris::PaginatedTimeOffList.from_json(json_object: response.body)
       end
 
-      # Creates a `TimeOff` object with the given values.
+      # Creates a `TimeOff` object with the given values.{/*
+      #  BEGIN_HRIS_TIMEOFF_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Cqp2jzG3C469JR9lXHrYH9d0r4d/mdLF113BPNy25016D/z8j5anF3n2HU77q/vfwCla8Cokw8AAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Hris::TimeOffRequest, as a Hash
-      #   * :employee (Hash)
-      #   * :approver (Hash)
+      #   * :employee (String)
+      #   * :approver (String)
       #   * :status (Merge::Hris::TimeOffStatusEnum)
       #   * :employee_note (String)
       #   * :units (Merge::Hris::UnitsEnum)
@@ -172,7 +180,11 @@ module Merge
         Merge::Hris::TimeOffResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `TimeOff` object with the given `id`.
+      # Returns a `TimeOff` object with the given `id`.{/*
+      #  BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  o/P9vhX8HcQXENLkSXWHkLjj7v2Jv/rYzBwPBFj7F7j67lM9Ke51Vj9z5OrjT99/ReFWNbR5jgAAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::TimeOff::TimeOffRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -221,7 +233,11 @@ module Merge
         Merge::Hris::TimeOff.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `TimeOff` POSTs.
+      # Returns metadata for `TimeOff` POSTs.{/*
+      #  BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  o/P9vhX8HcQXENLkSXWHkLjj7v2Jv/rYzBwPBFj7F7j67lM9Ke51Vj9z5OrjT99/ReFWNbR5jgAAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::MetaResponse]
@@ -264,7 +280,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TimeOff` objects.
+      # Returns a list of `TimeOff` objects.{/*
+      #  BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  o/P9vhX8HcQXENLkSXWHkLjj7v2Jv/rYzBwPBFj7F7j67lM9Ke51Vj9z5OrjT99/ReFWNbR5jgAAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param approver_id [String] If provided, will only return time off for this approver.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -286,7 +306,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [Merge::Hris::TimeOff::TimeOffListRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_type [Merge::Hris::TimeOff::TimeOffListRequestRequestType] If provided, will only return TimeOff with this request type. Options:
@@ -363,13 +383,17 @@ module Merge
         end
       end
 
-      # Creates a `TimeOff` object with the given values.
+      # Creates a `TimeOff` object with the given values.{/*
+      #  BEGIN_HRIS_TIMEOFF_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Cqp2jzG3C469JR9lXHrYH9d0r4d/mdLF113BPNy25016D/z8j5anF3n2HU77q/vfwCla8Cokw8AAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Hris::TimeOffRequest, as a Hash
-      #   * :employee (Hash)
-      #   * :approver (Hash)
+      #   * :employee (String)
+      #   * :approver (String)
       #   * :status (Merge::Hris::TimeOffStatusEnum)
       #   * :employee_note (String)
       #   * :units (Merge::Hris::UnitsEnum)
@@ -411,7 +435,11 @@ module Merge
         end
       end
 
-      # Returns a `TimeOff` object with the given `id`.
+      # Returns a `TimeOff` object with the given `id`.{/*
+      #  BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  o/P9vhX8HcQXENLkSXWHkLjj7v2Jv/rYzBwPBFj7F7j67lM9Ke51Vj9z5OrjT99/ReFWNbR5jgAAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::TimeOff::TimeOffRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -462,7 +490,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `TimeOff` POSTs.
+      # Returns metadata for `TimeOff` POSTs.{/*
+      #  BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  o/P9vhX8HcQXENLkSXWHkLjj7v2Jv/rYzBwPBFj7F7j67lM9Ke51Vj9z5OrjT99/ReFWNbR5jgAAA=="
+      #  /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::MetaResponse]

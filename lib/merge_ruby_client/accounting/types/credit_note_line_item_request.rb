@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "credit_note_line_item_request_item"
-require_relative "credit_note_line_item_request_company"
-require_relative "credit_note_line_item_request_contact"
-require_relative "credit_note_line_item_request_project"
 require "ostruct"
 require "json"
 
@@ -17,7 +13,7 @@ module Merge
     class CreditNoteLineItemRequest
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [Merge::Accounting::CreditNoteLineItemRequestItem]
+      # @return [String]
       attr_reader :item
       # @return [String] The credit note line item's name.
       attr_reader :name
@@ -39,11 +35,11 @@ module Merge
       attr_reader :tracking_categories
       # @return [String] The credit note line item's account.
       attr_reader :account
-      # @return [Merge::Accounting::CreditNoteLineItemRequestCompany] The company the credit note belongs to.
+      # @return [String] The company the credit note belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::CreditNoteLineItemRequestContact] The credit note's contact.
+      # @return [String] The credit note's contact.
       attr_reader :contact
-      # @return [Merge::Accounting::CreditNoteLineItemRequestProject]
+      # @return [String]
       attr_reader :project
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -58,7 +54,7 @@ module Merge
       OMIT = Object.new
 
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param item [Merge::Accounting::CreditNoteLineItemRequestItem]
+      # @param item [String]
       # @param name [String] The credit note line item's name.
       # @param description [String] The description of the item that is owed.
       # @param quantity [String] The credit note line item's quantity.
@@ -69,9 +65,9 @@ module Merge
       # @param tracking_category [String] The credit note line item's associated tracking category.
       # @param tracking_categories [Array<String>] The credit note line item's associated tracking categories.
       # @param account [String] The credit note line item's account.
-      # @param company [Merge::Accounting::CreditNoteLineItemRequestCompany] The company the credit note belongs to.
-      # @param contact [Merge::Accounting::CreditNoteLineItemRequestContact] The credit note's contact.
-      # @param project [Merge::Accounting::CreditNoteLineItemRequestProject]
+      # @param company [String] The company the credit note belongs to.
+      # @param contact [String] The credit note's contact.
+      # @param project [String]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -127,12 +123,7 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         remote_id = parsed_json["remote_id"]
-        if parsed_json["item"].nil?
-          item = nil
-        else
-          item = parsed_json["item"].to_json
-          item = Merge::Accounting::CreditNoteLineItemRequestItem.from_json(json_object: item)
-        end
+        item = parsed_json["item"]
         name = parsed_json["name"]
         description = parsed_json["description"]
         quantity = parsed_json["quantity"]
@@ -143,24 +134,9 @@ module Merge
         tracking_category = parsed_json["tracking_category"]
         tracking_categories = parsed_json["tracking_categories"]
         account = parsed_json["account"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::CreditNoteLineItemRequestCompany.from_json(json_object: company)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::CreditNoteLineItemRequestContact.from_json(json_object: contact)
-        end
-        if parsed_json["project"].nil?
-          project = nil
-        else
-          project = parsed_json["project"].to_json
-          project = Merge::Accounting::CreditNoteLineItemRequestProject.from_json(json_object: project)
-        end
+        company = parsed_json["company"]
+        contact = parsed_json["contact"]
+        project = parsed_json["project"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         new(
@@ -200,7 +176,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
-        obj.item.nil? || Merge::Accounting::CreditNoteLineItemRequestItem.validate_raw(obj: obj.item)
+        obj.item&.is_a?(String) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.quantity&.is_a?(String) != false || raise("Passed value for field obj.quantity is not the expected type, validation failed.")
@@ -211,9 +187,9 @@ module Merge
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::CreditNoteLineItemRequestCompany.validate_raw(obj: obj.company)
-        obj.contact.nil? || Merge::Accounting::CreditNoteLineItemRequestContact.validate_raw(obj: obj.contact)
-        obj.project.nil? || Merge::Accounting::CreditNoteLineItemRequestProject.validate_raw(obj: obj.project)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.project&.is_a?(String) != false || raise("Passed value for field obj.project is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
       end

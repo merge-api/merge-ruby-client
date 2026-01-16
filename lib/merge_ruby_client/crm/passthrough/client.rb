@@ -20,7 +20,7 @@ module Merge
       # Pull data from an endpoint not currently supported by Merge.
       #
       # @param request [Hash] Request of type Merge::Crm::DataPassthroughRequest, as a Hash
-      #   * :method (Merge::Crm::MethodEnum)
+      #   * :method_ (Merge::Crm::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
@@ -36,7 +36,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.passthrough.create(request: { method: GET, path: "/scooters" })
+      #  api.crm.passthrough.create(request: { method_: GET, path: "/scooters" })
       def create(request:, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -70,7 +70,7 @@ module Merge
       # Pull data from an endpoint not currently supported by Merge.
       #
       # @param request [Hash] Request of type Merge::Crm::DataPassthroughRequest, as a Hash
-      #   * :method (Merge::Crm::MethodEnum)
+      #   * :method_ (Merge::Crm::MethodEnum)
       #   * :path (String)
       #   * :base_url_override (String)
       #   * :data (String)
@@ -86,7 +86,7 @@ module Merge
       #    environment: Merge::Environment::PRODUCTION,
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
-      #  api.crm.passthrough.create(request: { method: GET, path: "/scooters" })
+      #  api.crm.passthrough.create(request: { method_: GET, path: "/scooters" })
       def create(request:, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|

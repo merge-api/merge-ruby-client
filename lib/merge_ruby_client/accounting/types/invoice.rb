@@ -2,20 +2,11 @@
 
 require "date"
 require_relative "invoice_type_enum"
-require_relative "invoice_contact"
-require_relative "invoice_company"
-require_relative "invoice_employee"
 require_relative "transaction_currency_enum"
-require_relative "invoice_payment_term"
 require_relative "invoice_status_enum"
-require_relative "invoice_tracking_categories_item"
-require_relative "invoice_accounting_period"
-require_relative "invoice_purchase_orders_item"
-require_relative "invoice_payments_item"
-require_relative "invoice_applied_payments_item"
 require_relative "invoice_line_item"
-require_relative "invoice_applied_credit_notes_item"
-require_relative "invoice_applied_vendor_credits_item"
+require_relative "credit_note_apply_line_for_invoice"
+require_relative "vendor_credit_apply_line_for_invoice"
 require_relative "remote_data"
 require_relative "remote_field"
 require "ostruct"
@@ -46,7 +37,7 @@ module Merge
       #  * `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       #  * `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
       attr_reader :type
-      # @return [Merge::Accounting::InvoiceContact] The invoice's contact.
+      # @return [String] The invoice's contact.
       attr_reader :contact
       # @return [String] The invoice's number.
       attr_reader :number
@@ -58,9 +49,9 @@ module Merge
       attr_reader :paid_on_date
       # @return [String] The invoice's private note.
       attr_reader :memo
-      # @return [Merge::Accounting::InvoiceCompany] The company the invoice belongs to.
+      # @return [String] The company the invoice belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::InvoiceEmployee] The employee this overall transaction relates to.
+      # @return [String] The employee this overall transaction relates to.
       attr_reader :employee
       # @return [Merge::Accounting::TransactionCurrencyEnum] The invoice's currency.
       #  * `XUA` - ADB Unit of Account
@@ -372,7 +363,7 @@ module Merge
       attr_reader :currency
       # @return [String] The invoice's exchange rate.
       attr_reader :exchange_rate
-      # @return [Merge::Accounting::InvoicePaymentTerm] The payment term that applies to this transaction.
+      # @return [String] The payment term that applies to this transaction.
       attr_reader :payment_term
       # @return [Float] The total discounts applied to the total cost.
       attr_reader :total_discount
@@ -394,22 +385,24 @@ module Merge
       attr_reader :balance
       # @return [DateTime] When the third party's invoice entry was updated.
       attr_reader :remote_updated_at
-      # @return [Array<Merge::Accounting::InvoiceTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
-      # @return [Merge::Accounting::InvoiceAccountingPeriod] The accounting period that the Invoice was generated in.
+      # @return [String] The accounting period that the Invoice was generated in.
       attr_reader :accounting_period
-      # @return [Array<Merge::Accounting::InvoicePurchaseOrdersItem>]
+      # @return [Array<String>]
       attr_reader :purchase_orders
-      # @return [Array<Merge::Accounting::InvoicePaymentsItem>] Array of `Payment` object IDs.
+      # @return [Array<String>]
+      attr_reader :sales_orders
+      # @return [Array<String>] Array of `Payment` object IDs.
       attr_reader :payments
-      # @return [Array<Merge::Accounting::InvoiceAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
+      # @return [Array<String>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
       attr_reader :applied_payments
       # @return [Array<Merge::Accounting::InvoiceLineItem>]
       attr_reader :line_items
-      # @return [Array<Merge::Accounting::InvoiceAppliedCreditNotesItem>] `CreditNoteApplyLines` applied to the Invoice.
+      # @return [Array<Merge::Accounting::CreditNoteApplyLineForInvoice>] `CreditNoteApplyLines` applied to the Invoice.
       attr_reader :applied_credit_notes
-      # @return [Array<Merge::Accounting::InvoiceAppliedVendorCreditsItem>] `VendorCreditApplyLines` applied to the Invoice.
+      # @return [Array<Merge::Accounting::VendorCreditApplyLineForInvoice>] `VendorCreditApplyLines` applied to the Invoice.
       attr_reader :applied_vendor_credits
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
@@ -442,14 +435,14 @@ module Merge
       #  it is an invoice.
       #  * `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       #  * `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
-      # @param contact [Merge::Accounting::InvoiceContact] The invoice's contact.
+      # @param contact [String] The invoice's contact.
       # @param number [String] The invoice's number.
       # @param issue_date [DateTime] The invoice's issue date.
       # @param due_date [DateTime] The invoice's due date.
       # @param paid_on_date [DateTime] The invoice's paid date.
       # @param memo [String] The invoice's private note.
-      # @param company [Merge::Accounting::InvoiceCompany] The company the invoice belongs to.
-      # @param employee [Merge::Accounting::InvoiceEmployee] The employee this overall transaction relates to.
+      # @param company [String] The company the invoice belongs to.
+      # @param employee [String] The employee this overall transaction relates to.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The invoice's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -758,7 +751,7 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The invoice's exchange rate.
-      # @param payment_term [Merge::Accounting::InvoicePaymentTerm] The payment term that applies to this transaction.
+      # @param payment_term [String] The payment term that applies to this transaction.
       # @param total_discount [Float] The total discounts applied to the total cost.
       # @param sub_total [Float] The total amount being paid before taxes.
       # @param status [Merge::Accounting::InvoiceStatusEnum] The status of the invoice.
@@ -772,15 +765,16 @@ module Merge
       # @param total_amount [Float] The invoice's total amount.
       # @param balance [Float] The invoice's remaining balance.
       # @param remote_updated_at [DateTime] When the third party's invoice entry was updated.
-      # @param tracking_categories [Array<Merge::Accounting::InvoiceTrackingCategoriesItem>]
-      # @param accounting_period [Merge::Accounting::InvoiceAccountingPeriod] The accounting period that the Invoice was generated in.
-      # @param purchase_orders [Array<Merge::Accounting::InvoicePurchaseOrdersItem>]
-      # @param payments [Array<Merge::Accounting::InvoicePaymentsItem>] Array of `Payment` object IDs.
-      # @param applied_payments [Array<Merge::Accounting::InvoiceAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
+      # @param tracking_categories [Array<String>]
+      # @param accounting_period [String] The accounting period that the Invoice was generated in.
+      # @param purchase_orders [Array<String>]
+      # @param sales_orders [Array<String>]
+      # @param payments [Array<String>] Array of `Payment` object IDs.
+      # @param applied_payments [Array<String>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
       # @param line_items [Array<Merge::Accounting::InvoiceLineItem>]
-      # @param applied_credit_notes [Array<Merge::Accounting::InvoiceAppliedCreditNotesItem>] `CreditNoteApplyLines` applied to the Invoice.
-      # @param applied_vendor_credits [Array<Merge::Accounting::InvoiceAppliedVendorCreditsItem>] `VendorCreditApplyLines` applied to the Invoice.
+      # @param applied_credit_notes [Array<Merge::Accounting::CreditNoteApplyLineForInvoice>] `CreditNoteApplyLines` applied to the Invoice.
+      # @param applied_vendor_credits [Array<Merge::Accounting::VendorCreditApplyLineForInvoice>] `VendorCreditApplyLines` applied to the Invoice.
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -793,7 +787,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Accounting::Invoice]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, type: OMIT, contact: OMIT,
-                     number: OMIT, issue_date: OMIT, due_date: OMIT, paid_on_date: OMIT, memo: OMIT, company: OMIT, employee: OMIT, currency: OMIT, exchange_rate: OMIT, payment_term: OMIT, total_discount: OMIT, sub_total: OMIT, status: OMIT, total_tax_amount: OMIT, total_amount: OMIT, balance: OMIT, remote_updated_at: OMIT, tracking_categories: OMIT, accounting_period: OMIT, purchase_orders: OMIT, payments: OMIT, applied_payments: OMIT, line_items: OMIT, applied_credit_notes: OMIT, applied_vendor_credits: OMIT, inclusive_of_tax: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     number: OMIT, issue_date: OMIT, due_date: OMIT, paid_on_date: OMIT, memo: OMIT, company: OMIT, employee: OMIT, currency: OMIT, exchange_rate: OMIT, payment_term: OMIT, total_discount: OMIT, sub_total: OMIT, status: OMIT, total_tax_amount: OMIT, total_amount: OMIT, balance: OMIT, remote_updated_at: OMIT, tracking_categories: OMIT, accounting_period: OMIT, purchase_orders: OMIT, sales_orders: OMIT, payments: OMIT, applied_payments: OMIT, line_items: OMIT, applied_credit_notes: OMIT, applied_vendor_credits: OMIT, inclusive_of_tax: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -820,6 +814,7 @@ module Merge
         @tracking_categories = tracking_categories if tracking_categories != OMIT
         @accounting_period = accounting_period if accounting_period != OMIT
         @purchase_orders = purchase_orders if purchase_orders != OMIT
+        @sales_orders = sales_orders if sales_orders != OMIT
         @payments = payments if payments != OMIT
         @applied_payments = applied_payments if applied_payments != OMIT
         @line_items = line_items if line_items != OMIT
@@ -858,6 +853,7 @@ module Merge
           "tracking_categories": tracking_categories,
           "accounting_period": accounting_period,
           "purchase_orders": purchase_orders,
+          "sales_orders": sales_orders,
           "payments": payments,
           "applied_payments": applied_payments,
           "line_items": line_items,
@@ -885,37 +881,17 @@ module Merge
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         type = parsed_json["type"]
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::InvoiceContact.from_json(json_object: contact)
-        end
+        contact = parsed_json["contact"]
         number = parsed_json["number"]
         issue_date = (DateTime.parse(parsed_json["issue_date"]) unless parsed_json["issue_date"].nil?)
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
         paid_on_date = (DateTime.parse(parsed_json["paid_on_date"]) unless parsed_json["paid_on_date"].nil?)
         memo = parsed_json["memo"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::InvoiceCompany.from_json(json_object: company)
-        end
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Accounting::InvoiceEmployee.from_json(json_object: employee)
-        end
+        company = parsed_json["company"]
+        employee = parsed_json["employee"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
-        if parsed_json["payment_term"].nil?
-          payment_term = nil
-        else
-          payment_term = parsed_json["payment_term"].to_json
-          payment_term = Merge::Accounting::InvoicePaymentTerm.from_json(json_object: payment_term)
-        end
+        payment_term = parsed_json["payment_term"]
         total_discount = parsed_json["total_discount"]
         sub_total = parsed_json["sub_total"]
         status = parsed_json["status"]
@@ -925,39 +901,23 @@ module Merge
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::InvoiceTrackingCategoriesItem.from_json(json_object: item)
-        end
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::InvoiceAccountingPeriod.from_json(json_object: accounting_period)
-        end
-        purchase_orders = parsed_json["purchase_orders"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::InvoicePurchaseOrdersItem.from_json(json_object: item)
-        end
-        payments = parsed_json["payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::InvoicePaymentsItem.from_json(json_object: item)
-        end
-        applied_payments = parsed_json["applied_payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::InvoiceAppliedPaymentsItem.from_json(json_object: item)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
+        accounting_period = parsed_json["accounting_period"]
+        purchase_orders = parsed_json["purchase_orders"]
+        sales_orders = parsed_json["sales_orders"]
+        payments = parsed_json["payments"]
+        applied_payments = parsed_json["applied_payments"]
         line_items = parsed_json["line_items"]&.map do |item|
           item = item.to_json
           Merge::Accounting::InvoiceLineItem.from_json(json_object: item)
         end
         applied_credit_notes = parsed_json["applied_credit_notes"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::InvoiceAppliedCreditNotesItem.from_json(json_object: item)
+          Merge::Accounting::CreditNoteApplyLineForInvoice.from_json(json_object: item)
         end
         applied_vendor_credits = parsed_json["applied_vendor_credits"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::InvoiceAppliedVendorCreditsItem.from_json(json_object: item)
+          Merge::Accounting::VendorCreditApplyLineForInvoice.from_json(json_object: item)
         end
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
@@ -997,6 +957,7 @@ module Merge
           tracking_categories: tracking_categories,
           accounting_period: accounting_period,
           purchase_orders: purchase_orders,
+          sales_orders: sales_orders,
           payments: payments,
           applied_payments: applied_payments,
           line_items: line_items,
@@ -1030,17 +991,17 @@ module Merge
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.type&.is_a?(Merge::Accounting::InvoiceTypeEnum) != false || raise("Passed value for field obj.type is not the expected type, validation failed.")
-        obj.contact.nil? || Merge::Accounting::InvoiceContact.validate_raw(obj: obj.contact)
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.number&.is_a?(String) != false || raise("Passed value for field obj.number is not the expected type, validation failed.")
         obj.issue_date&.is_a?(DateTime) != false || raise("Passed value for field obj.issue_date is not the expected type, validation failed.")
         obj.due_date&.is_a?(DateTime) != false || raise("Passed value for field obj.due_date is not the expected type, validation failed.")
         obj.paid_on_date&.is_a?(DateTime) != false || raise("Passed value for field obj.paid_on_date is not the expected type, validation failed.")
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::InvoiceCompany.validate_raw(obj: obj.company)
-        obj.employee.nil? || Merge::Accounting::InvoiceEmployee.validate_raw(obj: obj.employee)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
-        obj.payment_term.nil? || Merge::Accounting::InvoicePaymentTerm.validate_raw(obj: obj.payment_term)
+        obj.payment_term&.is_a?(String) != false || raise("Passed value for field obj.payment_term is not the expected type, validation failed.")
         obj.total_discount&.is_a?(Float) != false || raise("Passed value for field obj.total_discount is not the expected type, validation failed.")
         obj.sub_total&.is_a?(Float) != false || raise("Passed value for field obj.sub_total is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Accounting::InvoiceStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
@@ -1049,8 +1010,9 @@ module Merge
         obj.balance&.is_a?(Float) != false || raise("Passed value for field obj.balance is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::InvoiceAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
         obj.purchase_orders&.is_a?(Array) != false || raise("Passed value for field obj.purchase_orders is not the expected type, validation failed.")
+        obj.sales_orders&.is_a?(Array) != false || raise("Passed value for field obj.sales_orders is not the expected type, validation failed.")
         obj.payments&.is_a?(Array) != false || raise("Passed value for field obj.payments is not the expected type, validation failed.")
         obj.applied_payments&.is_a?(Array) != false || raise("Passed value for field obj.applied_payments is not the expected type, validation failed.")
         obj.line_items&.is_a?(Array) != false || raise("Passed value for field obj.line_items is not the expected type, validation failed.")

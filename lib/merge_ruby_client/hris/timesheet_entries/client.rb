@@ -22,7 +22,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TimesheetEntry` objects.
+      # Returns a list of `TimesheetEntry` objects.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  KgYpZ5kMWq/evQCJ1ed0gghKOhdnlx1fJVHMETofloNj95g9ptR+LdwDz0meXePPwHJWVYtkA0AAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -45,7 +49,7 @@ module Merge
       #  returned.
       # @param order_by [Merge::Hris::TimesheetEntries::TimesheetEntriesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  start_time, -start_time.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return timesheet entries started after this datetime.
       # @param started_before [DateTime] If provided, will only return timesheet entries started before this datetime.
@@ -97,12 +101,16 @@ module Merge
         Merge::Hris::PaginatedTimesheetEntryList.from_json(json_object: response.body)
       end
 
-      # Creates a `TimesheetEntry` object with the given values.
+      # Creates a `TimesheetEntry` object with the given values.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  2f/iachbphUx7WU75iR3vXq76k6hp7xVedkRBhvjmNofNU5aIkSwu6H5fCfbNLd4w9xMqSD8AYAAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Hris::TimesheetEntryRequest, as a Hash
-      #   * :employee (Hash)
+      #   * :employee (String)
       #   * :hours_worked (Float)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
@@ -138,7 +146,11 @@ module Merge
         Merge::Hris::TimesheetEntryResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `TimesheetEntry` object with the given `id`.
+      # Returns a `TimesheetEntry` object with the given `id`.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  KgYpZ5kMWq/evQCJ1ed0gghKOhdnlx1fJVHMETofloNj95g9ptR+LdwDz0meXePPwHJWVYtkA0AAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -180,7 +192,11 @@ module Merge
         Merge::Hris::TimesheetEntry.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `TimesheetEntry` POSTs.
+      # Returns metadata for `TimesheetEntry` POSTs.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  KgYpZ5kMWq/evQCJ1ed0gghKOhdnlx1fJVHMETofloNj95g9ptR+LdwDz0meXePPwHJWVYtkA0AAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::MetaResponse]
@@ -223,7 +239,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TimesheetEntry` objects.
+      # Returns a list of `TimesheetEntry` objects.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  KgYpZ5kMWq/evQCJ1ed0gghKOhdnlx1fJVHMETofloNj95g9ptR+LdwDz0meXePPwHJWVYtkA0AAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -246,7 +266,7 @@ module Merge
       #  returned.
       # @param order_by [Merge::Hris::TimesheetEntries::TimesheetEntriesListRequestOrderBy] Overrides the default ordering for this endpoint. Possible values include:
       #  start_time, -start_time.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return timesheet entries started after this datetime.
       # @param started_before [DateTime] If provided, will only return timesheet entries started before this datetime.
@@ -300,12 +320,16 @@ module Merge
         end
       end
 
-      # Creates a `TimesheetEntry` object with the given values.
+      # Creates a `TimesheetEntry` object with the given values.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  2f/iachbphUx7WU75iR3vXq76k6hp7xVedkRBhvjmNofNU5aIkSwu6H5fCfbNLd4w9xMqSD8AYAAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Hris::TimesheetEntryRequest, as a Hash
-      #   * :employee (Hash)
+      #   * :employee (String)
       #   * :hours_worked (Float)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
@@ -343,7 +367,11 @@ module Merge
         end
       end
 
-      # Returns a `TimesheetEntry` object with the given `id`.
+      # Returns a `TimesheetEntry` object with the given `id`.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  KgYpZ5kMWq/evQCJ1ed0gghKOhdnlx1fJVHMETofloNj95g9ptR+LdwDz0meXePPwHJWVYtkA0AAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -387,7 +415,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `TimesheetEntry` POSTs.
+      # Returns metadata for `TimesheetEntry` POSTs.{/*
+      #  BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  KgYpZ5kMWq/evQCJ1ed0gghKOhdnlx1fJVHMETofloNj95g9ptR+LdwDz0meXePPwHJWVYtkA0AAA=="
+      #  /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::MetaResponse]

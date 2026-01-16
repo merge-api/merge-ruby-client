@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "job_posting_job_posting_urls_item"
-require_relative "job_posting_job"
+require_relative "url"
 require_relative "job_posting_status_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -28,10 +27,10 @@ module Merge
       attr_reader :modified_at
       # @return [String] The job posting’s title.
       attr_reader :title
-      # @return [Array<Merge::Ats::JobPostingJobPostingUrlsItem>] The Url object is used to represent hyperlinks for a candidate to apply to a
+      # @return [Array<Merge::Ats::Url>] The Url object is used to represent hyperlinks for a candidate to apply to a
       #  given job.
       attr_reader :job_posting_urls
-      # @return [Merge::Ats::JobPostingJob] ID of `Job` object for this `JobPosting`.
+      # @return [String] ID of `Job` object for this `JobPosting`.
       attr_reader :job
       # @return [Merge::Ats::JobPostingStatusEnum] The job posting's status.
       #  * `PUBLISHED` - PUBLISHED
@@ -70,9 +69,9 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param title [String] The job posting’s title.
-      # @param job_posting_urls [Array<Merge::Ats::JobPostingJobPostingUrlsItem>] The Url object is used to represent hyperlinks for a candidate to apply to a
+      # @param job_posting_urls [Array<Merge::Ats::Url>] The Url object is used to represent hyperlinks for a candidate to apply to a
       #  given job.
-      # @param job [Merge::Ats::JobPostingJob] ID of `Job` object for this `JobPosting`.
+      # @param job [String] ID of `Job` object for this `JobPosting`.
       # @param status [Merge::Ats::JobPostingStatusEnum] The job posting's status.
       #  * `PUBLISHED` - PUBLISHED
       #  * `CLOSED` - CLOSED
@@ -144,14 +143,9 @@ module Merge
         title = parsed_json["title"]
         job_posting_urls = parsed_json["job_posting_urls"]&.map do |item|
           item = item.to_json
-          Merge::Ats::JobPostingJobPostingUrlsItem.from_json(json_object: item)
+          Merge::Ats::Url.from_json(json_object: item)
         end
-        if parsed_json["job"].nil?
-          job = nil
-        else
-          job = parsed_json["job"].to_json
-          job = Merge::Ats::JobPostingJob.from_json(json_object: job)
-        end
+        job = parsed_json["job"]
         status = parsed_json["status"]
         content = parsed_json["content"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
@@ -207,7 +201,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.title&.is_a?(String) != false || raise("Passed value for field obj.title is not the expected type, validation failed.")
         obj.job_posting_urls&.is_a?(Array) != false || raise("Passed value for field obj.job_posting_urls is not the expected type, validation failed.")
-        obj.job.nil? || Merge::Ats::JobPostingJob.validate_raw(obj: obj.job)
+        obj.job&.is_a?(String) != false || raise("Passed value for field obj.job is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Ats::JobPostingStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.content&.is_a?(String) != false || raise("Passed value for field obj.content is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")

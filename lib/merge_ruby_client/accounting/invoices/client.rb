@@ -2,13 +2,13 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/invoices_list_request_expand"
-require_relative "types/invoices_list_request_status"
-require_relative "types/invoices_list_request_type"
+require_relative "types/list_invoices_request_expand"
+require_relative "types/list_invoices_request_status"
+require_relative "types/list_invoices_request_type"
 require_relative "../types/paginated_invoice_list"
 require_relative "../types/invoice_request"
 require_relative "../types/invoice_response"
-require_relative "types/invoices_retrieve_request_expand"
+require_relative "types/retrieve_invoices_request_expand"
 require_relative "../types/invoice"
 require_relative "../types/paginated_remote_field_class_list"
 require_relative "../types/meta_response"
@@ -26,14 +26,18 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Invoice` objects.
+      # Returns a list of `Invoice` objects.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return invoices for this company.
       # @param contact_id [String] If provided, will only return invoices for this contact.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Invoices::InvoicesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Invoices::ListInvoicesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -51,20 +55,20 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param number [String] If provided, will only return Invoices with this number.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [Merge::Accounting::Invoices::InvoicesListRequestStatus] If provided, will only return Invoices with this status.
+      # @param status [Merge::Accounting::Invoices::ListInvoicesRequestStatus] If provided, will only return Invoices with this status.
       #  * `PAID` - PAID
       #  * `DRAFT` - DRAFT
       #  * `SUBMITTED` - SUBMITTED
       #  * `PARTIALLY_PAID` - PARTIALLY_PAID
       #  * `OPEN` - OPEN
       #  * `VOID` - VOID
-      # @param type [Merge::Accounting::Invoices::InvoicesListRequestType] If provided, will only return Invoices with this type.
+      # @param type [Merge::Accounting::Invoices::ListInvoicesRequestType] If provided, will only return Invoices with this type.
       #  * `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       #  * `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
       # @param request_options [Merge::RequestOptions]
@@ -122,33 +126,37 @@ module Merge
       # Creates an `Invoice` object with the given values.
       #  Including a `PurchaseOrder` id in the `purchase_orders` property
       #  will generate an Accounts Payable Invoice from the specified Purchase Order(s).
+      #  {/* BEGIN_ACCOUNTING_INVOICE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  3P/CWrrve515+C/KtS3ZprnlvGLnMgir9+J3o+Xr32Uy/9VYfTKq3sxF7H9F8833/8BQL5vdwUUAAA="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::InvoiceRequest, as a Hash
       #   * :type (Merge::Accounting::InvoiceTypeEnum)
-      #   * :contact (Hash)
+      #   * :contact (String)
       #   * :number (String)
       #   * :issue_date (DateTime)
       #   * :due_date (DateTime)
       #   * :paid_on_date (DateTime)
-      #   * :employee (Hash)
+      #   * :employee (String)
       #   * :memo (String)
       #   * :status (Merge::Accounting::InvoiceStatusEnum)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
       #   * :total_discount (Float)
       #   * :sub_total (Float)
-      #   * :payment_term (Hash)
+      #   * :payment_term (String)
       #   * :total_tax_amount (Float)
       #   * :inclusive_of_tax (Boolean)
       #   * :total_amount (Float)
       #   * :balance (Float)
-      #   * :payments (Array<Merge::Accounting::InvoiceRequestPaymentsItem>)
-      #   * :tracking_categories (Array<Merge::Accounting::InvoiceRequestTrackingCategoriesItem>)
+      #   * :payments (Array<String>)
+      #   * :tracking_categories (Array<String>)
       #   * :line_items (Array<Merge::Accounting::InvoiceLineItemRequest>)
-      #   * :purchase_orders (Array<Merge::Accounting::InvoiceRequestPurchaseOrdersItem>)
+      #   * :purchase_orders (Array<String>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -182,10 +190,14 @@ module Merge
         Merge::Accounting::InvoiceResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Invoice` object with the given `id`.
+      # Returns an `Invoice` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Invoices::InvoicesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Invoices::RetrieveInvoicesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -234,35 +246,39 @@ module Merge
         Merge::Accounting::Invoice.from_json(json_object: response.body)
       end
 
-      # Updates an `Invoice` object with the given `id`.
+      # Updates an `Invoice` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  eyZiv2fGrvvEP/fsB2xEuzoTxB6A2R8Ra1ehwivFOztLtnjubCH22L7WPiVzTcPNw//AZ26up03DAAA"
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::InvoiceRequest, as a Hash
       #   * :type (Merge::Accounting::InvoiceTypeEnum)
-      #   * :contact (Hash)
+      #   * :contact (String)
       #   * :number (String)
       #   * :issue_date (DateTime)
       #   * :due_date (DateTime)
       #   * :paid_on_date (DateTime)
-      #   * :employee (Hash)
+      #   * :employee (String)
       #   * :memo (String)
       #   * :status (Merge::Accounting::InvoiceStatusEnum)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
       #   * :total_discount (Float)
       #   * :sub_total (Float)
-      #   * :payment_term (Hash)
+      #   * :payment_term (String)
       #   * :total_tax_amount (Float)
       #   * :inclusive_of_tax (Boolean)
       #   * :total_amount (Float)
       #   * :balance (Float)
-      #   * :payments (Array<Merge::Accounting::InvoiceRequestPaymentsItem>)
-      #   * :tracking_categories (Array<Merge::Accounting::InvoiceRequestTrackingCategoriesItem>)
+      #   * :payments (Array<String>)
+      #   * :tracking_categories (Array<String>)
       #   * :line_items (Array<Merge::Accounting::InvoiceLineItemRequest>)
-      #   * :purchase_orders (Array<Merge::Accounting::InvoiceRequestPurchaseOrdersItem>)
+      #   * :purchase_orders (Array<String>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -296,7 +312,11 @@ module Merge
         Merge::Accounting::InvoiceResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -310,7 +330,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -349,7 +369,11 @@ module Merge
         Merge::Accounting::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Invoice` PATCHs.
+      # Returns metadata for `Invoice` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -382,7 +406,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Invoice` POSTs.
+      # Returns metadata for `Invoice` POSTs.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -414,7 +442,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -428,7 +460,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -478,14 +510,18 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Invoice` objects.
+      # Returns a list of `Invoice` objects.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return invoices for this company.
       # @param contact_id [String] If provided, will only return invoices for this contact.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Invoices::InvoicesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Invoices::ListInvoicesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -503,20 +539,20 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param number [String] If provided, will only return Invoices with this number.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [Merge::Accounting::Invoices::InvoicesListRequestStatus] If provided, will only return Invoices with this status.
+      # @param status [Merge::Accounting::Invoices::ListInvoicesRequestStatus] If provided, will only return Invoices with this status.
       #  * `PAID` - PAID
       #  * `DRAFT` - DRAFT
       #  * `SUBMITTED` - SUBMITTED
       #  * `PARTIALLY_PAID` - PARTIALLY_PAID
       #  * `OPEN` - OPEN
       #  * `VOID` - VOID
-      # @param type [Merge::Accounting::Invoices::InvoicesListRequestType] If provided, will only return Invoices with this type.
+      # @param type [Merge::Accounting::Invoices::ListInvoicesRequestType] If provided, will only return Invoices with this type.
       #  * `ACCOUNTS_RECEIVABLE` - ACCOUNTS_RECEIVABLE
       #  * `ACCOUNTS_PAYABLE` - ACCOUNTS_PAYABLE
       # @param request_options [Merge::RequestOptions]
@@ -576,33 +612,37 @@ module Merge
       # Creates an `Invoice` object with the given values.
       #  Including a `PurchaseOrder` id in the `purchase_orders` property
       #  will generate an Accounts Payable Invoice from the specified Purchase Order(s).
+      #  {/* BEGIN_ACCOUNTING_INVOICE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  3P/CWrrve515+C/KtS3ZprnlvGLnMgir9+J3o+Xr32Uy/9VYfTKq3sxF7H9F8833/8BQL5vdwUUAAA="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::InvoiceRequest, as a Hash
       #   * :type (Merge::Accounting::InvoiceTypeEnum)
-      #   * :contact (Hash)
+      #   * :contact (String)
       #   * :number (String)
       #   * :issue_date (DateTime)
       #   * :due_date (DateTime)
       #   * :paid_on_date (DateTime)
-      #   * :employee (Hash)
+      #   * :employee (String)
       #   * :memo (String)
       #   * :status (Merge::Accounting::InvoiceStatusEnum)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
       #   * :total_discount (Float)
       #   * :sub_total (Float)
-      #   * :payment_term (Hash)
+      #   * :payment_term (String)
       #   * :total_tax_amount (Float)
       #   * :inclusive_of_tax (Boolean)
       #   * :total_amount (Float)
       #   * :balance (Float)
-      #   * :payments (Array<Merge::Accounting::InvoiceRequestPaymentsItem>)
-      #   * :tracking_categories (Array<Merge::Accounting::InvoiceRequestTrackingCategoriesItem>)
+      #   * :payments (Array<String>)
+      #   * :tracking_categories (Array<String>)
       #   * :line_items (Array<Merge::Accounting::InvoiceLineItemRequest>)
-      #   * :purchase_orders (Array<Merge::Accounting::InvoiceRequestPurchaseOrdersItem>)
+      #   * :purchase_orders (Array<String>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -638,10 +678,14 @@ module Merge
         end
       end
 
-      # Returns an `Invoice` object with the given `id`.
+      # Returns an `Invoice` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Invoices::InvoicesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Invoices::RetrieveInvoicesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -692,35 +736,39 @@ module Merge
         end
       end
 
-      # Updates an `Invoice` object with the given `id`.
+      # Updates an `Invoice` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  eyZiv2fGrvvEP/fsB2xEuzoTxB6A2R8Ra1ehwivFOztLtnjubCH22L7WPiVzTcPNw//AZ26up03DAAA"
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::InvoiceRequest, as a Hash
       #   * :type (Merge::Accounting::InvoiceTypeEnum)
-      #   * :contact (Hash)
+      #   * :contact (String)
       #   * :number (String)
       #   * :issue_date (DateTime)
       #   * :due_date (DateTime)
       #   * :paid_on_date (DateTime)
-      #   * :employee (Hash)
+      #   * :employee (String)
       #   * :memo (String)
       #   * :status (Merge::Accounting::InvoiceStatusEnum)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
       #   * :total_discount (Float)
       #   * :sub_total (Float)
-      #   * :payment_term (Hash)
+      #   * :payment_term (String)
       #   * :total_tax_amount (Float)
       #   * :inclusive_of_tax (Boolean)
       #   * :total_amount (Float)
       #   * :balance (Float)
-      #   * :payments (Array<Merge::Accounting::InvoiceRequestPaymentsItem>)
-      #   * :tracking_categories (Array<Merge::Accounting::InvoiceRequestTrackingCategoriesItem>)
+      #   * :payments (Array<String>)
+      #   * :tracking_categories (Array<String>)
       #   * :line_items (Array<Merge::Accounting::InvoiceLineItemRequest>)
-      #   * :purchase_orders (Array<Merge::Accounting::InvoiceRequestPurchaseOrdersItem>)
+      #   * :purchase_orders (Array<String>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -756,7 +804,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -770,7 +822,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -811,7 +863,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Invoice` PATCHs.
+      # Returns metadata for `Invoice` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -846,7 +902,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Invoice` POSTs.
+      # Returns metadata for `Invoice` POSTs.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -880,7 +940,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  p2NNmq6SS9MDP+Jrsjyi36j7/Gnqutl4fPJzVuJqS+gPqv6Am8ZivX2vHS+N/78/T9nq8B0uDUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -894,7 +958,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
