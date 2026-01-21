@@ -2,14 +2,8 @@
 
 require "date"
 require_relative "credit_note_status_enum"
-require_relative "credit_note_contact"
-require_relative "credit_note_company"
 require_relative "credit_note_line_item"
-require_relative "credit_note_tracking_categories_item"
 require_relative "transaction_currency_enum"
-require_relative "credit_note_payments_item"
-require_relative "credit_note_applied_payments_item"
-require_relative "credit_note_accounting_period"
 require_relative "credit_note_apply_line_for_credit_note"
 require_relative "remote_data"
 require "ostruct"
@@ -44,9 +38,9 @@ module Merge
       attr_reader :status
       # @return [String] The credit note's number.
       attr_reader :number
-      # @return [Merge::Accounting::CreditNoteContact] The credit note's contact.
+      # @return [String] The credit note's contact.
       attr_reader :contact
-      # @return [Merge::Accounting::CreditNoteCompany] The company the credit note belongs to.
+      # @return [String] The company the credit note belongs to.
       attr_reader :company
       # @return [String] The credit note's exchange rate.
       attr_reader :exchange_rate
@@ -59,7 +53,7 @@ module Merge
       attr_reader :inclusive_of_tax
       # @return [Array<Merge::Accounting::CreditNoteLineItem>]
       attr_reader :line_items
-      # @return [Array<Merge::Accounting::CreditNoteTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
       # @return [Merge::Accounting::TransactionCurrencyEnum] The credit note's currency.
       #  * `XUA` - ADB Unit of Account
@@ -373,12 +367,12 @@ module Merge
       attr_reader :remote_created_at
       # @return [DateTime] When the third party's credit note was updated.
       attr_reader :remote_updated_at
-      # @return [Array<Merge::Accounting::CreditNotePaymentsItem>] Array of `Payment` object IDs
+      # @return [Array<String>] Array of `Payment` object IDs
       attr_reader :payments
-      # @return [Array<Merge::Accounting::CreditNoteAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
+      # @return [Array<String>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
       attr_reader :applied_payments
-      # @return [Merge::Accounting::CreditNoteAccountingPeriod] The accounting period that the CreditNote was generated in.
+      # @return [String] The accounting period that the CreditNote was generated in.
       attr_reader :accounting_period
       # @return [Array<Merge::Accounting::CreditNoteApplyLineForCreditNote>] A list of the CreditNote Applied to Lines common models related to a given
       #  Credit Note
@@ -410,15 +404,15 @@ module Merge
       #  * `AUTHORIZED` - AUTHORIZED
       #  * `PAID` - PAID
       # @param number [String] The credit note's number.
-      # @param contact [Merge::Accounting::CreditNoteContact] The credit note's contact.
-      # @param company [Merge::Accounting::CreditNoteCompany] The company the credit note belongs to.
+      # @param contact [String] The credit note's contact.
+      # @param company [String] The company the credit note belongs to.
       # @param exchange_rate [String] The credit note's exchange rate.
       # @param total_amount [Float] The credit note's total amount.
       # @param remaining_credit [Float] The amount of value remaining in the credit note that the customer can use.
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       # @param line_items [Array<Merge::Accounting::CreditNoteLineItem>]
-      # @param tracking_categories [Array<Merge::Accounting::CreditNoteTrackingCategoriesItem>]
+      # @param tracking_categories [Array<String>]
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The credit note's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -728,10 +722,10 @@ module Merge
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param remote_created_at [DateTime] When the third party's credit note was created.
       # @param remote_updated_at [DateTime] When the third party's credit note was updated.
-      # @param payments [Array<Merge::Accounting::CreditNotePaymentsItem>] Array of `Payment` object IDs
-      # @param applied_payments [Array<Merge::Accounting::CreditNoteAppliedPaymentsItem>] A list of the Payment Applied to Lines common models related to a given Invoice,
+      # @param payments [Array<String>] Array of `Payment` object IDs
+      # @param applied_payments [Array<String>] A list of the Payment Applied to Lines common models related to a given Invoice,
       #  Credit Note, or Journal Entry.
-      # @param accounting_period [Merge::Accounting::CreditNoteAccountingPeriod] The accounting period that the CreditNote was generated in.
+      # @param accounting_period [String] The accounting period that the CreditNote was generated in.
       # @param applied_to_lines [Array<Merge::Accounting::CreditNoteApplyLineForCreditNote>] A list of the CreditNote Applied to Lines common models related to a given
       #  Credit Note
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -815,18 +809,8 @@ module Merge
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
         status = parsed_json["status"]
         number = parsed_json["number"]
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::CreditNoteContact.from_json(json_object: contact)
-        end
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::CreditNoteCompany.from_json(json_object: company)
-        end
+        contact = parsed_json["contact"]
+        company = parsed_json["company"]
         exchange_rate = parsed_json["exchange_rate"]
         total_amount = parsed_json["total_amount"]
         remaining_credit = parsed_json["remaining_credit"]
@@ -835,10 +819,7 @@ module Merge
           item = item.to_json
           Merge::Accounting::CreditNoteLineItem.from_json(json_object: item)
         end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::CreditNoteTrackingCategoriesItem.from_json(json_object: item)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
         currency = parsed_json["currency"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
@@ -846,20 +827,9 @@ module Merge
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
-        payments = parsed_json["payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::CreditNotePaymentsItem.from_json(json_object: item)
-        end
-        applied_payments = parsed_json["applied_payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::CreditNoteAppliedPaymentsItem.from_json(json_object: item)
-        end
-        if parsed_json["accounting_period"].nil?
-          accounting_period = nil
-        else
-          accounting_period = parsed_json["accounting_period"].to_json
-          accounting_period = Merge::Accounting::CreditNoteAccountingPeriod.from_json(json_object: accounting_period)
-        end
+        payments = parsed_json["payments"]
+        applied_payments = parsed_json["applied_payments"]
+        accounting_period = parsed_json["accounting_period"]
         applied_to_lines = parsed_json["applied_to_lines"]&.map do |item|
           item = item.to_json
           Merge::Accounting::CreditNoteApplyLineForCreditNote.from_json(json_object: item)
@@ -921,8 +891,8 @@ module Merge
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Accounting::CreditNoteStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.number&.is_a?(String) != false || raise("Passed value for field obj.number is not the expected type, validation failed.")
-        obj.contact.nil? || Merge::Accounting::CreditNoteContact.validate_raw(obj: obj.contact)
-        obj.company.nil? || Merge::Accounting::CreditNoteCompany.validate_raw(obj: obj.company)
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
         obj.remaining_credit&.is_a?(Float) != false || raise("Passed value for field obj.remaining_credit is not the expected type, validation failed.")
@@ -934,7 +904,7 @@ module Merge
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.payments&.is_a?(Array) != false || raise("Passed value for field obj.payments is not the expected type, validation failed.")
         obj.applied_payments&.is_a?(Array) != false || raise("Passed value for field obj.applied_payments is not the expected type, validation failed.")
-        obj.accounting_period.nil? || Merge::Accounting::CreditNoteAccountingPeriod.validate_raw(obj: obj.accounting_period)
+        obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
         obj.applied_to_lines&.is_a?(Array) != false || raise("Passed value for field obj.applied_to_lines is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

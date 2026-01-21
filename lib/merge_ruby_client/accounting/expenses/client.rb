@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/expenses_list_request_expand"
+require_relative "types/list_expenses_request_expand"
 require_relative "../types/paginated_expense_list"
 require_relative "../types/expense_request"
 require_relative "../types/expense_response"
-require_relative "types/expenses_retrieve_request_expand"
+require_relative "types/retrieve_expenses_request_expand"
 require_relative "../types/expense"
 require_relative "../types/paginated_remote_field_class_list"
 require_relative "../types/meta_response"
@@ -24,13 +24,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Expense` objects.
+      # Returns a list of `Expense` objects.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return expenses for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Expenses::ExpensesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Expenses::ListExpensesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -45,7 +49,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
@@ -95,26 +99,30 @@ module Merge
         Merge::Accounting::PaginatedExpenseList.from_json(json_object: response.body)
       end
 
-      # Creates an `Expense` object with the given values.
+      # Creates an `Expense` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Ub+zZv9BbU6TJMzJfcPvCblQ2CvqVwykRo+RaqG2TV+ss+vGwSveAxKTP9PHNx//w+tOqVOAg0AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::ExpenseRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :account (Hash)
-      #   * :contact (Hash)
+      #   * :account (String)
+      #   * :contact (String)
       #   * :total_amount (Float)
       #   * :sub_total (Float)
       #   * :total_tax_amount (Float)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
       #   * :inclusive_of_tax (Boolean)
-      #   * :company (Hash)
-      #   * :employee (Hash)
+      #   * :company (String)
+      #   * :employee (String)
       #   * :memo (String)
       #   * :lines (Array<Merge::Accounting::ExpenseLineRequest>)
-      #   * :tracking_categories (Array<Merge::Accounting::ExpenseRequestTrackingCategoriesItem>)
-      #   * :accounting_period (Hash)
+      #   * :tracking_categories (Array<String>)
+      #   * :accounting_period (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -148,10 +156,14 @@ module Merge
         Merge::Accounting::ExpenseResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Expense` object with the given `id`.
+      # Returns an `Expense` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Expenses::ExpensesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Expenses::RetrieveExpensesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -194,7 +206,11 @@ module Merge
         Merge::Accounting::Expense.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -208,7 +224,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -247,7 +263,11 @@ module Merge
         Merge::Accounting::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Expense` POSTs.
+      # Returns metadata for `Expense` POSTs.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -279,7 +299,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -293,7 +317,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -343,13 +367,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Expense` objects.
+      # Returns a list of `Expense` objects.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return expenses for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Expenses::ExpensesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Expenses::ListExpensesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -364,7 +392,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
@@ -416,26 +444,30 @@ module Merge
         end
       end
 
-      # Creates an `Expense` object with the given values.
+      # Creates an `Expense` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Ub+zZv9BbU6TJMzJfcPvCblQ2CvqVwykRo+RaqG2TV+ss+vGwSveAxKTP9PHNx//w+tOqVOAg0AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::ExpenseRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :account (Hash)
-      #   * :contact (Hash)
+      #   * :account (String)
+      #   * :contact (String)
       #   * :total_amount (Float)
       #   * :sub_total (Float)
       #   * :total_tax_amount (Float)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
       #   * :inclusive_of_tax (Boolean)
-      #   * :company (Hash)
-      #   * :employee (Hash)
+      #   * :company (String)
+      #   * :employee (String)
       #   * :memo (String)
       #   * :lines (Array<Merge::Accounting::ExpenseLineRequest>)
-      #   * :tracking_categories (Array<Merge::Accounting::ExpenseRequestTrackingCategoriesItem>)
-      #   * :accounting_period (Hash)
+      #   * :tracking_categories (Array<String>)
+      #   * :accounting_period (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -471,10 +503,14 @@ module Merge
         end
       end
 
-      # Returns an `Expense` object with the given `id`.
+      # Returns an `Expense` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Expenses::ExpensesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Expenses::RetrieveExpensesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -519,7 +555,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -533,7 +573,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -574,7 +614,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Expense` POSTs.
+      # Returns metadata for `Expense` POSTs.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -608,7 +652,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  N2oqOck2vkrF/KvYiAKOf4AxXg///+8xP9l/kL7naqe18f2tqOn6CvvxvRiAnv88T+d5SsJIhMAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -622,7 +670,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "lead_owner"
 require_relative "address"
 require_relative "email_address"
 require_relative "phone_number"
-require_relative "lead_converted_contact"
-require_relative "lead_converted_account"
+require_relative "lead_status_enum"
 require_relative "remote_data"
 require_relative "remote_field"
 require "ostruct"
@@ -29,7 +27,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Crm::LeadOwner] The lead's owner.
+      # @return [String] The lead's owner.
       attr_reader :owner
       # @return [String] The lead's source.
       attr_reader :lead_source
@@ -53,10 +51,16 @@ module Merge
       attr_reader :remote_created_at
       # @return [DateTime] When the lead was converted.
       attr_reader :converted_date
-      # @return [Merge::Crm::LeadConvertedContact] The contact of the converted lead.
+      # @return [String] The contact of the converted lead.
       attr_reader :converted_contact
-      # @return [Merge::Crm::LeadConvertedAccount] The account of the converted lead.
+      # @return [String] The account of the converted lead.
       attr_reader :converted_account
+      # @return [Merge::Crm::LeadStatusEnum] The lead's status.
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
+      #  * `UNQUALIFIED` - UNQUALIFIED
+      #  * `QUALIFIED` - QUALIFIED
+      attr_reader :status
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -80,7 +84,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param owner [Merge::Crm::LeadOwner] The lead's owner.
+      # @param owner [String] The lead's owner.
       # @param lead_source [String] The lead's source.
       # @param title [String] The lead's title.
       # @param company [String] The lead's company.
@@ -92,8 +96,13 @@ module Merge
       # @param remote_updated_at [DateTime] When the third party's lead was updated.
       # @param remote_created_at [DateTime] When the third party's lead was created.
       # @param converted_date [DateTime] When the lead was converted.
-      # @param converted_contact [Merge::Crm::LeadConvertedContact] The contact of the converted lead.
-      # @param converted_account [Merge::Crm::LeadConvertedAccount] The account of the converted lead.
+      # @param converted_contact [String] The contact of the converted lead.
+      # @param converted_account [String] The account of the converted lead.
+      # @param status [Merge::Crm::LeadStatusEnum] The lead's status.
+      #  * `OPEN` - OPEN
+      #  * `CLOSED` - CLOSED
+      #  * `UNQUALIFIED` - UNQUALIFIED
+      #  * `QUALIFIED` - QUALIFIED
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -104,7 +113,7 @@ module Merge
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::Lead]
       def initialize(id: OMIT, remote_id: OMIT, created_at: OMIT, modified_at: OMIT, owner: OMIT, lead_source: OMIT,
-                     title: OMIT, company: OMIT, first_name: OMIT, last_name: OMIT, addresses: OMIT, email_addresses: OMIT, phone_numbers: OMIT, remote_updated_at: OMIT, remote_created_at: OMIT, converted_date: OMIT, converted_contact: OMIT, converted_account: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
+                     title: OMIT, company: OMIT, first_name: OMIT, last_name: OMIT, addresses: OMIT, email_addresses: OMIT, phone_numbers: OMIT, remote_updated_at: OMIT, remote_created_at: OMIT, converted_date: OMIT, converted_contact: OMIT, converted_account: OMIT, status: OMIT, remote_was_deleted: OMIT, field_mappings: OMIT, remote_data: OMIT, remote_fields: OMIT, additional_properties: nil)
         @id = id if id != OMIT
         @remote_id = remote_id if remote_id != OMIT
         @created_at = created_at if created_at != OMIT
@@ -123,6 +132,7 @@ module Merge
         @converted_date = converted_date if converted_date != OMIT
         @converted_contact = converted_contact if converted_contact != OMIT
         @converted_account = converted_account if converted_account != OMIT
+        @status = status if status != OMIT
         @remote_was_deleted = remote_was_deleted if remote_was_deleted != OMIT
         @field_mappings = field_mappings if field_mappings != OMIT
         @remote_data = remote_data if remote_data != OMIT
@@ -147,6 +157,7 @@ module Merge
           "converted_date": converted_date,
           "converted_contact": converted_contact,
           "converted_account": converted_account,
+          "status": status,
           "remote_was_deleted": remote_was_deleted,
           "field_mappings": field_mappings,
           "remote_data": remote_data,
@@ -167,12 +178,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::LeadOwner.from_json(json_object: owner)
-        end
+        owner = parsed_json["owner"]
         lead_source = parsed_json["lead_source"]
         title = parsed_json["title"]
         company = parsed_json["company"]
@@ -197,18 +203,9 @@ module Merge
                               DateTime.parse(parsed_json["remote_created_at"])
                             end
         converted_date = (DateTime.parse(parsed_json["converted_date"]) unless parsed_json["converted_date"].nil?)
-        if parsed_json["converted_contact"].nil?
-          converted_contact = nil
-        else
-          converted_contact = parsed_json["converted_contact"].to_json
-          converted_contact = Merge::Crm::LeadConvertedContact.from_json(json_object: converted_contact)
-        end
-        if parsed_json["converted_account"].nil?
-          converted_account = nil
-        else
-          converted_account = parsed_json["converted_account"].to_json
-          converted_account = Merge::Crm::LeadConvertedAccount.from_json(json_object: converted_account)
-        end
+        converted_contact = parsed_json["converted_contact"]
+        converted_account = parsed_json["converted_account"]
+        status = parsed_json["status"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
@@ -238,6 +235,7 @@ module Merge
           converted_date: converted_date,
           converted_contact: converted_contact,
           converted_account: converted_account,
+          status: status,
           remote_was_deleted: remote_was_deleted,
           field_mappings: field_mappings,
           remote_data: remote_data,
@@ -264,7 +262,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.owner.nil? || Merge::Crm::LeadOwner.validate_raw(obj: obj.owner)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.lead_source&.is_a?(String) != false || raise("Passed value for field obj.lead_source is not the expected type, validation failed.")
         obj.title&.is_a?(String) != false || raise("Passed value for field obj.title is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
@@ -276,8 +274,9 @@ module Merge
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.converted_date&.is_a?(DateTime) != false || raise("Passed value for field obj.converted_date is not the expected type, validation failed.")
-        obj.converted_contact.nil? || Merge::Crm::LeadConvertedContact.validate_raw(obj: obj.converted_contact)
-        obj.converted_account.nil? || Merge::Crm::LeadConvertedAccount.validate_raw(obj: obj.converted_account)
+        obj.converted_contact&.is_a?(String) != false || raise("Passed value for field obj.converted_contact is not the expected type, validation failed.")
+        obj.converted_account&.is_a?(String) != false || raise("Passed value for field obj.converted_account is not the expected type, validation failed.")
+        obj.status&.is_a?(Merge::Crm::LeadStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")

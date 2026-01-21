@@ -2,12 +2,7 @@
 
 require_relative "purchase_order_status_enum"
 require "date"
-require_relative "purchase_order_request_delivery_address"
-require_relative "purchase_order_request_vendor"
-require_relative "purchase_order_request_company"
-require_relative "purchase_order_request_payment_term"
 require_relative "transaction_currency_enum"
-require_relative "purchase_order_request_tracking_categories_item"
 require_relative "purchase_order_line_item_request"
 require_relative "remote_field_request"
 require "ostruct"
@@ -34,19 +29,19 @@ module Merge
       attr_reader :issue_date
       # @return [DateTime] The purchase order's delivery date.
       attr_reader :delivery_date
-      # @return [Merge::Accounting::PurchaseOrderRequestDeliveryAddress] The purchase order's delivery address.
+      # @return [String] The purchase order's delivery address.
       attr_reader :delivery_address
       # @return [String] The contact making the purchase order.
       attr_reader :customer
-      # @return [Merge::Accounting::PurchaseOrderRequestVendor] The party fulfilling the purchase order.
+      # @return [String] The party fulfilling the purchase order.
       attr_reader :vendor
       # @return [String] A memo attached to the purchase order.
       attr_reader :memo
-      # @return [Merge::Accounting::PurchaseOrderRequestCompany] The company the purchase order belongs to.
+      # @return [String] The company the purchase order belongs to.
       attr_reader :company
       # @return [Float] The purchase order's total amount.
       attr_reader :total_amount
-      # @return [Merge::Accounting::PurchaseOrderRequestPaymentTerm] The payment term that applies to this transaction.
+      # @return [String] The payment term that applies to this transaction.
       attr_reader :payment_term
       # @return [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  * `XUA` - ADB Unit of Account
@@ -361,7 +356,7 @@ module Merge
       attr_reader :inclusive_of_tax
       # @return [String] The purchase order's exchange rate.
       attr_reader :exchange_rate
-      # @return [Array<Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
       # @return [Array<Merge::Accounting::PurchaseOrderLineItemRequest>]
       attr_reader :line_items
@@ -387,13 +382,13 @@ module Merge
       #  * `DELETED` - DELETED
       # @param issue_date [DateTime] The purchase order's issue date.
       # @param delivery_date [DateTime] The purchase order's delivery date.
-      # @param delivery_address [Merge::Accounting::PurchaseOrderRequestDeliveryAddress] The purchase order's delivery address.
+      # @param delivery_address [String] The purchase order's delivery address.
       # @param customer [String] The contact making the purchase order.
-      # @param vendor [Merge::Accounting::PurchaseOrderRequestVendor] The party fulfilling the purchase order.
+      # @param vendor [String] The party fulfilling the purchase order.
       # @param memo [String] A memo attached to the purchase order.
-      # @param company [Merge::Accounting::PurchaseOrderRequestCompany] The company the purchase order belongs to.
+      # @param company [String] The company the purchase order belongs to.
       # @param total_amount [Float] The purchase order's total amount.
-      # @param payment_term [Merge::Accounting::PurchaseOrderRequestPaymentTerm] The payment term that applies to this transaction.
+      # @param payment_term [String] The payment term that applies to this transaction.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The purchase order's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -704,7 +699,7 @@ module Merge
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       # @param exchange_rate [String] The purchase order's exchange rate.
-      # @param tracking_categories [Array<Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem>]
+      # @param tracking_categories [Array<String>]
       # @param line_items [Array<Merge::Accounting::PurchaseOrderLineItemRequest>]
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
@@ -766,40 +761,17 @@ module Merge
         status = parsed_json["status"]
         issue_date = (DateTime.parse(parsed_json["issue_date"]) unless parsed_json["issue_date"].nil?)
         delivery_date = (DateTime.parse(parsed_json["delivery_date"]) unless parsed_json["delivery_date"].nil?)
-        if parsed_json["delivery_address"].nil?
-          delivery_address = nil
-        else
-          delivery_address = parsed_json["delivery_address"].to_json
-          delivery_address = Merge::Accounting::PurchaseOrderRequestDeliveryAddress.from_json(json_object: delivery_address)
-        end
+        delivery_address = parsed_json["delivery_address"]
         customer = parsed_json["customer"]
-        if parsed_json["vendor"].nil?
-          vendor = nil
-        else
-          vendor = parsed_json["vendor"].to_json
-          vendor = Merge::Accounting::PurchaseOrderRequestVendor.from_json(json_object: vendor)
-        end
+        vendor = parsed_json["vendor"]
         memo = parsed_json["memo"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::PurchaseOrderRequestCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         total_amount = parsed_json["total_amount"]
-        if parsed_json["payment_term"].nil?
-          payment_term = nil
-        else
-          payment_term = parsed_json["payment_term"].to_json
-          payment_term = Merge::Accounting::PurchaseOrderRequestPaymentTerm.from_json(json_object: payment_term)
-        end
+        payment_term = parsed_json["payment_term"]
         currency = parsed_json["currency"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
         exchange_rate = parsed_json["exchange_rate"]
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem.from_json(json_object: item)
-        end
+        tracking_categories = parsed_json["tracking_categories"]
         line_items = parsed_json["line_items"]&.map do |item|
           item = item.to_json
           Merge::Accounting::PurchaseOrderLineItemRequest.from_json(json_object: item)
@@ -850,13 +822,13 @@ module Merge
         obj.status&.is_a?(Merge::Accounting::PurchaseOrderStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")
         obj.issue_date&.is_a?(DateTime) != false || raise("Passed value for field obj.issue_date is not the expected type, validation failed.")
         obj.delivery_date&.is_a?(DateTime) != false || raise("Passed value for field obj.delivery_date is not the expected type, validation failed.")
-        obj.delivery_address.nil? || Merge::Accounting::PurchaseOrderRequestDeliveryAddress.validate_raw(obj: obj.delivery_address)
+        obj.delivery_address&.is_a?(String) != false || raise("Passed value for field obj.delivery_address is not the expected type, validation failed.")
         obj.customer&.is_a?(String) != false || raise("Passed value for field obj.customer is not the expected type, validation failed.")
-        obj.vendor.nil? || Merge::Accounting::PurchaseOrderRequestVendor.validate_raw(obj: obj.vendor)
+        obj.vendor&.is_a?(String) != false || raise("Passed value for field obj.vendor is not the expected type, validation failed.")
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::PurchaseOrderRequestCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.total_amount&.is_a?(Float) != false || raise("Passed value for field obj.total_amount is not the expected type, validation failed.")
-        obj.payment_term.nil? || Merge::Accounting::PurchaseOrderRequestPaymentTerm.validate_raw(obj: obj.payment_term)
+        obj.payment_term&.is_a?(String) != false || raise("Passed value for field obj.payment_term is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")

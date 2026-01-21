@@ -21,7 +21,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Attachment` objects.
+      # Returns a list of `Attachment` objects.{/*
+      #  BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lwJOV11r4VNqpapRfozxgx2+mKywiMI2ljzKUwi+hZC9Ztw16ueXoiRcppJX2ce/fHrN4mZFmO6LwAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param candidate_id [String] If provided, will only return attachments for this candidate.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -40,7 +44,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -91,7 +95,11 @@ module Merge
         Merge::Ats::PaginatedAttachmentList.from_json(json_object: response.body)
       end
 
-      # Creates an `Attachment` object with the given values.
+      # Creates an `Attachment` object with the given values.{/*
+      #  BEGIN_ATS_ATTACHMENT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  ajN/SdZeDPgayGH8yAywbpUW8uenTHnNj96q3K0E1+aQD3I6Lfh8nMmFf1fOvH2/vb+F6zgxmcqGgAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -137,7 +145,11 @@ module Merge
         Merge::Ats::AttachmentResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Attachment` object with the given `id`.
+      # Returns an `Attachment` object with the given `id`.{/*
+      #  BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lwJOV11r4VNqpapRfozxgx2+mKywiMI2ljzKUwi+hZC9Ztw16ueXoiRcppJX2ce/fHrN4mZFmO6LwAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -186,7 +198,11 @@ module Merge
         Merge::Ats::Attachment.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Attachment` POSTs.
+      # Returns metadata for `Attachment` POSTs.{/*
+      #  BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lwJOV11r4VNqpapRfozxgx2+mKywiMI2ljzKUwi+hZC9Ztw16ueXoiRcppJX2ce/fHrN4mZFmO6LwAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]
@@ -229,7 +245,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Attachment` objects.
+      # Returns a list of `Attachment` objects.{/*
+      #  BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lwJOV11r4VNqpapRfozxgx2+mKywiMI2ljzKUwi+hZC9Ztw16ueXoiRcppJX2ce/fHrN4mZFmO6LwAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param candidate_id [String] If provided, will only return attachments for this candidate.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
@@ -248,7 +268,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -301,7 +321,11 @@ module Merge
         end
       end
 
-      # Creates an `Attachment` object with the given values.
+      # Creates an `Attachment` object with the given values.{/*
+      #  BEGIN_ATS_ATTACHMENT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  ajN/SdZeDPgayGH8yAywbpUW8uenTHnNj96q3K0E1+aQD3I6Lfh8nMmFf1fOvH2/vb+F6zgxmcqGgAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -349,7 +373,11 @@ module Merge
         end
       end
 
-      # Returns an `Attachment` object with the given `id`.
+      # Returns an `Attachment` object with the given `id`.{/*
+      #  BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lwJOV11r4VNqpapRfozxgx2+mKywiMI2ljzKUwi+hZC9Ztw16ueXoiRcppJX2ce/fHrN4mZFmO6LwAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -400,7 +428,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Attachment` POSTs.
+      # Returns metadata for `Attachment` POSTs.{/*
+      #  BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  lwJOV11r4VNqpapRfozxgx2+mKywiMI2ljzKUwi+hZC9Ztw16ueXoiRcppJX2ce/fHrN4mZFmO6LwAA"
+      #  /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]

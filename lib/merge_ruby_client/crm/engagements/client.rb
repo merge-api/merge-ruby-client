@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/engagements_list_request_expand"
+require_relative "types/list_engagements_request_expand"
 require_relative "../types/paginated_engagement_list"
 require_relative "../types/engagement_request"
 require_relative "../types/engagement_response"
-require_relative "types/engagements_retrieve_request_expand"
+require_relative "types/retrieve_engagements_request_expand"
 require_relative "../types/engagement"
 require_relative "../types/patched_engagement_request"
 require_relative "../types/meta_response"
@@ -25,12 +25,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Engagement` objects.
+      # Returns a list of `Engagement` objects.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Crm::Engagements::EngagementsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Engagements::ListEngagementsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -45,7 +49,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return engagements started after this datetime.
       # @param started_before [DateTime] If provided, will only return engagements started before this datetime.
@@ -94,20 +98,24 @@ module Merge
         Merge::Crm::PaginatedEngagementList.from_json(json_object: response.body)
       end
 
-      # Creates an `Engagement` object with the given values.
+      # Creates an `Engagement` object with the given values.{/*
+      #  BEGIN_CRM_ENGAGEMENT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  kKUC3GpHHyZmW3f//lhGB+n9Rs5vpWeHMr8B7FccnM5lFTFr/uvnDf/oz9yV3dXd38Ai15G640LAAA="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Crm::EngagementRequest, as a Hash
-      #   * :owner (Hash)
+      #   * :owner (String)
       #   * :content (String)
       #   * :subject (String)
       #   * :direction (Merge::Crm::DirectionEnum)
-      #   * :engagement_type (Hash)
+      #   * :engagement_type (String)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
-      #   * :account (Hash)
-      #   * :contacts (Array<Merge::Crm::EngagementRequestContactsItem>)
+      #   * :account (String)
+      #   * :contacts (Array<String>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Crm::RemoteFieldRequest>)
@@ -141,10 +149,14 @@ module Merge
         Merge::Crm::EngagementResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Engagement` object with the given `id`.
+      # Returns an `Engagement` object with the given `id`.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Crm::Engagements::EngagementsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Engagements::RetrieveEngagementsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -187,7 +199,11 @@ module Merge
         Merge::Crm::Engagement.from_json(json_object: response.body)
       end
 
-      # Updates an `Engagement` object with the given `id`.
+      # Updates an `Engagement` object with the given `id`.{/*
+      #  BEGIN_CRM_ENGAGEMENT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  ek5aszJkm7a3D45b8G6QElmrjSnj+F1LtHOlc5/+3pl8R4z1ovGV8OPIfY+pf+TuX36CdDOLk6TBAAA"
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -235,7 +251,11 @@ module Merge
         Merge::Crm::EngagementResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Engagement` PATCHs.
+      # Returns metadata for `Engagement` PATCHs.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -268,7 +288,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Engagement` POSTs.
+      # Returns metadata for `Engagement` POSTs.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -300,7 +324,11 @@ module Merge
         Merge::Crm::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -316,7 +344,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
@@ -367,12 +395,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Engagement` objects.
+      # Returns a list of `Engagement` objects.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Crm::Engagements::EngagementsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Engagements::ListEngagementsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -387,7 +419,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return engagements started after this datetime.
       # @param started_before [DateTime] If provided, will only return engagements started before this datetime.
@@ -438,20 +470,24 @@ module Merge
         end
       end
 
-      # Creates an `Engagement` object with the given values.
+      # Creates an `Engagement` object with the given values.{/*
+      #  BEGIN_CRM_ENGAGEMENT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  kKUC3GpHHyZmW3f//lhGB+n9Rs5vpWeHMr8B7FccnM5lFTFr/uvnDf/oz9yV3dXd38Ai15G640LAAA="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Crm::EngagementRequest, as a Hash
-      #   * :owner (Hash)
+      #   * :owner (String)
       #   * :content (String)
       #   * :subject (String)
       #   * :direction (Merge::Crm::DirectionEnum)
-      #   * :engagement_type (Hash)
+      #   * :engagement_type (String)
       #   * :start_time (DateTime)
       #   * :end_time (DateTime)
-      #   * :account (Hash)
-      #   * :contacts (Array<Merge::Crm::EngagementRequestContactsItem>)
+      #   * :account (String)
+      #   * :contacts (Array<String>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Crm::RemoteFieldRequest>)
@@ -487,10 +523,14 @@ module Merge
         end
       end
 
-      # Returns an `Engagement` object with the given `id`.
+      # Returns an `Engagement` object with the given `id`.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Crm::Engagements::EngagementsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Crm::Engagements::RetrieveEngagementsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -535,7 +575,11 @@ module Merge
         end
       end
 
-      # Updates an `Engagement` object with the given `id`.
+      # Updates an `Engagement` object with the given `id`.{/*
+      #  BEGIN_CRM_ENGAGEMENT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  ek5aszJkm7a3D45b8G6QElmrjSnj+F1LtHOlc5/+3pl8R4z1ovGV8OPIfY+pf+TuX36CdDOLk6TBAAA"
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -585,7 +629,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Engagement` PATCHs.
+      # Returns metadata for `Engagement` PATCHs.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -620,7 +668,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Engagement` POSTs.
+      # Returns metadata for `Engagement` POSTs.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::MetaResponse]
@@ -654,7 +706,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  zCLUM8qY2tF8obyWjl4tzDHvv/H8wdh28y/lbRIhP3gsBSJ+E+Z7qWVHN/j8OsvfwPk5FuQexwAAA=="
+      #  /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -670,7 +726,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example

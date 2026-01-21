@@ -9,7 +9,7 @@ module Merge
       # @return [String]
       attr_reader :url
       # @return [String]
-      attr_reader :method
+      attr_reader :method_
       # @return [Integer]
       attr_reader :status_code
       # @return [OpenStruct] Additional properties unmapped to the current class definition
@@ -21,16 +21,16 @@ module Merge
       OMIT = Object.new
 
       # @param url [String]
-      # @param method [String]
+      # @param method_ [String]
       # @param status_code [Integer]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Hris::DebugModelLogSummary]
-      def initialize(url:, method:, status_code:, additional_properties: nil)
+      def initialize(url:, method_:, status_code:, additional_properties: nil)
         @url = url
-        @method = method
+        @method_ = method_
         @status_code = status_code
         @additional_properties = additional_properties
-        @_field_set = { "url": url, "method": method, "status_code": status_code }
+        @_field_set = { "url": url, "method": method_, "status_code": status_code }
       end
 
       # Deserialize a JSON object to an instance of DebugModelLogSummary
@@ -41,11 +41,11 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         url = parsed_json["url"]
-        method = parsed_json["method"]
+        method_ = parsed_json["method"]
         status_code = parsed_json["status_code"]
         new(
           url: url,
-          method: method,
+          method_: method_,
           status_code: status_code,
           additional_properties: struct
         )
@@ -66,7 +66,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.url.is_a?(String) != false || raise("Passed value for field obj.url is not the expected type, validation failed.")
-        obj.method.is_a?(String) != false || raise("Passed value for field obj.method is not the expected type, validation failed.")
+        obj.method_.is_a?(String) != false || raise("Passed value for field obj.method_ is not the expected type, validation failed.")
         obj.status_code.is_a?(Integer) != false || raise("Passed value for field obj.status_code is not the expected type, validation failed.")
       end
     end
