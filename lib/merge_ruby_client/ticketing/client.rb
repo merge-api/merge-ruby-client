@@ -7,7 +7,6 @@ require_relative "accounts/client"
 require_relative "async_passthrough/client"
 require_relative "attachments/client"
 require_relative "audit_trail/client"
-require_relative "available_actions/client"
 require_relative "collections/client"
 require_relative "comments/client"
 require_relative "contacts/client"
@@ -28,7 +27,6 @@ require_relative "tags/client"
 require_relative "teams/client"
 require_relative "tickets/client"
 require_relative "users/client"
-require_relative "webhook_receivers/client"
 
 module Merge
   module Ticketing
@@ -45,8 +43,6 @@ module Merge
       attr_reader :attachments
       # @return [Merge::Ticketing::AuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Ticketing::AvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Ticketing::CollectionsClient]
       attr_reader :collections
       # @return [Merge::Ticketing::CommentsClient]
@@ -87,8 +83,6 @@ module Merge
       attr_reader :tickets
       # @return [Merge::Ticketing::UsersClient]
       attr_reader :users
-      # @return [Merge::Ticketing::WebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::RequestClient]
       # @return [Merge::Ticketing::Client]
@@ -99,7 +93,6 @@ module Merge
         @async_passthrough = Merge::Ticketing::AsyncPassthroughClient.new(request_client: request_client)
         @attachments = Merge::Ticketing::AttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Ticketing::AuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Ticketing::AvailableActionsClient.new(request_client: request_client)
         @collections = Merge::Ticketing::CollectionsClient.new(request_client: request_client)
         @comments = Merge::Ticketing::CommentsClient.new(request_client: request_client)
         @contacts = Merge::Ticketing::ContactsClient.new(request_client: request_client)
@@ -120,7 +113,6 @@ module Merge
         @teams = Merge::Ticketing::TeamsClient.new(request_client: request_client)
         @tickets = Merge::Ticketing::TicketsClient.new(request_client: request_client)
         @users = Merge::Ticketing::UsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Ticketing::WebhookReceiversClient.new(request_client: request_client)
       end
     end
 
@@ -137,8 +129,6 @@ module Merge
       attr_reader :attachments
       # @return [Merge::Ticketing::AsyncAuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Ticketing::AsyncAvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Ticketing::AsyncCollectionsClient]
       attr_reader :collections
       # @return [Merge::Ticketing::AsyncCommentsClient]
@@ -179,8 +169,6 @@ module Merge
       attr_reader :tickets
       # @return [Merge::Ticketing::AsyncUsersClient]
       attr_reader :users
-      # @return [Merge::Ticketing::AsyncWebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::AsyncRequestClient]
       # @return [Merge::Ticketing::AsyncClient]
@@ -191,7 +179,6 @@ module Merge
         @async_passthrough = Merge::Ticketing::AsyncAsyncPassthroughClient.new(request_client: request_client)
         @attachments = Merge::Ticketing::AsyncAttachmentsClient.new(request_client: request_client)
         @audit_trail = Merge::Ticketing::AsyncAuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Ticketing::AsyncAvailableActionsClient.new(request_client: request_client)
         @collections = Merge::Ticketing::AsyncCollectionsClient.new(request_client: request_client)
         @comments = Merge::Ticketing::AsyncCommentsClient.new(request_client: request_client)
         @contacts = Merge::Ticketing::AsyncContactsClient.new(request_client: request_client)
@@ -212,7 +199,6 @@ module Merge
         @teams = Merge::Ticketing::AsyncTeamsClient.new(request_client: request_client)
         @tickets = Merge::Ticketing::AsyncTicketsClient.new(request_client: request_client)
         @users = Merge::Ticketing::AsyncUsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Ticketing::AsyncWebhookReceiversClient.new(request_client: request_client)
       end
     end
   end

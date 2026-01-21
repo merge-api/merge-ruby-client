@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/purchase_orders_list_request_expand"
+require_relative "types/list_purchase_orders_request_expand"
 require_relative "../types/paginated_purchase_order_list"
 require_relative "../types/purchase_order_request"
 require_relative "../types/purchase_order_response"
-require_relative "types/purchase_orders_retrieve_request_expand"
+require_relative "types/retrieve_purchase_orders_request_expand"
 require_relative "../types/purchase_order"
 require_relative "../types/paginated_remote_field_class_list"
 require_relative "../types/meta_response"
@@ -24,13 +24,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `PurchaseOrder` objects.
+      # Returns a list of `PurchaseOrder` objects.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return purchase orders for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::PurchaseOrders::PurchaseOrdersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::PurchaseOrders::ListPurchaseOrdersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -47,7 +51,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -101,7 +105,11 @@ module Merge
         Merge::Accounting::PaginatedPurchaseOrderList.from_json(json_object: response.body)
       end
 
-      # Creates a `PurchaseOrder` object with the given values.
+      # Creates a `PurchaseOrder` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Ge99HTQf6UJxjEXSzTrH+y8HKzfQNKvmHlcxHMTKXz3PQsPygm3/leT60nOXzK7vn7/Cx1Nwbl+CQAA"
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -109,17 +117,17 @@ module Merge
       #   * :status (Merge::Accounting::PurchaseOrderStatusEnum)
       #   * :issue_date (DateTime)
       #   * :delivery_date (DateTime)
-      #   * :delivery_address (Hash)
+      #   * :delivery_address (String)
       #   * :customer (String)
-      #   * :vendor (Hash)
+      #   * :vendor (String)
       #   * :memo (String)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :total_amount (Float)
-      #   * :payment_term (Hash)
+      #   * :payment_term (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :inclusive_of_tax (Boolean)
       #   * :exchange_rate (String)
-      #   * :tracking_categories (Array<Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem>)
+      #   * :tracking_categories (Array<String>)
       #   * :line_items (Array<Merge::Accounting::PurchaseOrderLineItemRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -154,10 +162,14 @@ module Merge
         Merge::Accounting::PurchaseOrderResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `PurchaseOrder` object with the given `id`.
+      # Returns a `PurchaseOrder` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::PurchaseOrders::PurchaseOrdersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::PurchaseOrders::RetrievePurchaseOrdersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -206,7 +218,11 @@ module Merge
         Merge::Accounting::PurchaseOrder.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -220,7 +236,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -259,7 +275,11 @@ module Merge
         Merge::Accounting::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `PurchaseOrder` POSTs.
+      # Returns metadata for `PurchaseOrder` POSTs.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -291,7 +311,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -305,7 +329,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -355,13 +379,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `PurchaseOrder` objects.
+      # Returns a list of `PurchaseOrder` objects.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return purchase orders for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::PurchaseOrders::PurchaseOrdersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::PurchaseOrders::ListPurchaseOrdersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -378,7 +406,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -434,7 +462,11 @@ module Merge
         end
       end
 
-      # Creates a `PurchaseOrder` object with the given values.
+      # Creates a `PurchaseOrder` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  Ge99HTQf6UJxjEXSzTrH+y8HKzfQNKvmHlcxHMTKXz3PQsPygm3/leT60nOXzK7vn7/Cx1Nwbl+CQAA"
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -442,17 +474,17 @@ module Merge
       #   * :status (Merge::Accounting::PurchaseOrderStatusEnum)
       #   * :issue_date (DateTime)
       #   * :delivery_date (DateTime)
-      #   * :delivery_address (Hash)
+      #   * :delivery_address (String)
       #   * :customer (String)
-      #   * :vendor (Hash)
+      #   * :vendor (String)
       #   * :memo (String)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :total_amount (Float)
-      #   * :payment_term (Hash)
+      #   * :payment_term (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :inclusive_of_tax (Boolean)
       #   * :exchange_rate (String)
-      #   * :tracking_categories (Array<Merge::Accounting::PurchaseOrderRequestTrackingCategoriesItem>)
+      #   * :tracking_categories (Array<String>)
       #   * :line_items (Array<Merge::Accounting::PurchaseOrderLineItemRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -489,10 +521,14 @@ module Merge
         end
       end
 
-      # Returns a `PurchaseOrder` object with the given `id`.
+      # Returns a `PurchaseOrder` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::PurchaseOrders::PurchaseOrdersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::PurchaseOrders::RetrievePurchaseOrdersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -543,7 +579,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -557,7 +597,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -598,7 +638,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `PurchaseOrder` POSTs.
+      # Returns metadata for `PurchaseOrder` POSTs.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -632,7 +676,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Lfwn36LplC/N/hfhvkX1Go/eCdK+QOrqt/ZvzgHUL/+FlC/8dJcgLWPB+deqbn7/h9xWNv4qBcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -646,7 +694,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example

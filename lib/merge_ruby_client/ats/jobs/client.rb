@@ -2,12 +2,12 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/jobs_list_request_expand"
-require_relative "types/jobs_list_request_status"
+require_relative "types/list_jobs_request_expand"
+require_relative "types/list_jobs_request_status"
 require_relative "../types/paginated_job_list"
-require_relative "types/jobs_retrieve_request_expand"
+require_relative "types/retrieve_jobs_request_expand"
 require_relative "../types/job"
-require_relative "types/jobs_screening_questions_list_request_expand"
+require_relative "types/screening_questions_list_jobs_request_expand"
 require_relative "../types/paginated_screening_question_list"
 require "async"
 
@@ -23,13 +23,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Job` objects.
+      # Returns a list of `Job` objects.{/* BEGIN_ATS_JOB_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  9Bj0ECK139C0Dw/qxe/y5eop6e8GZSM5e988hwj1VLtIUflSk7GWDGynPwM2H/89TcDnzRt0GgAAA=="
+      #  /></Footer>{/* END_ATS_JOB_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param code [String] If provided, will only return jobs with this code.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Jobs::JobsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Jobs::ListJobsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -44,13 +47,13 @@ module Merge
       #  returned.
       # @param offices [String] If provided, will only return jobs for this office; multiple offices can be
       #  separated by commas.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [Merge::Ats::Jobs::JobsListRequestStatus] If provided, will only return jobs with this status. Options: ('OPEN', 'CLOSED',
+      # @param status [Merge::Ats::Jobs::ListJobsRequestStatus] If provided, will only return jobs with this status. Options: ('OPEN', 'CLOSED',
       #  'DRAFT', 'ARCHIVED', 'PENDING')
       #  * `OPEN` - OPEN
       #  * `CLOSED` - CLOSED
@@ -104,10 +107,14 @@ module Merge
         Merge::Ats::PaginatedJobList.from_json(json_object: response.body)
       end
 
-      # Returns a `Job` object with the given `id`.
+      # Returns a `Job` object with the given `id`.{/*
+      #  BEGIN_ATS_JOB_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  9Bj0ECK139C0Dw/qxe/y5eop6e8GZSM5e988hwj1VLtIUflSk7GWDGynPwM2H/89TcDnzRt0GgAAA=="
+      #  /></Footer>{/* END_ATS_JOB_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Jobs::JobsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Jobs::RetrieveJobsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -153,11 +160,15 @@ module Merge
         Merge::Ats::Job.from_json(json_object: response.body)
       end
 
-      # Returns a list of `ScreeningQuestion` objects.
+      # Returns a list of `ScreeningQuestion` objects.{/*
+      #  BEGIN_ATS_JOB_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  9Bj0ECK139C0Dw/qxe/y5eop6e8GZSM5e988hwj1VLtIUflSk7GWDGynPwM2H/89TcDnzRt0GgAAA=="
+      #  /></Footer>{/* END_ATS_JOB_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param job_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Jobs::JobsScreeningQuestionsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Jobs::ScreeningQuestionsListJobsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -167,7 +178,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedScreeningQuestionList]
       # @example
@@ -216,13 +227,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Job` objects.
+      # Returns a list of `Job` objects.{/* BEGIN_ATS_JOB_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  9Bj0ECK139C0Dw/qxe/y5eop6e8GZSM5e988hwj1VLtIUflSk7GWDGynPwM2H/89TcDnzRt0GgAAA=="
+      #  /></Footer>{/* END_ATS_JOB_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param code [String] If provided, will only return jobs with this code.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Jobs::JobsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Jobs::ListJobsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -237,13 +251,13 @@ module Merge
       #  returned.
       # @param offices [String] If provided, will only return jobs for this office; multiple offices can be
       #  separated by commas.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [Merge::Ats::Jobs::JobsListRequestStatus] If provided, will only return jobs with this status. Options: ('OPEN', 'CLOSED',
+      # @param status [Merge::Ats::Jobs::ListJobsRequestStatus] If provided, will only return jobs with this status. Options: ('OPEN', 'CLOSED',
       #  'DRAFT', 'ARCHIVED', 'PENDING')
       #  * `OPEN` - OPEN
       #  * `CLOSED` - CLOSED
@@ -299,10 +313,14 @@ module Merge
         end
       end
 
-      # Returns a `Job` object with the given `id`.
+      # Returns a `Job` object with the given `id`.{/*
+      #  BEGIN_ATS_JOB_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  9Bj0ECK139C0Dw/qxe/y5eop6e8GZSM5e988hwj1VLtIUflSk7GWDGynPwM2H/89TcDnzRt0GgAAA=="
+      #  /></Footer>{/* END_ATS_JOB_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Jobs::JobsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Jobs::RetrieveJobsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -350,11 +368,15 @@ module Merge
         end
       end
 
-      # Returns a list of `ScreeningQuestion` objects.
+      # Returns a list of `ScreeningQuestion` objects.{/*
+      #  BEGIN_ATS_JOB_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  9Bj0ECK139C0Dw/qxe/y5eop6e8GZSM5e988hwj1VLtIUflSk7GWDGynPwM2H/89TcDnzRt0GgAAA=="
+      #  /></Footer>{/* END_ATS_JOB_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param job_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ats::Jobs::JobsScreeningQuestionsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Jobs::ScreeningQuestionsListJobsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -364,7 +386,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedScreeningQuestionList]
       # @example

@@ -47,7 +47,7 @@ module Merge
       #  `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`, `ENABLED_MERGE_WEBHOOK`,
       #  `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`,
       #  `END_USER_CREDENTIALS_ACCESSED`
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param start_date [String] If included, will only include audit trail events that occurred after this time
       # @param user_email [String] If provided, this will return events associated with the specified user email.
       #  Please note that the email address reflects the user's email at the time of the
@@ -131,7 +131,7 @@ module Merge
       #  `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`, `ENABLED_MERGE_WEBHOOK`,
       #  `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`,
       #  `END_USER_CREDENTIALS_ACCESSED`
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param start_date [String] If included, will only include audit trail events that occurred after this time
       # @param user_email [String] If provided, this will return events associated with the specified user email.
       #  Please note that the email address reflects the user's email at the time of the

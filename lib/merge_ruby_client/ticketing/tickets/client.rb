@@ -2,20 +2,22 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/tickets_list_request_expand"
-require_relative "types/tickets_list_request_priority"
-require_relative "types/tickets_list_request_remote_fields"
-require_relative "types/tickets_list_request_show_enum_origins"
+require_relative "types/list_tickets_request_expand"
+require_relative "types/list_tickets_request_priority"
+require_relative "types/list_tickets_request_remote_fields"
+require_relative "types/list_tickets_request_show_enum_origins"
 require_relative "../types/paginated_ticket_list"
 require_relative "../types/ticket_request"
 require_relative "../types/ticket_response"
-require_relative "types/tickets_retrieve_request_expand"
-require_relative "types/tickets_retrieve_request_remote_fields"
-require_relative "types/tickets_retrieve_request_show_enum_origins"
+require_relative "types/retrieve_tickets_request_expand"
+require_relative "types/retrieve_tickets_request_remote_fields"
+require_relative "types/retrieve_tickets_request_show_enum_origins"
 require_relative "../types/ticket"
 require_relative "../types/patched_ticket_request"
-require_relative "types/tickets_viewers_list_request_expand"
+require_relative "types/viewers_list_tickets_request_expand"
 require_relative "../types/paginated_viewer_list"
+require_relative "types/live_search_list_tickets_request_remote_fields"
+require_relative "types/live_search_list_tickets_request_show_enum_origins"
 require_relative "../types/meta_response"
 require_relative "../types/paginated_remote_field_class_list"
 require "async"
@@ -32,7 +34,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Ticket` objects.
+      # Returns a list of `Ticket` objects.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return tickets for this account.
       # @param assignee_ids [String] If provided, will only return tickets assigned to the assignee_ids; multiple
@@ -45,10 +51,12 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param creator_id [String] If provided, will only return tickets created by this creator_id.
+      # @param creator_ids [String] If provided, will only return tickets created by the creator_ids; multiple
+      #  creator_ids can be separated by commas.
       # @param cursor [String] The pagination cursor value.
       # @param due_after [DateTime] If provided, will only return tickets due after this datetime.
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
-      # @param expand [Merge::Ticketing::Tickets::TicketsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::ListTicketsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -63,9 +71,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return tickets with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param parent_ticket_id [String] If provided, will only return sub tickets of the parent_ticket_id.
-      # @param priority [Merge::Ticketing::Tickets::TicketsListRequestPriority] If provided, will only return tickets of this priority.
+      # @param priority [Merge::Ticketing::Tickets::ListTicketsRequestPriority] If provided, will only return tickets of this priority.
       #  * `URGENT` - URGENT
       #  * `HIGH` - HIGH
       #  * `NORMAL` - NORMAL
@@ -74,13 +83,14 @@ module Merge
       #  this datetime.
       # @param remote_created_before [DateTime] If provided, will only return tickets created in the third party platform before
       #  this datetime.
-      # @param remote_fields [Merge::Ticketing::Tickets::TicketsListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param remote_fields [Merge::Ticketing::Tickets::ListTicketsRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
+      # @param remote_ids [String] If provided, will only return tickets with these remote IDs (comma-separated).
       # @param remote_updated_after [DateTime] If provided, will only return tickets updated in the third party platform after
       #  this datetime.
       # @param remote_updated_before [DateTime] If provided, will only return tickets updated in the third party platform before
       #  this datetime.
-      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Ticketing::Tickets::ListTicketsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param status [String] If provided, will only return tickets of this status.
@@ -99,7 +109,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, creator_id: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, creator_id: nil, creator_ids: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_ids: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -120,6 +130,7 @@ module Merge
             "created_after": created_after,
             "created_before": created_before,
             "creator_id": creator_id,
+            "creator_ids": creator_ids,
             "cursor": cursor,
             "due_after": due_after,
             "due_before": due_before,
@@ -130,6 +141,7 @@ module Merge
             "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
+            "name": name,
             "page_size": page_size,
             "parent_ticket_id": parent_ticket_id,
             "priority": priority,
@@ -137,6 +149,7 @@ module Merge
             "remote_created_before": remote_created_before,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
+            "remote_ids": remote_ids,
             "remote_updated_after": remote_updated_after,
             "remote_updated_before": remote_updated_before,
             "show_enum_origins": show_enum_origins,
@@ -153,30 +166,34 @@ module Merge
         Merge::Ticketing::PaginatedTicketList.from_json(json_object: response.body)
       end
 
-      # Creates a `Ticket` object with the given values.
+      # Creates a `Ticket` object with the given values.{/*
+      #  BEGIN_TICKETING_TICKET_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  staK/zgbgfOCGRvrZpyzZi9ajmn9vJXAhvJnZc8Jr614x6LBugu6hhaZ/0TJ3t+/v4fL2+460c/AAA="
+      #  /></Footer>{/* END_TICKETING_TICKET_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ticketing::TicketRequest, as a Hash
       #   * :name (String)
-      #   * :assignees (Array<Merge::Ticketing::TicketRequestAssigneesItem>)
-      #   * :assigned_teams (Array<Merge::Ticketing::TicketRequestAssignedTeamsItem>)
-      #   * :creator (Hash)
+      #   * :assignees (Array<String>)
+      #   * :assigned_teams (Array<String>)
+      #   * :creator (String)
       #   * :due_date (DateTime)
       #   * :status (Merge::Ticketing::TicketStatusEnum)
       #   * :description (String)
-      #   * :collections (Array<Merge::Ticketing::TicketRequestCollectionsItem>)
+      #   * :collections (Array<String>)
       #   * :ticket_type (String)
-      #   * :account (Hash)
-      #   * :contact (Hash)
-      #   * :parent_ticket (Hash)
-      #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
+      #   * :account (String)
+      #   * :contact (String)
+      #   * :parent_ticket (String)
+      #   * :attachments (Array<String>)
       #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
-      #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :completed_at (DateTime)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
@@ -210,10 +227,14 @@ module Merge
         Merge::Ticketing::TicketResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `Ticket` object with the given `id`.
+      # Returns a `Ticket` object with the given `id`.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ticketing::Tickets::TicketsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::RetrieveTicketsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -221,8 +242,8 @@ module Merge
       #  common models, in a normalized format.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Ticketing::Tickets::TicketsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Ticketing::Tickets::RetrieveTicketsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::RetrieveTicketsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -262,7 +283,11 @@ module Merge
         Merge::Ticketing::Ticket.from_json(json_object: response.body)
       end
 
-      # Updates a `Ticket` object with the given `id`.
+      # Updates a `Ticket` object with the given `id`.{/*
+      #  BEGIN_TICKETING_TICKET_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  DyV+k1OHrZZvlbW+xuvZW9W2P+Lob0zvedKZCRKDx+a8Td+vOtd+Yos9+tP8u5+/gd1WS+iTx4AAA=="
+      #  /></Footer>{/* END_TICKETING_TICKET_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -321,11 +346,15 @@ module Merge
 
       # Returns a list of `Viewer` objects that point to a User id or Team id that is
       #  either an assignee or viewer on a `Ticket` with the given id. [Learn
-      #  (https://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls)
+      #  tps://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls){/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param ticket_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Tickets::TicketsViewersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::ViewersListTicketsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -335,7 +364,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedViewerList]
       # @example
@@ -373,7 +402,78 @@ module Merge
         Merge::Ticketing::PaginatedViewerList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Ticket` PATCHs.
+      # Returns a list of `Ticket` objects.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
+      #
+      # @param assignee_ids [String] Filter tickets by assignee IDs (comma-separated)
+      # @param assignees [String] Filter tickets by assignee names (comma-separated)
+      # @param collection_ids [String] Filter tickets by collection IDs (comma-separated)
+      # @param collections [String] Filter tickets by collection names (comma-separated)
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
+      # @param name [String] Filter tickets by name/title
+      # @param remote_cursor [String] Pagination cursor for remote data
+      # @param remote_fields [Merge::Ticketing::Tickets::LiveSearchListTicketsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::LiveSearchListTicketsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] Filter tickets by status
+      # @param ticket_url [String] Filter tickets by URL
+      # @param request_options [Merge::RequestOptions]
+      # @yield on_data[chunk, overall_received_bytes, env] Leverage the Faraday on_data callback which
+      #  will receive tuples of strings, the sum of characters received so far, and the
+      #  response environment. The latter will allow access to the response status,
+      #  headers and reason, as well as the request info.
+      # @return [Void]
+      def live_search_list(assignee_ids: nil, assignees: nil, collection_ids: nil, collections: nil,
+                           include_deleted_data: nil, include_remote_fields: nil, include_shell_data: nil, name: nil, remote_cursor: nil, remote_fields: nil, show_enum_origins: nil, status: nil, ticket_url: nil, request_options: nil, &on_data)
+        @request_client.conn.get do |req|
+          req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+          req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+          req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+          req.headers = {
+        **(req.headers || {}),
+        **@request_client.get_headers,
+        **(request_options&.additional_headers || {})
+          }.compact
+          req.options.on_data = on_data
+          req.params = {
+            **(request_options&.additional_query_parameters || {}),
+            "assignee_ids": assignee_ids,
+            "assignees": assignees,
+            "collection_ids": collection_ids,
+            "collections": collections,
+            "include_deleted_data": include_deleted_data,
+            "include_remote_fields": include_remote_fields,
+            "include_shell_data": include_shell_data,
+            "name": name,
+            "remote_cursor": remote_cursor,
+            "remote_fields": remote_fields,
+            "show_enum_origins": show_enum_origins,
+            "status": status,
+            "ticket_url": ticket_url
+          }.compact
+          unless request_options.nil? || request_options&.additional_body_parameters.nil?
+            req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+          end
+          req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/live-search"
+        end
+      end
+
+      # Returns metadata for `Ticket` PATCHs.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -406,7 +506,11 @@ module Merge
         Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Ticket` POSTs.
+      # Returns metadata for `Ticket` POSTs.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param collection_id [String] If provided, will only return tickets for this collection.
       # @param ticket_type [String] If provided, will only return tickets for this ticket type.
@@ -442,7 +546,11 @@ module Merge
         Merge::Ticketing::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param ids [String] If provided, will only return remote field classes with the `ids` in this list
@@ -457,7 +565,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
       # @example
@@ -508,7 +616,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Ticket` objects.
+      # Returns a list of `Ticket` objects.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return tickets for this account.
       # @param assignee_ids [String] If provided, will only return tickets assigned to the assignee_ids; multiple
@@ -521,10 +633,12 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param creator_id [String] If provided, will only return tickets created by this creator_id.
+      # @param creator_ids [String] If provided, will only return tickets created by the creator_ids; multiple
+      #  creator_ids can be separated by commas.
       # @param cursor [String] The pagination cursor value.
       # @param due_after [DateTime] If provided, will only return tickets due after this datetime.
       # @param due_before [DateTime] If provided, will only return tickets due before this datetime.
-      # @param expand [Merge::Ticketing::Tickets::TicketsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::ListTicketsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -539,9 +653,10 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return tickets with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param parent_ticket_id [String] If provided, will only return sub tickets of the parent_ticket_id.
-      # @param priority [Merge::Ticketing::Tickets::TicketsListRequestPriority] If provided, will only return tickets of this priority.
+      # @param priority [Merge::Ticketing::Tickets::ListTicketsRequestPriority] If provided, will only return tickets of this priority.
       #  * `URGENT` - URGENT
       #  * `HIGH` - HIGH
       #  * `NORMAL` - NORMAL
@@ -550,13 +665,14 @@ module Merge
       #  this datetime.
       # @param remote_created_before [DateTime] If provided, will only return tickets created in the third party platform before
       #  this datetime.
-      # @param remote_fields [Merge::Ticketing::Tickets::TicketsListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param remote_fields [Merge::Ticketing::Tickets::ListTicketsRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
+      # @param remote_ids [String] If provided, will only return tickets with these remote IDs (comma-separated).
       # @param remote_updated_after [DateTime] If provided, will only return tickets updated in the third party platform after
       #  this datetime.
       # @param remote_updated_before [DateTime] If provided, will only return tickets updated in the third party platform before
       #  this datetime.
-      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Ticketing::Tickets::ListTicketsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param status [String] If provided, will only return tickets of this status.
@@ -575,7 +691,7 @@ module Merge
       #  )
       #  api.ticketing.tickets.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(account_id: nil, assignee_ids: nil, collection_ids: nil, completed_after: nil, completed_before: nil,
-               contact_id: nil, created_after: nil, created_before: nil, creator_id: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
+               contact_id: nil, created_after: nil, created_before: nil, creator_id: nil, creator_ids: nil, cursor: nil, due_after: nil, due_before: nil, expand: nil, include_deleted_data: nil, include_remote_data: nil, include_remote_fields: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, parent_ticket_id: nil, priority: nil, remote_created_after: nil, remote_created_before: nil, remote_fields: nil, remote_id: nil, remote_ids: nil, remote_updated_after: nil, remote_updated_before: nil, show_enum_origins: nil, status: nil, tags: nil, ticket_type: nil, ticket_url: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -597,6 +713,7 @@ module Merge
               "created_after": created_after,
               "created_before": created_before,
               "creator_id": creator_id,
+              "creator_ids": creator_ids,
               "cursor": cursor,
               "due_after": due_after,
               "due_before": due_before,
@@ -607,6 +724,7 @@ module Merge
               "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
+              "name": name,
               "page_size": page_size,
               "parent_ticket_id": parent_ticket_id,
               "priority": priority,
@@ -614,6 +732,7 @@ module Merge
               "remote_created_before": remote_created_before,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
+              "remote_ids": remote_ids,
               "remote_updated_after": remote_updated_after,
               "remote_updated_before": remote_updated_before,
               "show_enum_origins": show_enum_origins,
@@ -631,30 +750,34 @@ module Merge
         end
       end
 
-      # Creates a `Ticket` object with the given values.
+      # Creates a `Ticket` object with the given values.{/*
+      #  BEGIN_TICKETING_TICKET_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  staK/zgbgfOCGRvrZpyzZi9ajmn9vJXAhvJnZc8Jr614x6LBugu6hhaZ/0TJ3t+/v4fL2+460c/AAA="
+      #  /></Footer>{/* END_TICKETING_TICKET_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Ticketing::TicketRequest, as a Hash
       #   * :name (String)
-      #   * :assignees (Array<Merge::Ticketing::TicketRequestAssigneesItem>)
-      #   * :assigned_teams (Array<Merge::Ticketing::TicketRequestAssignedTeamsItem>)
-      #   * :creator (Hash)
+      #   * :assignees (Array<String>)
+      #   * :assigned_teams (Array<String>)
+      #   * :creator (String)
       #   * :due_date (DateTime)
       #   * :status (Merge::Ticketing::TicketStatusEnum)
       #   * :description (String)
-      #   * :collections (Array<Merge::Ticketing::TicketRequestCollectionsItem>)
+      #   * :collections (Array<String>)
       #   * :ticket_type (String)
-      #   * :account (Hash)
-      #   * :contact (Hash)
-      #   * :parent_ticket (Hash)
-      #   * :attachments (Array<Merge::Ticketing::TicketRequestAttachmentsItem>)
+      #   * :account (String)
+      #   * :contact (String)
+      #   * :parent_ticket (String)
+      #   * :attachments (Array<String>)
       #   * :access_level (Merge::Ticketing::TicketAccessLevelEnum)
       #   * :tags (Array<String>)
       #   * :roles (Array<String>)
-      #   * :completed_at (DateTime)
       #   * :ticket_url (String)
       #   * :priority (Merge::Ticketing::PriorityEnum)
+      #   * :completed_at (DateTime)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Ticketing::RemoteFieldRequest>)
@@ -690,10 +813,14 @@ module Merge
         end
       end
 
-      # Returns a `Ticket` object with the given `id`.
+      # Returns a `Ticket` object with the given `id`.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ticketing::Tickets::TicketsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::RetrieveTicketsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -701,8 +828,8 @@ module Merge
       #  common models, in a normalized format.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Ticketing::Tickets::TicketsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Ticketing::Tickets::TicketsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Ticketing::Tickets::RetrieveTicketsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::RetrieveTicketsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -744,7 +871,11 @@ module Merge
         end
       end
 
-      # Updates a `Ticket` object with the given `id`.
+      # Updates a `Ticket` object with the given `id`.{/*
+      #  BEGIN_TICKETING_TICKET_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  DyV+k1OHrZZvlbW+xuvZW9W2P+Lob0zvedKZCRKDx+a8Td+vOtd+Yos9+tP8u5+/gd1WS+iTx4AAA=="
+      #  /></Footer>{/* END_TICKETING_TICKET_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -805,11 +936,15 @@ module Merge
 
       # Returns a list of `Viewer` objects that point to a User id or Team id that is
       #  either an assignee or viewer on a `Ticket` with the given id. [Learn
-      #  (https://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls)
+      #  tps://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls){/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param ticket_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Tickets::TicketsViewersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Tickets::ViewersListTicketsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -819,7 +954,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedViewerList]
       # @example
@@ -859,7 +994,80 @@ module Merge
         end
       end
 
-      # Returns metadata for `Ticket` PATCHs.
+      # Returns a list of `Ticket` objects.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
+      #
+      # @param assignee_ids [String] Filter tickets by assignee IDs (comma-separated)
+      # @param assignees [String] Filter tickets by assignee names (comma-separated)
+      # @param collection_ids [String] Filter tickets by collection IDs (comma-separated)
+      # @param collections [String] Filter tickets by collection names (comma-separated)
+      # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
+      #  platform. Full coverage deletion detection is a premium add-on. Native deletion
+      #  detection is offered for free with limited coverage. [Learn
+      #  more](https://docs.merge.dev/integrations/hris/supported-features/).
+      # @param include_remote_fields [Boolean] Whether to include all remote fields, including fields that Merge did not map to
+      #  common models, in a normalized format.
+      # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
+      #  contain some metadata but all other fields are null).
+      # @param name [String] Filter tickets by name/title
+      # @param remote_cursor [String] Pagination cursor for remote data
+      # @param remote_fields [Merge::Ticketing::Tickets::LiveSearchListTicketsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Ticketing::Tickets::LiveSearchListTicketsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      #  values to be returned, instead of Merge's normalized enum values. [Learn
+      #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+      # @param status [String] Filter tickets by status
+      # @param ticket_url [String] Filter tickets by URL
+      # @param request_options [Merge::RequestOptions]
+      # @yield on_data[chunk, overall_received_bytes, env] Leverage the Faraday on_data callback which
+      #  will receive tuples of strings, the sum of characters received so far, and the
+      #  response environment. The latter will allow access to the response status,
+      #  headers and reason, as well as the request info.
+      # @return [Void]
+      def live_search_list(assignee_ids: nil, assignees: nil, collection_ids: nil, collections: nil,
+                           include_deleted_data: nil, include_remote_fields: nil, include_shell_data: nil, name: nil, remote_cursor: nil, remote_fields: nil, show_enum_origins: nil, status: nil, ticket_url: nil, request_options: nil, &on_data)
+        Async do
+          @request_client.conn.get do |req|
+            req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
+            req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
+            req.headers["X-Account-Token"] = request_options.account_token unless request_options&.account_token.nil?
+            req.headers = {
+          **(req.headers || {}),
+          **@request_client.get_headers,
+          **(request_options&.additional_headers || {})
+            }.compact
+            req.options.on_data = on_data
+            req.params = {
+              **(request_options&.additional_query_parameters || {}),
+              "assignee_ids": assignee_ids,
+              "assignees": assignees,
+              "collection_ids": collection_ids,
+              "collections": collections,
+              "include_deleted_data": include_deleted_data,
+              "include_remote_fields": include_remote_fields,
+              "include_shell_data": include_shell_data,
+              "name": name,
+              "remote_cursor": remote_cursor,
+              "remote_fields": remote_fields,
+              "show_enum_origins": show_enum_origins,
+              "status": status,
+              "ticket_url": ticket_url
+            }.compact
+            unless request_options.nil? || request_options&.additional_body_parameters.nil?
+              req.body = { **(request_options&.additional_body_parameters || {}) }.compact
+            end
+            req.url "#{@request_client.get_url(request_options: request_options)}/ticketing/v1/tickets/live-search"
+          end
+        end
+      end
+
+      # Returns metadata for `Ticket` PATCHs.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -894,7 +1102,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Ticket` POSTs.
+      # Returns metadata for `Ticket` POSTs.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param collection_id [String] If provided, will only return tickets for this collection.
       # @param ticket_type [String] If provided, will only return tickets for this ticket type.
@@ -932,7 +1144,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  JrXHBt9EV1R2k8Cq0VLAzrF3Kii5Wvc/Jxy3LLmBQyc23r8FlkuqfKy3aZNfHHs24//AMOqtVmvRwAA"
+      #  /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param ids [String] If provided, will only return remote field classes with the `ids` in this list
@@ -947,7 +1163,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedRemoteFieldClassList]
       # @example

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "status_7_d_1_enum"
-require_relative "patched_contact_request_addresses_item"
+require_relative "address_request"
 require_relative "accounting_phone_number_request"
 require_relative "remote_field_request"
 require "ostruct"
@@ -38,7 +38,7 @@ module Merge
       attr_reader :currency
       # @return [String] The company the contact belongs to.
       attr_reader :company
-      # @return [Array<Merge::Accounting::PatchedContactRequestAddressesItem>] `Address` object IDs for the given `Contacts` object.
+      # @return [Array<Merge::Accounting::AddressRequest>] `Address` object IDs for the given `Contacts` object.
       attr_reader :addresses
       # @return [Array<Merge::Accounting::AccountingPhoneNumberRequest>] `AccountingPhoneNumber` object for the given `Contacts` object.
       attr_reader :phone_numbers
@@ -66,7 +66,7 @@ module Merge
       #  * `ARCHIVED` - ARCHIVED
       # @param currency [String] The currency the contact's transactions are in.
       # @param company [String] The company the contact belongs to.
-      # @param addresses [Array<Merge::Accounting::PatchedContactRequestAddressesItem>] `Address` object IDs for the given `Contacts` object.
+      # @param addresses [Array<Merge::Accounting::AddressRequest>] `Address` object IDs for the given `Contacts` object.
       # @param phone_numbers [Array<Merge::Accounting::AccountingPhoneNumberRequest>] `AccountingPhoneNumber` object for the given `Contacts` object.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
@@ -125,7 +125,7 @@ module Merge
         company = parsed_json["company"]
         addresses = parsed_json["addresses"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::PatchedContactRequestAddressesItem.from_json(json_object: item)
+          Merge::Accounting::AddressRequest.from_json(json_object: item)
         end
         phone_numbers = parsed_json["phone_numbers"]&.map do |item|
           item = item.to_json

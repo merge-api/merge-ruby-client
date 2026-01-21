@@ -15,6 +15,8 @@ module Merge
       attr_reader :detail
       # @return [String]
       attr_reader :problem_type
+      # @return [Boolean]
+      attr_reader :block_merge_link
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -27,19 +29,22 @@ module Merge
       # @param title [String]
       # @param detail [String]
       # @param problem_type [String]
+      # @param block_merge_link [Boolean]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::WarningValidationProblem]
-      def initialize(title:, detail:, problem_type:, source: OMIT, additional_properties: nil)
+      def initialize(title:, detail:, problem_type:, source: OMIT, block_merge_link: OMIT, additional_properties: nil)
         @source = source if source != OMIT
         @title = title
         @detail = detail
         @problem_type = problem_type
+        @block_merge_link = block_merge_link if block_merge_link != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "source": source,
           "title": title,
           "detail": detail,
-          "problem_type": problem_type
+          "problem_type": problem_type,
+          "block_merge_link": block_merge_link
         }.reject do |_k, v|
           v == OMIT
         end
@@ -61,11 +66,13 @@ module Merge
         title = parsed_json["title"]
         detail = parsed_json["detail"]
         problem_type = parsed_json["problem_type"]
+        block_merge_link = parsed_json["block_merge_link"]
         new(
           source: source,
           title: title,
           detail: detail,
           problem_type: problem_type,
+          block_merge_link: block_merge_link,
           additional_properties: struct
         )
       end
@@ -88,6 +95,7 @@ module Merge
         obj.title.is_a?(String) != false || raise("Passed value for field obj.title is not the expected type, validation failed.")
         obj.detail.is_a?(String) != false || raise("Passed value for field obj.detail is not the expected type, validation failed.")
         obj.problem_type.is_a?(String) != false || raise("Passed value for field obj.problem_type is not the expected type, validation failed.")
+        obj.block_merge_link&.is_a?(Boolean) != false || raise("Passed value for field obj.block_merge_link is not the expected type, validation failed.")
       end
     end
   end

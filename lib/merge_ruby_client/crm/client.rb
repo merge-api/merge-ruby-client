@@ -6,7 +6,6 @@ require_relative "account_token/client"
 require_relative "accounts/client"
 require_relative "async_passthrough/client"
 require_relative "audit_trail/client"
-require_relative "available_actions/client"
 require_relative "contacts/client"
 require_relative "custom_object_classes/client"
 require_relative "association_types/client"
@@ -31,7 +30,6 @@ require_relative "sync_status/client"
 require_relative "force_resync/client"
 require_relative "tasks/client"
 require_relative "users/client"
-require_relative "webhook_receivers/client"
 
 module Merge
   module Crm
@@ -46,8 +44,6 @@ module Merge
       attr_reader :async_passthrough
       # @return [Merge::Crm::AuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Crm::AvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Crm::ContactsClient]
       attr_reader :contacts
       # @return [Merge::Crm::CustomObjectClassesClient]
@@ -96,8 +92,6 @@ module Merge
       attr_reader :tasks
       # @return [Merge::Crm::UsersClient]
       attr_reader :users
-      # @return [Merge::Crm::WebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::RequestClient]
       # @return [Merge::Crm::Client]
@@ -107,7 +101,6 @@ module Merge
         @accounts = Merge::Crm::AccountsClient.new(request_client: request_client)
         @async_passthrough = Merge::Crm::AsyncPassthroughClient.new(request_client: request_client)
         @audit_trail = Merge::Crm::AuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Crm::AvailableActionsClient.new(request_client: request_client)
         @contacts = Merge::Crm::ContactsClient.new(request_client: request_client)
         @custom_object_classes = Merge::Crm::CustomObjectClassesClient.new(request_client: request_client)
         @association_types = Merge::Crm::AssociationTypesClient.new(request_client: request_client)
@@ -132,7 +125,6 @@ module Merge
         @force_resync = Merge::Crm::ForceResyncClient.new(request_client: request_client)
         @tasks = Merge::Crm::TasksClient.new(request_client: request_client)
         @users = Merge::Crm::UsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Crm::WebhookReceiversClient.new(request_client: request_client)
       end
     end
 
@@ -147,8 +139,6 @@ module Merge
       attr_reader :async_passthrough
       # @return [Merge::Crm::AsyncAuditTrailClient]
       attr_reader :audit_trail
-      # @return [Merge::Crm::AsyncAvailableActionsClient]
-      attr_reader :available_actions
       # @return [Merge::Crm::AsyncContactsClient]
       attr_reader :contacts
       # @return [Merge::Crm::AsyncCustomObjectClassesClient]
@@ -197,8 +187,6 @@ module Merge
       attr_reader :tasks
       # @return [Merge::Crm::AsyncUsersClient]
       attr_reader :users
-      # @return [Merge::Crm::AsyncWebhookReceiversClient]
-      attr_reader :webhook_receivers
 
       # @param request_client [Merge::AsyncRequestClient]
       # @return [Merge::Crm::AsyncClient]
@@ -208,7 +196,6 @@ module Merge
         @accounts = Merge::Crm::AsyncAccountsClient.new(request_client: request_client)
         @async_passthrough = Merge::Crm::AsyncAsyncPassthroughClient.new(request_client: request_client)
         @audit_trail = Merge::Crm::AsyncAuditTrailClient.new(request_client: request_client)
-        @available_actions = Merge::Crm::AsyncAvailableActionsClient.new(request_client: request_client)
         @contacts = Merge::Crm::AsyncContactsClient.new(request_client: request_client)
         @custom_object_classes = Merge::Crm::AsyncCustomObjectClassesClient.new(request_client: request_client)
         @association_types = Merge::Crm::AsyncAssociationTypesClient.new(request_client: request_client)
@@ -233,7 +220,6 @@ module Merge
         @force_resync = Merge::Crm::AsyncForceResyncClient.new(request_client: request_client)
         @tasks = Merge::Crm::AsyncTasksClient.new(request_client: request_client)
         @users = Merge::Crm::AsyncUsersClient.new(request_client: request_client)
-        @webhook_receivers = Merge::Crm::AsyncWebhookReceiversClient.new(request_client: request_client)
       end
     end
   end

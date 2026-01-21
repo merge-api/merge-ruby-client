@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/payments_list_request_expand"
+require_relative "types/list_payments_request_expand"
 require_relative "../types/paginated_payment_list"
 require_relative "../types/payment_request"
 require_relative "../types/payment_response"
-require_relative "types/payments_retrieve_request_expand"
+require_relative "types/retrieve_payments_request_expand"
 require_relative "../types/payment"
 require_relative "../types/patched_payment_request"
 require_relative "../types/paginated_remote_field_class_list"
@@ -25,7 +25,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Payment` objects.
+      # Returns a list of `Payment` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return payments for this account.
       # @param company_id [String] If provided, will only return payments for this company.
@@ -33,7 +37,7 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Payments::PaymentsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Payments::ListPaymentsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -48,7 +52,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
@@ -100,23 +104,27 @@ module Merge
         Merge::Accounting::PaginatedPaymentList.from_json(json_object: response.body)
       end
 
-      # Creates a `Payment` object with the given values.
+      # Creates a `Payment` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  0hjxC2VKudo9yZ6AaCeuQc+q5Gq7PHg6vR+PLfuHtDzz6373AB/ztH2abs/N/J4+/gPOY1xwekOAAA="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::PaymentRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :contact (Hash)
-      #   * :account (Hash)
-      #   * :payment_method (Hash)
+      #   * :contact (String)
+      #   * :account (String)
+      #   * :payment_method (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :total_amount (Float)
       #   * :type (Merge::Accounting::PaymentTypeEnum)
-      #   * :tracking_categories (Array<Merge::Accounting::PaymentRequestTrackingCategoriesItem>)
-      #   * :accounting_period (Hash)
-      #   * :applied_to_lines (Array<Merge::Accounting::PaymentRequestAppliedToLinesItem>)
+      #   * :tracking_categories (Array<String>)
+      #   * :accounting_period (String)
+      #   * :applied_to_lines (Array<Merge::Accounting::PaymentLineItemRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -150,10 +158,14 @@ module Merge
         Merge::Accounting::PaymentResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `Payment` object with the given `id`.
+      # Returns a `Payment` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Payments::PaymentsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Payments::RetrievePaymentsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -196,24 +208,28 @@ module Merge
         Merge::Accounting::Payment.from_json(json_object: response.body)
       end
 
-      # Updates a `Payment` object with the given `id`.
+      # Updates a `Payment` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  qxyvmD/FvQ3oByVkk+rUV8b6FDIx9B5ko0WfNjp1frX7c3G53J6jcmnkPjfnl8+/AJ4yee+BgcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::PatchedPaymentRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :contact (Hash)
-      #   * :account (Hash)
-      #   * :payment_method (Hash)
+      #   * :contact (String)
+      #   * :account (String)
+      #   * :payment_method (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :total_amount (Float)
       #   * :type (Merge::Accounting::PaymentTypeEnum)
-      #   * :tracking_categories (Array<Merge::Accounting::PatchedPaymentRequestTrackingCategoriesItem>)
-      #   * :accounting_period (Hash)
-      #   * :applied_to_lines (Array<Merge::Accounting::PatchedPaymentRequestAppliedToLinesItem>)
+      #   * :tracking_categories (Array<String>)
+      #   * :accounting_period (String)
+      #   * :applied_to_lines (Array<Merge::Accounting::PaymentLineItemRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -247,7 +263,11 @@ module Merge
         Merge::Accounting::PaymentResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -261,7 +281,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -300,7 +320,11 @@ module Merge
         Merge::Accounting::PaginatedRemoteFieldClassList.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Payment` PATCHs.
+      # Returns metadata for `Payment` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -333,7 +357,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Payment` POSTs.
+      # Returns metadata for `Payment` POSTs.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -365,7 +393,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -379,7 +411,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -429,7 +461,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Payment` objects.
+      # Returns a list of `Payment` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_id [String] If provided, will only return payments for this account.
       # @param company_id [String] If provided, will only return payments for this company.
@@ -437,7 +473,7 @@ module Merge
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Payments::PaymentsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Payments::ListPaymentsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -452,7 +488,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param transaction_date_after [DateTime] If provided, will only return objects created after this datetime.
       # @param transaction_date_before [DateTime] If provided, will only return objects created before this datetime.
@@ -506,23 +542,27 @@ module Merge
         end
       end
 
-      # Creates a `Payment` object with the given values.
+      # Creates a `Payment` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  0hjxC2VKudo9yZ6AaCeuQc+q5Gq7PHg6vR+PLfuHtDzz6373AB/ztH2abs/N/J4+/gPOY1xwekOAAA="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::PaymentRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :contact (Hash)
-      #   * :account (Hash)
-      #   * :payment_method (Hash)
+      #   * :contact (String)
+      #   * :account (String)
+      #   * :payment_method (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :total_amount (Float)
       #   * :type (Merge::Accounting::PaymentTypeEnum)
-      #   * :tracking_categories (Array<Merge::Accounting::PaymentRequestTrackingCategoriesItem>)
-      #   * :accounting_period (Hash)
-      #   * :applied_to_lines (Array<Merge::Accounting::PaymentRequestAppliedToLinesItem>)
+      #   * :tracking_categories (Array<String>)
+      #   * :accounting_period (String)
+      #   * :applied_to_lines (Array<Merge::Accounting::PaymentLineItemRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -558,10 +598,14 @@ module Merge
         end
       end
 
-      # Returns a `Payment` object with the given `id`.
+      # Returns a `Payment` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Payments::PaymentsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Payments::RetrievePaymentsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -606,24 +650,28 @@ module Merge
         end
       end
 
-      # Updates a `Payment` object with the given `id`.
+      # Updates a `Payment` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  qxyvmD/FvQ3oByVkk+rUV8b6FDIx9B5ko0WfNjp1frX7c3G53J6jcmnkPjfnl8+/AJ4yee+BgcAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
       # @param model [Hash] Request of type Merge::Accounting::PatchedPaymentRequest, as a Hash
       #   * :transaction_date (DateTime)
-      #   * :contact (Hash)
-      #   * :account (Hash)
-      #   * :payment_method (Hash)
+      #   * :contact (String)
+      #   * :account (String)
+      #   * :payment_method (String)
       #   * :currency (Merge::Accounting::TransactionCurrencyEnum)
       #   * :exchange_rate (String)
-      #   * :company (Hash)
+      #   * :company (String)
       #   * :total_amount (Float)
       #   * :type (Merge::Accounting::PaymentTypeEnum)
-      #   * :tracking_categories (Array<Merge::Accounting::PatchedPaymentRequestTrackingCategoriesItem>)
-      #   * :accounting_period (Hash)
-      #   * :applied_to_lines (Array<Merge::Accounting::PatchedPaymentRequestAppliedToLinesItem>)
+      #   * :tracking_categories (Array<String>)
+      #   * :accounting_period (String)
+      #   * :applied_to_lines (Array<Merge::Accounting::PaymentLineItemRequest>)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       #   * :remote_fields (Array<Merge::Accounting::RemoteFieldRequest>)
@@ -659,7 +707,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -673,7 +725,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example
@@ -714,7 +766,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Payment` PATCHs.
+      # Returns metadata for `Payment` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -749,7 +805,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Payment` POSTs.
+      # Returns metadata for `Payment` POSTs.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -783,7 +843,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  WqVj3YcUvn9XFh+Uw95eY/41XPxDevM/5PKv2qsCjm+3h3ew8f7n/MQzLFavCfur378BN06tIYRFAAA"
+      #  /></Footer>{/* END_ACCOUNTING_PAYMENT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -797,7 +861,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedRemoteFieldClassList]
       # @example

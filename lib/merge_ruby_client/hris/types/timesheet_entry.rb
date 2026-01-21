@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "timesheet_entry_employee"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -23,7 +22,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::TimesheetEntryEmployee] The employee the timesheet entry is for.
+      # @return [String] The employee the timesheet entry is for.
       attr_reader :employee
       # @return [Float] The number of hours logged by the employee.
       attr_reader :hours_worked
@@ -52,7 +51,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::TimesheetEntryEmployee] The employee the timesheet entry is for.
+      # @param employee [String] The employee the timesheet entry is for.
       # @param hours_worked [Float] The number of hours logged by the employee.
       # @param start_time [DateTime] The time at which the employee started work.
       # @param end_time [DateTime] The time at which the employee ended work.
@@ -106,12 +105,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::TimesheetEntryEmployee.from_json(json_object: employee)
-        end
+        employee = parsed_json["employee"]
         hours_worked = parsed_json["hours_worked"]
         start_time = (DateTime.parse(parsed_json["start_time"]) unless parsed_json["start_time"].nil?)
         end_time = (DateTime.parse(parsed_json["end_time"]) unless parsed_json["end_time"].nil?)
@@ -155,7 +149,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::TimesheetEntryEmployee.validate_raw(obj: obj.employee)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.hours_worked&.is_a?(Float) != false || raise("Passed value for field obj.hours_worked is not the expected type, validation failed.")
         obj.start_time&.is_a?(DateTime) != false || raise("Passed value for field obj.start_time is not the expected type, validation failed.")
         obj.end_time&.is_a?(DateTime) != false || raise("Passed value for field obj.end_time is not the expected type, validation failed.")

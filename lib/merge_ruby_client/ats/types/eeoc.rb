@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "eeoc_candidate"
 require_relative "race_enum"
 require_relative "gender_enum"
 require_relative "veteran_status_enum"
@@ -29,7 +28,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::EeocCandidate] The candidate being represented.
+      # @return [String] The candidate being represented.
       attr_reader :candidate
       # @return [DateTime] When the information was submitted.
       attr_reader :submitted_at
@@ -84,7 +83,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param candidate [Merge::Ats::EeocCandidate] The candidate being represented.
+      # @param candidate [String] The candidate being represented.
       # @param submitted_at [DateTime] When the information was submitted.
       # @param race [Merge::Ats::RaceEnum] The candidate's race.
       #  * `AMERICAN_INDIAN_OR_ALASKAN_NATIVE` - AMERICAN_INDIAN_OR_ALASKAN_NATIVE
@@ -166,12 +165,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["candidate"].nil?
-          candidate = nil
-        else
-          candidate = parsed_json["candidate"].to_json
-          candidate = Merge::Ats::EeocCandidate.from_json(json_object: candidate)
-        end
+        candidate = parsed_json["candidate"]
         submitted_at = (DateTime.parse(parsed_json["submitted_at"]) unless parsed_json["submitted_at"].nil?)
         race = parsed_json["race"]
         gender = parsed_json["gender"]
@@ -219,7 +213,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.candidate.nil? || Merge::Ats::EeocCandidate.validate_raw(obj: obj.candidate)
+        obj.candidate&.is_a?(String) != false || raise("Passed value for field obj.candidate is not the expected type, validation failed.")
         obj.submitted_at&.is_a?(DateTime) != false || raise("Passed value for field obj.submitted_at is not the expected type, validation failed.")
         obj.race&.is_a?(Merge::Ats::RaceEnum) != false || raise("Passed value for field obj.race is not the expected type, validation failed.")
         obj.gender&.is_a?(Merge::Ats::GenderEnum) != false || raise("Passed value for field obj.gender is not the expected type, validation failed.")

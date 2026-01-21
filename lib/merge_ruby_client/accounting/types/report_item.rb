@@ -24,7 +24,7 @@ module Merge
       attr_reader :name
       # @return [Float] The report item's value.
       attr_reader :value
-      # @return [Array<Hash{String => Object}>]
+      # @return [Hash{String => Object}]
       attr_reader :sub_items
       # @return [String] The company the report item belongs to.
       attr_reader :company
@@ -46,7 +46,7 @@ module Merge
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The report item's name.
       # @param value [Float] The report item's value.
-      # @param sub_items [Array<Hash{String => Object}>]
+      # @param sub_items [Hash{String => Object}]
       # @param company [String] The company the report item belongs to.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -126,7 +126,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.value&.is_a?(Float) != false || raise("Passed value for field obj.value is not the expected type, validation failed.")
-        obj.sub_items&.is_a?(Array) != false || raise("Passed value for field obj.sub_items is not the expected type, validation failed.")
+        obj.sub_items&.is_a?(Hash) != false || raise("Passed value for field obj.sub_items is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end

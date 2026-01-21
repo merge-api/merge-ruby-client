@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "team_parent_team"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -27,7 +26,7 @@ module Merge
       attr_reader :modified_at
       # @return [String] The team's name.
       attr_reader :name
-      # @return [Merge::Hris::TeamParentTeam] The team's parent team.
+      # @return [String] The team's parent team.
       attr_reader :parent_team
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -51,7 +50,7 @@ module Merge
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
       # @param name [String] The team's name.
-      # @param parent_team [Merge::Hris::TeamParentTeam] The team's parent team.
+      # @param parent_team [String] The team's parent team.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -99,12 +98,7 @@ module Merge
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
-        if parsed_json["parent_team"].nil?
-          parent_team = nil
-        else
-          parent_team = parsed_json["parent_team"].to_json
-          parent_team = Merge::Hris::TeamParentTeam.from_json(json_object: parent_team)
-        end
+        parent_team = parsed_json["parent_team"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|
@@ -144,7 +138,7 @@ module Merge
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
-        obj.parent_team.nil? || Merge::Hris::TeamParentTeam.validate_raw(obj: obj.parent_team)
+        obj.parent_team&.is_a?(String) != false || raise("Passed value for field obj.parent_team is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")
         obj.remote_data&.is_a?(Array) != false || raise("Passed value for field obj.remote_data is not the expected type, validation failed.")

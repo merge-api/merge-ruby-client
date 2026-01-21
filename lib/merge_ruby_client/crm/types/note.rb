@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "note_owner"
-require_relative "note_contact"
-require_relative "note_account"
-require_relative "note_opportunity"
 require_relative "remote_data"
 require_relative "remote_field"
 require "ostruct"
@@ -26,15 +22,15 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Crm::NoteOwner] The note's owner.
+      # @return [String] The note's owner.
       attr_reader :owner
       # @return [String] The note's content.
       attr_reader :content
-      # @return [Merge::Crm::NoteContact] The note's contact.
+      # @return [String] The note's contact.
       attr_reader :contact
-      # @return [Merge::Crm::NoteAccount] The note's account.
+      # @return [String] The note's account.
       attr_reader :account
-      # @return [Merge::Crm::NoteOpportunity] The note's opportunity.
+      # @return [String] The note's opportunity.
       attr_reader :opportunity
       # @return [DateTime] When the third party's lead was updated.
       attr_reader :remote_updated_at
@@ -63,11 +59,11 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param owner [Merge::Crm::NoteOwner] The note's owner.
+      # @param owner [String] The note's owner.
       # @param content [String] The note's content.
-      # @param contact [Merge::Crm::NoteContact] The note's contact.
-      # @param account [Merge::Crm::NoteAccount] The note's account.
-      # @param opportunity [Merge::Crm::NoteOpportunity] The note's opportunity.
+      # @param contact [String] The note's contact.
+      # @param account [String] The note's account.
+      # @param opportunity [String] The note's opportunity.
       # @param remote_updated_at [DateTime] When the third party's lead was updated.
       # @param remote_created_at [DateTime] When the third party's lead was created.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -129,31 +125,11 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::NoteOwner.from_json(json_object: owner)
-        end
+        owner = parsed_json["owner"]
         content = parsed_json["content"]
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Crm::NoteContact.from_json(json_object: contact)
-        end
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Crm::NoteAccount.from_json(json_object: account)
-        end
-        if parsed_json["opportunity"].nil?
-          opportunity = nil
-        else
-          opportunity = parsed_json["opportunity"].to_json
-          opportunity = Merge::Crm::NoteOpportunity.from_json(json_object: opportunity)
-        end
+        contact = parsed_json["contact"]
+        account = parsed_json["account"]
+        opportunity = parsed_json["opportunity"]
         remote_updated_at = unless parsed_json["remote_updated_at"].nil?
                               DateTime.parse(parsed_json["remote_updated_at"])
                             end
@@ -208,11 +184,11 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.owner.nil? || Merge::Crm::NoteOwner.validate_raw(obj: obj.owner)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.content&.is_a?(String) != false || raise("Passed value for field obj.content is not the expected type, validation failed.")
-        obj.contact.nil? || Merge::Crm::NoteContact.validate_raw(obj: obj.contact)
-        obj.account.nil? || Merge::Crm::NoteAccount.validate_raw(obj: obj.account)
-        obj.opportunity.nil? || Merge::Crm::NoteOpportunity.validate_raw(obj: obj.opportunity)
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.opportunity&.is_a?(String) != false || raise("Passed value for field obj.opportunity is not the expected type, validation failed.")
         obj.remote_updated_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_updated_at is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
