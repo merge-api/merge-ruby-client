@@ -4,7 +4,6 @@ require "date"
 require_relative "expense_report_status_enum"
 require_relative "expense_report_line"
 require_relative "transaction_currency_enum"
-require_relative "expense_report_company"
 require_relative "remote_data"
 require_relative "remote_field"
 require "ostruct"
@@ -360,7 +359,7 @@ module Merge
       attr_reader :description
       # @return [String] The accounting period the report was posted in
       attr_reader :accounting_period
-      # @return [Merge::Accounting::ExpenseReportCompany] The subsidiary that the expense report is created in
+      # @return [String] The subsidiary that the expense report is created in
       attr_reader :company
       # @return [Array<String>] The related tracking categories associated with the expense report
       attr_reader :tracking_categories
@@ -708,7 +707,7 @@ module Merge
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param description [String] A brief description or purpose for the expense report
       # @param accounting_period [String] The accounting period the report was posted in
-      # @param company [Merge::Accounting::ExpenseReportCompany] The subsidiary that the expense report is created in
+      # @param company [String] The subsidiary that the expense report is created in
       # @param tracking_categories [Array<String>] The related tracking categories associated with the expense report
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -789,12 +788,7 @@ module Merge
         currency = parsed_json["currency"]
         description = parsed_json["description"]
         accounting_period = parsed_json["accounting_period"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::ExpenseReportCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         tracking_categories = parsed_json["tracking_categories"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
@@ -857,7 +851,7 @@ module Merge
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.accounting_period&.is_a?(String) != false || raise("Passed value for field obj.accounting_period is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::ExpenseReportCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.tracking_categories.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
         obj.field_mappings&.is_a?(Hash) != false || raise("Passed value for field obj.field_mappings is not the expected type, validation failed.")

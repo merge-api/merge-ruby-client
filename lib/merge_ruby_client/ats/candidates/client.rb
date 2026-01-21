@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/candidates_list_request_expand"
+require_relative "types/list_candidates_request_expand"
 require_relative "../types/paginated_candidate_list"
 require_relative "../types/candidate_request"
 require_relative "../types/candidate_response"
-require_relative "types/candidates_retrieve_request_expand"
+require_relative "types/retrieve_candidates_request_expand"
 require_relative "../types/candidate"
 require_relative "../types/patched_candidate_request"
 require_relative "../types/reason_enum"
@@ -25,14 +25,18 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Candidate` objects.
+      # Returns a list of `Candidate` objects.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param email_addresses [String] If provided, will only return candidates with these email addresses; multiple
       #  addresses can be separated by commas.
-      # @param expand [Merge::Ats::Candidates::CandidatesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Candidates::ListCandidatesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param first_name [String] If provided, will only return candidates with this first name.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -47,7 +51,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param tags [String] If provided, will only return candidates with these tags; multiple tags can be
       #  separated by commas.
@@ -97,7 +101,11 @@ module Merge
         Merge::Ats::PaginatedCandidateList.from_json(json_object: response.body)
       end
 
-      # Creates a `Candidate` object with the given values.
+      # Creates a `Candidate` object with the given values.{/*
+      #  BEGIN_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  KWFuilaTJ63R4wZ7OD/cbYvLZ+bLNv1mbWwpoNp0/AZgb7N9LacyzTbZzr2On/+/g8eqMDOCDoAAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -114,8 +122,8 @@ module Merge
       #   * :email_addresses (Array<Merge::Ats::EmailAddressRequest>)
       #   * :urls (Array<Merge::Ats::UrlRequest>)
       #   * :tags (Array<String>)
-      #   * :applications (Array<Merge::Ats::CandidateRequestApplicationsItem>)
-      #   * :attachments (Array<Merge::Ats::CandidateRequestAttachmentsItem>)
+      #   * :applications (Array<String>)
+      #   * :attachments (Array<String>)
       #   * :remote_template_id (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -154,10 +162,14 @@ module Merge
         Merge::Ats::CandidateResponse.from_json(json_object: response.body)
       end
 
-      # Returns a `Candidate` object with the given `id`.
+      # Returns a `Candidate` object with the given `id`.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Candidates::CandidatesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Candidates::RetrieveCandidatesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -196,7 +208,11 @@ module Merge
         Merge::Ats::Candidate.from_json(json_object: response.body)
       end
 
-      # Updates a `Candidate` object with the given `id`.
+      # Updates a `Candidate` object with the given `id`.{/*
+      #  BEGIN_ATS_CANDIDATE_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  c7t3sVfyPsHmAtFH9rjGhvFIANtT5Hqgtul1RoAvjBdQTnamR4OOxf/aYA/nMXr+x8xLwav9AgAAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -261,7 +277,10 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  KWFuilaTJ63R4wZ7OD/cbYvLZ+bLNv1mbWwpoNp0/AZgb7N9LacyzTbZzr2On/+/g8eqMDOCDoAAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param reason [Merge::Ats::ReasonEnum]
@@ -293,7 +312,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Candidate` PATCHs.
+      # Returns metadata for `Candidate` PATCHs.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -326,7 +349,11 @@ module Merge
         Merge::Ats::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Candidate` POSTs.
+      # Returns metadata for `Candidate` POSTs.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]
@@ -369,14 +396,18 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Candidate` objects.
+      # Returns a list of `Candidate` objects.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param email_addresses [String] If provided, will only return candidates with these email addresses; multiple
       #  addresses can be separated by commas.
-      # @param expand [Merge::Ats::Candidates::CandidatesListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Candidates::ListCandidatesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param first_name [String] If provided, will only return candidates with this first name.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -391,7 +422,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param tags [String] If provided, will only return candidates with these tags; multiple tags can be
       #  separated by commas.
@@ -443,7 +474,11 @@ module Merge
         end
       end
 
-      # Creates a `Candidate` object with the given values.
+      # Creates a `Candidate` object with the given values.{/*
+      #  BEGIN_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  KWFuilaTJ63R4wZ7OD/cbYvLZ+bLNv1mbWwpoNp0/AZgb7N9LacyzTbZzr2On/+/g8eqMDOCDoAAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -460,8 +495,8 @@ module Merge
       #   * :email_addresses (Array<Merge::Ats::EmailAddressRequest>)
       #   * :urls (Array<Merge::Ats::UrlRequest>)
       #   * :tags (Array<String>)
-      #   * :applications (Array<Merge::Ats::CandidateRequestApplicationsItem>)
-      #   * :attachments (Array<Merge::Ats::CandidateRequestAttachmentsItem>)
+      #   * :applications (Array<String>)
+      #   * :attachments (Array<String>)
       #   * :remote_template_id (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
@@ -502,10 +537,14 @@ module Merge
         end
       end
 
-      # Returns a `Candidate` object with the given `id`.
+      # Returns a `Candidate` object with the given `id`.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ats::Candidates::CandidatesRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ats::Candidates::RetrieveCandidatesRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -546,7 +585,11 @@ module Merge
         end
       end
 
-      # Updates a `Candidate` object with the given `id`.
+      # Updates a `Candidate` object with the given `id`.{/*
+      #  BEGIN_ATS_CANDIDATE_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  c7t3sVfyPsHmAtFH9rjGhvFIANtT5Hqgtul1RoAvjBdQTnamR4OOxf/aYA/nMXr+x8xLwav9AgAAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -613,7 +656,10 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  KWFuilaTJ63R4wZ7OD/cbYvLZ+bLNv1mbWwpoNp0/AZgb7N9LacyzTbZzr2On/+/g8eqMDOCDoAAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param reason [Merge::Ats::ReasonEnum]
@@ -651,7 +697,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Candidate` PATCHs.
+      # Returns metadata for `Candidate` PATCHs.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -686,7 +736,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Candidate` POSTs.
+      # Returns metadata for `Candidate` POSTs.{/*
+      #  BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pKhHh0MpLhNMgD9cIol8eD8g5aJfvDhiwOmlqkechi8Zyt0T8n2d2nWjqupxV9//w96BVefwn4AAA=="
+      #  /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::MetaResponse]

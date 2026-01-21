@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "account_request_owner"
 require_relative "address_request"
 require "date"
 require_relative "remote_field_request"
@@ -15,7 +14,7 @@ module Merge
     #  ### Usage Example
     #  TODO
     class AccountRequest
-      # @return [Merge::Crm::AccountRequestOwner] The account's owner.
+      # @return [String] The account's owner.
       attr_reader :owner
       # @return [String] The account's name.
       attr_reader :name
@@ -46,7 +45,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param owner [Merge::Crm::AccountRequestOwner] The account's owner.
+      # @param owner [String] The account's owner.
       # @param name [String] The account's name.
       # @param description [String] The account's description.
       # @param industry [String] The account's industry.
@@ -98,12 +97,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::AccountRequestOwner.from_json(json_object: owner)
-        end
+        owner = parsed_json["owner"]
         name = parsed_json["name"]
         description = parsed_json["description"]
         industry = parsed_json["industry"]
@@ -150,7 +144,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.owner.nil? || Merge::Crm::AccountRequestOwner.validate_raw(obj: obj.owner)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.industry&.is_a?(String) != false || raise("Passed value for field obj.industry is not the expected type, validation failed.")

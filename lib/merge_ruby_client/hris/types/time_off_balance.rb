@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "time_off_balance_employee"
 require_relative "policy_type_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -25,7 +24,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::TimeOffBalanceEmployee] The employee the balance belongs to.
+      # @return [String] The employee the balance belongs to.
       attr_reader :employee
       # @return [Float] The current remaining PTO balance, measured in hours. For integrations that
       #  return this value in days, Merge multiplies by 8 to calculate hours.
@@ -62,7 +61,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::TimeOffBalanceEmployee] The employee the balance belongs to.
+      # @param employee [String] The employee the balance belongs to.
       # @param balance [Float] The current remaining PTO balance, measured in hours. For integrations that
       #  return this value in days, Merge multiplies by 8 to calculate hours.
       # @param used [Float] The amount of PTO used in terms of hours. For integrations that return this
@@ -124,12 +123,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::TimeOffBalanceEmployee.from_json(json_object: employee)
-        end
+        employee = parsed_json["employee"]
         balance = parsed_json["balance"]
         used = parsed_json["used"]
         policy_type = parsed_json["policy_type"]
@@ -173,7 +167,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::TimeOffBalanceEmployee.validate_raw(obj: obj.employee)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.balance&.is_a?(Float) != false || raise("Passed value for field obj.balance is not the expected type, validation failed.")
         obj.used&.is_a?(Float) != false || raise("Passed value for field obj.used is not the expected type, validation failed.")
         obj.policy_type&.is_a?(Merge::Hris::PolicyTypeEnum) != false || raise("Passed value for field obj.policy_type is not the expected type, validation failed.")

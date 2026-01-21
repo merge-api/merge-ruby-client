@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "general_ledger_transaction_line_account"
-require_relative "general_ledger_transaction_line_company"
-require_relative "general_ledger_transaction_line_employee"
-require_relative "general_ledger_transaction_line_contact"
-require_relative "general_ledger_transaction_line_project"
 require_relative "transaction_currency_enum"
-require_relative "general_ledger_transaction_line_tracking_categories_item"
-require_relative "general_ledger_transaction_line_item"
+require_relative "tracking_category"
 require "ostruct"
 require "json"
 
@@ -30,15 +24,15 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Accounting::GeneralLedgerTransactionLineAccount]
+      # @return [String]
       attr_reader :account
-      # @return [Merge::Accounting::GeneralLedgerTransactionLineCompany] The company the GeneralLedgerTransaction belongs to.
+      # @return [String] The company the GeneralLedgerTransaction belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::GeneralLedgerTransactionLineEmployee]
+      # @return [String]
       attr_reader :employee
-      # @return [Merge::Accounting::GeneralLedgerTransactionLineContact]
+      # @return [String]
       attr_reader :contact
-      # @return [Merge::Accounting::GeneralLedgerTransactionLineProject]
+      # @return [String]
       attr_reader :project
       # @return [Merge::Accounting::TransactionCurrencyEnum] The base currency of the transaction
       #  * `XUA` - ADB Unit of Account
@@ -660,13 +654,13 @@ module Merge
       attr_reader :exchange_rate
       # @return [String] A description of the line item.
       attr_reader :description
-      # @return [Array<Merge::Accounting::GeneralLedgerTransactionLineTrackingCategoriesItem>]
+      # @return [Array<Merge::Accounting::TrackingCategory>]
       attr_reader :tracking_categories
       # @return [String]
       attr_reader :debit_amount
       # @return [String]
       attr_reader :credit_amount
-      # @return [Merge::Accounting::GeneralLedgerTransactionLineItem]
+      # @return [String]
       attr_reader :item
       # @return [String]
       attr_reader :foreign_debit_amount
@@ -691,11 +685,11 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param account [Merge::Accounting::GeneralLedgerTransactionLineAccount]
-      # @param company [Merge::Accounting::GeneralLedgerTransactionLineCompany] The company the GeneralLedgerTransaction belongs to.
-      # @param employee [Merge::Accounting::GeneralLedgerTransactionLineEmployee]
-      # @param contact [Merge::Accounting::GeneralLedgerTransactionLineContact]
-      # @param project [Merge::Accounting::GeneralLedgerTransactionLineProject]
+      # @param account [String]
+      # @param company [String] The company the GeneralLedgerTransaction belongs to.
+      # @param employee [String]
+      # @param contact [String]
+      # @param project [String]
       # @param base_currency [Merge::Accounting::TransactionCurrencyEnum] The base currency of the transaction
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -1312,10 +1306,10 @@ module Merge
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The exchange rate between the base currency and the transaction currency.
       # @param description [String] A description of the line item.
-      # @param tracking_categories [Array<Merge::Accounting::GeneralLedgerTransactionLineTrackingCategoriesItem>]
+      # @param tracking_categories [Array<Merge::Accounting::TrackingCategory>]
       # @param debit_amount [String]
       # @param credit_amount [String]
-      # @param item [Merge::Accounting::GeneralLedgerTransactionLineItem]
+      # @param item [String]
       # @param foreign_debit_amount [String]
       # @param foreign_credit_amount [String]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -1387,52 +1381,22 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Accounting::GeneralLedgerTransactionLineAccount.from_json(json_object: account)
-        end
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::GeneralLedgerTransactionLineCompany.from_json(json_object: company)
-        end
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Accounting::GeneralLedgerTransactionLineEmployee.from_json(json_object: employee)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::GeneralLedgerTransactionLineContact.from_json(json_object: contact)
-        end
-        if parsed_json["project"].nil?
-          project = nil
-        else
-          project = parsed_json["project"].to_json
-          project = Merge::Accounting::GeneralLedgerTransactionLineProject.from_json(json_object: project)
-        end
+        account = parsed_json["account"]
+        company = parsed_json["company"]
+        employee = parsed_json["employee"]
+        contact = parsed_json["contact"]
+        project = parsed_json["project"]
         base_currency = parsed_json["base_currency"]
         transaction_currency = parsed_json["transaction_currency"]
         exchange_rate = parsed_json["exchange_rate"]
         description = parsed_json["description"]
         tracking_categories = parsed_json["tracking_categories"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::GeneralLedgerTransactionLineTrackingCategoriesItem.from_json(json_object: item)
+          Merge::Accounting::TrackingCategory.from_json(json_object: item)
         end
         debit_amount = parsed_json["debit_amount"]
         credit_amount = parsed_json["credit_amount"]
-        if parsed_json["item"].nil?
-          item = nil
-        else
-          item = parsed_json["item"].to_json
-          item = Merge::Accounting::GeneralLedgerTransactionLineItem.from_json(json_object: item)
-        end
+        item = parsed_json["item"]
         foreign_debit_amount = parsed_json["foreign_debit_amount"]
         foreign_credit_amount = parsed_json["foreign_credit_amount"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
@@ -1481,11 +1445,11 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.account.nil? || Merge::Accounting::GeneralLedgerTransactionLineAccount.validate_raw(obj: obj.account)
-        obj.company.nil? || Merge::Accounting::GeneralLedgerTransactionLineCompany.validate_raw(obj: obj.company)
-        obj.employee.nil? || Merge::Accounting::GeneralLedgerTransactionLineEmployee.validate_raw(obj: obj.employee)
-        obj.contact.nil? || Merge::Accounting::GeneralLedgerTransactionLineContact.validate_raw(obj: obj.contact)
-        obj.project.nil? || Merge::Accounting::GeneralLedgerTransactionLineProject.validate_raw(obj: obj.project)
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.project&.is_a?(String) != false || raise("Passed value for field obj.project is not the expected type, validation failed.")
         obj.base_currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.base_currency is not the expected type, validation failed.")
         obj.transaction_currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.transaction_currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
@@ -1493,7 +1457,7 @@ module Merge
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.debit_amount.is_a?(String) != false || raise("Passed value for field obj.debit_amount is not the expected type, validation failed.")
         obj.credit_amount.is_a?(String) != false || raise("Passed value for field obj.credit_amount is not the expected type, validation failed.")
-        obj.item.nil? || Merge::Accounting::GeneralLedgerTransactionLineItem.validate_raw(obj: obj.item)
+        obj.item&.is_a?(String) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
         obj.foreign_debit_amount.is_a?(String) != false || raise("Passed value for field obj.foreign_debit_amount is not the expected type, validation failed.")
         obj.foreign_credit_amount.is_a?(String) != false || raise("Passed value for field obj.foreign_credit_amount is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

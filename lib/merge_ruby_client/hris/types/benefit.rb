@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "benefit_employee"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -23,7 +22,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::BenefitEmployee] The employee on the plan.
+      # @return [String] The employee on the plan.
       attr_reader :employee
       # @return [String] The name of the benefit provider.
       attr_reader :provider_name
@@ -60,7 +59,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::BenefitEmployee] The employee on the plan.
+      # @param employee [String] The employee on the plan.
       # @param provider_name [String] The name of the benefit provider.
       # @param benefit_plan_type [String] The type of benefit plan
       # @param employee_contribution [Float] The employee's contribution.
@@ -126,12 +125,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::BenefitEmployee.from_json(json_object: employee)
-        end
+        employee = parsed_json["employee"]
         provider_name = parsed_json["provider_name"]
         benefit_plan_type = parsed_json["benefit_plan_type"]
         employee_contribution = parsed_json["employee_contribution"]
@@ -183,7 +177,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::BenefitEmployee.validate_raw(obj: obj.employee)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.provider_name&.is_a?(String) != false || raise("Passed value for field obj.provider_name is not the expected type, validation failed.")
         obj.benefit_plan_type&.is_a?(String) != false || raise("Passed value for field obj.benefit_plan_type is not the expected type, validation failed.")
         obj.employee_contribution&.is_a?(Float) != false || raise("Passed value for field obj.employee_contribution is not the expected type, validation failed.")

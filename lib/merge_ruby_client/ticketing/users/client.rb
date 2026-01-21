@@ -2,9 +2,9 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/users_list_request_expand"
+require_relative "types/list_users_request_expand"
 require_relative "../types/paginated_user_list"
-require_relative "types/users_retrieve_request_expand"
+require_relative "types/retrieve_users_request_expand"
 require_relative "../types/user"
 require "async"
 
@@ -20,14 +20,19 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `User` objects.{/* BEGIN_TICKETING_USER_FETCH_SUPPORTED_FIELDS
+      #  * /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Zv1Vhg3XW+3ZRjRE6WjNLRaCzCi95pbUAsorkn/DOqOtQlh5Dzn2+2VRU+HrdqT9unrf5wadwIkNwAA"
+      #  /></Footer>{/* END_TICKETING_USER_FETCH_SUPPORTED_FIELDS * /}
       #
+      # @param collections [String] If provided, will only return users involved with at least one of these
+      #  collections.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param email_address [String] If provided, will only return users with emails equal to this value (case
       #  insensitive).
-      # @param expand [Merge::Ticketing::Users::UsersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Users::ListUsersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -40,9 +45,11 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
+      # @param roles [String] If provided, will only return users with at least one of these roles.
       # @param team [String] If provided, will only return users matching in this team.
+      # @param teams [String] If provided, will only return users with at least one of these teams.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedUserList]
       # @example
@@ -52,8 +59,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.users.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
-      def list(created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, team: nil, request_options: nil)
+      def list(collections: nil, created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, roles: nil, team: nil, teams: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -65,6 +72,7 @@ module Merge
           }.compact
           req.params = {
             **(request_options&.additional_query_parameters || {}),
+            "collections": collections,
             "created_after": created_after,
             "created_before": created_before,
             "cursor": cursor,
@@ -77,7 +85,9 @@ module Merge
             "modified_before": modified_before,
             "page_size": page_size,
             "remote_id": remote_id,
-            "team": team
+            "roles": roles,
+            "team": team,
+            "teams": teams
           }.compact
           unless request_options.nil? || request_options&.additional_body_parameters.nil?
             req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -87,10 +97,14 @@ module Merge
         Merge::Ticketing::PaginatedUserList.from_json(json_object: response.body)
       end
 
-      # Returns a `User` object with the given `id`.
+      # Returns a `User` object with the given `id`.{/*
+      #  BEGIN_TICKETING_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Zv1Vhg3XW+3ZRjRE6WjNLRaCzCi95pbUAsorkn/DOqOtQlh5Dzn2+2VRU+HrdqT9unrf5wadwIkNwAA"
+      #  /></Footer>{/* END_TICKETING_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ticketing::Users::UsersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Users::RetrieveUsersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -140,14 +154,19 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `User` objects.{/* BEGIN_TICKETING_USER_FETCH_SUPPORTED_FIELDS
+      #  * /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Zv1Vhg3XW+3ZRjRE6WjNLRaCzCi95pbUAsorkn/DOqOtQlh5Dzn2+2VRU+HrdqT9unrf5wadwIkNwAA"
+      #  /></Footer>{/* END_TICKETING_USER_FETCH_SUPPORTED_FIELDS * /}
       #
+      # @param collections [String] If provided, will only return users involved with at least one of these
+      #  collections.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
       # @param email_address [String] If provided, will only return users with emails equal to this value (case
       #  insensitive).
-      # @param expand [Merge::Ticketing::Users::UsersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Users::ListUsersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -160,9 +179,11 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
+      # @param roles [String] If provided, will only return users with at least one of these roles.
       # @param team [String] If provided, will only return users matching in this team.
+      # @param teams [String] If provided, will only return users with at least one of these teams.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedUserList]
       # @example
@@ -172,8 +193,8 @@ module Merge
       #    api_key: "YOUR_AUTH_TOKEN"
       #  )
       #  api.ticketing.users.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
-      def list(created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, team: nil, request_options: nil)
+      def list(collections: nil, created_after: nil, created_before: nil, cursor: nil, email_address: nil, expand: nil,
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, roles: nil, team: nil, teams: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -186,6 +207,7 @@ module Merge
             }.compact
             req.params = {
               **(request_options&.additional_query_parameters || {}),
+              "collections": collections,
               "created_after": created_after,
               "created_before": created_before,
               "cursor": cursor,
@@ -198,7 +220,9 @@ module Merge
               "modified_before": modified_before,
               "page_size": page_size,
               "remote_id": remote_id,
-              "team": team
+              "roles": roles,
+              "team": team,
+              "teams": teams
             }.compact
             unless request_options.nil? || request_options&.additional_body_parameters.nil?
               req.body = { **(request_options&.additional_body_parameters || {}) }.compact
@@ -209,10 +233,14 @@ module Merge
         end
       end
 
-      # Returns a `User` object with the given `id`.
+      # Returns a `User` object with the given `id`.{/*
+      #  BEGIN_TICKETING_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  Zv1Vhg3XW+3ZRjRE6WjNLRaCzCi95pbUAsorkn/DOqOtQlh5Dzn2+2VRU+HrdqT9unrf5wadwIkNwAA"
+      #  /></Footer>{/* END_TICKETING_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Ticketing::Users::UsersRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Users::RetrieveUsersRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.

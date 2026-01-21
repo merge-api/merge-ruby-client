@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "file_request_folder"
-require_relative "file_request_permissions"
-require_relative "file_request_drive"
+require_relative "permission_request"
 require "ostruct"
 require "json"
 
@@ -27,17 +25,15 @@ module Merge
       attr_reader :mime_type
       # @return [String] The file's description.
       attr_reader :description
-      # @return [Merge::Filestorage::FileRequestFolder] The folder that the file belongs to.
+      # @return [String] The folder that the file belongs to.
       attr_reader :folder
       # @return [Hash{String => Object}] This field stores file checksum data. 'type' indicates the algorithm (e.g.
       #  crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash
       #  used to verify file integrity and detect alterations.
       attr_reader :checksum
-      # @return [Merge::Filestorage::FileRequestPermissions] The Permission object is used to represent a user's or group's access to a File
-      #  or Folder. Permissions are unexpanded by default. Use the query param
-      #  `expand=permissions` to see more details under `GET /files`.
+      # @return [Array<Merge::Filestorage::PermissionRequest>]
       attr_reader :permissions
-      # @return [Merge::Filestorage::FileRequestDrive] The drive that the file belongs to.
+      # @return [String] The drive that the file belongs to.
       attr_reader :drive
       # @return [Hash{String => Object}]
       attr_reader :integration_params
@@ -57,14 +53,12 @@ module Merge
       # @param size [Long] The file's size, in bytes.
       # @param mime_type [String] The file's mime type.
       # @param description [String] The file's description.
-      # @param folder [Merge::Filestorage::FileRequestFolder] The folder that the file belongs to.
+      # @param folder [String] The folder that the file belongs to.
       # @param checksum [Hash{String => Object}] This field stores file checksum data. 'type' indicates the algorithm (e.g.
       #  crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash
       #  used to verify file integrity and detect alterations.
-      # @param permissions [Merge::Filestorage::FileRequestPermissions] The Permission object is used to represent a user's or group's access to a File
-      #  or Folder. Permissions are unexpanded by default. Use the query param
-      #  `expand=permissions` to see more details under `GET /files`.
-      # @param drive [Merge::Filestorage::FileRequestDrive] The drive that the file belongs to.
+      # @param permissions [Array<Merge::Filestorage::PermissionRequest>]
+      # @param drive [String] The drive that the file belongs to.
       # @param integration_params [Hash{String => Object}]
       # @param linked_account_params [Hash{String => Object}]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
@@ -115,25 +109,13 @@ module Merge
         size = parsed_json["size"]
         mime_type = parsed_json["mime_type"]
         description = parsed_json["description"]
-        if parsed_json["folder"].nil?
-          folder = nil
-        else
-          folder = parsed_json["folder"].to_json
-          folder = Merge::Filestorage::FileRequestFolder.from_json(json_object: folder)
-        end
+        folder = parsed_json["folder"]
         checksum = parsed_json["checksum"]
-        if parsed_json["permissions"].nil?
-          permissions = nil
-        else
-          permissions = parsed_json["permissions"].to_json
-          permissions = Merge::Filestorage::FileRequestPermissions.from_json(json_object: permissions)
+        permissions = parsed_json["permissions"]&.map do |item|
+          item = item.to_json
+          Merge::Filestorage::PermissionRequest.from_json(json_object: item)
         end
-        if parsed_json["drive"].nil?
-          drive = nil
-        else
-          drive = parsed_json["drive"].to_json
-          drive = Merge::Filestorage::FileRequestDrive.from_json(json_object: drive)
-        end
+        drive = parsed_json["drive"]
         integration_params = parsed_json["integration_params"]
         linked_account_params = parsed_json["linked_account_params"]
         new(
@@ -173,10 +155,10 @@ module Merge
         obj.size&.is_a?(Long) != false || raise("Passed value for field obj.size is not the expected type, validation failed.")
         obj.mime_type&.is_a?(String) != false || raise("Passed value for field obj.mime_type is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
-        obj.folder.nil? || Merge::Filestorage::FileRequestFolder.validate_raw(obj: obj.folder)
+        obj.folder&.is_a?(String) != false || raise("Passed value for field obj.folder is not the expected type, validation failed.")
         obj.checksum&.is_a?(Hash) != false || raise("Passed value for field obj.checksum is not the expected type, validation failed.")
-        obj.permissions.nil? || Merge::Filestorage::FileRequestPermissions.validate_raw(obj: obj.permissions)
-        obj.drive.nil? || Merge::Filestorage::FileRequestDrive.validate_raw(obj: obj.drive)
+        obj.permissions&.is_a?(Array) != false || raise("Passed value for field obj.permissions is not the expected type, validation failed.")
+        obj.drive&.is_a?(String) != false || raise("Passed value for field obj.drive is not the expected type, validation failed.")
         obj.integration_params&.is_a?(Hash) != false || raise("Passed value for field obj.integration_params is not the expected type, validation failed.")
         obj.linked_account_params&.is_a?(Hash) != false || raise("Passed value for field obj.linked_account_params is not the expected type, validation failed.")
       end

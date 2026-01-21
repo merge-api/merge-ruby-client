@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "comment_user"
-require_relative "comment_contact"
-require_relative "comment_ticket"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -24,11 +21,11 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ticketing::CommentUser] The author of the Comment, if the author is a User. If the third party does not
+      # @return [String] The author of the Comment, if the author is a User. If the third party does not
       #  support specifying an author, we will append "[Posted on behalf of {name}]" to
       #  the comment.
       attr_reader :user
-      # @return [Merge::Ticketing::CommentContact] The author of the Comment, if the author is a Contact.If the third party does
+      # @return [String] The author of the Comment, if the author is a Contact.If the third party does
       #  not support specifying an author, we will append "[Posted on behalf of {name}]"
       #  to the comment.
       attr_reader :contact
@@ -36,7 +33,7 @@ module Merge
       attr_reader :body
       # @return [String] The comment's text body formatted as html.
       attr_reader :html_body
-      # @return [Merge::Ticketing::CommentTicket] The ticket associated with the comment.
+      # @return [String] The ticket associated with the comment.
       attr_reader :ticket
       # @return [Boolean] Whether or not the comment is internal.
       attr_reader :is_private
@@ -63,15 +60,15 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param user [Merge::Ticketing::CommentUser] The author of the Comment, if the author is a User. If the third party does not
+      # @param user [String] The author of the Comment, if the author is a User. If the third party does not
       #  support specifying an author, we will append "[Posted on behalf of {name}]" to
       #  the comment.
-      # @param contact [Merge::Ticketing::CommentContact] The author of the Comment, if the author is a Contact.If the third party does
+      # @param contact [String] The author of the Comment, if the author is a Contact.If the third party does
       #  not support specifying an author, we will append "[Posted on behalf of {name}]"
       #  to the comment.
       # @param body [String] The comment's text body.
       # @param html_body [String] The comment's text body formatted as html.
-      # @param ticket [Merge::Ticketing::CommentTicket] The ticket associated with the comment.
+      # @param ticket [String] The ticket associated with the comment.
       # @param is_private [Boolean] Whether or not the comment is internal.
       # @param remote_created_at [DateTime] When the third party's comment was created.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -130,26 +127,11 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["user"].nil?
-          user = nil
-        else
-          user = parsed_json["user"].to_json
-          user = Merge::Ticketing::CommentUser.from_json(json_object: user)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Ticketing::CommentContact.from_json(json_object: contact)
-        end
+        user = parsed_json["user"]
+        contact = parsed_json["contact"]
         body = parsed_json["body"]
         html_body = parsed_json["html_body"]
-        if parsed_json["ticket"].nil?
-          ticket = nil
-        else
-          ticket = parsed_json["ticket"].to_json
-          ticket = Merge::Ticketing::CommentTicket.from_json(json_object: ticket)
-        end
+        ticket = parsed_json["ticket"]
         is_private = parsed_json["is_private"]
         remote_created_at = unless parsed_json["remote_created_at"].nil?
                               DateTime.parse(parsed_json["remote_created_at"])
@@ -197,11 +179,11 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.user.nil? || Merge::Ticketing::CommentUser.validate_raw(obj: obj.user)
-        obj.contact.nil? || Merge::Ticketing::CommentContact.validate_raw(obj: obj.contact)
+        obj.user&.is_a?(String) != false || raise("Passed value for field obj.user is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.body&.is_a?(String) != false || raise("Passed value for field obj.body is not the expected type, validation failed.")
         obj.html_body&.is_a?(String) != false || raise("Passed value for field obj.html_body is not the expected type, validation failed.")
-        obj.ticket.nil? || Merge::Ticketing::CommentTicket.validate_raw(obj: obj.ticket)
+        obj.ticket&.is_a?(String) != false || raise("Passed value for field obj.ticket is not the expected type, validation failed.")
         obj.is_private&.is_a?(Boolean) != false || raise("Passed value for field obj.is_private is not the expected type, validation failed.")
         obj.remote_created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.remote_created_at is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")

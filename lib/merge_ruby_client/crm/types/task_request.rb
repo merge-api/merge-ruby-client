@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "task_request_owner"
-require_relative "task_request_account"
-require_relative "task_request_opportunity"
 require "date"
 require_relative "task_status_enum"
 require_relative "remote_field_request"
@@ -21,12 +18,14 @@ module Merge
       attr_reader :subject
       # @return [String] The task's content.
       attr_reader :content
-      # @return [Merge::Crm::TaskRequestOwner] The task's owner.
+      # @return [String] The task's owner.
       attr_reader :owner
-      # @return [Merge::Crm::TaskRequestAccount] The task's account.
+      # @return [String] The task's account.
       attr_reader :account
-      # @return [Merge::Crm::TaskRequestOpportunity] The task's opportunity.
+      # @return [String] The task's opportunity.
       attr_reader :opportunity
+      # @return [String] The task's contact.
+      attr_reader :contact
       # @return [DateTime] When the task is completed.
       attr_reader :completed_date
       # @return [DateTime] When the task is due.
@@ -51,9 +50,10 @@ module Merge
 
       # @param subject [String] The task's subject.
       # @param content [String] The task's content.
-      # @param owner [Merge::Crm::TaskRequestOwner] The task's owner.
-      # @param account [Merge::Crm::TaskRequestAccount] The task's account.
-      # @param opportunity [Merge::Crm::TaskRequestOpportunity] The task's opportunity.
+      # @param owner [String] The task's owner.
+      # @param account [String] The task's account.
+      # @param opportunity [String] The task's opportunity.
+      # @param contact [String] The task's contact.
       # @param completed_date [DateTime] When the task is completed.
       # @param due_date [DateTime] When the task is due.
       # @param status [Merge::Crm::TaskStatusEnum] The task's status.
@@ -64,13 +64,14 @@ module Merge
       # @param remote_fields [Array<Merge::Crm::RemoteFieldRequest>]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Crm::TaskRequest]
-      def initialize(subject: OMIT, content: OMIT, owner: OMIT, account: OMIT, opportunity: OMIT, completed_date: OMIT,
-                     due_date: OMIT, status: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
+      def initialize(subject: OMIT, content: OMIT, owner: OMIT, account: OMIT, opportunity: OMIT, contact: OMIT,
+                     completed_date: OMIT, due_date: OMIT, status: OMIT, integration_params: OMIT, linked_account_params: OMIT, remote_fields: OMIT, additional_properties: nil)
         @subject = subject if subject != OMIT
         @content = content if content != OMIT
         @owner = owner if owner != OMIT
         @account = account if account != OMIT
         @opportunity = opportunity if opportunity != OMIT
+        @contact = contact if contact != OMIT
         @completed_date = completed_date if completed_date != OMIT
         @due_date = due_date if due_date != OMIT
         @status = status if status != OMIT
@@ -84,6 +85,7 @@ module Merge
           "owner": owner,
           "account": account,
           "opportunity": opportunity,
+          "contact": contact,
           "completed_date": completed_date,
           "due_date": due_date,
           "status": status,
@@ -104,24 +106,10 @@ module Merge
         parsed_json = JSON.parse(json_object)
         subject = parsed_json["subject"]
         content = parsed_json["content"]
-        if parsed_json["owner"].nil?
-          owner = nil
-        else
-          owner = parsed_json["owner"].to_json
-          owner = Merge::Crm::TaskRequestOwner.from_json(json_object: owner)
-        end
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Crm::TaskRequestAccount.from_json(json_object: account)
-        end
-        if parsed_json["opportunity"].nil?
-          opportunity = nil
-        else
-          opportunity = parsed_json["opportunity"].to_json
-          opportunity = Merge::Crm::TaskRequestOpportunity.from_json(json_object: opportunity)
-        end
+        owner = parsed_json["owner"]
+        account = parsed_json["account"]
+        opportunity = parsed_json["opportunity"]
+        contact = parsed_json["contact"]
         completed_date = (DateTime.parse(parsed_json["completed_date"]) unless parsed_json["completed_date"].nil?)
         due_date = (DateTime.parse(parsed_json["due_date"]) unless parsed_json["due_date"].nil?)
         status = parsed_json["status"]
@@ -137,6 +125,7 @@ module Merge
           owner: owner,
           account: account,
           opportunity: opportunity,
+          contact: contact,
           completed_date: completed_date,
           due_date: due_date,
           status: status,
@@ -163,9 +152,10 @@ module Merge
       def self.validate_raw(obj:)
         obj.subject&.is_a?(String) != false || raise("Passed value for field obj.subject is not the expected type, validation failed.")
         obj.content&.is_a?(String) != false || raise("Passed value for field obj.content is not the expected type, validation failed.")
-        obj.owner.nil? || Merge::Crm::TaskRequestOwner.validate_raw(obj: obj.owner)
-        obj.account.nil? || Merge::Crm::TaskRequestAccount.validate_raw(obj: obj.account)
-        obj.opportunity.nil? || Merge::Crm::TaskRequestOpportunity.validate_raw(obj: obj.opportunity)
+        obj.owner&.is_a?(String) != false || raise("Passed value for field obj.owner is not the expected type, validation failed.")
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
+        obj.opportunity&.is_a?(String) != false || raise("Passed value for field obj.opportunity is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.completed_date&.is_a?(DateTime) != false || raise("Passed value for field obj.completed_date is not the expected type, validation failed.")
         obj.due_date&.is_a?(DateTime) != false || raise("Passed value for field obj.due_date is not the expected type, validation failed.")
         obj.status&.is_a?(Merge::Crm::TaskStatusEnum) != false || raise("Passed value for field obj.status is not the expected type, validation failed.")

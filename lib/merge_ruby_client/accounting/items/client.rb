@@ -2,11 +2,11 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/items_list_request_expand"
+require_relative "types/list_items_request_expand"
 require_relative "../types/paginated_item_list"
 require_relative "../types/item_request_request"
 require_relative "../types/item_response"
-require_relative "types/items_retrieve_request_expand"
+require_relative "types/retrieve_items_request_expand"
 require_relative "../types/item"
 require_relative "../types/patched_item_request_request"
 require_relative "../types/meta_response"
@@ -24,13 +24,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Item` objects.
+      # Returns a list of `Item` objects.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return items for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Items::ItemsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Items::ListItemsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -43,7 +47,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return items with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -59,7 +64,7 @@ module Merge
       #  )
       #  api.accounting.items.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -81,6 +86,7 @@ module Merge
             "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
+            "name": name,
             "page_size": page_size,
             "remote_fields": remote_fields,
             "remote_id": remote_id,
@@ -94,7 +100,11 @@ module Merge
         Merge::Accounting::PaginatedItemList.from_json(json_object: response.body)
       end
 
-      # Creates an `Item` object with the given values.
+      # Creates an `Item` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_ITEM_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  ilVGXSYwTSqDlDOtGv1xgGuUcmPEb4gld5+R+hBcNIJeoP+f+XqT7hFgazcYvI4efwJZxwmicEGAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -104,11 +114,11 @@ module Merge
       #   * :type (Merge::Accounting::Type2BbEnum)
       #   * :unit_price (Float)
       #   * :purchase_price (Float)
-      #   * :purchase_account (Hash)
-      #   * :sales_account (Hash)
-      #   * :company (Hash)
-      #   * :purchase_tax_rate (Hash)
-      #   * :sales_tax_rate (Hash)
+      #   * :purchase_account (String)
+      #   * :sales_account (String)
+      #   * :company (String)
+      #   * :purchase_tax_rate (String)
+      #   * :sales_tax_rate (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -141,10 +151,14 @@ module Merge
         Merge::Accounting::ItemResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Item` object with the given `id`.
+      # Returns an `Item` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Items::ItemsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Items::RetrieveItemsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -190,7 +204,11 @@ module Merge
         Merge::Accounting::Item.from_json(json_object: response.body)
       end
 
-      # Updates an `Item` object with the given `id`.
+      # Updates an `Item` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ITEM_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  6gIS8c1sgvQUKBFvR2HM/Lw4n3k9S1q9W/srUi1sZ8YOkjOO0lv0P+vLP1bJx9efgIDcmeHCgUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -238,7 +256,11 @@ module Merge
         Merge::Accounting::ItemResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Item` PATCHs.
+      # Returns metadata for `Item` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -271,7 +293,11 @@ module Merge
         Merge::Accounting::MetaResponse.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Item` POSTs.
+      # Returns metadata for `Item` POSTs.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -314,13 +340,17 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Item` objects.
+      # Returns a list of `Item` objects.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param company_id [String] If provided, will only return items for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::Items::ItemsListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Items::ListItemsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -333,7 +363,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return items with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
@@ -349,7 +380,7 @@ module Merge
       #  )
       #  api.accounting.items.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(company_id: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -372,6 +403,7 @@ module Merge
               "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
+              "name": name,
               "page_size": page_size,
               "remote_fields": remote_fields,
               "remote_id": remote_id,
@@ -386,7 +418,11 @@ module Merge
         end
       end
 
-      # Creates an `Item` object with the given values.
+      # Creates an `Item` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_ITEM_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  ilVGXSYwTSqDlDOtGv1xgGuUcmPEb4gld5+R+hBcNIJeoP+f+XqT7hFgazcYvI4efwJZxwmicEGAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -396,11 +432,11 @@ module Merge
       #   * :type (Merge::Accounting::Type2BbEnum)
       #   * :unit_price (Float)
       #   * :purchase_price (Float)
-      #   * :purchase_account (Hash)
-      #   * :sales_account (Hash)
-      #   * :company (Hash)
-      #   * :purchase_tax_rate (Hash)
-      #   * :sales_tax_rate (Hash)
+      #   * :purchase_account (String)
+      #   * :sales_account (String)
+      #   * :company (String)
+      #   * :purchase_tax_rate (String)
+      #   * :sales_tax_rate (String)
       #   * :integration_params (Hash{String => Object})
       #   * :linked_account_params (Hash{String => Object})
       # @param request_options [Merge::RequestOptions]
@@ -435,10 +471,14 @@ module Merge
         end
       end
 
-      # Returns an `Item` object with the given `id`.
+      # Returns an `Item` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::Items::ItemsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::Items::RetrieveItemsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -486,7 +526,11 @@ module Merge
         end
       end
 
-      # Updates an `Item` object with the given `id`.
+      # Updates an `Item` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ITEM_EDIT_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="EDIT"
+      #  6gIS8c1sgvQUKBFvR2HM/Lw4n3k9S1q9W/srUi1sZ8YOkjOO0lv0P+vLP1bJx9efgIDcmeHCgUAAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_EDIT_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
@@ -536,7 +580,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Item` PATCHs.
+      # Returns metadata for `Item` PATCHs.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param request_options [Merge::RequestOptions]
@@ -571,7 +619,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Item` POSTs.
+      # Returns metadata for `Item` POSTs.{/*
+      #  BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  NYbI+WfbSB38Pp5t5j8UUf7mwvCVzVQmRS/4sR49z/i7ETQ58+Jn5LyVdo8++Xn+se/xwfB7IcVAAA="
+      #  /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]

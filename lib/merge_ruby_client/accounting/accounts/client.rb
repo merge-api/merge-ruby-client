@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "../../../requests"
+require_relative "types/list_accounts_request_classification"
 require "date"
-require_relative "types/accounts_list_request_remote_fields"
-require_relative "types/accounts_list_request_show_enum_origins"
+require_relative "types/list_accounts_request_remote_fields"
+require_relative "types/list_accounts_request_show_enum_origins"
+require_relative "types/list_accounts_request_status"
 require_relative "../types/paginated_account_list"
 require_relative "../types/account_request"
 require_relative "../types/account_response"
-require_relative "types/accounts_retrieve_request_remote_fields"
-require_relative "types/accounts_retrieve_request_show_enum_origins"
+require_relative "types/retrieve_accounts_request_remote_fields"
+require_relative "types/retrieve_accounts_request_show_enum_origins"
 require_relative "../types/account"
 require_relative "../types/meta_response"
 require "async"
@@ -25,10 +27,14 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Account` objects.
+      # Returns a list of `Account` objects.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  5Zd1vorr037qR0b5C6Pbykb5z+yL9P851CI9/sl+Z7vy155Y/Bq1Wwni504w/2vfwHbPP6MOh4AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_type [String] If provided, will only return accounts with the passed in enum.
-      # @param classification [String] If provided, will only return accounts with this classification.
+      # @param classification [Merge::Accounting::Accounts::ListAccountsRequestClassification] If provided, will only return accounts with this classification.
       # @param company_id [String] If provided, will only return accounts for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -47,13 +53,13 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param name [String] If provided, will only return Accounts with this name.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Accounting::Accounts::AccountsListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Accounting::Accounts::ListAccountsRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Accounting::Accounts::AccountsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Accounting::Accounts::ListAccountsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [String] If provided, will only return accounts with this status.
+      # @param status [Merge::Accounting::Accounts::ListAccountsRequestStatus] If provided, will only return accounts with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountList]
       # @example
@@ -103,7 +109,11 @@ module Merge
         Merge::Accounting::PaginatedAccountList.from_json(json_object: response.body)
       end
 
-      # Creates an `Account` object with the given values.
+      # Creates an `Account` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  S5fsOgVor907V1VO1M5W/7vduwGldyPSQVTZc8ntuxzDT4xZscWbHT+z3WoqCoR71/+AAl61g62BgAA"
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -151,7 +161,11 @@ module Merge
         Merge::Accounting::AccountResponse.from_json(json_object: response.body)
       end
 
-      # Returns an `Account` object with the given `id`.
+      # Returns an `Account` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  5Zd1vorr037qR0b5C6Pbykb5z+yL9P851CI9/sl+Z7vy155Y/Bq1Wwni504w/2vfwHbPP6MOh4AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -160,8 +174,8 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Accounting::Accounts::AccountsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Accounting::Accounts::AccountsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Accounting::Accounts::RetrieveAccountsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Accounting::Accounts::RetrieveAccountsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -200,7 +214,11 @@ module Merge
         Merge::Accounting::Account.from_json(json_object: response.body)
       end
 
-      # Returns metadata for `Account` POSTs.
+      # Returns metadata for `Account` POSTs.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  5Zd1vorr037qR0b5C6Pbykb5z+yL9P851CI9/sl+Z7vy155Y/Bq1Wwni504w/2vfwHbPP6MOh4AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]
@@ -243,10 +261,14 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Account` objects.
+      # Returns a list of `Account` objects.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  5Zd1vorr037qR0b5C6Pbykb5z+yL9P851CI9/sl+Z7vy155Y/Bq1Wwni504w/2vfwHbPP6MOh4AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param account_type [String] If provided, will only return accounts with the passed in enum.
-      # @param classification [String] If provided, will only return accounts with this classification.
+      # @param classification [Merge::Accounting::Accounts::ListAccountsRequestClassification] If provided, will only return accounts with this classification.
       # @param company_id [String] If provided, will only return accounts for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -265,13 +287,13 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param name [String] If provided, will only return Accounts with this name.
-      # @param page_size [Integer] Number of results to return per page.
-      # @param remote_fields [Merge::Accounting::Accounts::AccountsListRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
+      # @param remote_fields [Merge::Accounting::Accounts::ListAccountsRequestRemoteFields] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
-      # @param show_enum_origins [Merge::Accounting::Accounts::AccountsListRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param show_enum_origins [Merge::Accounting::Accounts::ListAccountsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [String] If provided, will only return accounts with this status.
+      # @param status [Merge::Accounting::Accounts::ListAccountsRequestStatus] If provided, will only return accounts with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedAccountList]
       # @example
@@ -323,7 +345,11 @@ module Merge
         end
       end
 
-      # Creates an `Account` object with the given values.
+      # Creates an `Account` object with the given values.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_CREATE_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
+      #  S5fsOgVor907V1VO1M5W/7vduwGldyPSQVTZc8ntuxzDT4xZscWbHT+z3WoqCoR71/+AAl61g62BgAA"
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param is_debug_mode [Boolean] Whether to include debug fields (such as log file links) in the response.
       # @param run_async [Boolean] Whether or not third-party updates should be run asynchronously.
@@ -373,7 +399,11 @@ module Merge
         end
       end
 
-      # Returns an `Account` object with the given `id`.
+      # Returns an `Account` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  5Zd1vorr037qR0b5C6Pbykb5z+yL9P851CI9/sl+Z7vy155Y/Bq1Wwni504w/2vfwHbPP6MOh4AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -382,8 +412,8 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param remote_fields [Merge::Accounting::Accounts::AccountsRetrieveRequestRemoteFields] Deprecated. Use show_enum_origins.
-      # @param show_enum_origins [Merge::Accounting::Accounts::AccountsRetrieveRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
+      # @param remote_fields [Merge::Accounting::Accounts::RetrieveAccountsRequestRemoteFields] Deprecated. Use show_enum_origins.
+      # @param show_enum_origins [Merge::Accounting::Accounts::RetrieveAccountsRequestShowEnumOrigins] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
       # @param request_options [Merge::RequestOptions]
@@ -424,7 +454,11 @@ module Merge
         end
       end
 
-      # Returns metadata for `Account` POSTs.
+      # Returns metadata for `Account` POSTs.{/*
+      #  BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  5Zd1vorr037qR0b5C6Pbykb5z+yL9P851CI9/sl+Z7vy155Y/Bq1Wwni504w/2vfwHbPP6MOh4AAA=="
+      #  /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::MetaResponse]

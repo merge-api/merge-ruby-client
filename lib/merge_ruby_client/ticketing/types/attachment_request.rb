@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "attachment_request_ticket"
 require "ostruct"
 require "json"
 
@@ -15,7 +14,7 @@ module Merge
       # @return [String] The attachment's name. It is required to include the file extension in the
       #  attachment's name.
       attr_reader :file_name
-      # @return [Merge::Ticketing::AttachmentRequestTicket] The ticket associated with the attachment.
+      # @return [String] The ticket associated with the attachment.
       attr_reader :ticket
       # @return [String] The attachment's url. It is required to include the file extension in the file's
       #  URL.
@@ -38,7 +37,7 @@ module Merge
 
       # @param file_name [String] The attachment's name. It is required to include the file extension in the
       #  attachment's name.
-      # @param ticket [Merge::Ticketing::AttachmentRequestTicket] The ticket associated with the attachment.
+      # @param ticket [String] The ticket associated with the attachment.
       # @param file_url [String] The attachment's url. It is required to include the file extension in the file's
       #  URL.
       # @param content_type [String] The attachment's file format.
@@ -78,12 +77,7 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         file_name = parsed_json["file_name"]
-        if parsed_json["ticket"].nil?
-          ticket = nil
-        else
-          ticket = parsed_json["ticket"].to_json
-          ticket = Merge::Ticketing::AttachmentRequestTicket.from_json(json_object: ticket)
-        end
+        ticket = parsed_json["ticket"]
         file_url = parsed_json["file_url"]
         content_type = parsed_json["content_type"]
         uploaded_by = parsed_json["uploaded_by"]
@@ -116,7 +110,7 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.file_name&.is_a?(String) != false || raise("Passed value for field obj.file_name is not the expected type, validation failed.")
-        obj.ticket.nil? || Merge::Ticketing::AttachmentRequestTicket.validate_raw(obj: obj.ticket)
+        obj.ticket&.is_a?(String) != false || raise("Passed value for field obj.ticket is not the expected type, validation failed.")
         obj.file_url&.is_a?(String) != false || raise("Passed value for field obj.file_url is not the expected type, validation failed.")
         obj.content_type&.is_a?(String) != false || raise("Passed value for field obj.content_type is not the expected type, validation failed.")
         obj.uploaded_by&.is_a?(String) != false || raise("Passed value for field obj.uploaded_by is not the expected type, validation failed.")

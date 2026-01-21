@@ -8,6 +8,7 @@ module Merge
     #  * `API` - API
     #  * `SYSTEM` - SYSTEM
     #  * `MERGE_TEAM` - MERGE_TEAM
+    #  * `SUPPORT` - SUPPORT
     class RoleEnum
       ADMIN = "ADMIN"
       DEVELOPER = "DEVELOPER"
@@ -15,6 +16,7 @@ module Merge
       API = "API"
       SYSTEM = "SYSTEM"
       MERGE_TEAM = "MERGE_TEAM"
+      SUPPORT = "SUPPORT"
     end
   end
 end

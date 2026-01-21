@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "credit_note_line_item_item"
-require_relative "credit_note_line_item_company"
-require_relative "credit_note_line_item_contact"
-require_relative "credit_note_line_item_project"
 require "ostruct"
 require "json"
 
@@ -24,7 +20,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Accounting::CreditNoteLineItemItem]
+      # @return [String]
       attr_reader :item
       # @return [String] The credit note line item's name.
       attr_reader :name
@@ -46,11 +42,11 @@ module Merge
       attr_reader :tracking_categories
       # @return [String] The credit note line item's account.
       attr_reader :account
-      # @return [Merge::Accounting::CreditNoteLineItemCompany] The company the credit note belongs to.
+      # @return [String] The company the credit note belongs to.
       attr_reader :company
-      # @return [Merge::Accounting::CreditNoteLineItemContact] The credit note's contact.
+      # @return [String] The credit note's contact.
       attr_reader :contact
-      # @return [Merge::Accounting::CreditNoteLineItemProject]
+      # @return [String]
       attr_reader :project
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -69,7 +65,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param item [Merge::Accounting::CreditNoteLineItemItem]
+      # @param item [String]
       # @param name [String] The credit note line item's name.
       # @param description [String] The description of the item that is owed.
       # @param quantity [String] The credit note line item's quantity.
@@ -80,9 +76,9 @@ module Merge
       # @param tracking_category [String] The credit note line item's associated tracking category.
       # @param tracking_categories [Array<String>] The credit note line item's associated tracking categories.
       # @param account [String] The credit note line item's account.
-      # @param company [Merge::Accounting::CreditNoteLineItemCompany] The company the credit note belongs to.
-      # @param contact [Merge::Accounting::CreditNoteLineItemContact] The credit note's contact.
-      # @param project [Merge::Accounting::CreditNoteLineItemProject]
+      # @param company [String] The company the credit note belongs to.
+      # @param contact [String] The credit note's contact.
+      # @param project [String]
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -147,12 +143,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["item"].nil?
-          item = nil
-        else
-          item = parsed_json["item"].to_json
-          item = Merge::Accounting::CreditNoteLineItemItem.from_json(json_object: item)
-        end
+        item = parsed_json["item"]
         name = parsed_json["name"]
         description = parsed_json["description"]
         quantity = parsed_json["quantity"]
@@ -163,24 +154,9 @@ module Merge
         tracking_category = parsed_json["tracking_category"]
         tracking_categories = parsed_json["tracking_categories"]
         account = parsed_json["account"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::CreditNoteLineItemCompany.from_json(json_object: company)
-        end
-        if parsed_json["contact"].nil?
-          contact = nil
-        else
-          contact = parsed_json["contact"].to_json
-          contact = Merge::Accounting::CreditNoteLineItemContact.from_json(json_object: contact)
-        end
-        if parsed_json["project"].nil?
-          project = nil
-        else
-          project = parsed_json["project"].to_json
-          project = Merge::Accounting::CreditNoteLineItemProject.from_json(json_object: project)
-        end
+        company = parsed_json["company"]
+        contact = parsed_json["contact"]
+        project = parsed_json["project"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         new(
           id: id,
@@ -224,7 +200,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.item.nil? || Merge::Accounting::CreditNoteLineItemItem.validate_raw(obj: obj.item)
+        obj.item&.is_a?(String) != false || raise("Passed value for field obj.item is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
         obj.quantity&.is_a?(String) != false || raise("Passed value for field obj.quantity is not the expected type, validation failed.")
@@ -235,9 +211,9 @@ module Merge
         obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::CreditNoteLineItemCompany.validate_raw(obj: obj.company)
-        obj.contact.nil? || Merge::Accounting::CreditNoteLineItemContact.validate_raw(obj: obj.contact)
-        obj.project.nil? || Merge::Accounting::CreditNoteLineItemProject.validate_raw(obj: obj.project)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
+        obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
+        obj.project&.is_a?(String) != false || raise("Passed value for field obj.project is not the expected type, validation failed.")
         obj.remote_was_deleted&.is_a?(Boolean) != false || raise("Passed value for field obj.remote_was_deleted is not the expected type, validation failed.")
       end
     end

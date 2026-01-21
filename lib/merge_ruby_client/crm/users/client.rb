@@ -20,7 +20,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `User` objects.{/* BEGIN_CRM_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  wHvr+X4hCJAPauMCjuhbLCulf1fF+bQ8/4sP1m8GhN/kpEsPnEsZST3VwBf/Vn86uvftawDiTkeAAA="
+      #  /></Footer>{/* END_CRM_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -39,7 +42,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedUserList]
@@ -84,7 +87,11 @@ module Merge
         Merge::Crm::PaginatedUserList.from_json(json_object: response.body)
       end
 
-      # Returns a `User` object with the given `id`.
+      # Returns a `User` object with the given `id`.{/*
+      #  BEGIN_CRM_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  wHvr+X4hCJAPauMCjuhbLCulf1fF+bQ8/4sP1m8GhN/kpEsPnEsZST3VwBf/Vn86uvftawDiTkeAAA="
+      #  /></Footer>{/* END_CRM_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -130,7 +137,8 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_CRM_USER_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_CRM_USER_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param request [Hash] Request of type Merge::Crm::IgnoreCommonModelRequest, as a Hash
@@ -163,7 +171,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  wHvr+X4hCJAPauMCjuhbLCulf1fF+bQ8/4sP1m8GhN/kpEsPnEsZST3VwBf/Vn86uvftawDiTkeAAA="
+      #  /></Footer>{/* END_CRM_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -179,7 +191,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example
@@ -230,7 +242,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `User` objects.
+      # Returns a list of `User` objects.{/* BEGIN_CRM_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  wHvr+X4hCJAPauMCjuhbLCulf1fF+bQ8/4sP1m8GhN/kpEsPnEsZST3VwBf/Vn86uvftawDiTkeAAA="
+      #  /></Footer>{/* END_CRM_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -249,7 +264,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedUserList]
@@ -296,7 +311,11 @@ module Merge
         end
       end
 
-      # Returns a `User` object with the given `id`.
+      # Returns a `User` object with the given `id`.{/*
+      #  BEGIN_CRM_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  wHvr+X4hCJAPauMCjuhbLCulf1fF+bQ8/4sP1m8GhN/kpEsPnEsZST3VwBf/Vn86uvftawDiTkeAAA="
+      #  /></Footer>{/* END_CRM_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -344,7 +363,8 @@ module Merge
       # Ignores a specific row based on the `model_id` in the url. These records will
       #  have their properties set to null, and will not be updated in future syncs. The
       #  "reason" and "message" fields in the request body will be stored for audit
-      #  purposes.
+      #  purposes.{/* BEGIN_CRM_USER_CREATE_SUPPORTED_FIELDS * /}{/*
+      #  END_CRM_USER_CREATE_SUPPORTED_FIELDS * /}
       #
       # @param model_id [String]
       # @param request [Hash] Request of type Merge::Crm::IgnoreCommonModelRequest, as a Hash
@@ -379,7 +399,11 @@ module Merge
         end
       end
 
-      # Returns a list of `RemoteFieldClass` objects.
+      # Returns a list of `RemoteFieldClass` objects.{/*
+      #  BEGIN_CRM_USER_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  wHvr+X4hCJAPauMCjuhbLCulf1fF+bQ8/4sP1m8GhN/kpEsPnEsZST3VwBf/Vn86uvftawDiTkeAAA="
+      #  /></Footer>{/* END_CRM_USER_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param cursor [String] The pagination cursor value.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
@@ -395,7 +419,7 @@ module Merge
       # @param is_common_model_field [Boolean] If provided, will only return remote field classes with this
       #  is_common_model_field value
       # @param is_custom [Boolean] If provided, will only return remote fields classes with this is_custom value
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Crm::PaginatedRemoteFieldClassList]
       # @example

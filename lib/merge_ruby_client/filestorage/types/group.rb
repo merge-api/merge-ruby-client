@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "group_child_groups_item"
 require_relative "remote_data"
 require "ostruct"
 require "json"
@@ -28,7 +27,7 @@ module Merge
       # @return [Array<String>] The users that belong in the group. If null, this typically means it's either a
       #  domain or the third-party platform does not surface this information.
       attr_reader :users
-      # @return [Array<Merge::Filestorage::GroupChildGroupsItem>] Groups that inherit the permissions of the parent group.
+      # @return [Array<String>] Groups that inherit the permissions of the parent group.
       attr_reader :child_groups
       # @return [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -54,7 +53,7 @@ module Merge
       # @param name [String] The group's name.
       # @param users [Array<String>] The users that belong in the group. If null, this typically means it's either a
       #  domain or the third-party platform does not surface this information.
-      # @param child_groups [Array<Merge::Filestorage::GroupChildGroupsItem>] Groups that inherit the permissions of the parent group.
+      # @param child_groups [Array<String>] Groups that inherit the permissions of the parent group.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
       #  detection is offered for free with limited coverage. [Learn
@@ -105,10 +104,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         users = parsed_json["users"]
-        child_groups = parsed_json["child_groups"]&.map do |item|
-          item = item.to_json
-          Merge::Filestorage::GroupChildGroupsItem.from_json(json_object: item)
-        end
+        child_groups = parsed_json["child_groups"]
         remote_was_deleted = parsed_json["remote_was_deleted"]
         field_mappings = parsed_json["field_mappings"]
         remote_data = parsed_json["remote_data"]&.map do |item|

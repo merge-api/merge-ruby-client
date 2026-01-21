@@ -2,9 +2,9 @@
 
 require_relative "../../../requests"
 require "date"
-require_relative "types/company_info_list_request_expand"
+require_relative "types/list_company_info_request_expand"
 require_relative "../types/paginated_company_info_list"
-require_relative "types/company_info_retrieve_request_expand"
+require_relative "types/retrieve_company_info_request_expand"
 require_relative "../types/company_info"
 require "async"
 
@@ -20,12 +20,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CompanyInfo` objects.
+      # Returns a list of `CompanyInfo` objects.{/*
+      #  BEGIN_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  TPcG5vvK+yRcnDiv9VQFXK8H3b57l8Pv/lV5V2LXbnjQ/S9nnltoycec6SHO+THr38AQVkD9uEbAAA="
+      #  /></Footer>{/* END_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::CompanyInfo::CompanyInfoListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CompanyInfo::ListCompanyInfoRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -38,7 +42,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return CompanyInfo objects with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedCompanyInfoList]
@@ -50,7 +55,7 @@ module Merge
       #  )
       #  api.accounting.company_info.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
-               include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_id: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -71,6 +76,7 @@ module Merge
             "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
+            "name": name,
             "page_size": page_size,
             "remote_id": remote_id
           }.compact
@@ -82,10 +88,14 @@ module Merge
         Merge::Accounting::PaginatedCompanyInfoList.from_json(json_object: response.body)
       end
 
-      # Returns a `CompanyInfo` object with the given `id`.
+      # Returns a `CompanyInfo` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  TPcG5vvK+yRcnDiv9VQFXK8H3b57l8Pv/lV5V2LXbnjQ/S9nnltoycec6SHO+THr38AQVkD9uEbAAA="
+      #  /></Footer>{/* END_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::CompanyInfo::CompanyInfoRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CompanyInfo::RetrieveCompanyInfoRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -135,12 +145,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `CompanyInfo` objects.
+      # Returns a list of `CompanyInfo` objects.{/*
+      #  BEGIN_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  TPcG5vvK+yRcnDiv9VQFXK8H3b57l8Pv/lV5V2LXbnjQ/S9nnltoycec6SHO+THr38AQVkD9uEbAAA="
+      #  /></Footer>{/* END_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Accounting::CompanyInfo::CompanyInfoListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CompanyInfo::ListCompanyInfoRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -153,7 +167,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return CompanyInfo objects with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedCompanyInfoList]
@@ -165,7 +180,7 @@ module Merge
       #  )
       #  api.accounting.company_info.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(created_after: nil, created_before: nil, cursor: nil, expand: nil, include_deleted_data: nil,
-               include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, remote_id: nil, request_options: nil)
+               include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, remote_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -187,6 +202,7 @@ module Merge
               "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
+              "name": name,
               "page_size": page_size,
               "remote_id": remote_id
             }.compact
@@ -199,10 +215,14 @@ module Merge
         end
       end
 
-      # Returns a `CompanyInfo` object with the given `id`.
+      # Returns a `CompanyInfo` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  TPcG5vvK+yRcnDiv9VQFXK8H3b57l8Pv/lV5V2LXbnjQ/S9nnltoycec6SHO+THr38AQVkD9uEbAAA="
+      #  /></Footer>{/* END_ACCOUNTING_COMPANYINFO_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [Merge::Accounting::CompanyInfo::CompanyInfoRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Accounting::CompanyInfo::RetrieveCompanyInfoRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.

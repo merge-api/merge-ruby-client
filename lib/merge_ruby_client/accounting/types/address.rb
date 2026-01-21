@@ -28,7 +28,7 @@ module Merge
       attr_reader :street_2
       # @return [String] The address's city.
       attr_reader :city
-      # @return [Object]
+      # @return [Object] The address's state or region.
       attr_reader :state
       # @return [String] The address's state or region.
       attr_reader :country_subdivision
@@ -301,7 +301,7 @@ module Merge
       # @param street_1 [String] Line 1 of the address's street.
       # @param street_2 [String] Line 2 of the address's street.
       # @param city [String] The address's city.
-      # @param state [Object]
+      # @param state [Object] The address's state or region.
       # @param country_subdivision [String] The address's state or region.
       # @param country [Merge::Accounting::CountryEnum] The address's country.
       #  * `AF` - Afghanistan

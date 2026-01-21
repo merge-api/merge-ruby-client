@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require_relative "../../../requests"
+require_relative "types/list_collections_request_collection_type"
 require "date"
 require_relative "../types/paginated_collection_list"
-require_relative "types/collections_viewers_list_request_expand"
+require_relative "types/viewers_list_collections_request_expand"
 require_relative "../types/paginated_viewer_list"
 require_relative "../types/collection"
 require "async"
@@ -20,9 +21,13 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Collection` objects.
+      # Returns a list of `Collection` objects.{/*
+      #  BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bvO5OCuQG+Yivdi5JNkI0cDgQzqzV+/Fjz0/C2GorRnIqeVpQVdYBagJHLcc11/+Qe/12E+RScAAA=="
+      #  /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS * /}
       #
-      # @param collection_type [String] If provided, will only return collections of the given type.
+      # @param collection_type [Merge::Ticketing::Collections::ListCollectionsRequestCollectionType] If provided, will only return collections of the given type.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
@@ -39,7 +44,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return collections with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param parent_collection_id [String] If provided, will only return collections whose parent collection matches the
       #  given id.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
@@ -57,7 +63,7 @@ module Merge
       #  )
       #  api.ticketing.collections.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(collection_type: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_collection_id: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, parent_collection_id: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         response = @request_client.conn.get do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -79,6 +85,7 @@ module Merge
             "include_shell_data": include_shell_data,
             "modified_after": modified_after,
             "modified_before": modified_before,
+            "name": name,
             "page_size": page_size,
             "parent_collection_id": parent_collection_id,
             "remote_fields": remote_fields,
@@ -95,11 +102,15 @@ module Merge
 
       # Returns a list of `Viewer` objects that point to a User id or Team id that is
       #  either an assignee or viewer on a `Collection` with the given id. [Learn
-      #  (https://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls)
+      #  tps://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls){/*
+      #  BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bvO5OCuQG+Yivdi5JNkI0cDgQzqzV+/Fjz0/C2GorRnIqeVpQVdYBagJHLcc11/+Qe/12E+RScAAA=="
+      #  /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param collection_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Collections::CollectionsViewersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Collections::ViewersListCollectionsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -109,7 +120,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedViewerList]
       # @example
@@ -147,7 +158,11 @@ module Merge
         Merge::Ticketing::PaginatedViewerList.from_json(json_object: response.body)
       end
 
-      # Returns a `Collection` object with the given `id`.
+      # Returns a `Collection` object with the given `id`.{/*
+      #  BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bvO5OCuQG+Yivdi5JNkI0cDgQzqzV+/Fjz0/C2GorRnIqeVpQVdYBagJHLcc11/+Qe/12E+RScAAA=="
+      #  /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -207,9 +222,13 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Collection` objects.
+      # Returns a list of `Collection` objects.{/*
+      #  BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bvO5OCuQG+Yivdi5JNkI0cDgQzqzV+/Fjz0/C2GorRnIqeVpQVdYBagJHLcc11/+Qe/12E+RScAAA=="
+      #  /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS * /}
       #
-      # @param collection_type [String] If provided, will only return collections of the given type.
+      # @param collection_type [Merge::Ticketing::Collections::ListCollectionsRequestCollectionType] If provided, will only return collections of the given type.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
@@ -226,7 +245,8 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param name [String] If provided, will only return collections with this name.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param parent_collection_id [String] If provided, will only return collections whose parent collection matches the
       #  given id.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
@@ -244,7 +264,7 @@ module Merge
       #  )
       #  api.ticketing.collections.list(cursor: "cD0yMDIxLTAxLTA2KzAzJTNBMjQlM0E1My40MzQzMjYlMkIwMCUzQTAw")
       def list(collection_type: nil, created_after: nil, created_before: nil, cursor: nil, expand: nil,
-               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, page_size: nil, parent_collection_id: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
+               include_deleted_data: nil, include_remote_data: nil, include_shell_data: nil, modified_after: nil, modified_before: nil, name: nil, page_size: nil, parent_collection_id: nil, remote_fields: nil, remote_id: nil, show_enum_origins: nil, request_options: nil)
         Async do
           response = @request_client.conn.get do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -267,6 +287,7 @@ module Merge
               "include_shell_data": include_shell_data,
               "modified_after": modified_after,
               "modified_before": modified_before,
+              "name": name,
               "page_size": page_size,
               "parent_collection_id": parent_collection_id,
               "remote_fields": remote_fields,
@@ -284,11 +305,15 @@ module Merge
 
       # Returns a list of `Viewer` objects that point to a User id or Team id that is
       #  either an assignee or viewer on a `Collection` with the given id. [Learn
-      #  (https://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls)
+      #  tps://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls){/*
+      #  BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bvO5OCuQG+Yivdi5JNkI0cDgQzqzV+/Fjz0/C2GorRnIqeVpQVdYBagJHLcc11/+Qe/12E+RScAAA=="
+      #  /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param collection_id [String]
       # @param cursor [String] The pagination cursor value.
-      # @param expand [Merge::Ticketing::Collections::CollectionsViewersListRequestExpand] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Ticketing::Collections::ViewersListCollectionsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -298,7 +323,7 @@ module Merge
       #  produce these models.
       # @param include_shell_data [Boolean] Whether to include shell records. Shell records are empty records (they may
       #  contain some metadata but all other fields are null).
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedViewerList]
       # @example
@@ -338,7 +363,11 @@ module Merge
         end
       end
 
-      # Returns a `Collection` object with the given `id`.
+      # Returns a `Collection` object with the given `id`.{/*
+      #  BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  bvO5OCuQG+Yivdi5JNkI0cDgQzqzV+/Fjz0/C2GorRnIqeVpQVdYBagJHLcc11/+Qe/12E+RScAAA=="
+      #  /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

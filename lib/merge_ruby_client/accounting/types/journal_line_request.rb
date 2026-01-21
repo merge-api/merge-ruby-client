@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "journal_line_request_account"
-require_relative "journal_line_request_tracking_category"
-require_relative "journal_line_request_tracking_categories_item"
 require_relative "transaction_currency_enum"
-require_relative "journal_line_request_project"
 require_relative "remote_field_request"
 require "ostruct"
 require "json"
@@ -20,13 +16,13 @@ module Merge
     class JournalLineRequest
       # @return [String] The third-party API ID of the matching object.
       attr_reader :remote_id
-      # @return [Merge::Accounting::JournalLineRequestAccount]
+      # @return [String]
       attr_reader :account
       # @return [Float] The value of the line item including taxes and other fees.
       attr_reader :net_amount
-      # @return [Merge::Accounting::JournalLineRequestTrackingCategory]
+      # @return [String]
       attr_reader :tracking_category
-      # @return [Array<Merge::Accounting::JournalLineRequestTrackingCategoriesItem>] The journal line item's associated tracking categories.
+      # @return [Array<String>] The journal line item's associated tracking categories.
       attr_reader :tracking_categories
       # @return [Merge::Accounting::TransactionCurrencyEnum] The journal line item's currency.
       #  * `XUA` - ADB Unit of Account
@@ -340,7 +336,7 @@ module Merge
       attr_reader :company
       # @return [String]
       attr_reader :employee
-      # @return [Merge::Accounting::JournalLineRequestProject]
+      # @return [String]
       attr_reader :project
       # @return [String]
       attr_reader :contact
@@ -365,10 +361,10 @@ module Merge
       OMIT = Object.new
 
       # @param remote_id [String] The third-party API ID of the matching object.
-      # @param account [Merge::Accounting::JournalLineRequestAccount]
+      # @param account [String]
       # @param net_amount [Float] The value of the line item including taxes and other fees.
-      # @param tracking_category [Merge::Accounting::JournalLineRequestTrackingCategory]
-      # @param tracking_categories [Array<Merge::Accounting::JournalLineRequestTrackingCategoriesItem>] The journal line item's associated tracking categories.
+      # @param tracking_category [String]
+      # @param tracking_categories [Array<String>] The journal line item's associated tracking categories.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The journal line item's currency.
       #  * `XUA` - ADB Unit of Account
       #  * `AFN` - Afghan Afghani
@@ -678,7 +674,7 @@ module Merge
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param company [String] The company the journal entry belongs to.
       # @param employee [String]
-      # @param project [Merge::Accounting::JournalLineRequestProject]
+      # @param project [String]
       # @param contact [String]
       # @param tax_rate [String] The tax rate that applies to this line item.
       # @param description [String] The line's description.
@@ -737,32 +733,14 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         remote_id = parsed_json["remote_id"]
-        if parsed_json["account"].nil?
-          account = nil
-        else
-          account = parsed_json["account"].to_json
-          account = Merge::Accounting::JournalLineRequestAccount.from_json(json_object: account)
-        end
+        account = parsed_json["account"]
         net_amount = parsed_json["net_amount"]
-        if parsed_json["tracking_category"].nil?
-          tracking_category = nil
-        else
-          tracking_category = parsed_json["tracking_category"].to_json
-          tracking_category = Merge::Accounting::JournalLineRequestTrackingCategory.from_json(json_object: tracking_category)
-        end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::JournalLineRequestTrackingCategoriesItem.from_json(json_object: item)
-        end
+        tracking_category = parsed_json["tracking_category"]
+        tracking_categories = parsed_json["tracking_categories"]
         currency = parsed_json["currency"]
         company = parsed_json["company"]
         employee = parsed_json["employee"]
-        if parsed_json["project"].nil?
-          project = nil
-        else
-          project = parsed_json["project"].to_json
-          project = Merge::Accounting::JournalLineRequestProject.from_json(json_object: project)
-        end
+        project = parsed_json["project"]
         contact = parsed_json["contact"]
         tax_rate = parsed_json["tax_rate"]
         description = parsed_json["description"]
@@ -809,14 +787,14 @@ module Merge
       # @return [Void]
       def self.validate_raw(obj:)
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
-        obj.account.nil? || Merge::Accounting::JournalLineRequestAccount.validate_raw(obj: obj.account)
+        obj.account&.is_a?(String) != false || raise("Passed value for field obj.account is not the expected type, validation failed.")
         obj.net_amount&.is_a?(Float) != false || raise("Passed value for field obj.net_amount is not the expected type, validation failed.")
-        obj.tracking_category.nil? || Merge::Accounting::JournalLineRequestTrackingCategory.validate_raw(obj: obj.tracking_category)
+        obj.tracking_category&.is_a?(String) != false || raise("Passed value for field obj.tracking_category is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
-        obj.project.nil? || Merge::Accounting::JournalLineRequestProject.validate_raw(obj: obj.project)
+        obj.project&.is_a?(String) != false || raise("Passed value for field obj.project is not the expected type, validation failed.")
         obj.contact&.is_a?(String) != false || raise("Passed value for field obj.contact is not the expected type, validation failed.")
         obj.tax_rate&.is_a?(String) != false || raise("Passed value for field obj.tax_rate is not the expected type, validation failed.")
         obj.description&.is_a?(String) != false || raise("Passed value for field obj.description is not the expected type, validation failed.")
