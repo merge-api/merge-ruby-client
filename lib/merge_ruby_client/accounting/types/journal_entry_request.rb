@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "journal_entry_request_payments_item"
 require_relative "transaction_currency_enum"
-require_relative "journal_entry_request_company"
-require_relative "journal_entry_request_tracking_categories_item"
 require_relative "journal_line_request"
 require_relative "posting_status_enum"
 require_relative "remote_field_request"
@@ -23,7 +20,7 @@ module Merge
     class JournalEntryRequest
       # @return [DateTime] The journal entry's transaction date.
       attr_reader :transaction_date
-      # @return [Array<Merge::Accounting::JournalEntryRequestPaymentsItem>] Array of `Payment` object IDs.
+      # @return [Array<String>] Array of `Payment` object IDs.
       attr_reader :payments
       # @return [String] The journal entry's private note.
       attr_reader :memo
@@ -337,9 +334,9 @@ module Merge
       attr_reader :currency
       # @return [String] The journal entry's exchange rate.
       attr_reader :exchange_rate
-      # @return [Merge::Accounting::JournalEntryRequestCompany] The company the journal entry belongs to.
+      # @return [String] The company the journal entry belongs to.
       attr_reader :company
-      # @return [Array<Merge::Accounting::JournalEntryRequestTrackingCategoriesItem>]
+      # @return [Array<String>]
       attr_reader :tracking_categories
       # @return [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
@@ -367,7 +364,7 @@ module Merge
       OMIT = Object.new
 
       # @param transaction_date [DateTime] The journal entry's transaction date.
-      # @param payments [Array<Merge::Accounting::JournalEntryRequestPaymentsItem>] Array of `Payment` object IDs.
+      # @param payments [Array<String>] Array of `Payment` object IDs.
       # @param memo [String] The journal entry's private note.
       # @param currency [Merge::Accounting::TransactionCurrencyEnum] The journal's currency.
       #  * `XUA` - ADB Unit of Account
@@ -677,8 +674,8 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       # @param exchange_rate [String] The journal entry's exchange rate.
-      # @param company [Merge::Accounting::JournalEntryRequestCompany] The company the journal entry belongs to.
-      # @param tracking_categories [Array<Merge::Accounting::JournalEntryRequestTrackingCategoriesItem>]
+      # @param company [String] The company the journal entry belongs to.
+      # @param tracking_categories [Array<String>]
       # @param inclusive_of_tax [Boolean] If the transaction is inclusive or exclusive of tax. `True` if inclusive,
       #  `False` if exclusive.
       # @param lines [Array<Merge::Accounting::JournalLineRequest>]
@@ -736,23 +733,12 @@ module Merge
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
-        payments = parsed_json["payments"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::JournalEntryRequestPaymentsItem.from_json(json_object: item)
-        end
+        payments = parsed_json["payments"]
         memo = parsed_json["memo"]
         currency = parsed_json["currency"]
         exchange_rate = parsed_json["exchange_rate"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::JournalEntryRequestCompany.from_json(json_object: company)
-        end
-        tracking_categories = parsed_json["tracking_categories"]&.map do |item|
-          item = item.to_json
-          Merge::Accounting::JournalEntryRequestTrackingCategoriesItem.from_json(json_object: item)
-        end
+        company = parsed_json["company"]
+        tracking_categories = parsed_json["tracking_categories"]
         inclusive_of_tax = parsed_json["inclusive_of_tax"]
         lines = parsed_json["lines"]&.map do |item|
           item = item.to_json
@@ -804,7 +790,7 @@ module Merge
         obj.memo&.is_a?(String) != false || raise("Passed value for field obj.memo is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
         obj.exchange_rate&.is_a?(String) != false || raise("Passed value for field obj.exchange_rate is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::JournalEntryRequestCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.tracking_categories&.is_a?(Array) != false || raise("Passed value for field obj.tracking_categories is not the expected type, validation failed.")
         obj.inclusive_of_tax&.is_a?(Boolean) != false || raise("Passed value for field obj.inclusive_of_tax is not the expected type, validation failed.")
         obj.lines&.is_a?(Array) != false || raise("Passed value for field obj.lines is not the expected type, validation failed.")

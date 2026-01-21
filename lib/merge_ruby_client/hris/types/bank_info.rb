@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "bank_info_employee"
 require_relative "account_type_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -25,7 +24,7 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Hris::BankInfoEmployee] The employee with this bank account.
+      # @return [String] The employee with this bank account.
       attr_reader :employee
       # @return [String] The account number.
       attr_reader :account_number
@@ -60,7 +59,7 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param employee [Merge::Hris::BankInfoEmployee] The employee with this bank account.
+      # @param employee [String] The employee with this bank account.
       # @param account_number [String] The account number.
       # @param routing_number [String] The routing number.
       # @param bank_name [String] The bank name.
@@ -122,12 +121,7 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["employee"].nil?
-          employee = nil
-        else
-          employee = parsed_json["employee"].to_json
-          employee = Merge::Hris::BankInfoEmployee.from_json(json_object: employee)
-        end
+        employee = parsed_json["employee"]
         account_number = parsed_json["account_number"]
         routing_number = parsed_json["routing_number"]
         bank_name = parsed_json["bank_name"]
@@ -177,7 +171,7 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.employee.nil? || Merge::Hris::BankInfoEmployee.validate_raw(obj: obj.employee)
+        obj.employee&.is_a?(String) != false || raise("Passed value for field obj.employee is not the expected type, validation failed.")
         obj.account_number&.is_a?(String) != false || raise("Passed value for field obj.account_number is not the expected type, validation failed.")
         obj.routing_number&.is_a?(String) != false || raise("Passed value for field obj.routing_number is not the expected type, validation failed.")
         obj.bank_name&.is_a?(String) != false || raise("Passed value for field obj.bank_name is not the expected type, validation failed.")

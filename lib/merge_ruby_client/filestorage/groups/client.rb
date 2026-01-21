@@ -2,7 +2,9 @@
 
 require_relative "../../../requests"
 require "date"
+require_relative "types/list_groups_request_expand"
 require_relative "../types/paginated_group_list"
+require_relative "types/retrieve_groups_request_expand"
 require_relative "../types/group"
 require "async"
 
@@ -18,12 +20,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Group` objects.
+      # Returns a list of `Group` objects.{/*
+      #  BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  xyikrR6jfTbo/k66z0g5XSWF8/AdfHfkW/FPEyIhIGgXO8XdOmbFb6vo36/UH8M6Jv7XyTRyGMRCQAA"
+      #  /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Groups::ListGroupsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -36,7 +42,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedGroupList]
@@ -80,10 +86,14 @@ module Merge
         Merge::Filestorage::PaginatedGroupList.from_json(json_object: response.body)
       end
 
-      # Returns a `Group` object with the given `id`.
+      # Returns a `Group` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  xyikrR6jfTbo/k66z0g5XSWF8/AdfHfkW/FPEyIhIGgXO8XdOmbFb6vo36/UH8M6Jv7XyTRyGMRCQAA"
+      #  /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Groups::RetrieveGroupsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.
@@ -133,12 +143,16 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Group` objects.
+      # Returns a list of `Group` objects.{/*
+      #  BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  xyikrR6jfTbo/k66z0g5XSWF8/AdfHfkW/FPEyIhIGgXO8XdOmbFb6vo36/UH8M6Jv7XyTRyGMRCQAA"
+      #  /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
       # @param cursor [String] The pagination cursor value.
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Groups::ListGroupsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_deleted_data [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -151,7 +165,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Filestorage::PaginatedGroupList]
@@ -197,10 +211,14 @@ module Merge
         end
       end
 
-      # Returns a `Group` object with the given `id`.
+      # Returns a `Group` object with the given `id`.{/*
+      #  BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  xyikrR6jfTbo/k66z0g5XSWF8/AdfHfkW/FPEyIhIGgXO8XdOmbFb6vo36/UH8M6Jv7XyTRyGMRCQAA"
+      #  /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
-      # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
+      # @param expand [Merge::Filestorage::Groups::RetrieveGroupsRequestExpand] Which relations should be returned in expanded form. Multiple relation names
       #  should be comma separated without spaces.
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
       #  produce these models.

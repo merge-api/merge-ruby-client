@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "bank_feed_transaction_request_request_bank_feed_account"
 require "date"
 require_relative "credit_or_debit_enum"
 require "ostruct"
@@ -17,7 +16,7 @@ module Merge
     #  Fetch from the `GET BankFeedTransaction` endpoint to view details of a
     #  transaction associated with a bank feed account.
     class BankFeedTransactionRequestRequest
-      # @return [Merge::Accounting::BankFeedTransactionRequestRequestBankFeedAccount] The bank feed account associated with the transaction.
+      # @return [String] The bank feed account associated with the transaction.
       attr_reader :bank_feed_account
       # @return [DateTime] The date that the transaction occurred.
       attr_reader :transaction_date
@@ -50,7 +49,7 @@ module Merge
 
       OMIT = Object.new
 
-      # @param bank_feed_account [Merge::Accounting::BankFeedTransactionRequestRequestBankFeedAccount] The bank feed account associated with the transaction.
+      # @param bank_feed_account [String] The bank feed account associated with the transaction.
       # @param transaction_date [DateTime] The date that the transaction occurred.
       # @param posted_date [DateTime] The date the transaction was posted to the bank account.
       # @param amount [Float] The amount of the transaction.
@@ -104,12 +103,7 @@ module Merge
       def self.from_json(json_object:)
         struct = JSON.parse(json_object, object_class: OpenStruct)
         parsed_json = JSON.parse(json_object)
-        if parsed_json["bank_feed_account"].nil?
-          bank_feed_account = nil
-        else
-          bank_feed_account = parsed_json["bank_feed_account"].to_json
-          bank_feed_account = Merge::Accounting::BankFeedTransactionRequestRequestBankFeedAccount.from_json(json_object: bank_feed_account)
-        end
+        bank_feed_account = parsed_json["bank_feed_account"]
         transaction_date = (DateTime.parse(parsed_json["transaction_date"]) unless parsed_json["transaction_date"].nil?)
         posted_date = (DateTime.parse(parsed_json["posted_date"]) unless parsed_json["posted_date"].nil?)
         amount = parsed_json["amount"]
@@ -150,7 +144,7 @@ module Merge
       # @param obj [Object]
       # @return [Void]
       def self.validate_raw(obj:)
-        obj.bank_feed_account.nil? || Merge::Accounting::BankFeedTransactionRequestRequestBankFeedAccount.validate_raw(obj: obj.bank_feed_account)
+        obj.bank_feed_account&.is_a?(String) != false || raise("Passed value for field obj.bank_feed_account is not the expected type, validation failed.")
         obj.transaction_date&.is_a?(DateTime) != false || raise("Passed value for field obj.transaction_date is not the expected type, validation failed.")
         obj.posted_date&.is_a?(DateTime) != false || raise("Passed value for field obj.posted_date is not the expected type, validation failed.")
         obj.amount&.is_a?(Float) != false || raise("Passed value for field obj.amount is not the expected type, validation failed.")

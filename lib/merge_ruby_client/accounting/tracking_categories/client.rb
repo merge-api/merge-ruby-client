@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require_relative "../../../requests"
+require_relative "types/list_tracking_categories_request_category_type"
 require "date"
+require_relative "types/list_tracking_categories_request_status"
 require_relative "../types/paginated_tracking_category_list"
 require_relative "../types/tracking_category"
 require "async"
@@ -18,9 +20,13 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TrackingCategory` objects.
+      # Returns a list of `TrackingCategory` objects.{/*
+      #  BEGIN_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pLZsGWRiq++4mTM1DvKMmvBvS6rt4hoz+v+S45kLsNPhxbv+ZfDQ5r2f+BuP7+5//Y3kt5CFesXAAA="
+      #  /></Footer>{/* END_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS * /}
       #
-      # @param category_type [String] If provided, will only return tracking categories with this type.
+      # @param category_type [Merge::Accounting::TrackingCategories::ListTrackingCategoriesRequestCategoryType] If provided, will only return tracking categories with this type.
       # @param company_id [String] If provided, will only return tracking categories for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -39,13 +45,13 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param name [String] If provided, will only return tracking categories with this name.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [String] If provided, will only return tracking categories with this status.
+      # @param status [Merge::Accounting::TrackingCategories::ListTrackingCategoriesRequestStatus] If provided, will only return tracking categories with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedTrackingCategoryList]
       # @example
@@ -94,7 +100,11 @@ module Merge
         Merge::Accounting::PaginatedTrackingCategoryList.from_json(json_object: response.body)
       end
 
-      # Returns a `TrackingCategory` object with the given `id`.
+      # Returns a `TrackingCategory` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pLZsGWRiq++4mTM1DvKMmvBvS6rt4hoz+v+S45kLsNPhxbv+ZfDQ5r2f+BuP7+5//Y3kt5CFesXAAA="
+      #  /></Footer>{/* END_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names
@@ -154,9 +164,13 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `TrackingCategory` objects.
+      # Returns a list of `TrackingCategory` objects.{/*
+      #  BEGIN_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pLZsGWRiq++4mTM1DvKMmvBvS6rt4hoz+v+S45kLsNPhxbv+ZfDQ5r2f+BuP7+5//Y3kt5CFesXAAA="
+      #  /></Footer>{/* END_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS * /}
       #
-      # @param category_type [String] If provided, will only return tracking categories with this type.
+      # @param category_type [Merge::Accounting::TrackingCategories::ListTrackingCategoriesRequestCategoryType] If provided, will only return tracking categories with this type.
       # @param company_id [String] If provided, will only return tracking categories for this company.
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -175,13 +189,13 @@ module Merge
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
       # @param name [String] If provided, will only return tracking categories with this name.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_fields [String] Deprecated. Use show_enum_origins.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param show_enum_origins [String] A comma separated list of enum field names for which you'd like the original
       #  values to be returned, instead of Merge's normalized enum values. [Learn
       #  e](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
-      # @param status [String] If provided, will only return tracking categories with this status.
+      # @param status [Merge::Accounting::TrackingCategories::ListTrackingCategoriesRequestStatus] If provided, will only return tracking categories with this status.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Accounting::PaginatedTrackingCategoryList]
       # @example
@@ -232,7 +246,11 @@ module Merge
         end
       end
 
-      # Returns a `TrackingCategory` object with the given `id`.
+      # Returns a `TrackingCategory` object with the given `id`.{/*
+      #  BEGIN_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  pLZsGWRiq++4mTM1DvKMmvBvS6rt4hoz+v+S45kLsNPhxbv+ZfDQ5r2f+BuP7+5//Y3kt5CFesXAAA="
+      #  /></Footer>{/* END_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [String] Which relations should be returned in expanded form. Multiple relation names

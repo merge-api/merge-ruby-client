@@ -28,7 +28,7 @@ module Merge
       #  Center](https://help.merge.dev/en/articles/8184193-merge-sync-statuses).
       #
       # @param cursor [String] The pagination cursor value.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedSyncStatusList]
       # @example
@@ -84,7 +84,7 @@ module Merge
       #  Center](https://help.merge.dev/en/articles/8184193-merge-sync-statuses).
       #
       # @param cursor [String] The pagination cursor value.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ats::PaginatedSyncStatusList]
       # @example

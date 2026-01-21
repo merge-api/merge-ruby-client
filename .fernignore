@@ -3,3 +3,4 @@ README.md
 test/
 
 .github/workflows/publish.yml
+changelog.md

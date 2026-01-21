@@ -16,6 +16,8 @@ module Merge
       attr_reader :target_field
       # @return [Merge::Ats::FieldMappingApiInstanceRemoteField]
       attr_reader :remote_field
+      # @return [String]
+      attr_reader :jmes_path
       # @return [OpenStruct] Additional properties unmapped to the current class definition
       attr_reader :additional_properties
       # @return [Object]
@@ -28,20 +30,23 @@ module Merge
       # @param is_integration_wide [Boolean]
       # @param target_field [Merge::Ats::FieldMappingApiInstanceTargetField]
       # @param remote_field [Merge::Ats::FieldMappingApiInstanceRemoteField]
+      # @param jmes_path [String]
       # @param additional_properties [OpenStruct] Additional properties unmapped to the current class definition
       # @return [Merge::Ats::FieldMappingApiInstance]
-      def initialize(id: OMIT, is_integration_wide: OMIT, target_field: OMIT, remote_field: OMIT,
+      def initialize(id: OMIT, is_integration_wide: OMIT, target_field: OMIT, remote_field: OMIT, jmes_path: OMIT,
                      additional_properties: nil)
         @id = id if id != OMIT
         @is_integration_wide = is_integration_wide if is_integration_wide != OMIT
         @target_field = target_field if target_field != OMIT
         @remote_field = remote_field if remote_field != OMIT
+        @jmes_path = jmes_path if jmes_path != OMIT
         @additional_properties = additional_properties
         @_field_set = {
           "id": id,
           "is_integration_wide": is_integration_wide,
           "target_field": target_field,
-          "remote_field": remote_field
+          "remote_field": remote_field,
+          "jmes_path": jmes_path
         }.reject do |_k, v|
           v == OMIT
         end
@@ -68,11 +73,13 @@ module Merge
           remote_field = parsed_json["remote_field"].to_json
           remote_field = Merge::Ats::FieldMappingApiInstanceRemoteField.from_json(json_object: remote_field)
         end
+        jmes_path = parsed_json["jmes_path"]
         new(
           id: id,
           is_integration_wide: is_integration_wide,
           target_field: target_field,
           remote_field: remote_field,
+          jmes_path: jmes_path,
           additional_properties: struct
         )
       end
@@ -95,6 +102,7 @@ module Merge
         obj.is_integration_wide&.is_a?(Boolean) != false || raise("Passed value for field obj.is_integration_wide is not the expected type, validation failed.")
         obj.target_field.nil? || Merge::Ats::FieldMappingApiInstanceTargetField.validate_raw(obj: obj.target_field)
         obj.remote_field.nil? || Merge::Ats::FieldMappingApiInstanceRemoteField.validate_raw(obj: obj.remote_field)
+        obj.jmes_path&.is_a?(String) != false || raise("Passed value for field obj.jmes_path is not the expected type, validation failed.")
       end
     end
   end

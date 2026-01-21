@@ -2,7 +2,6 @@
 
 require "date"
 require_relative "transaction_currency_enum"
-require_relative "income_statement_company"
 require_relative "report_item"
 require_relative "remote_data"
 require "ostruct"
@@ -338,7 +337,7 @@ module Merge
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
       attr_reader :currency
-      # @return [Merge::Accounting::IncomeStatementCompany] The company the income statement belongs to.
+      # @return [String] The company the income statement belongs to.
       attr_reader :company
       # @return [DateTime] The income statement's start period.
       attr_reader :start_period
@@ -687,7 +686,7 @@ module Merge
       #  * `ZWD` - Zimbabwean Dollar (1980–2008)
       #  * `ZWR` - Zimbabwean Dollar (2008)
       #  * `ZWL` - Zimbabwean Dollar (2009)
-      # @param company [Merge::Accounting::IncomeStatementCompany] The company the income statement belongs to.
+      # @param company [String] The company the income statement belongs to.
       # @param start_period [DateTime] The income statement's start period.
       # @param end_period [DateTime] The income statement's end period.
       # @param income [Array<Merge::Accounting::ReportItem>]
@@ -765,12 +764,7 @@ module Merge
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
         name = parsed_json["name"]
         currency = parsed_json["currency"]
-        if parsed_json["company"].nil?
-          company = nil
-        else
-          company = parsed_json["company"].to_json
-          company = Merge::Accounting::IncomeStatementCompany.from_json(json_object: company)
-        end
+        company = parsed_json["company"]
         start_period = (DateTime.parse(parsed_json["start_period"]) unless parsed_json["start_period"].nil?)
         end_period = (DateTime.parse(parsed_json["end_period"]) unless parsed_json["end_period"].nil?)
         income = parsed_json["income"]&.map do |item|
@@ -842,7 +836,7 @@ module Merge
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
         obj.name&.is_a?(String) != false || raise("Passed value for field obj.name is not the expected type, validation failed.")
         obj.currency&.is_a?(Merge::Accounting::TransactionCurrencyEnum) != false || raise("Passed value for field obj.currency is not the expected type, validation failed.")
-        obj.company.nil? || Merge::Accounting::IncomeStatementCompany.validate_raw(obj: obj.company)
+        obj.company&.is_a?(String) != false || raise("Passed value for field obj.company is not the expected type, validation failed.")
         obj.start_period&.is_a?(DateTime) != false || raise("Passed value for field obj.start_period is not the expected type, validation failed.")
         obj.end_period&.is_a?(DateTime) != false || raise("Passed value for field obj.end_period is not the expected type, validation failed.")
         obj.income&.is_a?(Array) != false || raise("Passed value for field obj.income is not the expected type, validation failed.")

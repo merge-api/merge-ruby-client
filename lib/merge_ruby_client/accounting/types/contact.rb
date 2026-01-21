@@ -2,7 +2,7 @@
 
 require "date"
 require_relative "status_7_d_1_enum"
-require_relative "contact_addresses_item"
+require_relative "address"
 require_relative "accounting_phone_number"
 require_relative "remote_data"
 require_relative "remote_field"
@@ -50,7 +50,7 @@ module Merge
       attr_reader :remote_updated_at
       # @return [String] The company the contact belongs to.
       attr_reader :company
-      # @return [Array<Merge::Accounting::ContactAddressesItem>] `Address` object IDs for the given `Contacts` object.
+      # @return [Array<Merge::Accounting::Address>] `Address` object IDs for the given `Contacts` object.
       attr_reader :addresses
       # @return [Array<Merge::Accounting::AccountingPhoneNumber>] `AccountingPhoneNumber` object for the given `Contacts` object.
       attr_reader :phone_numbers
@@ -88,7 +88,7 @@ module Merge
       # @param currency [String] The currency the contact's transactions are in.
       # @param remote_updated_at [DateTime] When the third party's contact was updated.
       # @param company [String] The company the contact belongs to.
-      # @param addresses [Array<Merge::Accounting::ContactAddressesItem>] `Address` object IDs for the given `Contacts` object.
+      # @param addresses [Array<Merge::Accounting::Address>] `Address` object IDs for the given `Contacts` object.
       # @param phone_numbers [Array<Merge::Accounting::AccountingPhoneNumber>] `AccountingPhoneNumber` object for the given `Contacts` object.
       # @param remote_was_deleted [Boolean] Indicates whether or not this object has been deleted in the third party
       #  platform. Full coverage deletion detection is a premium add-on. Native deletion
@@ -170,7 +170,7 @@ module Merge
         company = parsed_json["company"]
         addresses = parsed_json["addresses"]&.map do |item|
           item = item.to_json
-          Merge::Accounting::ContactAddressesItem.from_json(json_object: item)
+          Merge::Accounting::Address.from_json(json_object: item)
         end
         phone_numbers = parsed_json["phone_numbers"]&.map do |item|
           item = item.to_json

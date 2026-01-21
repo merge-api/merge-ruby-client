@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "date"
-require_relative "scheduled_interview_application"
-require_relative "scheduled_interview_job_interview_stage"
-require_relative "scheduled_interview_organizer"
-require_relative "scheduled_interview_interviewers_item"
 require_relative "scheduled_interview_status_enum"
 require_relative "remote_data"
 require "ostruct"
@@ -29,13 +25,13 @@ module Merge
       attr_reader :created_at
       # @return [DateTime] The datetime that this object was modified by Merge.
       attr_reader :modified_at
-      # @return [Merge::Ats::ScheduledInterviewApplication] The application being interviewed.
+      # @return [String] The application being interviewed.
       attr_reader :application
-      # @return [Merge::Ats::ScheduledInterviewJobInterviewStage] The stage of the interview.
+      # @return [String] The stage of the interview.
       attr_reader :job_interview_stage
-      # @return [Merge::Ats::ScheduledInterviewOrganizer] The user organizing the interview.
+      # @return [String] The user organizing the interview.
       attr_reader :organizer
-      # @return [Array<Merge::Ats::ScheduledInterviewInterviewersItem>] Array of `RemoteUser` IDs.
+      # @return [Array<String>] Array of `RemoteUser` IDs.
       attr_reader :interviewers
       # @return [String] The interview's location.
       attr_reader :location
@@ -73,10 +69,10 @@ module Merge
       # @param remote_id [String] The third-party API ID of the matching object.
       # @param created_at [DateTime] The datetime that this object was created by Merge.
       # @param modified_at [DateTime] The datetime that this object was modified by Merge.
-      # @param application [Merge::Ats::ScheduledInterviewApplication] The application being interviewed.
-      # @param job_interview_stage [Merge::Ats::ScheduledInterviewJobInterviewStage] The stage of the interview.
-      # @param organizer [Merge::Ats::ScheduledInterviewOrganizer] The user organizing the interview.
-      # @param interviewers [Array<Merge::Ats::ScheduledInterviewInterviewersItem>] Array of `RemoteUser` IDs.
+      # @param application [String] The application being interviewed.
+      # @param job_interview_stage [String] The stage of the interview.
+      # @param organizer [String] The user organizing the interview.
+      # @param interviewers [Array<String>] Array of `RemoteUser` IDs.
       # @param location [String] The interview's location.
       # @param start_at [DateTime] When the interview was started.
       # @param end_at [DateTime] When the interview was ended.
@@ -148,28 +144,10 @@ module Merge
         remote_id = parsed_json["remote_id"]
         created_at = (DateTime.parse(parsed_json["created_at"]) unless parsed_json["created_at"].nil?)
         modified_at = (DateTime.parse(parsed_json["modified_at"]) unless parsed_json["modified_at"].nil?)
-        if parsed_json["application"].nil?
-          application = nil
-        else
-          application = parsed_json["application"].to_json
-          application = Merge::Ats::ScheduledInterviewApplication.from_json(json_object: application)
-        end
-        if parsed_json["job_interview_stage"].nil?
-          job_interview_stage = nil
-        else
-          job_interview_stage = parsed_json["job_interview_stage"].to_json
-          job_interview_stage = Merge::Ats::ScheduledInterviewJobInterviewStage.from_json(json_object: job_interview_stage)
-        end
-        if parsed_json["organizer"].nil?
-          organizer = nil
-        else
-          organizer = parsed_json["organizer"].to_json
-          organizer = Merge::Ats::ScheduledInterviewOrganizer.from_json(json_object: organizer)
-        end
-        interviewers = parsed_json["interviewers"]&.map do |item|
-          item = item.to_json
-          Merge::Ats::ScheduledInterviewInterviewersItem.from_json(json_object: item)
-        end
+        application = parsed_json["application"]
+        job_interview_stage = parsed_json["job_interview_stage"]
+        organizer = parsed_json["organizer"]
+        interviewers = parsed_json["interviewers"]
         location = parsed_json["location"]
         start_at = (DateTime.parse(parsed_json["start_at"]) unless parsed_json["start_at"].nil?)
         end_at = (DateTime.parse(parsed_json["end_at"]) unless parsed_json["end_at"].nil?)
@@ -226,9 +204,9 @@ module Merge
         obj.remote_id&.is_a?(String) != false || raise("Passed value for field obj.remote_id is not the expected type, validation failed.")
         obj.created_at&.is_a?(DateTime) != false || raise("Passed value for field obj.created_at is not the expected type, validation failed.")
         obj.modified_at&.is_a?(DateTime) != false || raise("Passed value for field obj.modified_at is not the expected type, validation failed.")
-        obj.application.nil? || Merge::Ats::ScheduledInterviewApplication.validate_raw(obj: obj.application)
-        obj.job_interview_stage.nil? || Merge::Ats::ScheduledInterviewJobInterviewStage.validate_raw(obj: obj.job_interview_stage)
-        obj.organizer.nil? || Merge::Ats::ScheduledInterviewOrganizer.validate_raw(obj: obj.organizer)
+        obj.application&.is_a?(String) != false || raise("Passed value for field obj.application is not the expected type, validation failed.")
+        obj.job_interview_stage&.is_a?(String) != false || raise("Passed value for field obj.job_interview_stage is not the expected type, validation failed.")
+        obj.organizer&.is_a?(String) != false || raise("Passed value for field obj.organizer is not the expected type, validation failed.")
         obj.interviewers&.is_a?(Array) != false || raise("Passed value for field obj.interviewers is not the expected type, validation failed.")
         obj.location&.is_a?(String) != false || raise("Passed value for field obj.location is not the expected type, validation failed.")
         obj.start_at&.is_a?(DateTime) != false || raise("Passed value for field obj.start_at is not the expected type, validation failed.")

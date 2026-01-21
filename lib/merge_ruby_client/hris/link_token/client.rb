@@ -4,6 +4,7 @@ require_relative "../../../requests"
 require_relative "../types/categories_enum"
 require_relative "../types/common_model_scopes_body_request"
 require_relative "../types/language_enum"
+require_relative "../types/completed_account_initial_screen_enum"
 require_relative "../types/link_token"
 require "async"
 
@@ -19,7 +20,8 @@ module Merge
         @request_client = request_client
       end
 
-      # Creates a link token to be used when linking a new end user.
+      # Creates a link token to be used when linking a new end user. The link token
+      #  expires after single use.
       #
       # @param end_user_email_address [String] Your end user's email address. This is purely for identification purposes -
       #  setting this value will not cause any emails to be sent.
@@ -56,6 +58,12 @@ module Merge
       # @param are_syncs_disabled [Boolean] The boolean that indicates whether initial, periodic, and force syncs will be
       #  disabled.
       # @param integration_specific_config [Hash{String => Object}] A JSON object containing integration-specific configuration options.
+      # @param completed_account_initial_screen [Merge::Hris::COMPLETED_ACCOUNT_INITIAL_SCREEN_ENUM] When creating a Link token, you can specifiy the initial screen of Linking Flow
+      #  for a completed Linked Account.
+      #  * `SELECTIVE_SYNC` - SELECTIVE_SYNC
+      # @param linked_destination_id [String] The UUID of the linked destination that you want this Linked Account to be tied
+      #  to.
+      # @param credential_id [String] The id of the credential that you want this Linked Account to be tied to.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::LinkToken]
       # @example
@@ -71,7 +79,7 @@ module Merge
       #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, are_syncs_disabled: nil, integration_specific_config: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, are_syncs_disabled: nil, integration_specific_config: nil, completed_account_initial_screen: nil, linked_destination_id: nil, credential_id: nil, request_options: nil)
         response = @request_client.conn.post do |req|
           req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
           req.headers["Authorization"] = request_options.api_key unless request_options&.api_key.nil?
@@ -98,7 +106,10 @@ module Merge
             category_common_model_scopes: category_common_model_scopes,
             language: language,
             are_syncs_disabled: are_syncs_disabled,
-            integration_specific_config: integration_specific_config
+            integration_specific_config: integration_specific_config,
+            completed_account_initial_screen: completed_account_initial_screen,
+            linked_destination_id: linked_destination_id,
+            credential_id: credential_id
           }.compact
           req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/link-token"
         end
@@ -116,7 +127,8 @@ module Merge
         @request_client = request_client
       end
 
-      # Creates a link token to be used when linking a new end user.
+      # Creates a link token to be used when linking a new end user. The link token
+      #  expires after single use.
       #
       # @param end_user_email_address [String] Your end user's email address. This is purely for identification purposes -
       #  setting this value will not cause any emails to be sent.
@@ -153,6 +165,12 @@ module Merge
       # @param are_syncs_disabled [Boolean] The boolean that indicates whether initial, periodic, and force syncs will be
       #  disabled.
       # @param integration_specific_config [Hash{String => Object}] A JSON object containing integration-specific configuration options.
+      # @param completed_account_initial_screen [Merge::Hris::COMPLETED_ACCOUNT_INITIAL_SCREEN_ENUM] When creating a Link token, you can specifiy the initial screen of Linking Flow
+      #  for a completed Linked Account.
+      #  * `SELECTIVE_SYNC` - SELECTIVE_SYNC
+      # @param linked_destination_id [String] The UUID of the linked destination that you want this Linked Account to be tied
+      #  to.
+      # @param credential_id [String] The id of the credential that you want this Linked Account to be tied to.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Hris::LinkToken]
       # @example
@@ -168,7 +186,7 @@ module Merge
       #    categories: [HRIS, ATS]
       #  )
       def create(end_user_email_address:, end_user_organization_name:, end_user_origin_id:, categories:,
-                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, are_syncs_disabled: nil, integration_specific_config: nil, request_options: nil)
+                 integration: nil, link_expiry_mins: nil, should_create_magic_link_url: nil, hide_admin_magic_link: nil, common_models: nil, category_common_model_scopes: nil, language: nil, are_syncs_disabled: nil, integration_specific_config: nil, completed_account_initial_screen: nil, linked_destination_id: nil, credential_id: nil, request_options: nil)
         Async do
           response = @request_client.conn.post do |req|
             req.options.timeout = request_options.timeout_in_seconds unless request_options&.timeout_in_seconds.nil?
@@ -196,7 +214,10 @@ module Merge
               category_common_model_scopes: category_common_model_scopes,
               language: language,
               are_syncs_disabled: are_syncs_disabled,
-              integration_specific_config: integration_specific_config
+              integration_specific_config: integration_specific_config,
+              completed_account_initial_screen: completed_account_initial_screen,
+              linked_destination_id: linked_destination_id,
+              credential_id: credential_id
             }.compact
             req.url "#{@request_client.get_url(request_options: request_options)}/hris/v1/link-token"
           end

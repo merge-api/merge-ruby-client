@@ -18,7 +18,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Tag` objects.
+      # Returns a list of `Tag` objects.{/* BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  veFRe2tocHh46h4z062sQR9EIloHBWx1dWNgS6ZO/L6Lk251nLI4AL3629U2+Po/ssff+OA4VwiAAA="
+      #  /></Footer>{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -34,7 +37,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedTagList]
@@ -77,7 +80,11 @@ module Merge
         Merge::Ticketing::PaginatedTagList.from_json(json_object: response.body)
       end
 
-      # Returns a `Tag` object with the given `id`.
+      # Returns a `Tag` object with the given `id`.{/*
+      #  BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  veFRe2tocHh46h4z062sQR9EIloHBWx1dWNgS6ZO/L6Lk251nLI4AL3629U2+Po/ssff+OA4VwiAAA="
+      #  /></Footer>{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to
@@ -127,7 +134,10 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `Tag` objects.
+      # Returns a list of `Tag` objects.{/* BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  veFRe2tocHh46h4z062sQR9EIloHBWx1dWNgS6ZO/L6Lk251nLI4AL3629U2+Po/ssff+OA4VwiAAA="
+      #  /></Footer>{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -143,7 +153,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param request_options [Merge::RequestOptions]
       # @return [Merge::Ticketing::PaginatedTagList]
@@ -188,7 +198,11 @@ module Merge
         end
       end
 
-      # Returns a `Tag` object with the given `id`.
+      # Returns a `Tag` object with the given `id`.{/*
+      #  BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  veFRe2tocHh46h4z062sQR9EIloHBWx1dWNgS6ZO/L6Lk251nLI4AL3629U2+Po/ssff+OA4VwiAAA="
+      #  /></Footer>{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param include_remote_data [Boolean] Whether to include the original data Merge fetched from the third-party to

@@ -20,7 +20,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `EmployeePayrollRun` objects.
+      # Returns a list of `EmployeePayrollRun` objects.{/*
+      #  BEGIN_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  XTIWSjI9RFav42cFyU9WyW91A/uEJf5x6vw+kEG+oyr0Y/p29xDEzJHwnV+Ffv6/R8pI4n+vywAAA=="
+      #  /></Footer>{/* END_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -41,7 +45,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param payroll_run_id [String] If provided, will only return employee payroll runs for this employee.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return employee payroll runs started after this datetime.
@@ -95,7 +99,11 @@ module Merge
         Merge::Hris::PaginatedEmployeePayrollRunList.from_json(json_object: response.body)
       end
 
-      # Returns an `EmployeePayrollRun` object with the given `id`.
+      # Returns an `EmployeePayrollRun` object with the given `id`.{/*
+      #  BEGIN_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  XTIWSjI9RFav42cFyU9WyW91A/uEJf5x6vw+kEG+oyr0Y/p29xDEzJHwnV+Ffv6/R8pI4n+vywAAA=="
+      #  /></Footer>{/* END_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
@@ -148,7 +156,11 @@ module Merge
         @request_client = request_client
       end
 
-      # Returns a list of `EmployeePayrollRun` objects.
+      # Returns a list of `EmployeePayrollRun` objects.{/*
+      #  BEGIN_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  XTIWSjI9RFav42cFyU9WyW91A/uEJf5x6vw+kEG+oyr0Y/p29xDEzJHwnV+Ffv6/R8pI4n+vywAAA=="
+      #  /></Footer>{/* END_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param created_after [DateTime] If provided, will only return objects created after this datetime.
       # @param created_before [DateTime] If provided, will only return objects created before this datetime.
@@ -169,7 +181,7 @@ module Merge
       # @param modified_after [DateTime] If provided, only objects synced by Merge after this date time will be returned.
       # @param modified_before [DateTime] If provided, only objects synced by Merge before this date time will be
       #  returned.
-      # @param page_size [Integer] Number of results to return per page.
+      # @param page_size [Integer] Number of results to return per page. The maximum limit is 100.
       # @param payroll_run_id [String] If provided, will only return employee payroll runs for this employee.
       # @param remote_id [String] The API provider's ID for the given object.
       # @param started_after [DateTime] If provided, will only return employee payroll runs started after this datetime.
@@ -225,7 +237,11 @@ module Merge
         end
       end
 
-      # Returns an `EmployeePayrollRun` object with the given `id`.
+      # Returns an `EmployeePayrollRun` object with the given `id`.{/*
+      #  BEGIN_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS *
+      #  /}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
+      #  XTIWSjI9RFav42cFyU9WyW91A/uEJf5x6vw+kEG+oyr0Y/p29xDEzJHwnV+Ffv6/R8pI4n+vywAAA=="
+      #  /></Footer>{/* END_HRIS_EMPLOYEEPAYROLLRUN_FETCH_SUPPORTED_FIELDS * /}
       #
       # @param id [String]
       # @param expand [Merge::Hris::EmployeePayrollRuns::EmployeePayrollRunsRetrieveRequestExpand] Which relations should be returned in expanded form. Multiple relation names
