@@ -31,6 +31,14 @@ jobs:
           ruby-version: '2.7'
 
       - name: Run tests
+        env:
+          SDK_TESTING_KEY_SECONDARY: ${{ secrets.SDK_TESTING_KEY_SECONDARY }}
+          SDK_TESTING_ACCOUNTING_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_ACCOUNTING_ACCOUNT_TOKEN }}
+          SDK_TESTING_ATS_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_ATS_ACCOUNT_TOKEN }}
+          SDK_TESTING_CRM_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_CRM_ACCOUNT_TOKEN }}
+          SDK_TESTING_FILE_STORAGE_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_FILE_STORAGE_ACCOUNT_TOKEN }}
+          SDK_TESTING_HRIS_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_HRIS_ACCOUNT_TOKEN }}
+          SDK_TESTING_TICKETING_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_TICKETING_ACCOUNT_TOKEN }}
         run: bundle install && bundle exec rake test
 
   publish:
@@ -47,6 +55,14 @@ jobs:
           bundler-cache: true
 
       - name: Test gem
+        env:
+          SDK_TESTING_KEY_SECONDARY: ${{ secrets.SDK_TESTING_KEY_SECONDARY }}
+          SDK_TESTING_ACCOUNTING_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_ACCOUNTING_ACCOUNT_TOKEN }}
+          SDK_TESTING_ATS_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_ATS_ACCOUNT_TOKEN }}
+          SDK_TESTING_CRM_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_CRM_ACCOUNT_TOKEN }}
+          SDK_TESTING_FILE_STORAGE_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_FILE_STORAGE_ACCOUNT_TOKEN }}
+          SDK_TESTING_HRIS_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_HRIS_ACCOUNT_TOKEN }}
+          SDK_TESTING_TICKETING_ACCOUNT_TOKEN: ${{ secrets.SDK_TESTING_TICKETING_ACCOUNT_TOKEN }}
         run: bundle install && bundle exec rake test
 
       - name: Build and Push Gem

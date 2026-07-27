@@ -1,25 +1,13 @@
 # frozen_string_literal: true
 
 require_relative "../test_helper"
+require_relative "../support/integration_helper"
 
 class TestHrisIntegration < Minitest::Test
-  MAX_ITEMS = 5
-
-  def setup
-    @api_key = ENV["MERGE_API_KEY"]
-    @account_token = ENV["MERGE_HRIS_ACCOUNT_TOKEN"]
-
-    return unless blank?(@api_key) || blank?(@account_token)
-
-    skip("set MERGE_API_KEY and MERGE_HRIS_ACCOUNT_TOKEN to run HRIS integration tests")
-  end
-
-  def blank?(value)
-    value.nil? || value.empty?
-  end
+  include TestSupport::Integration
 
   def client
-    Merge::Client.new(api_key: @api_key, account_token: @account_token)
+    @client ||= integration_client("hris")
   end
 
   def test_account_details_retrieve
@@ -30,28 +18,43 @@ class TestHrisIntegration < Minitest::Test
   end
 
   def test_groups_list
-    page = client.hris.groups.list(page_size: MAX_ITEMS)
-
-    refute_nil page
-    refute_nil page.results
+    smoke_list(client.hris.groups.list(page_size: MAX_ITEMS))
   end
 
   def test_groups_list_and_retrieve
-    page = client.hris.groups.list(page_size: MAX_ITEMS)
-    first = page.results&.first
-
-    skip("no groups available on this linked account") if first.nil?
-
-    retrieved = client.hris.groups.retrieve(id: first.id)
-
-    assert_equal first.id, retrieved.id
+    smoke_list_and_retrieve(client.hris.groups.list(page_size: MAX_ITEMS)) do |id|
+      client.hris.groups.retrieve(id: id)
+    end
   end
 
   def test_employees_list
-    page = client.hris.employees.list(page_size: MAX_ITEMS)
+    smoke_list(client.hris.employees.list(page_size: MAX_ITEMS))
+  end
 
-    refute_nil page
-    refute_nil page.results
+  def test_employees_list_and_retrieve
+    smoke_list_and_retrieve(client.hris.employees.list(page_size: MAX_ITEMS)) do |id|
+      client.hris.employees.retrieve(id: id)
+    end
+  end
+
+  def test_employments_list
+    smoke_list(client.hris.employments.list(page_size: MAX_ITEMS))
+  end
+
+  def test_companies_list
+    smoke_list(client.hris.companies.list(page_size: MAX_ITEMS))
+  end
+
+  def test_locations_list
+    smoke_list(client.hris.locations.list(page_size: MAX_ITEMS))
+  end
+
+  def test_teams_list
+    smoke_list(client.hris.teams.list(page_size: MAX_ITEMS))
+  end
+
+  def test_time_off_list
+    smoke_list(client.hris.time_off.list(page_size: MAX_ITEMS))
   end
 
   def test_employees_list_with_expand
@@ -60,14 +63,13 @@ class TestHrisIntegration < Minitest::Test
       expand: Merge::Hris::Employees::EmployeesListRequestExpand::EMPLOYMENTS
     )
 
-    refute_nil page
-    refute_nil page.results
+    smoke_list(page)
   end
 
   def test_created_after_filter_narrows_results
     page = client.hris.employees.list(page_size: MAX_ITEMS, created_after: DateTime.parse("2100-01-01"))
 
-    refute_nil page
-    assert_empty page.results.to_a
+    smoke_list(page)
+    assert_empty page.results
   end
 end
